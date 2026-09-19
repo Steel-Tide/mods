@@ -1,7 +1,7 @@
 {
   "format": "steel-tide-mod-index",
   "v": 1,
-  "generated": "2026-09-19T12:24:19.691Z",
+  "generated": "2026-09-19T12:24:53.449Z",
   "mods": [
     {
       "id": "ironworks",
@@ -20,7 +20,7 @@
       "license": "CC-BY-4.0",
       "path": "mods/ironworks",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/ironworks/",
-      "updated": "2026-09-08T22:25:05+08:00",
+      "updated": "2026-09-19T20:24:28+08:00",
       "downloads": 0,
       "screenshots": [
         {
@@ -131,7 +131,7 @@
       "homepage": "https://store.steampowered.com/app/370390/Rusted_Warfare__RTS/",
       "path": "mods/rusted-expansion",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/rusted-expansion/",
-      "updated": "2026-09-08T22:53:58+08:00",
+      "updated": "2026-09-19T20:24:28+08:00",
       "downloads": 0,
       "screenshots": [
         {
