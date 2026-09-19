@@ -10,7 +10,7 @@ with sprite sheets beside it if the author drew some — and every folder under
   open `https://play.steelti.de/?mod=<id>`.
 - **Make one:** read the [modding guide](https://steelti.de/wiki/modding) — the
   whole format, generated from the game's own validator — or give it to a
-  coding agent as a skill: `npx skills add rivertwilight/steel-tide-mods --skill steel-tide-mods-guideline`
+  coding agent as a skill: `npx skills add steel-tide/mods --skill steel-tide-mods-guideline`
   ([skills.sh](https://skills.sh); the same text is [`AGENTS.md`](AGENTS.md)).
   A Rusted Warfare mod can be [converted in the browser](https://steelti.de/mods/convert).
 - **Publish one:** fork, add `mods/<id>/`, run the check, open a pull request.

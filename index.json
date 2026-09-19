@@ -1,23 +1,25 @@
 {
   "format": "steel-tide-mod-index",
   "v": 1,
-  "generated": "2026-09-08T14:54:32.723Z",
+  "generated": "2026-09-19T09:28:30.645Z",
   "mods": [
     {
       "id": "ironworks",
       "name": [
         "Ironworks",
-        "铁工厂"
+        "铁工厂",
+        "Ironworks"
       ],
       "version": "1.1.0",
       "author": "Steel Tide",
       "description": [
         "A hover tank with its own art and sound, a turreted bunker, and a fourth level for the power plant line — one of each thing a mod can add.",
-        "一辆自带图像和音效的悬浮坦克、一座带旋转炮塔的碉堡，以及发电厂线的第四级——模组能加的每种东西各一个。"
+        "一辆自带图像和音效的悬浮坦克、一座带旋转炮塔的碉堡，以及发电厂线的第四级——模组能加的每种东西各一个。",
+        "A hover tank with its own art and sound, a turreted bunker, and a fourth level for the power plant line — one of each thing a mod can add."
       ],
       "license": "CC-BY-4.0",
       "path": "mods/ironworks",
-      "base": "https://raw.githubusercontent.com/rivertwilight/steel-tide-mods/main/mods/ironworks/",
+      "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/ironworks/",
       "updated": "2026-09-08T22:25:05+08:00",
       "defs": [
         {
@@ -28,7 +30,8 @@
           "cost": 260,
           "name": [
             "Skimmer Hover Tank",
-            "掠行悬浮坦克"
+            "掠行悬浮坦克",
+            "Skimmer Hover Tank"
           ],
           "sprite": "u.ironworks-hover"
         },
@@ -40,7 +43,8 @@
           "cost": 380,
           "name": [
             "Bunker",
-            "碉堡"
+            "碉堡",
+            "Bunker"
           ],
           "sprite": "u.ironworks-bunker",
           "turretSprite": "tur.ironworks-bunker"
@@ -53,7 +57,8 @@
           "cost": 2200,
           "name": [
             "Fusion Plant",
-            "聚变电站"
+            "聚变电站",
+            "Fusion Plant"
           ],
           "sprite": "u.power3",
           "extends": "power3"
@@ -99,18 +104,20 @@
       "id": "rusted-expansion",
       "name": [
         "Rusted Expansion",
-        "铁锈扩展包"
+        "铁锈扩展包",
+        "Rusted Expansion"
       ],
       "version": "1.0.0",
       "author": "Steel Tide",
       "description": [
         "An official tribute to Rusted Warfare: six classic units — Tank, Heavy Tank, Helicopter, Bomber, Gun Boat, Battle Ship — with their names and their numbers brought across as near as the counter web allows.",
-        "向《铁锈战争》致敬的官方模组：坦克、重型坦克、直升机、轰炸机、炮艇、战列舰六个经典单位，名字与数值尽量按原样带过来。"
+        "向《铁锈战争》致敬的官方模组：坦克、重型坦克、直升机、轰炸机、炮艇、战列舰六个经典单位，名字与数值尽量按原样带过来。",
+        "An official tribute to Rusted Warfare: six classic units — Tank, Heavy Tank, Helicopter, Bomber, Gun Boat, Battle Ship — with their names and their numbers brought across as near as the counter web allows."
       ],
       "license": "CC-BY-4.0",
       "homepage": "https://store.steampowered.com/app/370390/Rusted_Warfare__RTS/",
       "path": "mods/rusted-expansion",
-      "base": "https://raw.githubusercontent.com/rivertwilight/steel-tide-mods/main/mods/rusted-expansion/",
+      "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/rusted-expansion/",
       "updated": "2026-09-08T22:53:58+08:00",
       "defs": [
         {
@@ -121,7 +128,8 @@
           "cost": 280,
           "name": [
             "Tank",
-            "坦克"
+            "坦克",
+            "Tank"
           ],
           "sprite": "u.rusted-tank",
           "turretSprite": "tur.rusted-tank"
@@ -134,7 +142,8 @@
           "cost": 640,
           "name": [
             "Heavy Tank",
-            "重型坦克"
+            "重型坦克",
+            "Heavy Tank"
           ],
           "sprite": "u.rusted-heavy-tank",
           "turretSprite": "tur.rusted-heavy-tank"
@@ -147,7 +156,8 @@
           "cost": 560,
           "name": [
             "Helicopter",
-            "直升机"
+            "直升机",
+            "Helicopter"
           ],
           "sprite": "u.rusted-helicopter"
         },
@@ -159,7 +169,8 @@
           "cost": 3200,
           "name": [
             "Bomber",
-            "轰炸机"
+            "轰炸机",
+            "Bomber"
           ],
           "sprite": "u.rusted-bomber"
         },
@@ -171,7 +182,8 @@
           "cost": 240,
           "name": [
             "Gun Boat",
-            "炮艇"
+            "炮艇",
+            "Gun Boat"
           ],
           "sprite": "u.rusted-gun-boat",
           "turretSprite": "tur.rusted-gun-boat"
@@ -184,7 +196,8 @@
           "cost": 1200,
           "name": [
             "Battle Ship",
-            "战列舰"
+            "战列舰",
+            "Battle Ship"
           ],
           "sprite": "u.rusted-battle-ship",
           "turretSprite": "tur.rusted-battle-ship"
