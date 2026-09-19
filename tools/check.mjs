@@ -7,14 +7,16 @@
  *
  * The same validation the game runs on load — every error with its path
  * into mod.json — plus what only the registry can know: the folder is named
- * after the mod's id, every sheet it names exists and is an image, and no
- * def id, alias or sheet key is taken by another published mod. Exit code 1
- * on any error; warnings are printed and do not fail.
+ * after the mod's id, every sheet it names exists and is an image, it
+ * carries at least one screenshot of itself in play (4:3, wide enough, not
+ * too heavy: `checkScreenshot` in the game's own code), and no def id, alias
+ * or sheet key is taken by another published mod. Exit code 1 on any error;
+ * warnings are printed and do not fail.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { applyMods, parseMod } from './steel-tide-mod.mjs';
+import { applyMods, checkScreenshot, imageSize, parseMod } from './steel-tide-mod.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
@@ -76,13 +78,23 @@ for (const folder of folders) {
       if (bytes.length > MAX_SOUND_BYTES) errors.push({ path: `sounds[${i}].file`, message: `${sound.file} is ${(bytes.length / 1024).toFixed(0)} KB; keep a one-shot under 1 MB` });
       if (/\.ogg$/i.test(sound.file)) warnings.push({ path: `sounds[${i}].file`, message: `${sound.file}: OGG does not play on Safari; MP3 plays everywhere` });
     }
+    // the pictures: the registry shows a mod by them, so a published mod has at least one
+    const shots = mod.screenshots ?? [];
+    if (shots.length === 0) errors.push({ path: 'mod.screenshots', message: 'a published mod carries at least one screenshot of itself in play (4:3, under screenshots/), named here' });
+    for (const [i, file] of shots.entries()) {
+      const path = join(folder, file);
+      if (!existsSync(path)) { errors.push({ path: `screenshots[${i}]`, message: `${file} is missing` }); continue; }
+      const bytes = readFileSync(path);
+      const why = checkScreenshot(imageSize(bytes), bytes.length);
+      if (why) errors.push({ path: `screenshots[${i}]`, message: `${file} ${why}` });
+    }
     if (!existsSync(join(folder, 'README.md'))) warnings.push({ path: 'README.md', message: 'a README tells players what the mod is about' });
     loaded.push({ mod, label });
   }
   for (const e of errors) console.error(`  ✗ ${label} ${e.path}: ${e.message}`);
   for (const w of warnings) console.warn(`  ! ${label} ${w.path}: ${w.message}`);
   if (errors.length > 0) failed = true;
-  else console.log(`✓ ${label} (${parsed.mod.defs.length} defs, ${(parsed.mod.sprites ?? []).length} sheets${(parsed.mod.sounds ?? []).length ? `, ${parsed.mod.sounds.length} sounds` : ''})`);
+  else console.log(`✓ ${label} (${parsed.mod.defs.length} defs, ${(parsed.mod.sprites ?? []).length} sheets${(parsed.mod.sounds ?? []).length ? `, ${parsed.mod.sounds.length} sounds` : ''}, ${(parsed.mod.screenshots ?? []).length} screenshot${(parsed.mod.screenshots ?? []).length === 1 ? '' : 's'})`);
 }
 
 // what only the whole registry can tell: two mods claiming the same id, alias or sheet key

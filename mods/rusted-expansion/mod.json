@@ -380,5 +380,9 @@
       "fh": 32,
       "pivotY": 0.7
     }
+  ],
+  "screenshots": [
+    "screenshots/armour.webp",
+    "screenshots/fleet.webp"
   ]
 }

@@ -5,7 +5,10 @@
  *
  *   node tools/pack.mjs mods/my-mod [out.steel-tide-mod]
  *
- * Handy for sharing a mod that is not (yet) in the registry.
+ * Handy for sharing a mod that is not (yet) in the registry. The registry
+ * itself packs every mod this way onto its `registry` release
+ * (tools/sync-release.mjs), which is where the download counts come from.
+ * The screenshots stay out of the file: they are for the pages, not the game.
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, extname, join, resolve } from 'node:path';
@@ -13,25 +16,37 @@ import { fileURLToPath } from 'node:url';
 import { MOD_FILE_EXT, parseMod } from './steel-tide-mod.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const [folderArg, outArg] = process.argv.slice(2);
-if (!folderArg) {
-  console.error('usage: node tools/pack.mjs mods/<id> [out]');
-  process.exit(2);
-}
-const folder = resolve(folderArg);
-const parsed = parseMod(readFileSync(join(folder, 'mod.json'), 'utf8'));
-if (!parsed.ok) {
-  for (const e of parsed.errors) console.error(`✗ ${e.path}: ${e.message}`);
-  process.exit(1);
-}
 const MIME = { '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.mp3': 'audio/mpeg', '.wav': 'audio/wav', '.ogg': 'audio/ogg' };
-const files = {};
-for (const { file } of [...(parsed.mod.sprites ?? []), ...(parsed.mod.sounds ?? [])]) {
-  const bytes = readFileSync(join(folder, file));
-  const mime = MIME[extname(file).toLowerCase()] ?? 'application/octet-stream';
-  files[file] = `data:${mime};base64,${bytes.toString('base64')}`;
+
+/** the packed file's text for a mod folder, or an error message; deterministic for the same folder, so a hash of it says whether the mod changed */
+export function packMod(folder) {
+  const parsed = parseMod(readFileSync(join(folder, 'mod.json'), 'utf8'));
+  if (!parsed.ok) return { ok: false, errors: parsed.errors };
+  const files = {};
+  for (const { file } of [...(parsed.mod.sprites ?? []), ...(parsed.mod.sounds ?? [])]) {
+    const bytes = readFileSync(join(folder, file));
+    const mime = MIME[extname(file).toLowerCase()] ?? 'application/octet-stream';
+    files[file] = `data:${mime};base64,${bytes.toString('base64')}`;
+  }
+  // the screenshots are the pages' business, not the game's: neither the files nor their names travel
+  const { screenshots: _shots, ...mod } = parsed.mod;
+  return { ok: true, mod: parsed.mod, text: JSON.stringify({ ...mod, files }, null, 2) };
 }
-const out = outArg ? resolve(outArg) : resolve(here, '..', 'dist', `${basename(folder)}${MOD_FILE_EXT}`);
-mkdirSync(dirname(out), { recursive: true });
-writeFileSync(out, JSON.stringify({ ...parsed.mod, files }, null, 2));
-console.log(`wrote ${out}`);
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const [folderArg, outArg] = process.argv.slice(2);
+  if (!folderArg) {
+    console.error('usage: node tools/pack.mjs mods/<id> [out]');
+    process.exit(2);
+  }
+  const folder = resolve(folderArg);
+  const packed = packMod(folder);
+  if (!packed.ok) {
+    for (const e of packed.errors) console.error(`✗ ${e.path}: ${e.message}`);
+    process.exit(1);
+  }
+  const out = outArg ? resolve(outArg) : resolve(here, '..', 'dist', `${basename(folder)}${MOD_FILE_EXT}`);
+  mkdirSync(dirname(out), { recursive: true });
+  writeFileSync(out, packed.text);
+  console.log(`wrote ${out}`);
+}

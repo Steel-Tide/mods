@@ -1,7 +1,7 @@
 {
   "format": "steel-tide-mod-index",
   "v": 1,
-  "generated": "2026-09-19T09:29:41.123Z",
+  "generated": "2026-09-19T12:24:19.691Z",
   "mods": [
     {
       "id": "ironworks",
@@ -21,6 +21,19 @@
       "path": "mods/ironworks",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/ironworks/",
       "updated": "2026-09-08T22:25:05+08:00",
+      "downloads": 0,
+      "screenshots": [
+        {
+          "file": "screenshots/skimmers.webp",
+          "w": 1600,
+          "h": 1200
+        },
+        {
+          "file": "screenshots/bunker.webp",
+          "w": 1600,
+          "h": 1200
+        }
+      ],
       "defs": [
         {
           "id": "ironworks-hover",
@@ -119,6 +132,19 @@
       "path": "mods/rusted-expansion",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/rusted-expansion/",
       "updated": "2026-09-08T22:53:58+08:00",
+      "downloads": 0,
+      "screenshots": [
+        {
+          "file": "screenshots/armour.webp",
+          "w": 1600,
+          "h": 1200
+        },
+        {
+          "file": "screenshots/fleet.webp",
+          "w": 1600,
+          "h": 1200
+        }
+      ],
       "defs": [
         {
           "id": "rusted-tank",

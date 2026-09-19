@@ -12,6 +12,7 @@ A folder:
 my-mod/
   mod.json          the manifest: the mod's identity, its defs, and the sheets they draw with
   sprites/*.png     optional art (a def without any is drawn as a plain placeholder)
+  screenshots/*.png the mod in play, 4:3 (the registry asks for at least one; see Publish)
   README.md         optional
 ```
 
@@ -206,6 +207,9 @@ Own art, a defended building, and a fourth level for a vanilla building line:
       "file": "sprites/u.ironworks-bunker.png",
       "frames": 1
     }
+  ],
+  "screenshots": [
+    "screenshots/skimmers.png"
   ]
 }
 ```
@@ -231,6 +235,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `defs` | def[] | yes |  | the units, buildings and upgrade levels |
 | `sprites` | sheet[] |  |  | the sheets the defs draw with (see below) |
 | `sounds` | string |  |  | the recordings the weapons fire with (see below) |
+| `screenshots` | path[] |  |  | pictures of the mod in play, relative to mod.json (`screenshots/1.png`): 4:3, at least 640 px wide, under 2 MB each, up to 8. The registry asks for at least one and shows them on the mod's page |
 | `files` | { path: dataURL } |  |  | single-file form only: the sheets and sounds, embedded as data URLs by path |
 
 `name`, `description` and every `desc`/`name` on a def are *text*: a string (used for every language), `["English", "中文", "한국어"]` in that order, or `{ "en": "…", "zh": "…", "ko": "…" }`. Only English is required; a language left out reads as English.
@@ -420,8 +425,9 @@ A weapon fires with the game's sound for its class unless its `sound` names one 
 ## Publish
 
 1. Fork https://github.com/steel-tide/mods, add your folder as `mods/<id>/` (the folder name is the mod's `id`), run `node tools/check.mjs mods/<id>`, open a pull request.
-2. CI runs the same check on the whole registry: ids must be unique across every published mod, so prefix a generic word with your mod's id (`ironworks-bunker`, not `bunker`).
-3. Once merged, the index is rebuilt and the mod appears in the game's registry list and at https://steelti.de/mods. Bump `version` for every change; the game offers the update.
+2. A published mod carries at least one screenshot of it in play, named under `screenshots` in mod.json: 4:3 (1600×1200 is a good size), at least 640 px wide, PNG, JPEG or WebP under 2 MB, up to 8 of them. The game's Settings → Mods page and https://steelti.de/mods show them; the first is the mod's card. Take them in a match with the mod's units on screen (the console's `give` puts them there) and crop to 4:3.
+3. CI runs the same check on the whole registry: ids must be unique across every published mod, so prefix a generic word with your mod's id (`ironworks-bunker`, not `bunker`).
+4. Once merged, the index is rebuilt and the mod appears in the game's registry list and at https://steelti.de/mods, where its installs are counted. Bump `version` for every change; the game offers the update.
 
 ## Rules
 

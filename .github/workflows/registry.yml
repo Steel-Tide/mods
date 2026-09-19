@@ -4,6 +4,10 @@ on:
   pull_request:
   push:
     branches: [main]
+  schedule:
+    # nightly: the download counts into the index
+    - cron: '23 4 * * *'
+  workflow_dispatch:
 
 jobs:
   check:
@@ -16,12 +20,14 @@ jobs:
       - run: node tools/check.mjs
 
   index:
-    # the index is rebuilt from what is on main, and committed back
-    if: github.event_name == 'push'
+    # the release and the index are rebuilt from what is on main, and the index committed back
+    if: github.event_name != 'pull_request'
     needs: check
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -29,7 +35,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node tools/build-index.mjs
+      - name: sync the release the mods are counted on
+        run: node tools/sync-release.mjs --out .counts.json
+      - run: node tools/build-index.mjs --counts .counts.json
+      - name: put the index on the release too
+        run: gh release upload registry index.json --clobber
       - name: commit index.json
         run: |
           if git diff --quiet -- index.json; then

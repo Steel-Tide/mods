@@ -1318,6 +1318,18 @@ const STRINGS = {
   "mods.warnings": ["Notes", "提示", "참고"],
   "mods.enabled": ["Enabled", "启用", "사용"],
   "mods.badge": ["Mod", "模组", "모드"],
+  // the mod's own plate (ui/modDetail.ts): the pictures, the facts, what it adds
+  "mods.detailTip": ["Details", "详情", "상세 정보"],
+  "mods.downloads": ["Downloads", "下载次数", "다운로드 횟수"],
+  "mods.updatedOn": ["Updated {0}", "更新于 {0}", "{0} 업데이트"],
+  "mods.screenshotOf": ["{0} in play", "{0} 游戏截图", "{0} 플레이 화면"],
+  "mods.adds": ["Adds", "新增", "추가 항목"],
+  "mods.units": ["Units", "单位", "유닛"],
+  "mods.buildings": ["Buildings", "建筑", "건물"],
+  "mods.tier": ["T{0}", "T{0}", "T{0}"],
+  "mods.basedOn": ["based on {0}", "基于 {0}", "{0} 기반"],
+  "mods.source": ["Source on GitHub", "GitHub 源码", "GitHub 소스"],
+  "mods.homepage": ["Homepage", "主页", "홈페이지"],
   // ------------------------------------------------------------- the beginner guide (ui/guide.ts)
   "guide.title": ["Getting started", "新手上路", "시작하기"],
   "guide.metal": ["Claim metal", "占领矿点", "금속 확보"],
@@ -4486,15 +4498,26 @@ const MOD_REGISTRY_WEB = `https://github.com/${MOD_REGISTRY_REPO}`;
 function modRegistryBase(id) {
   return `https://raw.githubusercontent.com/${MOD_REGISTRY_REPO}/main/mods/${id}/`;
 }
+const MOD_REGISTRY_RELEASE = "registry";
+const MOD_REGISTRY_COUNTS_URL = `https://api.github.com/repos/${MOD_REGISTRY_REPO}/releases/tags/${MOD_REGISTRY_RELEASE}`;
+function modCountUrl(id) {
+  return `${MOD_REGISTRY_WEB}/releases/download/${MOD_REGISTRY_RELEASE}/${id}${MOD_FILE_EXT}`;
+}
 const MAX_MOD_DEFS = 200;
 const MAX_MOD_SPRITES = 120;
 const MAX_MOD_SOUNDS = 60;
+const MAX_MOD_SCREENSHOTS = 8;
+const MIN_SCREENSHOT_WIDTH = 640;
+const MAX_SCREENSHOT_BYTES = 2 * 1024 * 1024;
+const SCREENSHOT_ASPECT = 4 / 3;
+const SCREENSHOT_ASPECT_TOLERANCE = 0.01;
 const SOUND_KEY_RE = /^[a-z0-9][a-z0-9-]{1,59}$/;
 const MAX_MANIFEST_BYTES = 1024 * 1024;
 const MAX_MOD_FILES_BYTES = 24 * 1024 * 1024;
 const ID_RE = /^[a-z0-9][a-z0-9_-]{1,39}$/;
 const ATLAS_KEY_RE = /^(u|tur)\.[a-z0-9][a-z0-9_-]{1,39}$/;
 const FILE_RE = /^(?!\/)(?!.*\.\.)[A-Za-z0-9_./-]{1,120}$/;
+const IMAGE_FILE_RE = /\.(png|jpe?g|webp)$/i;
 const ARMOR_CLASSES = ["light", "medium", "heavy", "ship", "sub", "air", "structure"];
 const TARGET_DOMAINS = ["ground", "ship", "sub", "air"];
 const WEAPON_CLASSES = ["mg", "autocannon", "cannon", "at", "he", "rocket", "navgun", "ashm", "torpedo", "aa"];
@@ -4516,6 +4539,7 @@ const MANIFEST_SPECS = [
   { name: "defs", type: "defs", required: true, doc: ["the units, buildings and upgrade levels", "单位、建筑与升级等级"] },
   { name: "sprites", type: "sprites", doc: ["the sheets the defs draw with (see below)", "各定义使用的精灵图（见下）"] },
   { name: "sounds", type: "sounds", doc: ["the recordings the weapons fire with (see below)", "武器开火时播放的录音（见下）"] },
+  { name: "screenshots", type: "images", doc: [`pictures of the mod in play, relative to mod.json (\`screenshots/1.png\`): 4:3, at least ${MIN_SCREENSHOT_WIDTH} px wide, under ${MAX_SCREENSHOT_BYTES / 1048576} MB each, up to ${MAX_MOD_SCREENSHOTS}. The registry asks for at least one and shows them on the mod's page`, `模组游玩截图，路径相对 mod.json（\`screenshots/1.png\`）：4:3，宽至少 ${MIN_SCREENSHOT_WIDTH} 像素，每张不超过 ${MAX_SCREENSHOT_BYTES / 1048576} MB，最多 ${MAX_MOD_SCREENSHOTS} 张。仓库要求至少一张，并展示在模组页面上`] },
   { name: "files", type: "files", doc: ["single-file form only: the sheets and sounds, embedded as data URLs by path", "仅单文件形式：按路径内嵌的图片与音频（data URL）"] }
 ];
 const DEF_SPECS = [
@@ -4773,6 +4797,13 @@ function checkField(spec, value, path, issues) {
     case "strings":
       if (!Array.isArray(value) || value.length > 32) return bad("must be a list of strings");
       for (const x of value) if (typeof x !== "string" || x.length === 0 || x.length > 40) return bad("every entry must be a short string");
+      return true;
+    case "images":
+      if (!Array.isArray(value) || value.length > MAX_MOD_SCREENSHOTS) return bad(`must be a list of up to ${MAX_MOD_SCREENSHOTS} image paths`);
+      for (const x of value) {
+        if (typeof x !== "string" || !FILE_RE.test(x)) return bad(`"${String(x)}" is not a relative path inside the mod`);
+        if (!IMAGE_FILE_RE.test(x)) return bad(`${x} is not a PNG, JPEG or WebP`);
+      }
       return true;
     case "targets":
       if (!Array.isArray(value) || value.length === 0 || value.length > 4) return bad("must list one to four of ground, ship, sub, air");
@@ -5258,8 +5289,58 @@ function countDefs(mod) {
   }
   return { units, buildings };
 }
-function indexEntryFor(mod, path, base, sizes = {}, updated) {
+function imageSize(bytes) {
+  const u32 = (i) => (bytes[i] << 24 | bytes[i + 1] << 16 | bytes[i + 2] << 8 | bytes[i + 3]) >>> 0;
+  const u16 = (i) => bytes[i] << 8 | bytes[i + 1];
+  const u24le = (i) => bytes[i] | bytes[i + 1] << 8 | bytes[i + 2] << 16;
+  const u16le = (i) => bytes[i] | bytes[i + 1] << 8;
+  if (bytes.length >= 24 && bytes[0] === 137 && bytes[1] === 80 && bytes[2] === 78 && bytes[3] === 71) {
+    return { w: u32(16), h: u32(20) };
+  }
+  if (bytes.length >= 4 && bytes[0] === 255 && bytes[1] === 216) {
+    let i = 2;
+    while (i + 9 < bytes.length) {
+      if (bytes[i] !== 255) return null;
+      const marker = bytes[i + 1];
+      if (marker === 216 || marker >= 208 && marker <= 215 || marker === 1 || marker === 255) {
+        i += marker === 255 ? 1 : 2;
+        continue;
+      }
+      const len = u16(i + 2);
+      if (marker >= 192 && marker <= 207 && marker !== 196 && marker !== 200 && marker !== 204) {
+        return { h: u16(i + 5), w: u16(i + 7) };
+      }
+      if (marker === 217 || marker === 218) return null;
+      i += 2 + len;
+    }
+    return null;
+  }
+  if (bytes.length >= 30 && bytes[0] === 82 && bytes[1] === 73 && bytes[2] === 70 && bytes[3] === 70 && bytes[8] === 87 && bytes[9] === 69 && bytes[10] === 66 && bytes[11] === 80) {
+    const chunk = String.fromCharCode(bytes[12], bytes[13], bytes[14], bytes[15]);
+    if (chunk === "VP8 ") return { w: u16le(26) & 16383, h: u16le(28) & 16383 };
+    if (chunk === "VP8L") {
+      const bits = bytes[21] | bytes[22] << 8 | bytes[23] << 16 | bytes[24] << 24;
+      return { w: (bits & 16383) + 1, h: (bits >>> 14 & 16383) + 1 };
+    }
+    if (chunk === "VP8X") return { w: u24le(24) + 1, h: u24le(27) + 1 };
+  }
+  return null;
+}
+function checkScreenshot(size, byteLength) {
+  if (!size) return "is not a PNG, JPEG or WebP";
+  if (byteLength > MAX_SCREENSHOT_BYTES) return `is ${(byteLength / 1048576).toFixed(1)} MB; keep a screenshot under ${MAX_SCREENSHOT_BYTES / 1048576}`;
+  if (size.w < MIN_SCREENSHOT_WIDTH) return `is ${size.w} px wide; a screenshot is at least ${MIN_SCREENSHOT_WIDTH}`;
+  if (Math.abs(size.w / size.h - SCREENSHOT_ASPECT) > SCREENSHOT_ASPECT * SCREENSHOT_ASPECT_TOLERANCE) return `is ${size.w} × ${size.h}; a screenshot is 4:3 (${size.w} × ${Math.round(size.w / SCREENSHOT_ASPECT)}, say)`;
+  return null;
+}
+function modFileUrl(entry, file) {
+  const base = entry.base || modRegistryBase(entry.id);
+  return (base.endsWith("/") ? base : base + "/") + file;
+}
+function indexEntryFor(mod, path, base, extra = {}) {
   const r = resolveMod(mod, VANILLA);
+  const sizes = extra.sizes ?? {};
+  const screenshots = (mod.screenshots ?? []).filter((f) => sizes[f]).map((f) => ({ file: f, w: sizes[f].w, h: sizes[f].h }));
   return {
     id: mod.id,
     name: modText(mod.name, mod.id),
@@ -5271,7 +5352,9 @@ function indexEntryFor(mod, path, base, sizes = {}, updated) {
     ...mod.minGame ? { minGame: mod.minGame } : {},
     path,
     base,
-    ...updated ? { updated } : {},
+    ...extra.updated ? { updated: extra.updated } : {},
+    ...extra.downloads !== void 0 ? { downloads: extra.downloads } : {},
+    ...screenshots.length > 0 ? { screenshots } : {},
     defs: r.defs.map((d) => {
       const own = mod.defs.find((x) => x.id === d.id);
       return {
@@ -5321,6 +5404,10 @@ function parseModIndex(json) {
       path: typeof m.path === "string" ? m.path : `mods/${m.id}`,
       base: m.base,
       ...typeof m.updated === "string" ? { updated: m.updated } : {},
+      ...typeof m.downloads === "number" && m.downloads >= 0 ? { downloads: Math.floor(m.downloads) } : {},
+      ...Array.isArray(m.screenshots) ? {
+        screenshots: m.screenshots.filter((x) => isPlainObject(x) && typeof x.file === "string" && typeof x.w === "number" && typeof x.h === "number" && x.w > 0 && x.h > 0)
+      } : {},
       defs: Array.isArray(m.defs) ? m.defs.filter((d) => isPlainObject(d) && typeof d.id === "string") : [],
       sprites: Array.isArray(m.sprites) ? m.sprites.filter((s) => isPlainObject(s) && typeof s.key === "string") : [],
       ...Array.isArray(m.sounds) ? { sounds: m.sounds.filter((s) => isPlainObject(s) && typeof s.key === "string" && typeof s.file === "string") } : {}
@@ -5346,6 +5433,8 @@ function typeLabel(spec) {
       return "id[]";
     case "strings":
       return "string[]";
+    case "images":
+      return "path[]";
     case "targets":
       return "(ground | ship | sub | air)[]";
     case "mult":
@@ -5481,7 +5570,8 @@ function exampleFull() {
     sprites: [
       { key: "u.ironworks-hover", file: "sprites/u.ironworks-hover.png", frames: 1, rotated: true, fw: 24, fh: 26 },
       { key: "u.ironworks-bunker", file: "sprites/u.ironworks-bunker.png", frames: 1 }
-    ]
+    ],
+    screenshots: ["screenshots/skimmers.png"]
   };
 }
 function agentPrompt() {
@@ -5503,6 +5593,7 @@ function agentPrompt() {
   p("my-mod/");
   p("  mod.json          the manifest: the mod's identity, its defs, and the sheets they draw with");
   p("  sprites/*.png     optional art (a def without any is drawn as a plain placeholder)");
+  p("  screenshots/*.png the mod in play, 4:3 (the registry asks for at least one; see Publish)");
   p("  README.md         optional");
   p("```");
   p();
@@ -5592,8 +5683,9 @@ function agentPrompt() {
   p("## Publish");
   p();
   p(`1. Fork ${MOD_REGISTRY_WEB}, add your folder as \`mods/<id>/\` (the folder name is the mod's \`id\`), run \`node tools/check.mjs mods/<id>\`, open a pull request.`);
-  p("2. CI runs the same check on the whole registry: ids must be unique across every published mod, so prefix a generic word with your mod's id (`ironworks-bunker`, not `bunker`).");
-  p("3. Once merged, the index is rebuilt and the mod appears in the game's registry list and at https://steelti.de/mods. Bump `version` for every change; the game offers the update.");
+  p(`2. A published mod carries at least one screenshot of it in play, named under \`screenshots\` in mod.json: 4:3 (1600×1200 is a good size), at least ${MIN_SCREENSHOT_WIDTH} px wide, PNG, JPEG or WebP under ${MAX_SCREENSHOT_BYTES / 1048576} MB, up to ${MAX_MOD_SCREENSHOTS} of them. The game's Settings → Mods page and https://steelti.de/mods show them; the first is the mod's card. Take them in a match with the mod's units on screen (the console's \`give\` puts them there) and crop to 4:3.`);
+  p("3. CI runs the same check on the whole registry: ids must be unique across every published mod, so prefix a generic word with your mod's id (`ironworks-bunker`, not `bunker`).");
+  p("4. Once merged, the index is rebuilt and the mod appears in the game's registry list and at https://steelti.de/mods, where its installs are counted. Bump `version` for every change; the game offers the update.");
   p();
   p("## Rules");
   p();
@@ -5619,17 +5711,24 @@ export {
   MAX_MANIFEST_BYTES,
   MAX_MOD_DEFS,
   MAX_MOD_FILES_BYTES,
+  MAX_MOD_SCREENSHOTS,
   MAX_MOD_SOUNDS,
   MAX_MOD_SPRITES,
+  MAX_SCREENSHOT_BYTES,
+  MIN_SCREENSHOT_WIDTH,
   MOD_FILE_EXT,
   MOD_FORMAT,
   MOD_FORMAT_VERSION,
   MOD_MANIFEST_NAME,
+  MOD_REGISTRY_COUNTS_URL,
+  MOD_REGISTRY_RELEASE,
   MOD_REGISTRY_REPO,
   MOD_REGISTRY_URL,
   MOD_REGISTRY_WEB,
   PROJECTILES,
   REGISTRY,
+  SCREENSHOT_ASPECT,
+  SCREENSHOT_ASPECT_TOLERANCE,
   SOUND_KEY_RE,
   TARGET_DOMAINS,
   TRAILS,
@@ -5644,13 +5743,17 @@ export {
   agentPrompt,
   agentPromptFor,
   applyMods,
+  checkScreenshot,
   compareVersions,
   countDefs,
   defaultProducers,
   exampleFull,
   exampleMinimal,
   fieldRows,
+  imageSize,
   indexEntryFor,
+  modCountUrl,
+  modFileUrl,
   modName,
   modOfDef,
   modRegistryBase,
