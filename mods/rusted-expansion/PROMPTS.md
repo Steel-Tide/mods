@@ -1,195 +1,303 @@
-# Rusted Expansion — how its sheets were painted
+# Rusted Expansion — how its sheets and sounds are made
 
-Ten sheets in the game's own sprite contract — a hull and a turret for each
-vehicle that has one, a single up-facing image for the rest — painted with
-the game's generator through the Vercel AI Gateway, `openai/gpt-image-2` at
-high quality, in two runs:
+Everything the mod draws and plays is generated with the game's own pipeline
+(`game/core/docs/ASSETS-GENERATION.md`): the sheets by `sprites:gen` through
+the Vercel AI Gateway, the sounds by `sfx:gen` through ElevenLabs. Nothing of
+Rusted Warfare's ships with the mod. What carries over is the *look*: each
+sheet's prompt names one frame of the corresponding Rusted Warfare sprite,
+blown up pixel for pixel, on its `refs:` line, and asks the model for an
+original, more detailed interpretation that keeps the silhouette, the
+proportions, the layout of features and the places the faction colour sits —
+not a copy. The reference frames are cut from the game's package by
+`import-rw.py --refs` into `rusted-warfare/refs/` (git-ignored, beside the
+unzipped package) and are not part of the mod. The sounds are prompted from
+measurements of the originals (their length, brightness and envelope), which
+is the only thing that can be carried into a sound generator.
+
+From the registry root, with the game beside it:
 
 ```sh
-pnpm -C game sprites:gen --doc ../steel-tide-mods/mods/rusted-expansion/PROMPTS.md --out ../steel-tide-mods/mods/rusted-expansion/sprites u.rusted-tank tur.rusted-tank u.rusted-heavy-tank tur.rusted-heavy-tank u.rusted-helicopter
-pnpm -C game sprites:gen --doc ../steel-tide-mods/mods/rusted-expansion/PROMPTS.md --out ../steel-tide-mods/mods/rusted-expansion/sprites u.rusted-bomber u.rusted-gun-boat tur.rusted-gun-boat u.rusted-battle-ship tur.rusted-battle-ship
+MOD=$PWD/mods/rusted-expansion
+pnpm -C ../steel-tide/game/core sprites:gen --doc $MOD/PROMPTS.md --out $MOD/sprites --missing
+pnpm -C ../steel-tide/game/core sfx:gen --doc $MOD/PROMPTS.md --out $MOD/sfx --all
+pnpm -C ../steel-tide/game/core sfx --src $MOD/sfx --out $MOD/sounds
+python3 $MOD/measure-masters.py
 ```
 
-The shapes nod to Rusted Warfare's — boxy, simple, readable at twenty pixels
-— in this game's palette. The masters are cut to a 512 px side for the
-registry; the loader resamples them to the `fw`/`fh` in `mod.json`.
+(`sfx/` holds the raw takes and is git-ignored; `sounds/` is the cut the mod
+ships. The generators resolve a relative `--doc` against `game/core`, so the
+paths above are absolute.)
+
+The masters land at the model's own aspect ratio, and the loader stretches a
+sheet to its `fw`×`fh`, so every entry asks for a size on the model's ratio
+list and the manifest keeps that ratio: hulls 9:16 or 2:3, the bomber 1:1,
+the battleship 1:3, and every turret 1:2, asked for with its ring at 60% of
+the height. Sizes are whole pixels: a fractional `fw` made the loader's
+resampler run past the row and the hull came out a streaked ghost. Where the
+ring and the barrels actually landed is measured off the finished masters by
+`measure-masters.py --apply` (`pivotY`, `mount`, `muzzleOffset`,
+`boreSpacing`), not guessed.
+
+## Sheets
+
+Shared rules, in every prompt: crisp pixel art on a strict grid, a transparent
+background, the game's greys and its dark outline, faction colour as pure
+magenta where Rusted Warfare painted green, nothing else magenta, no ground,
+no shadow, no text.
 
 #### Tank — hull — `u.rusted-tank.png`
 
+refs: ../../../steel-tide-mods/rusted-warfare/refs/tank-hull.png
+
 ```text
-Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 220×260 pixels. No animation frames, no strip, no border, no label, and no background of any kind.
+Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 576×1024 pixels. No animation frames, no strip, no border, no label, no text, and no background of any kind.
 
-Subject: a simple boxy medium tank HULL WITHOUT ITS TURRET in the spirit of a classic minimalist mobile RTS, seen from directly above, facing straight up toward the top edge and centered in the image. A plain rectangular hull with softly chamfered corners, two full-length tracks, a flat front glacis, a small engine grille at the rear, and one empty dark circular turret mounting ring exactly at the image center. Big flat panels, very few details — clean and readable, not busy. Do not draw a turret, gun, or barrel.
+Reference: the attached picture is a tiny classic mobile-RTS tank hull blown up pixel for pixel. Keep its silhouette, its proportions, the layout of its features and the places its green panels sit, but paint an ORIGINAL, more detailed interpretation for this game — do not trace or copy it.
 
-Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; muted military grays (#696a6a #847e87 #9badb7 #595652 #323c39) with dark #222034 silhouette outlines.
+Subject: a small, plain, boxy medium tank HULL WITHOUT ITS TURRET, seen from directly above, facing straight up toward the top edge and centered in the image, filling the height. A narrow rectangular hull between two full-length tracks with visible tread links, a flat front glacis with a small driver's hatch, a raised engine deck at the rear with a grille, and one empty dark circular turret mounting ring exactly at the image center. Do not draw a turret, gun, or barrel.
 
-Faction markers: one broad band across the rear deck in pure magenta only — highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
+Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; cool blue-tinted military steel from this palette: #9badb7 #847e87 #696a6a #595652 #323c39, with dark #222034 silhouette outlines.
+
+Faction markers: where the reference is green — the two rear deck panels, one behind each track — paint pure magenta only: highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
 
 Isolation rule: no ground, no cast shadow, no terrain, no track marks. The engine draws the shadow itself and composites the turret onto the center ring.
 ```
 
 ```json
-{ "key": "u.rusted-tank", "file": "sprites/u.rusted-tank.png", "frames": 1, "rotated": true, "fw": 22, "fh": 26 }
+{"key": "u.rusted-tank", "file": "sprites/u.rusted-tank.png", "frames": 1, "rotated": true, "fw": 10, "fh": 18, "mount": [0.499, 0.441]}
 ```
 
 #### Tank — turret — `tur.rusted-tank.png`
 
+refs: ../../../steel-tide-mods/rusted-warfare/refs/tank-turret.png
+
 ```text
-Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 180×340 pixels. No animation frames, no strip, no border, no label, and no background of any kind.
+Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 512×1024 pixels. No animation frames, no strip, no border, no label, no text, and no background of any kind.
 
-Subject: a simple round tank turret in the spirit of a classic minimalist mobile RTS, seen from directly above, facing straight up toward the top edge and centered horizontally: a plain circular turret body with one round hatch and a single straight cannon barrel extending upward. The turret's mounting-ring center sits on the vertical centerline at exactly 68% of the image height from the top; the barrel extends upward from it with no perspective bend. Big simple shapes, bold and readable.
+Reference: the attached picture is a tiny classic mobile-RTS tank turret blown up pixel for pixel: a small round dome with one long thin barrel. Keep that character — small dome, long thin gun — but paint an ORIGINAL, more detailed interpretation for this game; do not trace or copy it.
 
-Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; muted military grays (#696a6a #847e87 #9badb7 #595652 #323c39) with dark #222034 silhouette outlines.
+Subject: a small round tank turret seen from directly above, facing straight up toward the top edge and centered horizontally: a compact domed turret body with a closed hatch and a single long, thin cannon barrel with a small muzzle extending straight up to the top edge of the image. The turret's mounting-ring center sits on the vertical centerline at exactly 60% of the image height from the top; the barrel extends upward from it with no perspective bend, and the body reaches no lower than 80% of the height. Leave the sides transparent — the turret is narrow.
 
-Faction markers: the hatch cover in pure magenta only — highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
+Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; cool blue-tinted military steel from this palette: #9badb7 #847e87 #696a6a #595652 #323c39, with dark #222034 silhouette outlines. No magenta on this part.
 
-Isolation rule: no ground, no cast shadow, no hull, no muzzle flash, no base plate. This part rotates in-engine on top of the separate tank hull. Keep the mounting-ring center fixed at 68% image height.
+Isolation rule: no ground, no cast shadow, no hull, no muzzle flash, no base plate. This part rotates in-engine on top of the separate tank hull. Keep the mounting-ring center fixed at 60% image height.
 ```
 
 ```json
-{ "key": "tur.rusted-tank", "file": "sprites/tur.rusted-tank.png", "frames": 1, "rotated": true, "fw": 18, "fh": 34, "pivotY": 0.72 }
+{"key": "tur.rusted-tank", "file": "sprites/tur.rusted-tank.png", "frames": 1, "rotated": true, "fw": 13, "fh": 26, "pivotY": 0.728}
 ```
 
 #### Heavy Tank — hull — `u.rusted-heavy-tank.png`
 
+refs: ../../../steel-tide-mods/rusted-warfare/refs/heavy-tank-hull.png
+
 ```text
-Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 220×260 pixels. No animation frames, no strip, no border, no label, and no background of any kind.
+Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 640×960 pixels. No animation frames, no strip, no border, no label, no text, and no background of any kind.
 
-Subject: a big boxy heavy tank HULL WITHOUT ITS TURRET in the spirit of a classic minimalist mobile RTS, seen from directly above, facing straight up toward the top edge and centered in the image. A wide slab-sided hull, two very wide full-length tracks, a thick flat glacis with a row of bolted armor plates, twin exhaust stacks at the rear corners, and one empty dark circular turret mounting ring exactly at the image center. Big flat panels, few details — bold and readable. Do not draw a turret, gun, missile or barrel.
+Reference: the attached picture is a tiny classic mobile-RTS heavy tank hull blown up pixel for pixel. Keep its silhouette, its proportions, the layout of its features and the places its green blocks sit, but paint an ORIGINAL, more detailed interpretation for this game — do not trace or copy it.
 
-Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; muted military grays (#696a6a #847e87 #9badb7 #595652 #323c39) with dark #222034 silhouette outlines.
+Subject: a wide, slab-sided heavy tank HULL WITHOUT ITS TURRET, seen from directly above, facing straight up toward the top edge and centered in the image, filling the height. Two very wide full-length tracks with heavy tread links, a thick flat glacis with bolted armor plates and a notch at the front center, a broad flat deck, twin exhaust stacks at the rear corners, and one empty dark circular turret mounting ring exactly at the image center. Do not draw a turret, gun, missile or barrel.
 
-Faction markers: a broad stripe down each track guard in pure magenta only — highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
+Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; cool blue-tinted military steel from this palette: #9badb7 #847e87 #696a6a #595652 #323c39, with dark #222034 silhouette outlines.
+
+Faction markers: where the reference is green — one armor block on the outer edge of each track guard near the front and one near the rear, four in all — paint pure magenta only: highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
 
 Isolation rule: no ground, no cast shadow, no terrain, no track marks. The engine draws the shadow itself and composites the turret onto the center ring.
 ```
 
 ```json
-{ "key": "u.rusted-heavy-tank", "file": "sprites/u.rusted-heavy-tank.png", "frames": 1, "rotated": true, "fw": 26, "fh": 32 }
+{"key": "u.rusted-heavy-tank", "file": "sprites/u.rusted-heavy-tank.png", "frames": 1, "rotated": true, "fw": 18, "fh": 27, "mount": [0.499, 0.498]}
 ```
 
 #### Heavy Tank — turret — `tur.rusted-heavy-tank.png`
 
+refs: ../../../steel-tide-mods/rusted-warfare/refs/heavy-tank-turret.png
+
 ```text
-Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 180×340 pixels. No animation frames, no strip, no border, no label, and no background of any kind.
+Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 512×1024 pixels. No animation frames, no strip, no border, no label, no text, and no background of any kind.
 
-Subject: a heavy tank turret in the spirit of a classic minimalist mobile RTS, seen from directly above, facing straight up toward the top edge and centered horizontally: a wide squared-off turret body with one big straight cannon barrel extending upward from its center and a small boxy anti-air missile pod bolted to its right side, missile tip pointing up. The turret's mounting-ring center sits on the vertical centerline at exactly 68% of the image height from the top; the barrel extends upward from it with no perspective bend. Big simple shapes, bold and readable.
+Reference: the attached picture is a tiny classic mobile-RTS heavy tank turret blown up pixel for pixel: a round body, two long parallel barrels, and a small red missile pod on each rear corner. Keep that character but paint an ORIGINAL, more detailed interpretation for this game; do not trace or copy it.
 
-Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; muted military grays (#696a6a #847e87 #9badb7 #595652 #323c39) with dark #222034 silhouette outlines.
+Subject: a heavy tank turret seen from directly above, facing straight up toward the top edge and centered horizontally: a broad rounded armored turret body with a closed hatch, two long parallel cannon barrels close together extending straight up to the top edge of the image, and one small boxy anti-air missile pod on each rear corner of the body, painted red (#ac3232 with a #d95763 highlight), each holding a pair of small missile tips pointing up. The turret's mounting-ring center sits on the vertical centerline at exactly 60% of the image height from the top; the barrels extend upward from it with no perspective bend, and the body reaches no lower than 82% of the height.
 
-Faction markers: the top of the missile pod in pure magenta only — highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
+Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; cool blue-tinted military steel from this palette: #9badb7 #847e87 #696a6a #595652 #323c39, with dark #222034 silhouette outlines. Red only on the two missile pods; no magenta on this part.
 
-Isolation rule: no ground, no cast shadow, no hull, no muzzle flash, no base plate. This part rotates in-engine on top of the separate tank hull. Keep the mounting-ring center fixed at 68% image height.
+Isolation rule: no ground, no cast shadow, no hull, no muzzle flash, no base plate. This part rotates in-engine on top of the separate tank hull. Keep the mounting-ring center fixed at 60% image height.
 ```
 
 ```json
-{ "key": "tur.rusted-heavy-tank", "file": "sprites/tur.rusted-heavy-tank.png", "frames": 1, "rotated": true, "fw": 22, "fh": 40, "pivotY": 0.70 }
+{"key": "tur.rusted-heavy-tank", "file": "sprites/tur.rusted-heavy-tank.png", "frames": 1, "rotated": true, "fw": 17, "fh": 34, "pivotY": 0.735}
 ```
 
 #### Helicopter — `u.rusted-helicopter.png`
 
+refs: ../../../steel-tide-mods/rusted-warfare/refs/helicopter.png
+
 ```text
-Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 200×260 pixels. No animation frames, no strip, no border, no label, and no background of any kind.
+Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 576×1024 pixels. No animation frames, no strip, no border, no label, no text, and no background of any kind.
 
-Subject: a simple boxy attack helicopter in the spirit of a classic minimalist mobile RTS, seen from directly above, facing straight up toward the top edge and centered in the image: a narrow fuselage with a rounded nose and a small dark cockpit window, a tail boom running straight down to a small tail fin, two short stub wings each carrying one plain gun pod, and the main rotor drawn as a static four-blade cross seen from above. Big simple shapes, bold and readable.
+Reference: the attached picture is a tiny classic mobile-RTS attack helicopter blown up pixel for pixel, drawn without its rotor. Keep its silhouette, its proportions, the layout of its features and the place its green band sits, but paint an ORIGINAL, more detailed interpretation for this game — do not trace or copy it.
 
-Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; muted military grays (#696a6a #847e87 #9badb7 #595652 #323c39) with dark #222034 silhouette outlines, cockpit glass #5fcde4.
+Subject: a stubby attack helicopter seen from directly above, facing straight up toward the top edge and centered in the image, filling the height: a rounded bulbous nose with a dark tinted canopy, a short thick fuselage with the rotor hub (a small dark disc, NO blades) at the exact image center, a short stub wing on each side carrying one small gun pod, a slim tail boom running straight down to a small T-tail with a tiny tail rotor. Do not draw the main rotor blades — the engine spins them itself.
 
-Faction markers: a band across the tail boom and the tips of the stub wings in pure magenta only — highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
+Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; olive-grey airframe from this palette: #847e87 #696a6a #595652 #4b692f #323c39, canopy glass #5fcde4 shaded #306082, with dark #222034 silhouette outlines.
 
-Isolation rule: no ground, no cast shadow, no motion blur, no terrain. The engine draws the shadow and spins the rotor itself.
+Faction markers: where the reference is green — one broad band across the fuselage just behind the rotor hub — paint pure magenta only: highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
+
+Isolation rule: no ground, no cast shadow, no motion blur, no rotor disc, no terrain. The engine draws the shadow and the spinning rotor itself.
 ```
 
 ```json
-{ "key": "u.rusted-helicopter", "file": "sprites/u.rusted-helicopter.png", "frames": 1, "rotated": true, "fw": 20, "fh": 26 }
+{"key": "u.rusted-helicopter", "file": "sprites/u.rusted-helicopter.png", "frames": 1, "rotated": true, "fw": 16, "fh": 28}
 ```
 
 #### Bomber — `u.rusted-bomber.png`
 
+refs: ../../../steel-tide-mods/rusted-warfare/refs/bomber.png
+
 ```text
-Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 240×270 pixels. No animation frames, no strip, no border, no label, and no background of any kind.
+Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 1024×1024 pixels. No animation frames, no strip, no border, no label, no text, and no background of any kind.
 
-Subject: a big slow heavy bomber in the spirit of a classic minimalist mobile RTS, seen from directly above, facing straight up toward the top edge and centered in the image: a thick fuselage with a blunt nose, broad straight wings with two plain engine nacelles on each, a wide flat tail with twin fins, and a row of three bomb-bay doors along the belly centerline. Big flat panels, very few details — bold and readable.
+Reference: the attached picture is a tiny classic mobile-RTS jet bomber blown up pixel for pixel. Keep its silhouette, its proportions, the layout of its features and the places its green markings sit, but paint an ORIGINAL, more detailed interpretation for this game — do not trace or copy it.
 
-Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; muted military grays (#696a6a #847e87 #9badb7 #595652 #323c39) with dark #222034 silhouette outlines, cockpit glass #5fcde4.
+Subject: a heavy twin-engine jet bomber seen from directly above, facing straight up toward the top edge and centered in the image, filling it: a long fuselage with a pointed nose and a dark canopy, broad swept wings with one thick engine nacelle under each wing and a small pod at each wing tip, a swept tailplane with a single tall fin seen end-on, and a row of closed bomb-bay doors along the belly centerline. Big flat panels with panel lines, bold and readable.
 
-Faction markers: a broad band across each wing near its tip in pure magenta only — highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
+Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; olive-grey airframe from this palette: #847e87 #696a6a #595652 #4b692f #323c39, canopy glass #5fcde4 shaded #306082, with dark #222034 silhouette outlines.
+
+Faction markers: where the reference is green — one broad band across the fuselage between the wings, the wing-tip pods and the tips of the tailplane — paint pure magenta only: highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
 
 Isolation rule: no ground, no cast shadow, no contrails, no terrain. The engine draws the shadow itself.
 ```
 
 ```json
-{ "key": "u.rusted-bomber", "file": "sprites/u.rusted-bomber.png", "frames": 1, "rotated": true, "fw": 30, "fh": 34 }
+{"key": "u.rusted-bomber", "file": "sprites/u.rusted-bomber.png", "frames": 1, "rotated": true, "fw": 37, "fh": 37}
 ```
 
 #### Gun Boat — hull — `u.rusted-gun-boat.png`
 
+refs: ../../../steel-tide-mods/rusted-warfare/refs/gun-boat-hull.png
+
 ```text
-Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 140×260 pixels. No animation frames, no strip, no border, no label, and no background of any kind.
+Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 576×1024 pixels. No animation frames, no strip, no border, no label, no text, and no background of any kind.
 
-Subject: a small fast gun boat HULL WITHOUT ITS GUN in the spirit of a classic minimalist mobile RTS, seen from directly above, bow pointing straight up toward the top edge and centered in the image: a narrow pointed hull, a small low cabin astern of the middle, and one empty dark circular mounting ring exactly at the image center where the gun will sit. Big simple shapes, bold and readable. Do not draw a gun or barrel.
+Reference: the attached picture is a tiny classic mobile-RTS gun boat hull blown up pixel for pixel. Keep its silhouette, its proportions, the layout of its features and the places its green bands sit, but paint an ORIGINAL, more detailed interpretation for this game — do not trace or copy it.
 
-Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; muted military grays (#696a6a #847e87 #9badb7 #595652 #323c39) with dark #222034 silhouette outlines.
+Subject: a small fast patrol gun boat HULL WITHOUT ITS GUN, seen from directly above, bow pointing straight up toward the top edge and centered in the image, filling the height: a teardrop hull with a sharp bow and a rounded stern, a low raised deckhouse aft of the middle, a small dark engine hatch at the stern, and one empty dark circular mounting ring exactly at the image center where the gun will sit. Do not draw a gun or barrel.
 
-Faction markers: a band across the cabin roof in pure magenta only — highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
+Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; light naval grey from this palette: #cbdbfc #9badb7 #847e87 #696a6a #595652 #323c39, with dark #222034 silhouette outlines.
+
+Faction markers: where the reference is green — a chevron at the bow tip and one band across the deck just aft of the mounting ring — paint pure magenta only: highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
 
 Isolation rule: no water, no wake, no cast shadow, no terrain. The engine draws the wake and composites the gun onto the ring.
 ```
 
 ```json
-{ "key": "u.rusted-gun-boat", "file": "sprites/u.rusted-gun-boat.png", "frames": 1, "rotated": true, "fw": 14, "fh": 26 }
+{"key": "u.rusted-gun-boat", "file": "sprites/u.rusted-gun-boat.png", "frames": 1, "rotated": true, "fw": 12, "fh": 21, "mount": [0.499, 0.479]}
 ```
 
 #### Gun Boat — gun — `tur.rusted-gun-boat.png`
 
+refs: ../../../steel-tide-mods/rusted-warfare/refs/gun-boat-turret.png
+
 ```text
-Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 100×160 pixels. No animation frames, no strip, no border, no label, and no background of any kind.
+Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 512×1024 pixels. No animation frames, no strip, no border, no label, no text, and no background of any kind.
 
-Subject: a small deck autocannon mount in the spirit of a classic minimalist mobile RTS, seen from directly above, facing straight up toward the top edge and centered horizontally: a plain round pedestal with a small gun shield and one short barrel extending upward. The mount's rotation-ring center sits on the vertical centerline at exactly 60% of the image height from the top. Big simple shapes, bold and readable.
+Reference: the attached picture is a tiny classic mobile-RTS deck gun blown up pixel for pixel: a round pedestal with a small shield and one long thin barrel. Keep that character but paint an ORIGINAL, more detailed interpretation for this game; do not trace or copy it.
 
-Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; muted military grays (#696a6a #847e87 #9badb7 #595652 #323c39) with dark #222034 silhouette outlines.
+Subject: a small naval deck gun seen from directly above, facing straight up toward the top edge and centered horizontally: a round pedestal mount with a small flat gun shield in front and one long thin barrel extending straight up to the top edge of the image. The mount's rotation-ring center sits on the vertical centerline at exactly 60% of the image height from the top; the barrel extends upward from it with no perspective bend, and the mount reaches no lower than 78% of the height. Leave the sides transparent — the gun is narrow.
 
-Faction markers: the top of the gun shield in pure magenta only — highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
+Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; light naval grey from this palette: #cbdbfc #9badb7 #847e87 #696a6a #595652 #323c39, with dark #222034 silhouette outlines. No magenta on this part.
 
 Isolation rule: no deck, no water, no cast shadow, no muzzle flash. This part rotates in-engine on top of the separate hull. Keep the ring center fixed at 60% image height.
 ```
 
 ```json
-{ "key": "tur.rusted-gun-boat", "file": "sprites/tur.rusted-gun-boat.png", "frames": 1, "rotated": true, "fw": 10, "fh": 16, "pivotY": 0.66 }
+{"key": "tur.rusted-gun-boat", "file": "sprites/tur.rusted-gun-boat.png", "frames": 1, "rotated": true, "fw": 10, "fh": 20, "pivotY": 0.664}
 ```
 
 #### Battle Ship — hull — `u.rusted-battle-ship.png`
 
+refs: ../../../steel-tide-mods/rusted-warfare/refs/battle-ship-hull.png
+
 ```text
-Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 130×310 pixels. No animation frames, no strip, no border, no label, and no background of any kind.
+Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 352×1056 pixels. No animation frames, no strip, no border, no label, no text, and no background of any kind.
 
-Subject: a long heavy battleship HULL WITHOUT ITS TURRETS in the spirit of a classic minimalist mobile RTS, seen from directly above, bow pointing straight up toward the top edge and centered in the image: a long slab-sided hull with a pointed bow and a squared stern, a blocky bridge superstructure amidships with one funnel behind it, and one empty dark circular mounting ring exactly at the image center where the main turret will sit; the bridge and funnel stand astern of it. Big flat panels, few details — bold and readable. Do not draw a turret, gun or barrel.
+Reference: the attached picture is a tiny classic mobile-RTS battleship hull blown up pixel for pixel. Keep its silhouette, its proportions, the layout of its features and the place its green ring sits, but paint an ORIGINAL, more detailed interpretation for this game — do not trace or copy it.
 
-Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; muted military grays (#696a6a #847e87 #9badb7 #595652 #323c39) with dark #222034 silhouette outlines.
+Subject: a long, narrow, dark-hulled battleship HULL WITHOUT ITS TURRET, seen from directly above, bow pointing straight up toward the top edge and centered in the image, filling the height: a sharp raked bow, a long raised forecastle deck with a breakwater running back from the bow, one empty dark circular mounting ring exactly at the image center ringed by a raised barbette, a blocky bridge superstructure and one squat funnel standing astern of the ring, a low quarterdeck with two small hatches, and a squared transom stern. Do not draw a turret, gun or barrel.
 
-Faction markers: a band around the funnel and a stripe along each side of the hull in pure magenta only — highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
+Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; dark blue-grey naval steel from this palette: #847e87 #696a6a #595652 #45283c #323c39 #222034, with dark #222034 silhouette outlines.
+
+Faction markers: where the reference is green — the raised barbette ring around the mounting ring and a thin stripe along each side of the quarterdeck — paint pure magenta only: highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
 
 Isolation rule: no water, no wake, no cast shadow, no terrain. The engine draws the wake and composites the turret onto the ring.
 ```
 
 ```json
-{ "key": "u.rusted-battle-ship", "file": "sprites/u.rusted-battle-ship.png", "frames": 1, "rotated": true, "fw": 26, "fh": 62 }
+{"key": "u.rusted-battle-ship", "file": "sprites/u.rusted-battle-ship.png", "frames": 1, "rotated": true, "fw": 17, "fh": 51, "mount": [0.5, 0.559]}
 ```
 
 #### Battle Ship — turret — `tur.rusted-battle-ship.png`
 
+refs: ../../../steel-tide-mods/rusted-warfare/refs/battle-ship-turret.png
+
 ```text
-Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 180×320 pixels. No animation frames, no strip, no border, no label, and no background of any kind.
+Pixel-art sprite for a 2D real-time strategy game, PNG with fully transparent background, ONE single static image exactly 512×1024 pixels. No animation frames, no strip, no border, no label, no text, and no background of any kind.
 
-Subject: a big naval gun turret in the spirit of a classic minimalist mobile RTS, seen from directly above, facing straight up toward the top edge and centered horizontally: a wide squared-off turret body with two long parallel gun barrels extending upward. The turret's rotation-ring center sits on the vertical centerline at exactly 60% of the image height from the top; the barrels extend upward from it with no perspective bend. Big simple shapes, bold and readable.
+Reference: the attached picture is a tiny classic mobile-RTS battleship turret blown up pixel for pixel: a squat rounded gunhouse with two very long parallel barrels. Keep that character but paint an ORIGINAL, more detailed interpretation for this game; do not trace or copy it.
 
-Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; muted military grays (#696a6a #847e87 #9badb7 #595652 #323c39) with dark #222034 silhouette outlines.
+Subject: a naval gun turret seen from directly above, facing straight up toward the top edge and centered horizontally: a squat rounded armored gunhouse with a rangefinder bump on its roof and two very long parallel gun barrels, set apart, extending straight up to the top edge of the image. The turret's rotation-ring center sits on the vertical centerline at exactly 60% of the image height from the top; the barrels extend upward from it with no perspective bend, and the gunhouse reaches no lower than 80% of the height.
 
-Faction markers: a panel on the turret roof in pure magenta only — highlight #FF66FF, base #FF00FF, shadow #990099. Magenta appears nowhere else.
+Style: crisp pixel art on a strict pixel grid, hard edges, no anti-aliasing halos, no blur, no glow; dark blue-grey naval steel from this palette: #847e87 #696a6a #595652 #45283c #323c39 #222034, with dark #222034 silhouette outlines. No magenta on this part.
 
 Isolation rule: no deck, no water, no cast shadow, no muzzle flash. This part rotates in-engine on top of the separate hull. Keep the ring center fixed at 60% image height.
 ```
 
 ```json
-{ "key": "tur.rusted-battle-ship", "file": "sprites/tur.rusted-battle-ship.png", "frames": 1, "rotated": true, "fw": 18, "fh": 32, "pivotY": 0.70 }
+{"key": "tur.rusted-battle-ship", "file": "sprites/tur.rusted-battle-ship.png", "frames": 1, "rotated": true, "fw": 13, "fh": 26, "pivotY": 0.484}
+```
+
+## Sounds
+
+Prompted from measurements of Rusted Warfare's recordings — the tank's shot
+is a deep bass thud with almost nothing above 400 Hz, the heavy and naval
+guns bright cracks around 1.4 kHz, the gun boat's a thin snap near 2 kHz, the
+missile a mid hiss — in the game's own one-shot format (`SFX-PROMPTS.md`).
+Every slot is a `rusted-expansion-` key the weapons name. Two takes each; the
+cut keeps the better one.
+
+### `rusted-expansion-tank-gun` — 0.8 s · influence 0.7 · keep 2
+
+```text
+Single cannon shot from a small light tank: a deep, dull, bass-heavy thud with a soft mid-range knock and almost no high-frequency crack, muffled and round, a short damped tail, dry and close-miked, no echo, no music. One-shot military game weapon sound.
+```
+
+### `rusted-expansion-heavy-gun` — 1 s · influence 0.7 · keep 2
+
+```text
+Single heavy tank cannon shot: a hard bright crack with a deep chesty boom right behind it, tight and punchy, a brief metallic ring of the breech, decays within a second, dry and close-miked, no long echo, no music. One-shot military game weapon sound.
+```
+
+### `rusted-expansion-heavy-missile` — 1 s · influence 0.6 · keep 2
+
+```text
+Small anti-aircraft missile leaving a tank-mounted pod: a quick ignition snap, then a mid-pitched hissing rocket-motor whoosh that climbs away and fades within a second, dry and close, no explosion at the end, no music. One-shot military game weapon sound.
+```
+
+### `rusted-expansion-heli-gun` — 0.5 s · influence 0.7 · keep 2
+
+```text
+Single shot from a helicopter's nose-mounted machine gun: a short, bright, snappy crack with a faint hollow knock behind it, dry and close-miked, starts instantly, no echo, no tail, no music. One-shot military game weapon sound.
+```
+
+### `rusted-expansion-boat-gun` — 0.5 s · influence 0.7 · keep 2
+
+```text
+Single shot from a small patrol boat's light deck gun: a crisp, high, snappy gunshot crack with a thin metallic ping, quick decay, dry and close-miked, no echo, no music. One-shot military game weapon sound.
+```
+
+### `rusted-expansion-ship-gun` — 1.2 s · influence 0.7 · keep 2
+
+```text
+Single battleship turret gun firing: a bright, sharp report with a heavy low boom underneath and a short rolling decay, dry and close-miked, no distant echo tail, no music. One-shot naval military game weapon sound.
 ```

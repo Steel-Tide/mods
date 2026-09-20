@@ -2,3 +2,6 @@ node_modules/
 dist/
 .DS_Store
 .counts.json
+rusted-warfare
+rusted-warfare-mods
+mods/rusted-expansion/sfx/
