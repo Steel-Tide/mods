@@ -1,7 +1,7 @@
 {
   "format": "steel-tide-mod-index",
   "v": 1,
-  "generated": "2026-09-20T09:21:28.546Z",
+  "generated": "2026-09-20T09:55:00.276Z",
   "mods": [
     {
       "id": "adolence",
@@ -21,8 +21,8 @@
       "homepage": "https://github.com/steel-tide/mods/tree/main/mods/adolence",
       "path": "mods/adolence",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/adolence/",
-      "updated": "2026-09-20T15:20:28+08:00",
-      "downloads": 0,
+      "updated": "2026-09-20T17:54:27+08:00",
+      "downloads": 2,
       "screenshots": [
         {
           "file": "screenshots/cover.png",
@@ -36,6 +36,11 @@
         },
         {
           "file": "screenshots/screenshot-2.png",
+          "w": 958,
+          "h": 718
+        },
+        {
+          "file": "screenshots/screenshot-3.png",
           "w": 958,
           "h": 718
         }
