@@ -1,7 +1,7 @@
 {
   "format": "steel-tide-mod-index",
   "v": 1,
-  "generated": "2026-09-20T07:21:41.690Z",
+  "generated": "2026-09-20T09:21:28.546Z",
   "mods": [
     {
       "id": "adolence",
@@ -2251,7 +2251,7 @@
       "path": "mods/ironworks",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/ironworks/",
       "updated": "2026-09-19T20:24:28+08:00",
-      "downloads": 6,
+      "downloads": 7,
       "screenshots": [
         {
           "file": "screenshots/skimmers.webp",
