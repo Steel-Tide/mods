@@ -17,7 +17,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { imageSize, indexEntryFor, modRegistryBase, parseMod, parseModIndex } from './steel-tide-mod.mjs';
+import { applyMods, imageSize, indexEntryFor, modRegistryBase, parseCustomMap, parseMod, parseModIndex } from './steel-tide-mod.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
@@ -57,7 +57,19 @@ for (const name of readdirSync(join(root, 'mods')).sort()) {
     const size = imageSize(readFileSync(path));
     if (size) sizes[file] = size;
   }
-  mods.push(indexEntryFor(parsed.mod, `mods/${name}`, modRegistryBase(name), { sizes, updated: lastChange(`mods/${name}`), downloads: counts[name] ?? 0 }));
+  // the maps it carries, read with the mod's own pieces in the table: a name, a size and the seats, for the pages to list
+  const maps = [];
+  if (parsed.mod.maps?.length) {
+    applyMods([parsed.mod]);
+    for (const file of parsed.mod.maps) {
+      const path = join(folder, file);
+      if (!existsSync(path)) continue;
+      const map = parseCustomMap(readFileSync(path, 'utf8'));
+      if (map.ok) maps.push({ file, name: map.data.name, w: map.data.w, h: map.data.h, spawns: map.data.spawns.length });
+    }
+    applyMods([]);
+  }
+  mods.push(indexEntryFor(parsed.mod, `mods/${name}`, modRegistryBase(name), { sizes, updated: lastChange(`mods/${name}`), downloads: counts[name] ?? 0, ...(maps.length ? { maps } : {}) }));
 }
 
 const index = { format: 'steel-tide-mod-index', v: 1, generated: new Date().toISOString(), mods };

@@ -1,0 +1,5681 @@
+{
+  "format": "steel-tide-mod",
+  "v": 1,
+  "id": "adolence",
+  "name": [
+    "Adolence: City of Sin",
+    "Adolence·罪恶之都"
+  ],
+  "version": "1.0.0",
+  "author": "自然常数也有人用? and the Adolence team; port by Steel Tide",
+  "description": [
+    "Adolence, the City of Sin, ported from the Rusted Warfare mod with its authors' permission: the city police and the troops that come to their aid, their cruisers, tanks and helicopters, and the dead they are fighting, bred from a nest you can place yourself.",
+    "《Adolence-罪恶之都》经原作者授权移植：都市警力与前来增援的部队、他们的警车、坦克和直升机，以及他们要对付的死者——可以自己放置巢穴繁殖。"
+  ],
+  "homepage": "https://github.com/steel-tide/mods/tree/main/mods/adolence",
+  "license": "LicenseRef-Adolence",
+  "defs": [
+    {
+      "id": "adolence-precinct",
+      "name": [
+        "Joint Precinct",
+        "AD-联合警戒中心"
+      ],
+      "desc": [
+        "The city's police command: trains officers and cruisers, and sees far.",
+        "AD-联合警戒中心，高效处理罪都犯罪问题"
+      ],
+      "kind": "building",
+      "tier": 1,
+      "cost": 500,
+      "buildTime": 33.3,
+      "hp": 2400,
+      "armor": "structure",
+      "vision": 12,
+      "fw": 3,
+      "fh": 3,
+      "power": -8,
+      "sprite": "u.adolence-precinct",
+      "produces": [
+        "adolence-officer-pistol",
+        "adolence-traffic-officer",
+        "adolence-armed-police-pistol",
+        "adolence-armed-police-rifle",
+        "adolence-sedan-black",
+        "adolence-cruiser",
+        "adolence-armoured-car",
+        "adolence-amphibious-car",
+        "adolence-mortar"
+      ]
+    },
+    {
+      "id": "adolence-precinct-2",
+      "name": [
+        "VD Joint Precinct",
+        "VD-联合警戒中心"
+      ],
+      "desc": [
+        "The precinct under martial law: the whole garrison is on call here.",
+        "VD-联合警戒中心，高效处理罪都极端事件"
+      ],
+      "kind": "building",
+      "tier": 2,
+      "cost": 500,
+      "buildTime": 33.3,
+      "hp": 3200,
+      "armor": "structure",
+      "vision": 14,
+      "fw": 3,
+      "fh": 3,
+      "power": -10,
+      "upgradeOf": "adolence-precinct",
+      "upgradeCost": 500,
+      "upgradeTime": 15,
+      "sprite": "u.adolence-precinct",
+      "produces": [
+        "adolence-officer-pistol",
+        "adolence-traffic-officer",
+        "adolence-armed-police-pistol",
+        "adolence-armed-police-rifle",
+        "adolence-swat-sea",
+        "adolence-swat-field",
+        "adolence-army-woodland",
+        "adolence-army-marksman",
+        "adolence-sedan-black",
+        "adolence-cruiser",
+        "adolence-armoured-car",
+        "adolence-amphibious-car",
+        "adolence-command-van",
+        "adolence-comms-van",
+        "adolence-heavy-escort",
+        "adolence-mortar",
+        "adolence-walker-rifle",
+        "adolence-walker-grenade",
+        "adolence-light-tank-lmg",
+        "adolence-light-tank-mg",
+        "adolence-light-tank",
+        "adolence-light-tank-missile",
+        "adolence-light-tank-flame",
+        "adolence-light-tank-sniper",
+        "adolence-heavy-tank",
+        "adolence-guard-rifleman",
+        "adolence-guard-gunner",
+        "adolence-guard-flamethrower",
+        "adolence-military-police",
+        "adolence-taskforce-rifleman",
+        "adolence-taskforce-grenadier",
+        "adolence-taskforce-anti-materiel",
+        "adolence-taskforce-rocketeer",
+        "adolence-taskforce-gunner",
+        "adolence-taskforce-shotgunner",
+        "adolence-scout-car",
+        "adolence-assault-car",
+        "adolence-utility-vehicle",
+        "adolence-utility-vehicle-mp",
+        "adolence-transport-truck",
+        "adolence-m977",
+        "adolence-m1128",
+        "adolence-m1a2",
+        "adolence-m1a2-tusk",
+        "adolence-m1a2-sepv3",
+        "adolence-m1a1-clickbait",
+        "adolence-heavy-mg",
+        "adolence-extremism"
+      ]
+    },
+    {
+      "id": "adolence-outpost",
+      "name": [
+        "Police Outpost",
+        "警用哨所"
+      ],
+      "desc": [
+        "Trains the city's police, and the troops that come to its aid.",
+        "罪恶之都-警力调度总局，有效管理治安并封锁交通"
+      ],
+      "kind": "building",
+      "tier": 1,
+      "cost": 250,
+      "buildTime": 33.3,
+      "hp": 1440,
+      "armor": "structure",
+      "vision": 7,
+      "fw": 3,
+      "fh": 3,
+      "power": -5,
+      "sprite": "u.adolence-outpost",
+      "produces": [
+        "adolence-officer-pistol",
+        "adolence-officer-rifle",
+        "adolence-armed-police-pistol",
+        "adolence-armed-police-rifle",
+        "adolence-traffic-officer",
+        "adolence-swat-sea",
+        "adolence-army-woodland",
+        "adolence-army-marksman",
+        "adolence-guard-rifleman",
+        "adolence-guard-gunner",
+        "adolence-guard-flamethrower",
+        "adolence-military-police",
+        "adolence-taskforce-rifleman",
+        "adolence-taskforce-grenadier",
+        "adolence-taskforce-anti-materiel",
+        "adolence-taskforce-rocketeer",
+        "adolence-taskforce-gunner",
+        "adolence-taskforce-shotgunner",
+        "adolence-zhongzhou-rifleman",
+        "adolence-zhongzhou-sniper",
+        "adolence-purge-gunner"
+      ]
+    },
+    {
+      "id": "adolence-garage",
+      "name": [
+        "Police Garage",
+        "警用车库"
+      ],
+      "desc": [
+        "Dispatches cruisers, sedans and armoured cars.",
+        "罪恶之都-车辆调度储库，高效出动车辆并管控局势"
+      ],
+      "kind": "building",
+      "tier": 1,
+      "cost": 300,
+      "buildTime": 33.3,
+      "hp": 1440,
+      "armor": "structure",
+      "vision": 4,
+      "fw": 3,
+      "fh": 3,
+      "power": -6,
+      "sprite": "u.adolence-garage",
+      "produces": [
+        "adolence-sedan-black",
+        "adolence-cruiser",
+        "adolence-armoured-car",
+        "adolence-amphibious-car",
+        "adolence-command-van",
+        "adolence-comms-van",
+        "adolence-heavy-escort",
+        "adolence-ambush-car"
+      ]
+    },
+    {
+      "id": "adolence-arsenal",
+      "name": [
+        "Police Arsenal",
+        "警用军库"
+      ],
+      "desc": [
+        "The garage on a war footing: military vehicles, tanks and the Abrams.",
+        "罪恶之都-车辆调度储库，高效出动车辆并管控局势"
+      ],
+      "kind": "building",
+      "tier": 2,
+      "cost": 700,
+      "buildTime": 33.3,
+      "hp": 2000,
+      "armor": "structure",
+      "vision": 5,
+      "fw": 3,
+      "fh": 3,
+      "power": -8,
+      "upgradeOf": "adolence-garage",
+      "upgradeCost": 400,
+      "upgradeTime": 15,
+      "sprite": "u.adolence-garage",
+      "produces": [
+        "adolence-mortar",
+        "adolence-walker-rifle",
+        "adolence-walker-grenade",
+        "adolence-light-tank-lmg",
+        "adolence-light-tank-mg",
+        "adolence-light-tank",
+        "adolence-light-tank-missile",
+        "adolence-light-tank-flame",
+        "adolence-light-tank-sniper",
+        "adolence-heavy-tank",
+        "adolence-scout-car",
+        "adolence-assault-car",
+        "adolence-utility-vehicle",
+        "adolence-utility-vehicle-mp",
+        "adolence-transport-truck",
+        "adolence-m977",
+        "adolence-m1128",
+        "adolence-m1a2",
+        "adolence-m1a2-tusk",
+        "adolence-m1a2-sepv3",
+        "adolence-m1a1-clickbait",
+        "adolence-light-ifv",
+        "adolence-heavy-ifv",
+        "adolence-extremism",
+        "adolence-sedan-black",
+        "adolence-cruiser",
+        "adolence-armoured-car",
+        "adolence-amphibious-car",
+        "adolence-command-van",
+        "adolence-heavy-escort"
+      ]
+    },
+    {
+      "id": "adolence-helipad",
+      "name": [
+        "Police Helipad",
+        "警用机坪"
+      ],
+      "desc": [
+        "A temporary pad for the police helicopter.",
+        "临时警用直升机坪，呼叫空警部队协助管控"
+      ],
+      "kind": "building",
+      "tier": 1,
+      "cost": 550,
+      "buildTime": 33.3,
+      "hp": 1440,
+      "armor": "structure",
+      "vision": 4,
+      "fw": 3,
+      "fh": 3,
+      "power": -6,
+      "sprite": "u.adolence-helipad",
+      "produces": [
+        "adolence-police-heli"
+      ]
+    },
+    {
+      "id": "adolence-airfield",
+      "name": [
+        "Military Airfield",
+        "军用机坪"
+      ],
+      "desc": [
+        "Gunships, fighters, the bomber and the transport fly from here.",
+        "临时军用直升机坪，呼叫空军部队协助管控"
+      ],
+      "kind": "building",
+      "tier": 2,
+      "cost": 1600,
+      "buildTime": 33.3,
+      "hp": 2240,
+      "armor": "structure",
+      "vision": 6,
+      "fw": 3,
+      "fh": 3,
+      "power": -8,
+      "upgradeOf": "adolence-helipad",
+      "upgradeCost": 850,
+      "upgradeTime": 15,
+      "sprite": "u.adolence-helipad",
+      "produces": [
+        "adolence-police-heli",
+        "adolence-bomber",
+        "adolence-light-gunship",
+        "adolence-transport-heli",
+        "adolence-fighter-u9",
+        "adolence-heavy-gunship",
+        "adolence-fighter-a2"
+      ]
+    },
+    {
+      "id": "adolence-solar",
+      "name": [
+        "Solar Array",
+        "太阳能板"
+      ],
+      "desc": [
+        "A quiet trickle of power. Needs room.",
+        "提供少量经济，需要足够空间 “天无二日，我心中只有一个太阳！”"
+      ],
+      "kind": "building",
+      "tier": 1,
+      "cost": 180,
+      "buildTime": 120,
+      "hp": 900,
+      "armor": "structure",
+      "vision": 5,
+      "fw": 3,
+      "fh": 3,
+      "power": 25,
+      "sprite": "u.adolence-solar"
+    },
+    {
+      "id": "adolence-solar-2",
+      "name": [
+        "Solar Array T2",
+        "太阳能板-T2"
+      ],
+      "desc": [
+        "Better cells, three times the power.",
+        "提供高额经济，需要足够空间 “囤蛋，囤蛋，囤蛋！”"
+      ],
+      "kind": "building",
+      "tier": 2,
+      "cost": 700,
+      "buildTime": 111.1,
+      "hp": 1600,
+      "armor": "structure",
+      "vision": 5,
+      "fw": 3,
+      "fh": 3,
+      "power": 75,
+      "upgradeOf": "adolence-solar",
+      "upgradeCost": 620,
+      "upgradeTime": 30,
+      "sprite": "u.adolence-solar-2"
+    },
+    {
+      "id": "adolence-supply-cache",
+      "name": [
+        "Supply Cache",
+        "物资储藏点"
+      ],
+      "desc": [
+        "A police stash on a deposit: metal for the effort.",
+        "提供少量经济，有限物资储存 “第三企划需求...”"
+      ],
+      "kind": "building",
+      "tier": 1,
+      "cost": 140,
+      "buildTime": 33.3,
+      "hp": 600,
+      "armor": "structure",
+      "vision": 3,
+      "fw": 2,
+      "fh": 2,
+      "power": -4,
+      "metalRate": 1.4,
+      "needsDeposit": true,
+      "sprite": "u.adolence-supply-cache"
+    },
+    {
+      "id": "adolence-supply-cache-2",
+      "name": [
+        "Supply Cache II",
+        "物资储藏点-Ⅱ"
+      ],
+      "desc": [
+        "The stash, enlarged.",
+        "提供多量经济，有限物资储存 “第三企划需求...”"
+      ],
+      "kind": "building",
+      "tier": 2,
+      "cost": 380,
+      "hp": 950,
+      "armor": "structure",
+      "vision": 3,
+      "fw": 2,
+      "fh": 2,
+      "power": -8,
+      "metalRate": 3.0,
+      "needsDeposit": true,
+      "upgradeOf": "adolence-supply-cache",
+      "upgradeCost": 1200,
+      "upgradeTime": 24,
+      "sprite": "u.adolence-supply-cache-2"
+    },
+    {
+      "id": "adolence-mg-tower",
+      "name": [
+        "MG Tower",
+        "机枪塔位"
+      ],
+      "desc": [
+        "A street barricade with a machine gun on the mount. Fires at aircraft too.",
+        "街垒机枪塔位，对空对地 “战区争锋！”"
+      ],
+      "kind": "building",
+      "tier": 2,
+      "cost": 220,
+      "buildTime": 111.1,
+      "hp": 750,
+      "armor": "structure",
+      "vision": 6,
+      "fw": 2,
+      "fh": 2,
+      "power": -2,
+      "weapons": [
+        {
+          "id": "main",
+          "cls": "autocannon",
+          "dmg": 11.2,
+          "reload": 0.31,
+          "range": 7.7,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "bullet",
+          "speed": 384,
+          "sound": "cannon",
+          "muzzleOffset": 21.0,
+          "turret": true
+        }
+      ],
+      "sprite": "u.adolence-mg-tower",
+      "turretSprite": "tur.adolence-mg-tower"
+    },
+    {
+      "id": "adolence-barricade",
+      "name": [
+        "Barricade",
+        "基础扭机"
+      ],
+      "desc": [
+        "A cheap block of steel to funnel the horde.",
+        "毫无作用，无法攻击"
+      ],
+      "kind": "building",
+      "tier": 1,
+      "cost": 40,
+      "buildTime": 13.2,
+      "hp": 450,
+      "armor": "structure",
+      "vision": 3,
+      "fw": 1,
+      "fh": 1,
+      "power": 0,
+      "sprite": "u.adolence-barricade"
+    },
+    {
+      "id": "adolence-sloth-nest",
+      "name": [
+        "Sin of Sloth",
+        "懒惰之罪"
+      ],
+      "desc": [
+        "A nest of the SPK strain. It breeds the dead. Place it on a deposit.",
+        "在绝对的懒惰之中，一切都将失去意义 “舒适只是暂时的。”"
+      ],
+      "kind": "building",
+      "tier": 1,
+      "cost": 300,
+      "buildTime": 16.7,
+      "hp": 900,
+      "armor": "structure",
+      "vision": 5,
+      "fw": 2,
+      "fh": 2,
+      "power": 0,
+      "needsDeposit": true,
+      "sprite": "u.adolence-sloth-nest",
+      "produces": [
+        "adolence-zombie",
+        "adolence-brute",
+        "adolence-bloater",
+        "adolence-prisoner",
+        "adolence-rager",
+        "adolence-burster",
+        "adolence-imploder",
+        "adolence-turned-officer",
+        "adolence-turned-anti-materiel",
+        "adolence-road-rage",
+        "adolence-acid-mass",
+        "adolence-gloater",
+        "adolence-flying-husk",
+        "adolence-gorilla",
+        "adolence-no-longer-human",
+        "adolence-sin-of-wrath",
+        "adolence-sin-of-gluttony"
+      ]
+    },
+    {
+      "id": "adolence-officer-pistol",
+      "name": [
+        "Patrol Officer (Pistol)",
+        "民警-手枪"
+      ],
+      "desc": [
+        "Basic beat cop with a sidearm. Cheap, everywhere, brave.",
+        "罪都基层治安力量，直面初期混乱局势 “保持警戒，注意！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 20,
+      "buildTime": 4,
+      "hp": 40,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 44,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 2.0,
+          "reload": 0.54,
+          "range": 3.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 480,
+          "sound": "adolence-9mm",
+          "turret": false,
+          "muzzleOffset": 7.3
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 0
+      },
+      "sprite": "u.adolence-officer-pistol",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct",
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-officer-rifle",
+      "name": [
+        "Patrol Officer (Rifle)",
+        "民警-步枪"
+      ],
+      "desc": [
+        "Basic beat cop with a rifle.",
+        "罪都基层治安队伍，管控初期疫情爆发 “我讨厌混乱...”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 15,
+      "buildTime": 4,
+      "hp": 40,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 2.0,
+          "reload": 0.34,
+          "range": 4.4,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-5-56mm",
+          "turret": false,
+          "muzzleOffset": 10.7
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 6.2
+      },
+      "sprite": "u.adolence-officer-rifle",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-traffic-officer",
+      "name": [
+        "Traffic Officer",
+        "交警-步枪"
+      ],
+      "desc": [
+        "Directs traffic, then the horde. A rifle and a whistle.",
+        "罪都交通管理人员，疏散现场混乱民众 “禁止逗留，闲人免进！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 15,
+      "buildTime": 4,
+      "hp": 40,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 2.0,
+          "reload": 0.34,
+          "range": 4.4,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-5-56mm",
+          "turret": false,
+          "muzzleOffset": 10.7
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 6.2
+      },
+      "sprite": "u.adolence-traffic-officer",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct",
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-armed-police-pistol",
+      "name": [
+        "Armed Police (Pistol)",
+        "武警-手枪"
+      ],
+      "desc": [
+        "Paramilitary police with a sidearm.",
+        "罪都基层武装力量，管控初期疫情爆发 “收到命令，开火！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 15,
+      "buildTime": 4,
+      "hp": 40,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 44,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 2.0,
+          "reload": 0.54,
+          "range": 3.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 480,
+          "sound": "adolence-9mm",
+          "turret": false,
+          "muzzleOffset": 8.0
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 1.6
+      },
+      "sprite": "u.adolence-armed-police-pistol",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct",
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-armed-police-rifle",
+      "name": [
+        "Armed Police (Rifle)",
+        "武警-步枪"
+      ],
+      "desc": [
+        "Paramilitary police with a rifle.",
+        "罪都基层武装力量，管控初期疫情爆发 “事急从权。”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 25,
+      "buildTime": 4,
+      "hp": 42,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 2.0,
+          "reload": 0.34,
+          "range": 4.4,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-5-56mm",
+          "turret": false,
+          "muzzleOffset": 10.4
+        }
+      ],
+      "body": {
+        "r": 4.7,
+        "len": 6.2
+      },
+      "sprite": "u.adolence-armed-police-rifle",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct",
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-swat-sea",
+      "name": [
+        "SWAT (Naval Camo)",
+        "特战-霰弹"
+      ],
+      "desc": [
+        "Special police in naval camouflage, shotgun.",
+        "罪都特殊治安武装，管控都市治安问题 “时刻准备着！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 30,
+      "buildTime": 4,
+      "hp": 42,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "s",
+          "cls": "mg",
+          "dmg": 7.8,
+          "reload": 1.64,
+          "range": 2.5,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "spread": 10,
+          "sound": "adolence-5-56mm",
+          "turret": false,
+          "muzzleOffset": 10.4
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 4.7
+      },
+      "sprite": "u.adolence-swat-sea",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-swat-field",
+      "name": [
+        "SWAT (Desert Camo)",
+        "野战-霰弹"
+      ],
+      "desc": [
+        "Special police in desert camouflage, shotgun.",
+        "罪都特殊治安武装，管控都市治安问题 “时刻准备着！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 30,
+      "buildTime": 4,
+      "hp": 42,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "s",
+          "cls": "mg",
+          "dmg": 2.0,
+          "reload": 0.47,
+          "range": 2.5,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "spread": 10,
+          "sound": "adolence-5-56mm",
+          "turret": false,
+          "muzzleOffset": 10.0
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 4.7
+      },
+      "sprite": "u.adolence-swat-field",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2"
+      ]
+    },
+    {
+      "id": "adolence-army-woodland",
+      "name": [
+        "Army Trooper (Woodland)",
+        "草地-霰弹枪"
+      ],
+      "desc": [
+        "Regular army, woodland camouflage, shotgun.",
+        "罪都特别霰弹部队，有效霰弹散射打击 “嘿，这玩意好用啊。”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 35,
+      "buildTime": 6.0,
+      "hp": 42,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "s",
+          "cls": "mg",
+          "dmg": 3.1,
+          "reload": 0.64,
+          "range": 2.5,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "spread": 10,
+          "sound": "adolence-12mm",
+          "turret": false,
+          "muzzleOffset": 9.3
+        }
+      ],
+      "body": {
+        "r": 4.7,
+        "len": 4.7
+      },
+      "sprite": "u.adolence-army-woodland",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-army-marksman",
+      "name": [
+        "Army Marksman",
+        "陆战-狙击步枪"
+      ],
+      "desc": [
+        "Regular army marksman with a sniper rifle.",
+        "罪都特别狙击部队，有效狙击打击 “这什么烧火棍?”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 35,
+      "buildTime": 6.0,
+      "hp": 42,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "autocannon",
+          "dmg": 8.4,
+          "reload": 2.47,
+          "range": 4.1,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-12mm",
+          "turret": false,
+          "muzzleOffset": 10.0
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 4.7
+      },
+      "sprite": "u.adolence-army-marksman",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-guard-rifleman",
+      "name": [
+        "National Guard Rifleman",
+        "民兵-步枪"
+      ],
+      "desc": [
+        "The state guard, called in when the police broke.",
+        "特派部队，有限控制区域 “军事宵禁！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 45,
+      "buildTime": 6.0,
+      "hp": 40,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 2.8,
+          "reload": 0.56,
+          "range": 5.0,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-guard-rifle",
+          "turret": false,
+          "muzzleOffset": 9.7
+        }
+      ],
+      "body": {
+        "r": 4.7,
+        "len": 6.2
+      },
+      "sprite": "u.adolence-guard-rifleman",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-guard-gunner",
+      "name": [
+        "National Guard Gunner",
+        "民兵-轻机枪"
+      ],
+      "desc": [
+        "Guardsman with a light machine gun.",
+        "特派部队，有限控制区域 “军事管控！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 45,
+      "buildTime": 6.0,
+      "hp": 40,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 30,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 3.4,
+          "reload": 0.41,
+          "range": 5.5,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-m60",
+          "turret": false,
+          "muzzleOffset": 10.4
+        }
+      ],
+      "body": {
+        "r": 4.7,
+        "len": 6.2
+      },
+      "sprite": "u.adolence-guard-gunner",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-guard-flamethrower",
+      "name": [
+        "National Guard Flamethrower",
+        "民兵-火焰喷射器"
+      ],
+      "desc": [
+        "Fire clears a street the way nothing else does.",
+        "州特派民兵部队，控制区域 “让烈焰，升腾！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 55,
+      "buildTime": 6.0,
+      "hp": 42,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 30,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "he",
+          "dmg": 2.0,
+          "reload": 2.2,
+          "range": 4.1,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "flame",
+          "speed": 240,
+          "fan": 0.22,
+          "burn": 13.1,
+          "burnLife": 5,
+          "splash": 30,
+          "burst": 12,
+          "burstDelay": 0.04,
+          "spread": 10,
+          "sound": "adolence-flame",
+          "turret": false,
+          "muzzleOffset": 11.8
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 7.8
+      },
+      "sprite": "u.adolence-guard-flamethrower",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-military-police",
+      "name": [
+        "Military Police",
+        "宪兵-步枪"
+      ],
+      "desc": [
+        "Provost with a rifle.",
+        "特派部队，有限控制区域 “军事打击!”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 45,
+      "buildTime": 6.0,
+      "hp": 40,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 2.0,
+          "reload": 0.34,
+          "range": 4.7,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-guard-rifle",
+          "turret": false,
+          "muzzleOffset": 9.7
+        }
+      ],
+      "body": {
+        "r": 4.7,
+        "len": 6.2
+      },
+      "sprite": "u.adolence-military-police",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-taskforce-rifleman",
+      "name": [
+        "Task Force Rifleman",
+        "特战队-步枪"
+      ],
+      "desc": [
+        "Special task force rifleman. Elite.",
+        "特派特陆战队，精锐部队 “从蒙特祖玛的宫殿，到黎波里的海岸！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 55,
+      "buildTime": 6.0,
+      "hp": 44,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 4.2,
+          "reload": 0.44,
+          "range": 5.8,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-m16-shot",
+          "turret": false,
+          "muzzleOffset": 11.4
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 6.2
+      },
+      "sprite": "u.adolence-taskforce-rifleman",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-taskforce-grenadier",
+      "name": [
+        "Task Force Grenadier",
+        "陆战队-掷弹兵步枪"
+      ],
+      "desc": [
+        "Rifle with an underslung grenade launcher.",
+        "特派特战队，精锐部队 “从蒙特祖玛的宫殿，到黎波里的海岸！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 105,
+      "buildTime": 6.0,
+      "hp": 44,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 4.2,
+          "reload": 0.44,
+          "range": 5.8,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-m16-shot",
+          "turret": false,
+          "muzzleOffset": 11.4
+        },
+        {
+          "id": "w2",
+          "cls": "he",
+          "dmg": 11.9,
+          "reload": 5.14,
+          "range": 5.8,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "shell",
+          "speed": 500,
+          "splash": 23,
+          "arc": true,
+          "spread": 38,
+          "sound": "adolence-mg-shot",
+          "turret": false,
+          "muzzleOffset": 11.4
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 6.2
+      },
+      "sprite": "u.adolence-taskforce-grenadier",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-taskforce-anti-materiel",
+      "name": [
+        "Task Force Anti-Materiel",
+        "特战队-反器材狙击"
+      ],
+      "desc": [
+        "A rifle that opens vehicles.",
+        "特派特陆战队，精锐部队 “从蒙特祖玛的宫殿，到黎波里的海岸！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 110,
+      "buildTime": 6.0,
+      "hp": 44,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "autocannon",
+          "dmg": 14.2,
+          "reload": 0.89,
+          "range": 8.8,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-m24",
+          "turret": false,
+          "muzzleOffset": 13.1
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 9.4
+      },
+      "sprite": "u.adolence-taskforce-anti-materiel",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-taskforce-rocketeer",
+      "name": [
+        "Task Force Rocketeer",
+        "特战队-反坦克火箭筒"
+      ],
+      "desc": [
+        "Anti-tank rockets; also reaches aircraft.",
+        "特派特战队，精锐部队 “从蒙特祖玛的宫殿，到黎波里的海岸！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 110,
+      "buildTime": 6.0,
+      "hp": 44,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "r",
+          "cls": "at",
+          "dmg": 21.0,
+          "reload": 3.45,
+          "range": 7.2,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "missile",
+          "speed": 192,
+          "splash": 35,
+          "homing": true,
+          "sound": "missile",
+          "turret": false,
+          "muzzleOffset": 11.4
+        }
+      ],
+      "body": {
+        "r": 7.0,
+        "len": 3.1
+      },
+      "sprite": "u.adolence-taskforce-rocketeer",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-taskforce-gunner",
+      "name": [
+        "Task Force Gunner",
+        "特战队-机枪"
+      ],
+      "desc": [
+        "Squad machine gun.",
+        "特派特陆战队，精锐部队 “从蒙特祖玛的宫殿，到黎波里的海岸！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 75,
+      "buildTime": 6.0,
+      "hp": 44,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 3.4,
+          "reload": 0.34,
+          "range": 5.2,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-mg-shot",
+          "turret": false,
+          "muzzleOffset": 12.1
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 7.8
+      },
+      "sprite": "u.adolence-taskforce-gunner",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-taskforce-shotgunner",
+      "name": [
+        "Task Force Shotgunner",
+        "特战队-霰弹枪"
+      ],
+      "desc": [
+        "Automatic shotgun for close work.",
+        "特派特战队，精锐部队 “从蒙特祖玛的宫殿，到黎波里的海岸！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 55,
+      "buildTime": 6.0,
+      "hp": 44,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "s",
+          "cls": "mg",
+          "dmg": 6.7,
+          "reload": 0.64,
+          "range": 3.2,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "spread": 10,
+          "sound": "adolence-aa12",
+          "turret": false,
+          "muzzleOffset": 11.4
+        }
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 6.2
+      },
+      "sprite": "u.adolence-taskforce-shotgunner",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-zhongzhou-rifleman",
+      "name": [
+        "Zhongzhou Rifleman",
+        "中州武装步枪"
+      ],
+      "desc": [
+        "Zhongzhou armed forces, sent in support.",
+        "中州武装力量，中州特派精锐部队"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 50,
+      "buildTime": 6.0,
+      "hp": 44,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 2.0,
+          "reload": 0.39,
+          "range": 4.1,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-m16-shot",
+          "turret": false,
+          "muzzleOffset": 10.4
+        }
+      ],
+      "requires": [
+        "adolence-arsenal"
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 4.7
+      },
+      "sprite": "u.adolence-zhongzhou-rifleman",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-zhongzhou-sniper",
+      "name": [
+        "Zhongzhou Sniper",
+        "中州特战狙击"
+      ],
+      "desc": [
+        "Zhongzhou special forces marksman.",
+        "中州武装力量，中州特派精锐部队"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 60,
+      "buildTime": 6.0,
+      "hp": 44,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 8,
+      "speed": 37,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "autocannon",
+          "dmg": 10.3,
+          "reload": 0.94,
+          "range": 9.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-h-shot",
+          "turret": false,
+          "muzzleOffset": 11.4
+        }
+      ],
+      "requires": [
+        "adolence-arsenal"
+      ],
+      "body": {
+        "r": 5.5,
+        "len": 6.2
+      },
+      "sprite": "u.adolence-zhongzhou-sniper",
+      "aiWeight": 2,
+      "producedBy": [
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-purge-gunner",
+      "name": [
+        "Purge Protocol Gunner",
+        "肃清协议-MG"
+      ],
+      "desc": [
+        "Heavily armoured escort gunner of the purge protocol.",
+        "MG级肃清协议AI步兵，管控当前区域 “协议已触发（开始进行区域清理）”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 90,
+      "buildTime": 6.0,
+      "hp": 350,
+      "pop": 1,
+      "armor": "medium",
+      "vision": 4,
+      "radius": 8,
+      "speed": 53,
+      "turnRate": 8,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 4.3,
+          "reload": 0.31,
+          "range": 7.4,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "adolence-guard-rifle",
+          "turret": false,
+          "muzzleOffset": 13.7
+        }
+      ],
+      "requires": [
+        "adolence-arsenal"
+      ],
+      "body": {
+        "r": 7.8,
+        "len": 15.6
+      },
+      "sprite": "u.adolence-purge-gunner",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-outpost"
+      ]
+    },
+    {
+      "id": "adolence-sedan-black",
+      "name": [
+        "Black Sedan",
+        "轿车-黑"
+      ],
+      "desc": [
+        "A civilian car pressed into service. Carries four.",
+        "无标识黑色轿车，民警-手枪*4 “为人民服务。”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 70,
+      "buildTime": 10.0,
+      "hp": 175,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 14,
+      "speed": 87,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 4,
+      "fireOnMove": true,
+      "body": {
+        "r": 11.7,
+        "len": 26.6
+      },
+      "sprite": "u.adolence-sedan-black",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct",
+        "adolence-precinct-2",
+        "adolence-garage",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-cruiser",
+      "name": [
+        "Police Cruiser",
+        "警车"
+      ],
+      "desc": [
+        "The basic patrol car. Carries four officers.",
+        "基层警用轿车，民警-步枪*4 “收到，前进！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 70,
+      "buildTime": 10.0,
+      "hp": 158,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 14,
+      "speed": 87,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 4,
+      "fireOnMove": true,
+      "body": {
+        "r": 11.7,
+        "len": 26.6
+      },
+      "sprite": "u.adolence-cruiser",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct",
+        "adolence-precinct-2",
+        "adolence-garage",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-armoured-car",
+      "name": [
+        "Police Armoured Car",
+        "警用装甲车-B"
+      ],
+      "desc": [
+        "Armoured patrol vehicle. Carries five.",
+        "警用装甲车辆，常规特勤小组 “罪都日常。”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 85,
+      "buildTime": 10.0,
+      "hp": 238,
+      "pop": 1,
+      "armor": "medium",
+      "vision": 4,
+      "radius": 16,
+      "speed": 87,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 8,
+      "fireOnMove": true,
+      "body": {
+        "r": 12.5,
+        "len": 28.1
+      },
+      "sprite": "u.adolence-armoured-car",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct",
+        "adolence-precinct-2",
+        "adolence-garage",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-amphibious-car",
+      "name": [
+        "Police Amphibious Car",
+        "警用两栖车-A"
+      ],
+      "desc": [
+        "Light amphibious carrier for three.",
+        "警用两栖突击车，水陆通用 “冲锋，冲锋！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 85,
+      "buildTime": 10.0,
+      "hp": 252,
+      "pop": 1,
+      "armor": "medium",
+      "vision": 4,
+      "radius": 16,
+      "speed": 87,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 3,
+      "fireOnMove": true,
+      "body": {
+        "r": 14.1,
+        "len": 23.4
+      },
+      "sprite": "u.adolence-amphibious-car",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct",
+        "adolence-precinct-2",
+        "adolence-garage",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-command-van",
+      "name": [
+        "Police Command Van",
+        "警用指挥车-A3"
+      ],
+      "desc": [
+        "Mobile command post. Carries six.",
+        "警用指挥车辆，车顶提供射击平台 “进攻D点。”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 115,
+      "buildTime": 10.0,
+      "hp": 455,
+      "pop": 1,
+      "armor": "medium",
+      "vision": 4,
+      "radius": 18,
+      "speed": 87,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 5,
+      "fireOnMove": true,
+      "body": {
+        "r": 12.5,
+        "len": 40.6
+      },
+      "sprite": "u.adolence-command-van",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-garage",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-comms-van",
+      "name": [
+        "Police Comms Van",
+        "警用通讯车"
+      ],
+      "desc": [
+        "Communications van: unarmed, but it sees very far.",
+        "警用指挥车辆，提供瞭望视野 “进攻D点。”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 140,
+      "buildTime": 10.0,
+      "hp": 455,
+      "pop": 1,
+      "armor": "medium",
+      "vision": 16,
+      "radius": 18,
+      "speed": 87,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 4,
+      "fireOnMove": true,
+      "body": {
+        "r": 11.7,
+        "len": 40.6
+      },
+      "sprite": "u.adolence-comms-van",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-garage"
+      ]
+    },
+    {
+      "id": "adolence-heavy-escort",
+      "name": [
+        "Police Heavy Escort",
+        "警用重卫车-U0"
+      ],
+      "desc": [
+        "Heavy escort truck. Carries nine.",
+        "罪都城防重卫小组，高效处理暴乱问题 “死人，没有明天。”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 245,
+      "buildTime": 10.0,
+      "hp": 980,
+      "pop": 2,
+      "armor": "medium",
+      "vision": 4,
+      "radius": 18,
+      "speed": 87,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 7,
+      "fireOnMove": true,
+      "body": {
+        "r": 10.2,
+        "len": 37.5
+      },
+      "sprite": "u.adolence-heavy-escort",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-garage",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-ambush-car",
+      "name": [
+        "Ambush Armoured Car",
+        "警用伏击车"
+      ],
+      "desc": [
+        "Mine-resistant ambush-protected carrier. Unarmed, thick-skinned, carries seven.",
+        "反地雷伏击车，无武装，可载七人"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 175,
+      "buildTime": 10.0,
+      "hp": 525,
+      "pop": 2,
+      "armor": "heavy",
+      "vision": 4,
+      "radius": 24,
+      "speed": 79,
+      "turnRate": 1.26,
+      "trail": "tire",
+      "transportCap": 7,
+      "fireOnMove": true,
+      "body": {
+        "r": 14.1,
+        "len": 37.5
+      },
+      "sprite": "u.adolence-ambush-car",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-garage"
+      ]
+    },
+    {
+      "id": "adolence-mortar",
+      "name": [
+        "Police Mortar",
+        "警用迫击炮"
+      ],
+      "desc": [
+        "Short-ranged, accurate, three times as hard on buildings.",
+        "警厅额外支援单位，射程近而精准 “火力打击！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 75,
+      "buildTime": 14.0,
+      "hp": 210,
+      "pop": 1,
+      "armor": "light",
+      "vision": 5,
+      "radius": 12,
+      "speed": 32,
+      "turnRate": 3.35,
+      "transportCap": 1,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "he",
+          "dmg": 62.5,
+          "reload": 5.0,
+          "range": 7.7,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "shell",
+          "speed": 749,
+          "splash": 35,
+          "arc": true,
+          "spread": 9,
+          "sound": "adolence-flame-2",
+          "turret": false,
+          "muzzleOffset": 20.5
+        }
+      ],
+      "body": {
+        "r": 12.5,
+        "len": 20.3
+      },
+      "sprite": "u.adolence-mortar",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct",
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-heavy-mg",
+      "name": [
+        "Heavy Machine Gun",
+        "重机枪"
+      ],
+      "desc": [
+        "A crewed heavy machine gun. Slow to move, fast to fire.",
+        "重机枪，射程远而精准 “请输入文本”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 100,
+      "buildTime": 14.0,
+      "hp": 245,
+      "pop": 1,
+      "armor": "light",
+      "vision": 5,
+      "radius": 12,
+      "speed": 24,
+      "turnRate": 3.14,
+      "transportCap": 1,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 5.2,
+          "reload": 0.35,
+          "range": 6.9,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 480,
+          "splash": 12,
+          "sound": "adolence-hmg",
+          "muzzleOffset": 21.8,
+          "turret": true
+        }
+      ],
+      "body": {
+        "r": 8.6,
+        "len": 18.8
+      },
+      "sprite": "u.adolence-heavy-mg",
+      "turretSprite": "tur.adolence-heavy-mg",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2"
+      ]
+    },
+    {
+      "id": "adolence-walker-rifle",
+      "name": [
+        "Guard Walker (Rifle)",
+        "警卫步械-步枪"
+      ],
+      "desc": [
+        "Police walking armour with an autocannon.",
+        "有效打击地面单位，适于应对个体单位 “侦查 锁定”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 175,
+      "buildTime": 14.0,
+      "hp": 700,
+      "pop": 2,
+      "armor": "medium",
+      "vision": 5,
+      "radius": 11,
+      "speed": 42,
+      "turnRate": 7.33,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "autocannon",
+          "dmg": 14.0,
+          "reload": 1.17,
+          "range": 5.2,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1500,
+          "sound": "cannon",
+          "turret": false,
+          "muzzleOffset": 25.1
+        }
+      ],
+      "body": {
+        "r": 8.6,
+        "len": 39.1
+      },
+      "sprite": "u.adolence-walker-rifle",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-walker-grenade",
+      "name": [
+        "Guard Walker (Grenade)",
+        "警卫步械-榴弹"
+      ],
+      "desc": [
+        "Police walking armour with a grenade launcher.",
+        "有效轰击地面，适于应对群体单位 “榴弹已就绪，你在哪?”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 160,
+      "buildTime": 14.0,
+      "hp": 630,
+      "pop": 2,
+      "armor": "medium",
+      "vision": 5,
+      "radius": 11,
+      "speed": 42,
+      "turnRate": 5.76,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "he",
+          "dmg": 19.6,
+          "reload": 1.33,
+          "range": 12,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "shell",
+          "speed": 500,
+          "homing": true,
+          "arc": true,
+          "spread": 38,
+          "sound": "missile",
+          "turret": false,
+          "muzzleOffset": 23.5
+        }
+      ],
+      "body": {
+        "r": 11.7,
+        "len": 28.1
+      },
+      "sprite": "u.adolence-walker-grenade",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-light-tank-lmg",
+      "name": [
+        "Guard Light Tank (LMG)",
+        "警卫轻坦-轻机枪"
+      ],
+      "desc": [
+        "Black-steel light tank with a light machine gun.",
+        "高速对地轻机枪，有效清理个体单位 “哒哒哒，哒哒哒。”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 645,
+      "buildTime": 20.0,
+      "hp": 805,
+      "pop": 3,
+      "armor": "heavy",
+      "vision": 5,
+      "radius": 17,
+      "speed": 48,
+      "turnRate": 3.14,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "main",
+          "cls": "autocannon",
+          "dmg": 24.3,
+          "reload": 0.35,
+          "range": 7.4,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "bullet",
+          "speed": 384,
+          "sound": "adolence-m2",
+          "muzzleOffset": 27.5,
+          "turret": true
+        }
+      ],
+      "body": {
+        "r": 13.3,
+        "len": 15.6
+      },
+      "sprite": "u.adolence-light-tank-lmg",
+      "turretSprite": "tur.adolence-light-tank-lmg",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-light-tank-mg",
+      "name": [
+        "Guard Light Tank (MG)",
+        "警卫轻坦-机枪"
+      ],
+      "desc": [
+        "Black-steel light tank with a heavy machine gun.",
+        "高速对地轻机枪，有效清理个体单位 “哒哒哒，哒哒哒。”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 480,
+      "buildTime": 20.0,
+      "hp": 805,
+      "pop": 3,
+      "armor": "heavy",
+      "vision": 5,
+      "radius": 17,
+      "speed": 48,
+      "turnRate": 3.14,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "main",
+          "cls": "autocannon",
+          "dmg": 16.8,
+          "reload": 0.32,
+          "range": 9.4,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "bullet",
+          "speed": 384,
+          "sound": "adolence-m2",
+          "muzzleOffset": 27.5,
+          "turret": true
+        }
+      ],
+      "body": {
+        "r": 13.3,
+        "len": 15.6
+      },
+      "sprite": "u.adolence-light-tank-lmg",
+      "turretSprite": "tur.adolence-light-tank-mg",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-light-tank",
+      "name": [
+        "Guard Light Tank",
+        "警卫轻坦-常规"
+      ],
+      "desc": [
+        "Black-steel light tank with a long gun.",
+        "有效打击地面单位，适于应对个体单位 “坦海战术?”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 910,
+      "buildTime": 8.0,
+      "hp": 805,
+      "pop": 3,
+      "armor": "heavy",
+      "vision": 5,
+      "radius": 17,
+      "speed": 48,
+      "turnRate": 3.14,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "main",
+          "cls": "autocannon",
+          "dmg": 18.2,
+          "reload": 0.42,
+          "range": 8.3,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 192,
+          "splash": 58,
+          "sound": "adolence-m2-2",
+          "muzzleOffset": 27.8,
+          "turret": true
+        }
+      ],
+      "body": {
+        "r": 13.3,
+        "len": 14.1
+      },
+      "sprite": "u.adolence-light-tank",
+      "turretSprite": "tur.adolence-light-tank",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-light-tank-missile",
+      "name": [
+        "Guard Light Tank (Missile)",
+        "警卫轻坦-导弹"
+      ],
+      "desc": [
+        "Black-steel chassis with a missile battery.",
+        "空地全高度打击，可以切换炮口朝向 “铁拳，往死里打！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 1310,
+      "buildTime": 20.0,
+      "hp": 525,
+      "pop": 4,
+      "armor": "heavy",
+      "vision": 16,
+      "radius": 17,
+      "speed": 32,
+      "turnRate": 2.2,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "at",
+          "dmg": 28.0,
+          "reload": 1.5,
+          "range": 12,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "missile",
+          "speed": 192,
+          "splash": 38,
+          "homing": true,
+          "bores": 2,
+          "boreSpacing": 10.2,
+          "sound": "missile",
+          "muzzleOffset": 12.5,
+          "turret": true
+        }
+      ],
+      "body": {
+        "r": 13.3,
+        "len": 14.1
+      },
+      "sprite": "u.adolence-light-tank",
+      "turretSprite": "tur.adolence-light-tank-missile",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-light-tank-flame",
+      "name": [
+        "Guard Light Tank (Flame)",
+        "警卫轻坦-喷火"
+      ],
+      "desc": [
+        "Black-steel light tank with a flamethrower.",
+        "范围肃清生化单位，高效灼烧地面 “喂，喊够了没有?”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 705,
+      "buildTime": 20.0,
+      "hp": 1925,
+      "pop": 3,
+      "armor": "heavy",
+      "vision": 5,
+      "radius": 17,
+      "speed": 48,
+      "turnRate": 3.14,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "he",
+          "dmg": 9,
+          "reload": 2.2,
+          "range": 5.8,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "flame",
+          "speed": 240,
+          "fan": 0.22,
+          "burn": 13.5,
+          "burnLife": 5,
+          "splash": 30,
+          "burst": 12,
+          "burstDelay": 0.04,
+          "spread": 51,
+          "sound": "adolence-flame",
+          "muzzleOffset": 28.3,
+          "turret": true
+        }
+      ],
+      "body": {
+        "r": 13.3,
+        "len": 15.6
+      },
+      "sprite": "u.adolence-light-tank-lmg",
+      "turretSprite": "tur.adolence-light-tank-flame",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-light-tank-sniper",
+      "name": [
+        "Guard Light Tank (Sniper)",
+        "警卫轻坦-狙击"
+      ],
+      "desc": [
+        "Black-steel light tank with a long-range rifle cannon.",
+        "远程狙击敌对单位，高额单体伤害 “别说了，发把狙！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 440,
+      "buildTime": 20.0,
+      "hp": 420,
+      "pop": 2,
+      "armor": "heavy",
+      "vision": 5,
+      "radius": 14,
+      "speed": 32,
+      "turnRate": 1.57,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "main",
+          "cls": "cannon",
+          "dmg": 56.0,
+          "reload": 3.0,
+          "range": 12,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "shell",
+          "speed": 768,
+          "splash": 35,
+          "sound": "adolence-120mm",
+          "muzzleOffset": 37.5,
+          "turret": true
+        }
+      ],
+      "body": {
+        "r": 12.5,
+        "len": 12.5
+      },
+      "sprite": "u.adolence-light-tank-sniper",
+      "turretSprite": "tur.adolence-light-tank-sniper",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-heavy-tank",
+      "name": [
+        "Guard Heavy Tank",
+        "警卫重坦-常规"
+      ],
+      "desc": [
+        "Riot heavy tank: a huge blast every shot. Clears the ground by force.",
+        "重型特化防暴坦克，暴力清扫地面物体 “世界属于极征!”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 3,
+      "cost": 1640,
+      "buildTime": 24.0,
+      "hp": 1750,
+      "pop": 4,
+      "armor": "heavy",
+      "vision": 5,
+      "radius": 17,
+      "speed": 37,
+      "turnRate": 0.73,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "cannon",
+          "dmg": 105.0,
+          "reload": 1.5,
+          "range": 11.0,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "shell",
+          "speed": 384,
+          "splash": 90,
+          "sound": "cannon",
+          "muzzleOffset": 22.9,
+          "turret": true
+        }
+      ],
+      "body": {
+        "r": 14.1,
+        "len": 15.6
+      },
+      "sprite": "u.adolence-heavy-tank",
+      "turretSprite": "tur.adolence-heavy-tank",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-scout-car",
+      "name": [
+        "Military Scout Car",
+        "军用侦查车"
+      ],
+      "desc": [
+        "Fast light vehicle for a look ahead.",
+        "通用军事车辆，车顶提供射击平台 “料敌于先！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 105,
+      "buildTime": 14.0,
+      "hp": 420,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 18,
+      "speed": 79,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 5,
+      "fireOnMove": true,
+      "body": {
+        "r": 10.9,
+        "len": 23.4
+      },
+      "sprite": "u.adolence-scout-car",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-assault-car",
+      "name": [
+        "Military Assault Car",
+        "军用突击车"
+      ],
+      "desc": [
+        "Light military vehicle.",
+        "通用军事车辆，车顶提供射击平台 “要战，便战！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 105,
+      "buildTime": 14.0,
+      "hp": 420,
+      "pop": 1,
+      "armor": "light",
+      "vision": 4,
+      "radius": 18,
+      "speed": 79,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 5,
+      "fireOnMove": true,
+      "body": {
+        "r": 11.7,
+        "len": 25.0
+      },
+      "sprite": "u.adolence-assault-car",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-utility-vehicle",
+      "name": [
+        "Light Utility Vehicle",
+        "多用途轻型车辆"
+      ],
+      "desc": [
+        "General-purpose military vehicle; a gun ring on the roof. Carries five.",
+        "通用军事车辆，车顶提供射击平台 “战争在召唤！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 105,
+      "buildTime": 14.0,
+      "hp": 420,
+      "pop": 1,
+      "armor": "medium",
+      "vision": 4,
+      "radius": 18,
+      "speed": 106,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 5,
+      "fireOnMove": true,
+      "body": {
+        "r": 12.5,
+        "len": 20.3
+      },
+      "sprite": "u.adolence-utility-vehicle",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-utility-vehicle-mp",
+      "name": [
+        "Light Utility Vehicle MP",
+        "多用途轻型车辆-MP"
+      ],
+      "desc": [
+        "Military police utility vehicle. Carries five.",
+        "通用军事车辆，宪兵车辆 “走向战争!”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 105,
+      "buildTime": 6.0,
+      "hp": 420,
+      "pop": 1,
+      "armor": "medium",
+      "vision": 4,
+      "radius": 18,
+      "speed": 106,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 4,
+      "fireOnMove": true,
+      "body": {
+        "r": 12.5,
+        "len": 20.3
+      },
+      "sprite": "u.adolence-utility-vehicle-mp",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-transport-truck",
+      "name": [
+        "Military Transport Truck",
+        "军用运输卡车-B"
+      ],
+      "desc": [
+        "A truck for a platoon.",
+        "核载15人，无武装 “战争在召唤!”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 175,
+      "buildTime": 6.0,
+      "hp": 350,
+      "pop": 2,
+      "armor": "medium",
+      "vision": 4,
+      "radius": 22,
+      "speed": 61,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 15,
+      "fireOnMove": true,
+      "body": {
+        "r": 12.5,
+        "len": 39.1
+      },
+      "sprite": "u.adolence-transport-truck",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-m977",
+      "name": [
+        "M977 HEMTT",
+        "M977"
+      ],
+      "desc": [
+        "Heavy tactical supply truck. Tough and unarmed.",
+        "战术补给卡车，提供少量补给 “准备就绪!”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 440,
+      "buildTime": 14.0,
+      "hp": 1750,
+      "pop": 2,
+      "armor": "medium",
+      "vision": 4,
+      "radius": 24,
+      "speed": 63,
+      "turnRate": 1.05,
+      "trail": "tire",
+      "transportCap": 2,
+      "fireOnMove": true,
+      "body": {
+        "r": 10.9,
+        "len": 60.9
+      },
+      "sprite": "u.adolence-m977",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-m1128",
+      "name": [
+        "M1128 Stryker MGS",
+        "M1128"
+      ],
+      "desc": [
+        "Stryker mobile gun system: a 105 mm gun on eight wheels.",
+        "M1128\"斯崔克\"火炮运载系统"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 3,
+      "cost": 1365,
+      "buildTime": 40.0,
+      "hp": 3500,
+      "pop": 4,
+      "armor": "heavy",
+      "vision": 5,
+      "radius": 24,
+      "speed": 66,
+      "turnRate": 1.26,
+      "trail": "tire",
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "gun",
+          "cls": "cannon",
+          "dmg": 95,
+          "reload": 5.5,
+          "range": 8.5,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "shell",
+          "speed": 600,
+          "splash": 14,
+          "turret": true,
+          "sound": "adolence-105mm",
+          "muzzleOffset": 37.9
+        },
+        {
+          "id": "coax",
+          "cls": "mg",
+          "dmg": 9,
+          "reload": 0.45,
+          "range": 6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "turret": true,
+          "sound": "mg",
+          "muzzleOffset": 37.9
+        }
+      ],
+      "body": {
+        "r": 14.1,
+        "len": 54.7
+      },
+      "sprite": "u.adolence-m1128",
+      "turretSprite": "tur.adolence-m1128",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-m1a2",
+      "name": [
+        "M1A2 Abrams",
+        "M1A2"
+      ],
+      "desc": [
+        "Main battle tank: 120 mm smoothbore, coaxial gun, thick plate.",
+        "M1A2 主战坦克，搭载一门M256型120口径44倍径滑膛炮"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 3,
+      "cost": 1505,
+      "buildTime": 40.0,
+      "hp": 5250,
+      "pop": 4,
+      "armor": "heavy",
+      "vision": 5,
+      "radius": 24,
+      "speed": 53,
+      "turnRate": 0.84,
+      "trail": "tire",
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "gun",
+          "cls": "cannon",
+          "dmg": 125,
+          "reload": 4.5,
+          "range": 9,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "shell",
+          "speed": 700,
+          "splash": 12,
+          "turret": true,
+          "sound": "adolence-120mm-2",
+          "muzzleOffset": 42.1
+        },
+        {
+          "id": "coax",
+          "cls": "mg",
+          "dmg": 9,
+          "reload": 0.45,
+          "range": 6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "turret": true,
+          "sound": "mg",
+          "muzzleOffset": 42.1
+        }
+      ],
+      "body": {
+        "r": 17.2,
+        "len": 57.8
+      },
+      "sprite": "u.adolence-m1a2",
+      "turretSprite": "tur.adolence-m1a2",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-m1a2-tusk",
+      "name": [
+        "M1A2 TUSK II",
+        "M1A2 TUSK II"
+      ],
+      "desc": [
+        "Abrams with the urban survival kit: more armour, same gun.",
+        "M1A2 主战坦克，搭载一门M256型120口径44倍径滑膛炮"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 3,
+      "cost": 1655,
+      "buildTime": 40.0,
+      "hp": 5250,
+      "pop": 4,
+      "armor": "heavy",
+      "vision": 5,
+      "radius": 24,
+      "speed": 53,
+      "turnRate": 0.84,
+      "trail": "tire",
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "gun",
+          "cls": "cannon",
+          "dmg": 125,
+          "reload": 4.5,
+          "range": 9,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "shell",
+          "speed": 700,
+          "splash": 12,
+          "turret": true,
+          "sound": "adolence-120mm-2",
+          "muzzleOffset": 42.1
+        },
+        {
+          "id": "coax",
+          "cls": "mg",
+          "dmg": 9,
+          "reload": 0.45,
+          "range": 6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "turret": true,
+          "sound": "mg",
+          "muzzleOffset": 42.1
+        }
+      ],
+      "body": {
+        "r": 17.2,
+        "len": 57.8
+      },
+      "sprite": "u.adolence-m1a2-tusk",
+      "turretSprite": "tur.adolence-m1a2-tusk",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-m1a2-sepv3",
+      "name": [
+        "M1A2 SEPv3",
+        "M1A2 SEPV3"
+      ],
+      "desc": [
+        "The newest Abrams. Better optics, better gun.",
+        "M1A2 主战坦克，搭载一门M256型120口径44倍径滑膛炮"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 3,
+      "cost": 1430,
+      "buildTime": 40.0,
+      "hp": 5250,
+      "pop": 4,
+      "armor": "heavy",
+      "vision": 5,
+      "radius": 24,
+      "speed": 53,
+      "turnRate": 0.84,
+      "trail": "tire",
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "gun",
+          "cls": "cannon",
+          "dmg": 135,
+          "reload": 4.2,
+          "range": 9.5,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "shell",
+          "speed": 700,
+          "splash": 12,
+          "turret": true,
+          "sound": "adolence-120mm-2",
+          "muzzleOffset": 42.1
+        },
+        {
+          "id": "coax",
+          "cls": "mg",
+          "dmg": 9,
+          "reload": 0.45,
+          "range": 6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "turret": true,
+          "sound": "mg",
+          "muzzleOffset": 42.1
+        }
+      ],
+      "body": {
+        "r": 17.2,
+        "len": 57.8
+      },
+      "sprite": "u.adolence-m1a2-sepv3",
+      "turretSprite": "tur.adolence-m1a2-sepv3",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-m1a1-clickbait",
+      "name": [
+        "M1A1 HC \"Clickbait\"",
+        "M1A1 HC“标题党”"
+      ],
+      "desc": [
+        "The old Abrams with a name. 120 mm and a coaxial gun.",
+        "M1A1 HC 主战坦克“标题党”号，搭载一门M256型120口径44倍径滑膛炮"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 3,
+      "cost": 1430,
+      "buildTime": 40.0,
+      "hp": 5250,
+      "pop": 4,
+      "armor": "heavy",
+      "vision": 5,
+      "radius": 24,
+      "speed": 53,
+      "turnRate": 0.84,
+      "trail": "tire",
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "gun",
+          "cls": "cannon",
+          "dmg": 120,
+          "reload": 4.5,
+          "range": 9,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "shell",
+          "speed": 700,
+          "splash": 12,
+          "turret": true,
+          "sound": "adolence-120mm-2",
+          "muzzleOffset": 42.1
+        },
+        {
+          "id": "coax",
+          "cls": "mg",
+          "dmg": 9,
+          "reload": 0.45,
+          "range": 6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "turret": true,
+          "sound": "mg",
+          "muzzleOffset": 42.1
+        }
+      ],
+      "body": {
+        "r": 17.2,
+        "len": 57.8
+      },
+      "sprite": "u.adolence-m1a1-clickbait",
+      "turretSprite": "tur.adolence-m1a1-clickbait",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-light-ifv",
+      "name": [
+        "Light Amphibious IFV",
+        "轻型两栖步战"
+      ],
+      "desc": [
+        "Hovercraft infantry carrier with a machine gun. Carries four.",
+        "海面运输，搭载机枪 “战争在召唤!”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 175,
+      "buildTime": 6.0,
+      "hp": 525,
+      "pop": 2,
+      "armor": "medium",
+      "vision": 4,
+      "radius": 18,
+      "speed": 48,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 1,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 3.4,
+          "reload": 0.4,
+          "range": 3.7,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 768,
+          "sound": "cannon",
+          "muzzleOffset": 20.0,
+          "turret": true
+        }
+      ],
+      "body": {
+        "r": 13.3,
+        "len": 21.9
+      },
+      "sprite": "u.adolence-light-ifv",
+      "turretSprite": "tur.adolence-light-ifv",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-heavy-ifv",
+      "name": [
+        "Heavy Amphibious IFV",
+        "重型两栖步战"
+      ],
+      "desc": [
+        "Big hovercraft carrier with a machine gun. Carries eight.",
+        "海面运输，搭载机枪 “战争在召唤!”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 220,
+      "buildTime": 10.0,
+      "hp": 875,
+      "pop": 2,
+      "armor": "medium",
+      "vision": 4,
+      "radius": 24,
+      "speed": 48,
+      "turnRate": 2.09,
+      "trail": "tire",
+      "transportCap": 8,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 3.4,
+          "reload": 0.4,
+          "range": 3.7,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 672,
+          "sound": "cannon",
+          "muzzleOffset": 20.8,
+          "turret": true
+        }
+      ],
+      "body": {
+        "r": 15.6,
+        "len": 28.1
+      },
+      "sprite": "u.adolence-heavy-ifv",
+      "turretSprite": "tur.adolence-heavy-ifv",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-extremism",
+      "name": [
+        "\"Extremism\"",
+        "极征主义"
+      ],
+      "desc": [
+        "Experimental super-heavy tank. The world belongs to it.",
+        "火力强度较高，自动修复 “极征，极征!”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 3,
+      "cost": 1990,
+      "buildTime": 30.0,
+      "hp": 2800,
+      "pop": 4,
+      "armor": "heavy",
+      "vision": 5,
+      "radius": 24,
+      "speed": 41,
+      "turnRate": 0.73,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "4",
+          "cls": "autocannon",
+          "dmg": 14.0,
+          "reload": 0.44,
+          "range": 12,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "bullet",
+          "speed": 576,
+          "bores": 2,
+          "boreSpacing": 19.2,
+          "muzzleOffset": 2,
+          "turret": true
+        },
+        {
+          "id": "1",
+          "cls": "he",
+          "dmg": 56.0,
+          "reload": 3.06,
+          "range": 12,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "shell",
+          "speed": 576,
+          "splash": 90,
+          "arc": true,
+          "spread": 26,
+          "sound": "cannon",
+          "muzzleOffset": 31.4,
+          "turret": true
+        },
+        {
+          "id": "2",
+          "cls": "aa",
+          "dmg": 42.0,
+          "reload": 2.56,
+          "range": 12,
+          "targets": [
+            "air"
+          ],
+          "projectile": "missile",
+          "speed": 192,
+          "homing": true,
+          "sound": "missile",
+          "muzzleOffset": 20.4,
+          "turret": true
+        }
+      ],
+      "body": {
+        "r": 19.5,
+        "len": 12.5
+      },
+      "sprite": "u.adolence-extremism",
+      "turretSprite": "tur.adolence-extremism",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-precinct-2",
+        "adolence-arsenal"
+      ]
+    },
+    {
+      "id": "adolence-police-heli",
+      "name": [
+        "Police Helicopter",
+        "警用直升机-A"
+      ],
+      "desc": [
+        "Unarmed transport helicopter for four.",
+        "警用运输直升机，无武装，可载四人"
+      ],
+      "kind": "unit",
+      "domain": "air",
+      "tier": 1,
+      "cost": 350,
+      "buildTime": 20.0,
+      "hp": 140,
+      "pop": 2,
+      "armor": "air",
+      "vision": 6,
+      "radius": 18,
+      "speed": 95,
+      "turnRate": 6.28,
+      "hovers": true,
+      "transportCap": 4,
+      "body": {
+        "r": 7.8,
+        "len": 45.3
+      },
+      "sprite": "u.adolence-police-heli",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-helipad",
+        "adolence-airfield"
+      ]
+    },
+    {
+      "id": "adolence-light-gunship",
+      "name": [
+        "Light Attack Helicopter",
+        "轻型武装直升机"
+      ],
+      "desc": [
+        "Light gunship: guns and rockets.",
+        "双联对空对地，最大运载四人小组 “早上好，越南！”（带有部分AI智能系统）"
+      ],
+      "kind": "unit",
+      "domain": "air",
+      "tier": 1,
+      "cost": 440,
+      "buildTime": 30.0,
+      "hp": 175,
+      "pop": 2,
+      "armor": "air",
+      "vision": 4,
+      "radius": 21,
+      "speed": 116,
+      "turnRate": 1.57,
+      "hovers": true,
+      "transportCap": 4,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 2.8,
+          "reload": 0.6,
+          "range": 12,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "bullet",
+          "speed": 1440,
+          "bores": 2,
+          "boreSpacing": 30.8,
+          "sound": "mg",
+          "turret": false,
+          "muzzleOffset": 29.9
+        },
+        {
+          "id": "r",
+          "cls": "at",
+          "dmg": 12.6,
+          "reload": 5.0,
+          "range": 12,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "missile",
+          "speed": 192,
+          "splash": 35,
+          "homing": true,
+          "bores": 2,
+          "boreSpacing": 38.4,
+          "sound": "missile",
+          "turret": false,
+          "muzzleOffset": 29.9
+        }
+      ],
+      "body": {
+        "r": 16.4,
+        "len": 34.4
+      },
+      "sprite": "u.adolence-light-gunship",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-airfield"
+      ]
+    },
+    {
+      "id": "adolence-heavy-gunship",
+      "name": [
+        "Heavy Attack Helicopter",
+        "重型武装直升机"
+      ],
+      "desc": [
+        "Twin cannon and rockets, air and ground. Carries a two-man team.",
+        "双挺机炮对空对地，最大运载2人小组 “停下，我叫你停下!”"
+      ],
+      "kind": "unit",
+      "domain": "air",
+      "tier": 2,
+      "cost": 650,
+      "buildTime": 40.0,
+      "hp": 507,
+      "pop": 3,
+      "armor": "air",
+      "vision": 4,
+      "radius": 24,
+      "speed": 95,
+      "turnRate": 0.94,
+      "hovers": true,
+      "transportCap": 2,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 3.5,
+          "reload": 0.3,
+          "range": 12,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "bullet",
+          "speed": 1440,
+          "bores": 2,
+          "boreSpacing": 30.8,
+          "sound": "adolence-heli-gun",
+          "turret": false,
+          "muzzleOffset": 34.7
+        },
+        {
+          "id": "r",
+          "cls": "at",
+          "dmg": 14.0,
+          "reload": 5.0,
+          "range": 12,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "missile",
+          "speed": 192,
+          "splash": 35,
+          "homing": true,
+          "bores": 2,
+          "boreSpacing": 38.4,
+          "sound": "missile",
+          "turret": false,
+          "muzzleOffset": 34.7
+        }
+      ],
+      "body": {
+        "r": 18.0,
+        "len": 40.6
+      },
+      "sprite": "u.adolence-heavy-gunship",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-airfield"
+      ]
+    },
+    {
+      "id": "adolence-bomber",
+      "name": [
+        "Military Bomber",
+        "军用轰炸机"
+      ],
+      "desc": [
+        "Heavy bombs on a slow airframe.",
+        "仅轰炸地域单位，死亡引发弹药库殉爆 “怒浪涛涛，我不怕。”"
+      ],
+      "kind": "unit",
+      "domain": "air",
+      "tier": 2,
+      "cost": 940,
+      "buildTime": 40.0,
+      "hp": 1050,
+      "pop": 3,
+      "armor": "air",
+      "vision": 4,
+      "radius": 24,
+      "speed": 116,
+      "turnRate": 1.26,
+      "transportCap": 1,
+      "weapons": [
+        {
+          "id": "bombs",
+          "cls": "he",
+          "dmg": 85,
+          "reload": 6.5,
+          "range": 2.4,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bomb",
+          "speed": 120,
+          "splash": 42,
+          "burst": 3,
+          "burstDelay": 0.25,
+          "turret": false,
+          "sound": "bomb",
+          "muzzleOffset": 28.1
+        }
+      ],
+      "body": {
+        "r": 21.9,
+        "len": 18.8
+      },
+      "sprite": "u.adolence-bomber",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-airfield"
+      ]
+    },
+    {
+      "id": "adolence-transport-heli",
+      "name": [
+        "SAR Transport Helicopter",
+        "特区运输机"
+      ],
+      "desc": [
+        "Transport helicopter for a squad.",
+        "核载8人 “目的地，罪恶之都。”"
+      ],
+      "kind": "unit",
+      "domain": "air",
+      "tier": 1,
+      "cost": 310,
+      "buildTime": 30.0,
+      "hp": 420,
+      "pop": 2,
+      "armor": "air",
+      "vision": 4,
+      "radius": 24,
+      "speed": 95,
+      "turnRate": 2.09,
+      "hovers": true,
+      "transportCap": 8,
+      "body": {
+        "r": 9.4,
+        "len": 51.6
+      },
+      "sprite": "u.adolence-transport-heli",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-airfield"
+      ]
+    },
+    {
+      "id": "adolence-fighter-u9",
+      "name": [
+        "Eagle Strike U9",
+        "鹰击-U9战斗机"
+      ],
+      "desc": [
+        "Air-superiority fighter.",
+        "地空通用战机（有效打击地面单位 对空基础较弱）“四挺机炮与一门追踪导弹-让敌人有来无回！”"
+      ],
+      "kind": "unit",
+      "domain": "air",
+      "tier": 2,
+      "cost": 1055,
+      "buildTime": 34.0,
+      "hp": 1050,
+      "pop": 4,
+      "armor": "air",
+      "vision": 5,
+      "radius": 24,
+      "speed": 300,
+      "turnRate": 4.19,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "mg",
+          "dmg": 7.4,
+          "reload": 0.3,
+          "range": 8.3,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "bullet",
+          "speed": 1248,
+          "burst": 4,
+          "burstDelay": 0.12,
+          "sound": "adolence-autocannon",
+          "turret": false,
+          "muzzleOffset": 31.0
+        },
+        {
+          "id": "3",
+          "cls": "at",
+          "dmg": 61.4,
+          "reload": 5.0,
+          "range": 8.3,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "missile",
+          "speed": 1008,
+          "splash": 77,
+          "homing": true,
+          "sound": "adolence-flame-3",
+          "turret": false,
+          "muzzleOffset": 31.0
+        }
+      ],
+      "body": {
+        "r": 23.4,
+        "len": 21.9
+      },
+      "sprite": "u.adolence-fighter-u9",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-airfield"
+      ]
+    },
+    {
+      "id": "adolence-fighter-a2",
+      "name": [
+        "Eagle Strike A2",
+        "鹰击-A2"
+      ],
+      "desc": [
+        "Multirole fighter.",
+        "非专业对空战机 （有效压制中后期空中威胁）“两挺机炮与两门追踪飞弹”"
+      ],
+      "kind": "unit",
+      "domain": "air",
+      "tier": 2,
+      "cost": 930,
+      "hp": 420,
+      "pop": 3,
+      "armor": "air",
+      "vision": 5,
+      "radius": 24,
+      "speed": 300,
+      "turnRate": 4.19,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "aa",
+          "dmg": 33.6,
+          "reload": 0.4,
+          "range": 8.3,
+          "targets": [
+            "air"
+          ],
+          "projectile": "flak",
+          "speed": 1500,
+          "bores": 2,
+          "boreSpacing": 15.4,
+          "sound": "adolence-autocannon",
+          "turret": false,
+          "muzzleOffset": 25.4
+        },
+        {
+          "id": "2",
+          "cls": "aa",
+          "dmg": 42.0,
+          "reload": 5.5,
+          "range": 8.3,
+          "targets": [
+            "air"
+          ],
+          "projectile": "missile",
+          "speed": 1152,
+          "splash": 38,
+          "homing": true,
+          "bores": 2,
+          "boreSpacing": 12.8,
+          "sound": "adolence-flame-3",
+          "turret": false,
+          "muzzleOffset": 25.4
+        }
+      ],
+      "body": {
+        "r": 21.1,
+        "len": 14.1
+      },
+      "sprite": "u.adolence-fighter-a2",
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-airfield"
+      ]
+    },
+    {
+      "id": "adolence-scout-boat",
+      "name": [
+        "Coast Guard Scout Boat",
+        "海警侦船"
+      ],
+      "desc": [
+        "Unarmed patrol boat with long eyes.",
+        "警用侦查舰艇，无法攻击 “暂无异常...”"
+      ],
+      "kind": "unit",
+      "domain": "ship",
+      "tier": 1,
+      "cost": 115,
+      "buildTime": 10.0,
+      "hp": 140,
+      "pop": 1,
+      "armor": "ship",
+      "vision": 9,
+      "radius": 13,
+      "speed": 63,
+      "turnRate": 2.09,
+      "fireOnMove": true,
+      "body": {
+        "r": 10.9,
+        "len": 23.4
+      },
+      "sprite": "u.adolence-scout-boat",
+      "aiWeight": 1.5
+    },
+    {
+      "id": "adolence-drone-carrier",
+      "name": [
+        "\"Rout North\" Carrier",
+        "溃北"
+      ],
+      "desc": [
+        "Experimental drone carrier: naval guns and a missile battery.",
+        "无人机舰导母舰，国会绝对武力 “舰导就位!”"
+      ],
+      "kind": "unit",
+      "domain": "ship",
+      "tier": 3,
+      "cost": 1310,
+      "buildTime": 40.0,
+      "hp": 2800,
+      "pop": 4,
+      "armor": "ship",
+      "vision": 16,
+      "radius": 24,
+      "speed": 26,
+      "turnRate": 0.59,
+      "fireOnMove": true,
+      "weapons": [
+        {
+          "id": "guns",
+          "cls": "navgun",
+          "dmg": 45,
+          "reload": 1.4,
+          "range": 8,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "shell",
+          "speed": 520,
+          "splash": 10,
+          "bores": 2,
+          "boreSpacing": 9,
+          "turret": false,
+          "sound": "cannon",
+          "muzzleOffset": 41.0
+        },
+        {
+          "id": "sam",
+          "cls": "aa",
+          "dmg": 60,
+          "reload": 2.4,
+          "range": 8,
+          "targets": [
+            "air"
+          ],
+          "projectile": "missile",
+          "speed": 460,
+          "homing": true,
+          "turret": false,
+          "sound": "missile",
+          "muzzleOffset": 41.0
+        }
+      ],
+      "body": {
+        "r": 26.6,
+        "len": 37.5
+      },
+      "sprite": "u.adolence-drone-carrier",
+      "aiWeight": 1.5
+    },
+    {
+      "id": "adolence-zombie",
+      "name": [
+        "Zombie",
+        "丧尸-M"
+      ],
+      "desc": [
+        "The common dead. Slow, weak, many.",
+        "小型变异体"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 20,
+      "buildTime": 28.0,
+      "hp": 40,
+      "pop": 1,
+      "armor": "light",
+      "vision": 6,
+      "radius": 9,
+      "speed": 81,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 5.0,
+          "reload": 0.67,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "turret": false,
+          "muzzleOffset": 10.1
+        }
+      ],
+      "body": {
+        "r": 7.0,
+        "len": 1.6
+      },
+      "sprite": "u.adolence-zombie",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-brute",
+      "name": [
+        "Brute",
+        "丧尸-壮汉"
+      ],
+      "desc": [
+        "A big one. Hits hard.",
+        "小型变异体"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 40,
+      "buildTime": 28.0,
+      "hp": 52,
+      "pop": 1,
+      "armor": "light",
+      "vision": 6,
+      "radius": 9,
+      "speed": 67,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 15.0,
+          "reload": 0.67,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "turret": false,
+          "muzzleOffset": 10.1
+        }
+      ],
+      "body": {
+        "r": 7.0,
+        "len": 1.6
+      },
+      "sprite": "u.adolence-brute",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-bloater",
+      "name": [
+        "Bloater",
+        "丧尸-胖子"
+      ],
+      "desc": [
+        "Swollen and slow.",
+        "小型变异体"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 45,
+      "buildTime": 28.0,
+      "hp": 63,
+      "pop": 1,
+      "armor": "light",
+      "vision": 6,
+      "radius": 7,
+      "speed": 30,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 12.5,
+          "reload": 0.67,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "turret": false,
+          "muzzleOffset": 10.1
+        }
+      ],
+      "body": {
+        "r": 8.6,
+        "len": 0
+      },
+      "sprite": "u.adolence-bloater",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-prisoner",
+      "name": [
+        "Prisoner",
+        "丧尸-囚徒"
+      ],
+      "desc": [
+        "Still in orange. Tougher than it looks.",
+        "虐杀者"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 95,
+      "buildTime": 28.0,
+      "hp": 175,
+      "pop": 1,
+      "armor": "light",
+      "vision": 6,
+      "radius": 9,
+      "speed": 30,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 5.0,
+          "reload": 0.67,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "turret": false,
+          "muzzleOffset": 9.2
+        }
+      ],
+      "body": {
+        "r": 6.2,
+        "len": 1.6
+      },
+      "sprite": "u.adolence-prisoner",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-rager",
+      "name": [
+        "Rager",
+        "丧尸-愤怒"
+      ],
+      "desc": [
+        "Fast and furious. Goes straight for buildings.",
+        "愤怒在内心深处奔腾，但生活却只允许隐忍 “当你忍无可忍...”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 95,
+      "buildTime": 28.0,
+      "hp": 175,
+      "pop": 1,
+      "armor": "light",
+      "vision": 6,
+      "radius": 9,
+      "speed": 30,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "he",
+          "dmg": 32.5,
+          "reload": 0.67,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 500,
+          "turret": false,
+          "muzzleOffset": 12.9
+        }
+      ],
+      "body": {
+        "r": 12.5,
+        "len": 0
+      },
+      "sprite": "u.adolence-rager",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-burster",
+      "name": [
+        "Burster",
+        "丧尸-爆裂者"
+      ],
+      "desc": [
+        "Bursts on contact.",
+        "让一切都去死，怎样?，尖叫，爆裂，死亡 “爆炸就是艺术！”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 30,
+      "buildTime": 28.0,
+      "hp": 42,
+      "pop": 1,
+      "armor": "light",
+      "vision": 6,
+      "radius": 9,
+      "speed": 30,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 5.0,
+          "reload": 0.67,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "turret": false,
+          "muzzleOffset": 7.8
+        }
+      ],
+      "body": {
+        "r": 6.2,
+        "len": 0
+      },
+      "sprite": "u.adolence-burster",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-imploder",
+      "name": [
+        "Imploder",
+        "丧尸-聚爆者"
+      ],
+      "desc": [
+        "Collapses inward with a blast.",
+        "小型变异体"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 50,
+      "buildTime": 28.0,
+      "hp": 77,
+      "pop": 1,
+      "armor": "light",
+      "vision": 6,
+      "radius": 9,
+      "speed": 30,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 5.0,
+          "reload": 0.67,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "turret": false,
+          "muzzleOffset": 9.0
+        }
+      ],
+      "body": {
+        "r": 8.6,
+        "len": 0
+      },
+      "sprite": "u.adolence-imploder",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-turned-officer",
+      "name": [
+        "Turned Officer",
+        "异常民警-手枪"
+      ],
+      "desc": [
+        "Was a beat cop. Still has the pistol.",
+        "射击敌方目标 “肌肉记忆。”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 30,
+      "buildTime": 15.0,
+      "hp": 40,
+      "pop": 1,
+      "armor": "light",
+      "vision": 6,
+      "radius": 5,
+      "speed": 52,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 5.8,
+          "reload": 1.08,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "turret": false,
+          "muzzleOffset": 11.5
+        },
+        {
+          "id": "1",
+          "cls": "autocannon",
+          "dmg": 2.5,
+          "reload": 1.5,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 1440,
+          "sound": "mg",
+          "turret": false,
+          "muzzleOffset": 11.5
+        }
+      ],
+      "body": {
+        "r": 7.8,
+        "len": 1.6
+      },
+      "sprite": "u.adolence-turned-officer",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-turned-anti-materiel",
+      "name": [
+        "Turned Anti-Materiel",
+        "异常陆战队-反器材"
+      ],
+      "desc": [
+        "Was task force. Still has the big rifle.",
+        "射击敌方目标 “肌肉记忆。”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 35,
+      "buildTime": 15.0,
+      "hp": 44,
+      "pop": 1,
+      "armor": "light",
+      "vision": 6,
+      "radius": 5,
+      "speed": 52,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "autocannon",
+          "dmg": 16.5,
+          "reload": 2.08,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "bullet",
+          "speed": 1440,
+          "sound": "adolence-h-shot",
+          "turret": false,
+          "muzzleOffset": 17.4
+        },
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 5.8,
+          "reload": 1.67,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "turret": false,
+          "muzzleOffset": 17.4
+        }
+      ],
+      "body": {
+        "r": 7.0,
+        "len": 12.5
+      },
+      "sprite": "u.adolence-turned-anti-materiel",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-road-rage",
+      "name": [
+        "Road Rage",
+        "路怒症"
+      ],
+      "desc": [
+        "A wrecked car that hates vehicles.",
+        "似乎对车辆特别敏感，保护好你们的车辆吧"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 185,
+      "buildTime": 28.0,
+      "hp": 420,
+      "pop": 1,
+      "armor": "medium",
+      "vision": 6,
+      "radius": 9,
+      "speed": 30,
+      "turnRate": 2.09,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 12.5,
+          "reload": 0.67,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "turret": false,
+          "muzzleOffset": 22.5
+        }
+      ],
+      "body": {
+        "r": 17.2,
+        "len": 0
+      },
+      "sprite": "u.adolence-road-rage",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-acid-mass",
+      "name": [
+        "Acid Mass",
+        "血肉酸稠"
+      ],
+      "desc": [
+        "A crawling mass that spits acid at vehicles.",
+        "身旁的血肉似乎暗示着什么，这场灾难似乎很不自然"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 1,
+      "cost": 95,
+      "buildTime": 28.0,
+      "hp": 175,
+      "pop": 1,
+      "armor": "medium",
+      "vision": 6,
+      "radius": 9,
+      "speed": 30,
+      "turnRate": 2.09,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "at",
+          "dmg": 12.5,
+          "reload": 0.58,
+          "range": 6.3,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "missile",
+          "speed": 1344,
+          "homing": true,
+          "bores": 2,
+          "boreSpacing": 30.8,
+          "turret": false,
+          "muzzleOffset": 19.3
+        }
+      ],
+      "body": {
+        "r": 11.7,
+        "len": 6.2
+      },
+      "sprite": "u.adolence-acid-mass",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-gloater",
+      "name": [
+        "Gloater",
+        "幸灾乐祸"
+      ],
+      "desc": [
+        "An aquatic mutant.",
+        "它总是凝望着，但没人知晓 “窥视，只是窥视。”"
+      ],
+      "kind": "unit",
+      "domain": "ship",
+      "tier": 1,
+      "cost": 45,
+      "buildTime": 28.0,
+      "hp": 70,
+      "pop": 1,
+      "armor": "ship",
+      "vision": 6,
+      "radius": 9,
+      "speed": 148,
+      "turnRate": 8,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 5.0,
+          "reload": 0.67,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "turret": false,
+          "muzzleOffset": 27.2
+        }
+      ],
+      "body": {
+        "r": 14.1,
+        "len": 14.1
+      },
+      "sprite": "u.adolence-gloater",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-flying-husk",
+      "name": [
+        "Flying Husk",
+        "飞骸"
+      ],
+      "desc": [
+        "A winged carcass with a burning gaze.",
+        "飞行的骸骨，目光灼灼"
+      ],
+      "kind": "unit",
+      "domain": "air",
+      "tier": 1,
+      "cost": 80,
+      "hp": 140,
+      "pop": 1,
+      "armor": "air",
+      "vision": 5,
+      "radius": 11,
+      "speed": 222,
+      "turnRate": 1.05,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "autocannon",
+          "dmg": 12.5,
+          "reload": 1.06,
+          "range": 5.5,
+          "targets": [
+            "ground",
+            "ship",
+            "air",
+            "sub"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "sound": "adolence-husk-beam",
+          "turret": false,
+          "muzzleOffset": 27.9
+        }
+      ],
+      "body": {
+        "r": 35.9,
+        "len": 0
+      },
+      "sprite": "u.adolence-flying-husk",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-gorilla",
+      "name": [
+        "Gorilla",
+        "大猩猩"
+      ],
+      "desc": [
+        "Looks like a gorilla. Can reach aircraft.",
+        "看起来就像大猩猩，似乎充满力量和冲动[不不...这玩意似乎能打到飞机...]"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 275,
+      "buildTime": 4,
+      "hp": 700,
+      "pop": 2,
+      "armor": "heavy",
+      "vision": 8,
+      "radius": 13,
+      "speed": 52,
+      "turnRate": 2.09,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 50.0,
+          "reload": 0.67,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "splash": 38,
+          "turret": false,
+          "muzzleOffset": 18.8
+        }
+      ],
+      "body": {
+        "r": 15.6,
+        "len": 10.9
+      },
+      "sprite": "u.adolence-gorilla",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-no-longer-human",
+      "name": [
+        "No Longer Human",
+        "人间失格"
+      ],
+      "desc": [
+        "Ten thousand hit points of hate.",
+        "巨人，死亡的巨人，在大地上游荡，它吞噬一切，它毁灭一切，它质疑一切"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 3,
+      "cost": 930,
+      "buildTime": 4,
+      "hp": 3500,
+      "pop": 3,
+      "armor": "heavy",
+      "vision": 8,
+      "radius": 24,
+      "speed": 67,
+      "turnRate": 2.09,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 87.5,
+          "reload": 1.08,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "splash": 54,
+          "turret": false,
+          "muzzleOffset": 24.7
+        }
+      ],
+      "body": {
+        "r": 26.6,
+        "len": 1.6
+      },
+      "sprite": "u.adolence-no-longer-human",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-sin-of-wrath",
+      "name": [
+        "Sin of Wrath",
+        "暴虐之罪"
+      ],
+      "desc": [
+        "One of the Sins.",
+        "七宗罪里没有这桩罪，然而，如果犯下更多 “那么，揭下面具，你是谁?”"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 3,
+      "cost": 370,
+      "buildTime": 4,
+      "hp": 1050,
+      "pop": 2,
+      "armor": "heavy",
+      "vision": 8,
+      "radius": 13,
+      "speed": 74,
+      "turnRate": 2.09,
+      "weapons": [
+        {
+          "id": "2",
+          "cls": "autocannon",
+          "dmg": 70.0,
+          "reload": 0.83,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "splash": 38,
+          "turret": false,
+          "muzzleOffset": 25.7
+        }
+      ],
+      "body": {
+        "r": 25.0,
+        "len": 7.8
+      },
+      "sprite": "u.adolence-sin-of-wrath",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    },
+    {
+      "id": "adolence-sin-of-gluttony",
+      "name": [
+        "Sin of Gluttony",
+        "暴食之罪"
+      ],
+      "desc": [
+        "The eater. One of the Sins.",
+        "出于对幸福的渴望，对美好的厌憎"
+      ],
+      "kind": "unit",
+      "domain": "ground",
+      "tier": 2,
+      "cost": 130,
+      "buildTime": 16.0,
+      "hp": 210,
+      "pop": 1,
+      "armor": "heavy",
+      "vision": 8,
+      "radius": 12,
+      "speed": 74,
+      "turnRate": 2.6,
+      "weapons": [
+        {
+          "id": "1",
+          "cls": "autocannon",
+          "dmg": 10.2,
+          "reload": 0.5,
+          "range": 0.6,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "projectile": "bullet",
+          "speed": 900,
+          "turret": false,
+          "muzzleOffset": 21.8
+        }
+      ],
+      "body": {
+        "r": 14.1,
+        "len": 20.3
+      },
+      "sprite": "u.adolence-sin-of-gluttony",
+      "aiWeight": 0,
+      "producedBy": [
+        "adolence-sloth-nest"
+      ]
+    }
+  ],
+  "sprites": [
+    {
+      "key": "u.adolence-precinct",
+      "file": "sprites/u.adolence-precinct.png",
+      "frames": 1
+    },
+    {
+      "key": "u.adolence-outpost",
+      "file": "sprites/u.adolence-outpost.png",
+      "frames": 1
+    },
+    {
+      "key": "u.adolence-garage",
+      "file": "sprites/u.adolence-garage.png",
+      "frames": 1
+    },
+    {
+      "key": "u.adolence-helipad",
+      "file": "sprites/u.adolence-helipad.png",
+      "frames": 1
+    },
+    {
+      "key": "u.adolence-solar",
+      "file": "sprites/u.adolence-solar.png",
+      "frames": 1
+    },
+    {
+      "key": "u.adolence-solar-2",
+      "file": "sprites/u.adolence-solar-2.png",
+      "frames": 1
+    },
+    {
+      "key": "u.adolence-supply-cache",
+      "file": "sprites/u.adolence-supply-cache.png",
+      "frames": 1
+    },
+    {
+      "key": "u.adolence-supply-cache-2",
+      "file": "sprites/u.adolence-supply-cache-2.png",
+      "frames": 1
+    },
+    {
+      "key": "u.adolence-mg-tower",
+      "file": "sprites/u.adolence-mg-tower.png",
+      "frames": 1
+    },
+    {
+      "key": "tur.adolence-mg-tower",
+      "file": "sprites/tur.adolence-mg-tower.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 4,
+      "fh": 36
+    },
+    {
+      "key": "u.adolence-barricade",
+      "file": "sprites/u.adolence-barricade.png",
+      "frames": 1
+    },
+    {
+      "key": "u.adolence-sloth-nest",
+      "file": "sprites/u.adolence-sloth-nest.png",
+      "frames": 1
+    },
+    {
+      "key": "u.adolence-officer-pistol",
+      "file": "sprites/u.adolence-officer-pistol.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 7
+    },
+    {
+      "key": "u.adolence-officer-rifle",
+      "file": "sprites/u.adolence-officer-rifle.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 11
+    },
+    {
+      "key": "u.adolence-traffic-officer",
+      "file": "sprites/u.adolence-traffic-officer.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 11
+    },
+    {
+      "key": "u.adolence-armed-police-pistol",
+      "file": "sprites/u.adolence-armed-police-pistol.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 8
+    },
+    {
+      "key": "u.adolence-armed-police-rifle",
+      "file": "sprites/u.adolence-armed-police-rifle.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 6,
+      "fh": 10
+    },
+    {
+      "key": "u.adolence-swat-sea",
+      "file": "sprites/u.adolence-swat-sea.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 10
+    },
+    {
+      "key": "u.adolence-swat-field",
+      "file": "sprites/u.adolence-swat-field.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 10
+    },
+    {
+      "key": "u.adolence-army-woodland",
+      "file": "sprites/u.adolence-army-woodland.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 6,
+      "fh": 9
+    },
+    {
+      "key": "u.adolence-army-marksman",
+      "file": "sprites/u.adolence-army-marksman.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 10
+    },
+    {
+      "key": "u.adolence-guard-rifleman",
+      "file": "sprites/u.adolence-guard-rifleman.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 6,
+      "fh": 10
+    },
+    {
+      "key": "u.adolence-guard-gunner",
+      "file": "sprites/u.adolence-guard-gunner.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 6,
+      "fh": 10
+    },
+    {
+      "key": "u.adolence-guard-flamethrower",
+      "file": "sprites/u.adolence-guard-flamethrower.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 12
+    },
+    {
+      "key": "u.adolence-military-police",
+      "file": "sprites/u.adolence-military-police.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 6,
+      "fh": 10
+    },
+    {
+      "key": "u.adolence-taskforce-rifleman",
+      "file": "sprites/u.adolence-taskforce-rifleman.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 11
+    },
+    {
+      "key": "u.adolence-taskforce-grenadier",
+      "file": "sprites/u.adolence-taskforce-grenadier.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 11
+    },
+    {
+      "key": "u.adolence-taskforce-anti-materiel",
+      "file": "sprites/u.adolence-taskforce-anti-materiel.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 13
+    },
+    {
+      "key": "u.adolence-taskforce-rocketeer",
+      "file": "sprites/u.adolence-taskforce-rocketeer.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 9,
+      "fh": 11
+    },
+    {
+      "key": "u.adolence-taskforce-gunner",
+      "file": "sprites/u.adolence-taskforce-gunner.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 12
+    },
+    {
+      "key": "u.adolence-taskforce-shotgunner",
+      "file": "sprites/u.adolence-taskforce-shotgunner.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 11
+    },
+    {
+      "key": "u.adolence-zhongzhou-rifleman",
+      "file": "sprites/u.adolence-zhongzhou-rifleman.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 10
+    },
+    {
+      "key": "u.adolence-zhongzhou-sniper",
+      "file": "sprites/u.adolence-zhongzhou-sniper.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 7,
+      "fh": 11
+    },
+    {
+      "key": "u.adolence-purge-gunner",
+      "file": "sprites/u.adolence-purge-gunner.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 10,
+      "fh": 20
+    },
+    {
+      "key": "u.adolence-sedan-black",
+      "file": "sprites/u.adolence-sedan-black.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 15,
+      "fh": 32
+    },
+    {
+      "key": "u.adolence-cruiser",
+      "file": "sprites/u.adolence-cruiser.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 15,
+      "fh": 32
+    },
+    {
+      "key": "u.adolence-armoured-car",
+      "file": "sprites/u.adolence-armoured-car.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 16,
+      "fh": 34
+    },
+    {
+      "key": "u.adolence-amphibious-car",
+      "file": "sprites/u.adolence-amphibious-car.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 18,
+      "fh": 33
+    },
+    {
+      "key": "u.adolence-command-van",
+      "file": "sprites/u.adolence-command-van.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 16,
+      "fh": 42
+    },
+    {
+      "key": "u.adolence-comms-van",
+      "file": "sprites/u.adolence-comms-van.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 15,
+      "fh": 41
+    },
+    {
+      "key": "u.adolence-heavy-escort",
+      "file": "sprites/u.adolence-heavy-escort.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 13,
+      "fh": 37
+    },
+    {
+      "key": "u.adolence-ambush-car",
+      "file": "sprites/u.adolence-ambush-car.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 18,
+      "fh": 42
+    },
+    {
+      "key": "u.adolence-mortar",
+      "file": "sprites/u.adolence-mortar.png",
+      "frames": 2,
+      "rotated": true,
+      "fw": 16,
+      "fh": 29
+    },
+    {
+      "key": "u.adolence-heavy-mg",
+      "file": "sprites/u.adolence-heavy-mg.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 11,
+      "fh": 23
+    },
+    {
+      "key": "tur.adolence-heavy-mg",
+      "file": "sprites/tur.adolence-heavy-mg.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 17,
+      "fh": 29
+    },
+    {
+      "key": "u.adolence-walker-rifle",
+      "file": "sprites/u.adolence-walker-rifle.png",
+      "frames": 3,
+      "rotated": true,
+      "fw": 11,
+      "fh": 36
+    },
+    {
+      "key": "u.adolence-walker-grenade",
+      "file": "sprites/u.adolence-walker-grenade.png",
+      "frames": 3,
+      "rotated": true,
+      "fw": 15,
+      "fh": 33
+    },
+    {
+      "key": "u.adolence-light-tank-lmg",
+      "file": "sprites/u.adolence-light-tank-lmg.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 17,
+      "fh": 27
+    },
+    {
+      "key": "tur.adolence-light-tank-lmg",
+      "file": "sprites/tur.adolence-light-tank-lmg.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 14,
+      "fh": 40
+    },
+    {
+      "key": "tur.adolence-light-tank-mg",
+      "file": "sprites/tur.adolence-light-tank-mg.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 4,
+      "fh": 40
+    },
+    {
+      "key": "u.adolence-light-tank",
+      "file": "sprites/u.adolence-light-tank.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 17,
+      "fh": 26
+    },
+    {
+      "key": "tur.adolence-light-tank",
+      "file": "sprites/tur.adolence-light-tank.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 14,
+      "fh": 50
+    },
+    {
+      "key": "tur.adolence-light-tank-missile",
+      "file": "sprites/tur.adolence-light-tank-missile.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 17,
+      "fh": 19
+    },
+    {
+      "key": "tur.adolence-light-tank-flame",
+      "file": "sprites/tur.adolence-light-tank-flame.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 11,
+      "fh": 41
+    },
+    {
+      "key": "u.adolence-light-tank-sniper",
+      "file": "sprites/u.adolence-light-tank-sniper.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 16,
+      "fh": 24
+    },
+    {
+      "key": "tur.adolence-light-tank-sniper",
+      "file": "sprites/tur.adolence-light-tank-sniper.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 12,
+      "fh": 44
+    },
+    {
+      "key": "u.adolence-heavy-tank",
+      "file": "sprites/u.adolence-heavy-tank.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 18,
+      "fh": 28
+    },
+    {
+      "key": "tur.adolence-heavy-tank",
+      "file": "sprites/tur.adolence-heavy-tank.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 13,
+      "fh": 36
+    },
+    {
+      "key": "u.adolence-scout-car",
+      "file": "sprites/u.adolence-scout-car.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 14,
+      "fh": 29
+    },
+    {
+      "key": "u.adolence-assault-car",
+      "file": "sprites/u.adolence-assault-car.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 15,
+      "fh": 31
+    },
+    {
+      "key": "u.adolence-utility-vehicle",
+      "file": "sprites/u.adolence-utility-vehicle.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 16,
+      "fh": 29
+    },
+    {
+      "key": "u.adolence-utility-vehicle-mp",
+      "file": "sprites/u.adolence-utility-vehicle-mp.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 16,
+      "fh": 29
+    },
+    {
+      "key": "u.adolence-transport-truck",
+      "file": "sprites/u.adolence-transport-truck.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 16,
+      "fh": 41
+    },
+    {
+      "key": "u.adolence-m977",
+      "file": "sprites/u.adolence-m977.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 14,
+      "fh": 53
+    },
+    {
+      "key": "u.adolence-m1128",
+      "file": "sprites/u.adolence-m1128.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 18,
+      "fh": 53,
+      "mount": [
+        0.5,
+        0.574
+      ]
+    },
+    {
+      "key": "tur.adolence-m1128",
+      "file": "sprites/tur.adolence-m1128.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 19,
+      "fh": 54
+    },
+    {
+      "key": "u.adolence-m1a2",
+      "file": "sprites/u.adolence-m1a2.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 22,
+      "fh": 59
+    },
+    {
+      "key": "tur.adolence-m1a2",
+      "file": "sprites/tur.adolence-m1a2.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 22,
+      "fh": 60
+    },
+    {
+      "key": "u.adolence-m1a2-tusk",
+      "file": "sprites/u.adolence-m1a2-tusk.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 22,
+      "fh": 59
+    },
+    {
+      "key": "tur.adolence-m1a2-tusk",
+      "file": "sprites/tur.adolence-m1a2-tusk.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 22,
+      "fh": 60
+    },
+    {
+      "key": "u.adolence-m1a2-sepv3",
+      "file": "sprites/u.adolence-m1a2-sepv3.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 22,
+      "fh": 59
+    },
+    {
+      "key": "tur.adolence-m1a2-sepv3",
+      "file": "sprites/tur.adolence-m1a2-sepv3.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 22,
+      "fh": 60
+    },
+    {
+      "key": "u.adolence-m1a1-clickbait",
+      "file": "sprites/u.adolence-m1a1-clickbait.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 22,
+      "fh": 59
+    },
+    {
+      "key": "tur.adolence-m1a1-clickbait",
+      "file": "sprites/tur.adolence-m1a1-clickbait.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 22,
+      "fh": 60
+    },
+    {
+      "key": "u.adolence-light-ifv",
+      "file": "sprites/u.adolence-light-ifv.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 17,
+      "fh": 31,
+      "mount": [
+        0.4,
+        0.315
+      ]
+    },
+    {
+      "key": "tur.adolence-light-ifv",
+      "file": "sprites/tur.adolence-light-ifv.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 8,
+      "fh": 19
+    },
+    {
+      "key": "u.adolence-heavy-ifv",
+      "file": "sprites/u.adolence-heavy-ifv.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 20,
+      "fh": 38,
+      "mount": [
+        0.4,
+        0.308
+      ]
+    },
+    {
+      "key": "tur.adolence-heavy-ifv",
+      "file": "sprites/tur.adolence-heavy-ifv.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 6,
+      "fh": 16
+    },
+    {
+      "key": "u.adolence-extremism",
+      "file": "sprites/u.adolence-extremism.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 25,
+      "fh": 33,
+      "mount": [
+        0.5,
+        0.484
+      ]
+    },
+    {
+      "key": "tur.adolence-extremism",
+      "file": "sprites/tur.adolence-extremism.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 16,
+      "fh": 51
+    },
+    {
+      "key": "u.adolence-police-heli",
+      "file": "sprites/u.adolence-police-heli.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 10,
+      "fh": 39
+    },
+    {
+      "key": "u.adolence-light-gunship",
+      "file": "sprites/u.adolence-light-gunship.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 21,
+      "fh": 43
+    },
+    {
+      "key": "u.adolence-heavy-gunship",
+      "file": "sprites/u.adolence-heavy-gunship.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 23,
+      "fh": 49
+    },
+    {
+      "key": "u.adolence-bomber",
+      "file": "sprites/u.adolence-bomber.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 28,
+      "fh": 40
+    },
+    {
+      "key": "u.adolence-transport-heli",
+      "file": "sprites/u.adolence-transport-heli.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 12,
+      "fh": 45
+    },
+    {
+      "key": "u.adolence-fighter-u9",
+      "file": "sprites/u.adolence-fighter-u9.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 30,
+      "fh": 44
+    },
+    {
+      "key": "u.adolence-fighter-a2",
+      "file": "sprites/u.adolence-fighter-a2.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 27,
+      "fh": 36
+    },
+    {
+      "key": "u.adolence-scout-boat",
+      "file": "sprites/u.adolence-scout-boat.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 14,
+      "fh": 29
+    },
+    {
+      "key": "u.adolence-drone-carrier",
+      "file": "sprites/u.adolence-drone-carrier.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 34,
+      "fh": 58,
+      "mount": [
+        0.803,
+        0.88
+      ]
+    },
+    {
+      "key": "u.adolence-zombie",
+      "file": "sprites/u.adolence-zombie.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 9,
+      "fh": 10
+    },
+    {
+      "key": "u.adolence-brute",
+      "file": "sprites/u.adolence-brute.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 9,
+      "fh": 10
+    },
+    {
+      "key": "u.adolence-bloater",
+      "file": "sprites/u.adolence-bloater.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 11,
+      "fh": 10
+    },
+    {
+      "key": "u.adolence-prisoner",
+      "file": "sprites/u.adolence-prisoner.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 8,
+      "fh": 9
+    },
+    {
+      "key": "u.adolence-rager",
+      "file": "sprites/u.adolence-rager.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 16,
+      "fh": 13
+    },
+    {
+      "key": "u.adolence-burster",
+      "file": "sprites/u.adolence-burster.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 8,
+      "fh": 8
+    },
+    {
+      "key": "u.adolence-imploder",
+      "file": "sprites/u.adolence-imploder.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 11,
+      "fh": 9
+    },
+    {
+      "key": "u.adolence-turned-officer",
+      "file": "sprites/u.adolence-turned-officer.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 10,
+      "fh": 11
+    },
+    {
+      "key": "u.adolence-turned-anti-materiel",
+      "file": "sprites/u.adolence-turned-anti-materiel.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 9,
+      "fh": 17
+    },
+    {
+      "key": "u.adolence-road-rage",
+      "file": "sprites/u.adolence-road-rage.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 22,
+      "fh": 22
+    },
+    {
+      "key": "u.adolence-acid-mass",
+      "file": "sprites/u.adolence-acid-mass.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 15,
+      "fh": 19,
+      "mount": [
+        0.875,
+        0.55
+      ]
+    },
+    {
+      "key": "u.adolence-gloater",
+      "file": "sprites/u.adolence-gloater.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 18,
+      "fh": 27
+    },
+    {
+      "key": "u.adolence-flying-husk",
+      "file": "sprites/u.adolence-flying-husk.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 46,
+      "fh": 40
+    },
+    {
+      "key": "u.adolence-gorilla",
+      "file": "sprites/u.adolence-gorilla.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 20,
+      "fh": 27
+    },
+    {
+      "key": "u.adolence-no-longer-human",
+      "file": "sprites/u.adolence-no-longer-human.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 34,
+      "fh": 35
+    },
+    {
+      "key": "u.adolence-sin-of-wrath",
+      "file": "sprites/u.adolence-sin-of-wrath.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 32,
+      "fh": 37
+    },
+    {
+      "key": "u.adolence-sin-of-gluttony",
+      "file": "sprites/u.adolence-sin-of-gluttony.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 18,
+      "fh": 31
+    }
+  ],
+  "sounds": [
+    {
+      "key": "adolence-9mm",
+      "file": "sounds/9mm.mp3"
+    },
+    {
+      "key": "adolence-5-56mm",
+      "file": "sounds/5-56mm.mp3"
+    },
+    {
+      "key": "adolence-12mm",
+      "file": "sounds/12mm.mp3"
+    },
+    {
+      "key": "adolence-guard-rifle",
+      "file": "sounds/guard-rifle.mp3"
+    },
+    {
+      "key": "adolence-m60",
+      "file": "sounds/m60.mp3"
+    },
+    {
+      "key": "adolence-flame",
+      "file": "sounds/flame.mp3"
+    },
+    {
+      "key": "adolence-m16-shot",
+      "file": "sounds/m16-shot.mp3"
+    },
+    {
+      "key": "adolence-mg-shot",
+      "file": "sounds/mg-shot.mp3"
+    },
+    {
+      "key": "adolence-m24",
+      "file": "sounds/m24.mp3"
+    },
+    {
+      "key": "adolence-aa12",
+      "file": "sounds/aa12.mp3"
+    },
+    {
+      "key": "adolence-h-shot",
+      "file": "sounds/h-shot.mp3"
+    },
+    {
+      "key": "adolence-flame-2",
+      "file": "sounds/flame-2.mp3"
+    },
+    {
+      "key": "adolence-hmg",
+      "file": "sounds/hmg.mp3"
+    },
+    {
+      "key": "adolence-m2",
+      "file": "sounds/m2.mp3"
+    },
+    {
+      "key": "adolence-m2-2",
+      "file": "sounds/m2-2.mp3"
+    },
+    {
+      "key": "adolence-120mm",
+      "file": "sounds/120mm.mp3"
+    },
+    {
+      "key": "adolence-105mm",
+      "file": "sounds/105mm.mp3"
+    },
+    {
+      "key": "adolence-120mm-2",
+      "file": "sounds/120mm-2.mp3"
+    },
+    {
+      "key": "adolence-heli-gun",
+      "file": "sounds/heli-gun.mp3"
+    },
+    {
+      "key": "adolence-flame-3",
+      "file": "sounds/flame-3.mp3"
+    },
+    {
+      "key": "adolence-autocannon",
+      "file": "sounds/autocannon.mp3"
+    },
+    {
+      "key": "adolence-husk-beam",
+      "file": "sounds/husk-beam.mp3"
+    }
+  ],
+  "screenshots": [
+    "screenshots/cover.png",
+    "screenshots/screenshot-1.png",
+    "screenshots/screenshot-2.png"
+  ],
+  "maps": [
+    "maps/city-of-sin.steel-tide-map"
+  ]
+}

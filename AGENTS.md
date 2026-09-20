@@ -13,6 +13,7 @@ my-mod/
   mod.json          the manifest: the mod's identity, its defs, and the sheets they draw with
   sprites/*.png     optional art (a def without any is drawn as a plain placeholder)
   screenshots/*.png the mod in play, 4:3 (the registry asks for at least one; see Publish)
+  maps/*.steel-tide-map  optional maps from the Map Editor, offered in the setup screens while the mod is on (see Maps)
   README.md         optional
 ```
 
@@ -236,7 +237,8 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `sprites` | sheet[] |  |  | the sheets the defs draw with (see below) |
 | `sounds` | string |  |  | the recordings the weapons fire with (see below) |
 | `screenshots` | path[] |  |  | pictures of the mod in play, relative to mod.json (`screenshots/1.png`): 4:3, at least 640 px wide, under 2 MB each, up to 8. The registry asks for at least one and shows them on the mod's page |
-| `files` | { path: dataURL } |  |  | single-file form only: the sheets and sounds, embedded as data URLs by path |
+| `maps` | string |  |  | maps the mod carries, relative to mod.json (`maps/city.steel-tide-map`): files exported from the Map Editor, up to 8, each under 512 KB. A map may stand the mod's own units; the setup screens offer it beside the player's own map while the mod is on |
+| `files` | { path: dataURL } |  |  | single-file form only: the sheets, sounds and maps, embedded as data URLs by path |
 
 `name`, `description` and every `desc`/`name` on a def are *text*: a string (used for every language), `["English", "中文", "한국어"]` in that order, or `{ "en": "…", "zh": "…", "ko": "…" }`. Only English is required; a language left out reads as English.
 
@@ -391,6 +393,10 @@ aa          air ×1
 | `file` | string | yes |  | the recording, relative to mod.json. An MP3 plays everywhere; WAV works, OGG not on Safari. Dry, close, under a second |
 
 A weapon fires with the game's sound for its class unless its `sound` names one of these keys. A recording is a dry, close-miked one-shot under a second with no reverb tail; the engine attenuates and pans it by distance, and forty overlapping echoes turn to mud. Mono MP3 is the safe format.
+
+## Maps
+
+A mod may carry maps: files the game's Map Editor exports (`.steel-tide-map`), named under `maps` in mod.json, up to 8 of them and each under 512 KB. While the mod is on, the Conquest setup and the lobby offer them as cards beside the player's own map; choosing one plays it exactly as painted. A map may stand the mod's own units and buildings before the whistle: with the mod on, they are in the editor's forces palette, and the map reads on any game that has the mod (the registry checks it against the mod's own defs, not the vanilla roster). A scene laid this way — a base built up, a horde at the gate — is how a mod shows what it is without a word.
 
 ## Units of measure
 

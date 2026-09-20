@@ -355,6 +355,8 @@ const STRINGS = {
   "setup.slots": ["{0} slots", "{0} 席", "{0}자리"],
   "setup.slotsRange": ["{0}-{1} slots", "{0}-{1} 席", "{0}-{1}자리"],
   "setup.customMap": ["Custom map", "自定义地图", "사용자 지도"],
+  // a card for a map a mod carries (`maps` in its manifest): the mod's name leads the title
+  "setup.modMapTip": ["A map this mod ships, played exactly as its author laid it out.", "模组自带的地图，按作者布置的原样游玩。", "모드에 포함된 지도. 제작자가 배치한 그대로 플레이합니다."],
   "setup.uploadMap": ["Upload map…", "上传地图…", "지도 업로드…"],
   "setup.uploadMapTip": ["A map exported from the Map Editor (.steel-tide-map)", "从地图编辑器导出的地图（.steel-tide-map）", "맵 에디터에서 내보낸 지도(.steel-tide-map)"],
   "setup.dropMap": ["Drop the map file here", "把地图文件拖到这里", "지도 파일을 여기에 놓으세요"],
@@ -501,8 +503,10 @@ const STRINGS = {
   ],
   // the server settings plate, behind the gear in the lobby's title strip
   // (`ui/serverSettings.ts`): the mods the room requires, the leader's to
-  // set between matches, and the invite section under it
+  // set between matches, and the invite page beside it
   "mp.serverSettings": ["Server settings", "服务器设置", "서버 설정"],
+  // the plate's second page, beside Mods (`mods.title`)
+  "mp.tab.invite": ["Invite", "邀请", "초대"],
   "mp.mods.title": ["Required mods", "所需模组", "필요한 모드"],
   "mp.mods.intro": [
     "Pick the mods this server plays with. Everyone who joins must have them installed.",
@@ -2036,7 +2040,47 @@ const STRINGS = {
   "editor.eraser": ["Eraser", "橡皮擦", "지우개"],
   "editor.tool.deposit": ["Metal deposit", "金属矿脉", "금속 광맥"],
   "editor.tool.spawn": ["Spawn point", "出生点", "시작 지점"],
-  "editor.tool.erase": ["Erase deposit, spawn or prop", "清除矿脉、出生点或装饰物", "광맥, 시작 지점, 장식물 지우기"],
+  "editor.tool.erase": ["Erase a unit, prop, deposit or spawn", "清除单位、装饰物、矿脉或出生点", "유닛, 장식물, 광맥, 시작 지점 지우기"],
+  "editor.forces": ["Forces", "兵力", "병력"],
+  "editor.forcesBuildings": ["Buildings", "建筑", "건물"],
+  "editor.forcesUnits": ["Units", "单位", "유닛"],
+  "editor.faction": ["Faction", "阵营", "진영"],
+  "editor.factionTip": [
+    "Place for faction {0}: whoever opens on spawn point {0} gets it.",
+    "为阵营 {0} 放置：从出生点 {0} 开局的玩家会得到它。",
+    "진영 {0}에 배치합니다. 시작 지점 {0}에서 시작하는 플레이어가 갖게 됩니다."
+  ],
+  "editor.factionNone": [
+    "Place a spawn point first: what stands on the map belongs to the faction that opens there.",
+    "请先放置出生点：地图上的兵力属于从那里开局的阵营。",
+    "먼저 시작 지점을 놓으세요. 지도 위의 병력은 그곳에서 시작하는 진영의 것입니다."
+  ],
+  "editor.facingTip": [
+    "R turns the unit in hand a step; until turned, a unit faces the middle of the map.",
+    "R 键将手中的单位转动一格；未转动时，单位朝向地图中央。",
+    "R 키로 손에 든 유닛을 한 단계 돌립니다. 돌리기 전에는 지도 가운데를 향합니다."
+  ],
+  "editor.warn.buildingGround": [
+    "{0} buildings stand on ground an engineer could not build on; they are laid all the same.",
+    "{0} 座建筑立在工程车无法施工的地面上；开局时仍会照原样放置。",
+    "건물 {0}개가 공병차가 지을 수 없는 땅 위에 있습니다. 그래도 그대로 놓입니다."
+  ],
+  "editor.warn.buildingSpawn": [
+    "A building stands where spawn {0}'s headquarters goes; the headquarters takes the ground and the building is not laid.",
+    "有建筑占据了出生点 {0} 的总部位置；总部会占用该地面，建筑不会放置。",
+    "시작 지점 {0}의 사령부 자리에 건물이 있습니다. 사령부가 그 땅을 차지하고 건물은 놓이지 않습니다."
+  ],
+  "editor.warn.unitGround": [
+    "{0} units stand where they cannot move; each opens on the nearest tile it can.",
+    "{0} 个单位立在无法移动的位置；开局时会移到最近的可通行格。",
+    "유닛 {0}개가 움직일 수 없는 곳에 있습니다. 각각 가장 가까운 갈 수 있는 타일에서 시작합니다."
+  ],
+  "editor.warn.forcesNoSpawn": [
+    "{0} units or buildings belong to a faction past the map's {1} spawn points; nobody opens there, so they are not laid.",
+    "{0} 个单位或建筑属于超出地图 {1} 个出生点的阵营；没有人从那里开局，它们不会放置。",
+    "유닛 또는 건물 {0}개가 지도의 시작 지점 {1}개를 넘는 진영에 속합니다. 그곳에서 시작하는 사람이 없어 놓이지 않습니다."
+  ],
+  "editor.warn.forcesFull": ["A map holds at most {0} units and buildings.", "一张地图最多容纳 {0} 个单位和建筑。", "지도 하나에는 유닛과 건물을 {0}개까지 놓을 수 있습니다."],
   "editor.name": ["Name", "名称", "이름"],
   "editor.description": ["Description", "简介", "설명"],
   "editor.descriptionHint": [
@@ -2206,6 +2250,40 @@ function langIndex(l) {
 function pick(entry, l = lang) {
   return entry[langIndex(l)] ?? entry[0] ?? "";
 }
+const MAX_PLAYERS = 8;
+var Terrain = /* @__PURE__ */ ((Terrain2) => {
+  Terrain2[Terrain2["DeepWater"] = 0] = "DeepWater";
+  Terrain2[Terrain2["Water"] = 1] = "Water";
+  Terrain2[Terrain2["Sand"] = 2] = "Sand";
+  Terrain2[Terrain2["Grass"] = 3] = "Grass";
+  Terrain2[Terrain2["Forest"] = 4] = "Forest";
+  Terrain2[Terrain2["Mountain"] = 5] = "Mountain";
+  Terrain2[Terrain2["Road"] = 6] = "Road";
+  Terrain2[Terrain2["Mud"] = 7] = "Mud";
+  Terrain2[Terrain2["Marsh"] = 8] = "Marsh";
+  Terrain2[Terrain2["Snow"] = 9] = "Snow";
+  Terrain2[Terrain2["Rubble"] = 10] = "Rubble";
+  Terrain2[Terrain2["Lava"] = 11] = "Lava";
+  Terrain2[Terrain2["CliffNorth"] = 12] = "CliffNorth";
+  Terrain2[Terrain2["CliffEast"] = 13] = "CliffEast";
+  Terrain2[Terrain2["CliffSouth"] = 14] = "CliffSouth";
+  Terrain2[Terrain2["CliffWest"] = 15] = "CliffWest";
+  return Terrain2;
+})(Terrain || {});
+({
+  /** open pasture — the generator's old, and still most common, ground */
+  meadow: { ground: Terrain.Grass, shore: Terrain.Sand, hollow: Terrain.Mud, height: Terrain.Mountain },
+  /** conifer country: the same ground under a much lower treeline */
+  boreal: { ground: Terrain.Grass, shore: Terrain.Sand, hollow: Terrain.Mud, height: Terrain.Mountain },
+  /** frozen open ground, snow all the way to the water — no beaches this far north */
+  tundra: { ground: Terrain.Snow, shore: Terrain.Snow, hollow: Terrain.Mud, height: Terrain.Mountain },
+  /** sand from the waterline to the ridges, and nothing growing on it but the palms at an oasis */
+  dunes: { ground: Terrain.Sand, shore: Terrain.Sand, hollow: Terrain.Sand, height: Terrain.Mountain },
+  /** waterlogged lowland: marsh for a shore and marsh again behind it */
+  fen: { ground: Terrain.Grass, shore: Terrain.Marsh, hollow: Terrain.Marsh, height: Terrain.Mountain },
+  /** ash flats over old flows, scree at the water and lava in the peaks */
+  ashland: { ground: Terrain.Sand, shore: Terrain.Rubble, hollow: Terrain.Rubble, height: Terrain.Lava }
+});
 const ARMOR_MATRIX = {
   // rapid-fire small arms: shred soft skins, ping off armor plate
   mg: { light: 1.5, medium: 0.8, heavy: 0.4, structure: 0.35, ship: 0.5, air: 0.7 },
@@ -4570,6 +4648,263 @@ const DEFS = {
   }
 };
 const ALL_DEF_IDS = Object.keys(DEFS);
+const VANILLA_DEF_IDS = new Set(ALL_DEF_IDS);
+function getDef(id) {
+  const d = DEFS[id];
+  if (!d) throw new Error(`unknown def: ${id}`);
+  return d;
+}
+function mapUnitRect(u) {
+  const def = getDef(u.id);
+  return def.kind === "building" ? { x: u.x, y: u.y, fw: def.fw ?? 1, fh: def.fh ?? 1 } : { x: u.x, y: u.y, fw: 1, fh: 1 };
+}
+const DECOR = {
+  pole: { fw: 1, fh: 1, sprite: "d.pole", color: [96, 78, 58], hp: 20, shadow: 6 },
+  tower: { fw: 1, fh: 1, sprite: "d.tower", color: [76, 80, 86], hp: 90, shadow: 15 },
+  /** a date palm: the one tree that stands on sand, an obstacle a tile wide; three drawings, mixed */
+  palm: { fw: 1, fh: 1, sprite: "d.palm", color: [86, 120, 60], hp: 40, variants: 3, shadow: 10 },
+  /** a canvas field tent, sandbagged: the camp round a staging post */
+  tent: { fw: 2, fh: 2, sprite: "d.tent", color: [128, 116, 84], hp: 90 },
+  /** an arched aircraft shelter of concrete: what an airfield keeps beside its strip */
+  hangar: { fw: 3, fh: 2, sprite: "d.hangar", color: [112, 108, 100], hp: 260 },
+  /** a concrete bunker, half buried, the firing slit facing south */
+  bunker: { fw: 2, fh: 2, sprite: "d.bunker", color: [98, 94, 86], hp: 340 },
+  /** an oil pumpjack on its concrete pad: the wells the war was over */
+  derrick: { fw: 1, fh: 1, sprite: "d.derrick", color: [72, 62, 52], hp: 80 },
+  /**
+   * A cargo ship going down by the stern, the bow still up and the boxes
+   * sliding off her deck: what the open sea is dressed with. Four tiles long
+   * and two across, lying north to south with the bow to the north; a hull,
+   * so it takes a broadside to finish, and what finishes it is the sea
+   * (`razeDecor`). The wash round her is the renderer's (the idle ripple a
+   * ship at rest gets, `render/trails.ts`), not the sheet's.
+   */
+  freighter: { fw: 2, fh: 4, sprite: "d.freighter", water: true, color: [96, 60, 44], hp: 320 },
+  /**
+   * The same wreck lying east to west, the bow to the west: a kind of its own
+   * rather than a variant, since a variant shares its kind's footprint and
+   * this one is the footprint turned. Two on a map, one each way, and the
+   * sea stops looking stamped.
+   */
+  freighter2: { fw: 4, fh: 2, sprite: "d.freighter2", water: true, color: [96, 60, 44], hp: 320 }
+};
+function isDecorKind(k) {
+  return typeof k === "string" && Object.prototype.hasOwnProperty.call(DECOR, k);
+}
+function rleEncode(a) {
+  const out = [];
+  let i = 0;
+  while (i < a.length) {
+    const v = a[i];
+    let run = 1;
+    while (i + run < a.length && a[i + run] === v && run < 255) run++;
+    out.push(run, v);
+    i += run;
+  }
+  let s = "";
+  for (let k = 0; k < out.length; k += 4096) {
+    s += String.fromCharCode(...out.slice(k, k + 4096));
+  }
+  return btoa(s);
+}
+function rleDecode(s, len) {
+  return rleDecodeInto(s, new Uint8Array(len));
+}
+function rleDecodeInto(s, out) {
+  const len = out.length;
+  if (!s) {
+    out.fill(0);
+    return out;
+  }
+  const raw = atob(s);
+  let oi = 0;
+  for (let i = 0; i + 1 < raw.length; i += 2) {
+    const run = raw.charCodeAt(i);
+    const v = raw.charCodeAt(i + 1);
+    out.fill(v, oi, Math.min(len, oi + run));
+    oi += run;
+  }
+  if (oi < len) out.fill(0, oi);
+  return out;
+}
+const CUSTOM_MAP_FORMAT = "steel-tide-map";
+const CUSTOM_MAP_VERSION = 1;
+const CUSTOM_MAP_EXT = ".steel-tide-map";
+const MIN_MAP_SIDE = 16;
+const MAX_MAP_SIDE = 256;
+const MAX_DEPOSITS = 200;
+const MAX_DECOR = 4e3;
+const MAX_MAP_UNITS = 400;
+const MAX_NAME_LENGTH = 48;
+const MAX_DESCRIPTION_LENGTH = 240;
+const MAP_LANG_RE = /^[a-z]{2,3}(?:-[a-z0-9]{2,8})?$/;
+const MAX_TRANSLATIONS = 16;
+function isMapUnitId(id, only) {
+  return (only ? only.has(id) : id in DEFS) && !DEFS[id]?.warhead;
+}
+function readDecor(list, w2, h) {
+  if (list === void 0) return [];
+  if (!Array.isArray(list)) return "bad props";
+  if (list.length > MAX_DECOR) return "too many props";
+  const taken = new Uint8Array(w2 * h);
+  const out = [];
+  for (const item of list) {
+    if (!item || typeof item !== "object") return "bad props";
+    const { kind, x, y } = item;
+    if (!isDecorKind(kind)) return "the map uses a prop this build does not know";
+    const def = DECOR[kind];
+    if (!Number.isInteger(x) || !Number.isInteger(y) || x < 0 || y < 0 || x + def.fw > w2 || y + def.fh > h) {
+      return "a prop lies outside the map";
+    }
+    const tx = x, ty = y;
+    let free = true;
+    for (let yy = ty; yy < ty + def.fh && free; yy++) {
+      for (let xx = tx; xx < tx + def.fw; xx++) if (taken[yy * w2 + xx]) {
+        free = false;
+        break;
+      }
+    }
+    if (!free) continue;
+    for (let yy = ty; yy < ty + def.fh; yy++) for (let xx = tx; xx < tx + def.fw; xx++) taken[yy * w2 + xx] = 1;
+    out.push({ kind, x: tx, y: ty });
+  }
+  return out;
+}
+function readUnits(list, w2, h, only) {
+  if (list === void 0) return [];
+  if (!Array.isArray(list)) return "bad units";
+  if (list.length > MAX_MAP_UNITS) return "too many units";
+  const taken = new Uint8Array(w2 * h);
+  const out = [];
+  for (const item of list) {
+    if (!item || typeof item !== "object") return "bad units";
+    const { id, owner, x, y, a } = item;
+    if (typeof id !== "string" || !isMapUnitId(id, only)) return "the map stands a unit this build does not know";
+    if (!Number.isInteger(owner) || owner < 0 || owner >= MAX_PLAYERS) return "a unit belongs to no faction";
+    if (!Number.isInteger(x) || !Number.isInteger(y)) return "bad units";
+    const r = mapUnitRect({ id, x, y });
+    if (r.x < 0 || r.y < 0 || r.x + r.fw > w2 || r.y + r.fh > h) return "a unit lies outside the map";
+    let facing;
+    if (a !== void 0 && DEFS[id].kind === "unit") {
+      if (!Number.isInteger(a) || a < 0 || a >= 360) return "bad units";
+      facing = a;
+    }
+    let free = true;
+    for (let yy = r.y; yy < r.y + r.fh && free; yy++) {
+      for (let xx = r.x; xx < r.x + r.fw; xx++) if (taken[yy * w2 + xx]) {
+        free = false;
+        break;
+      }
+    }
+    if (!free) continue;
+    for (let yy = r.y; yy < r.y + r.fh; yy++) for (let xx = r.x; xx < r.x + r.fw; xx++) taken[yy * w2 + xx] = 1;
+    out.push({ id, owner, x: r.x, y: r.y, ...facing !== void 0 ? { a: facing } : {} });
+  }
+  return out;
+}
+function cleanLine(name) {
+  return name.replace(/[\r\n\t]+/g, " ").trim().slice(0, MAX_NAME_LENGTH);
+}
+function cleanName(name) {
+  return cleanLine(name) || "Untitled";
+}
+function cleanDescription(text) {
+  return text.replace(/\s+/g, " ").trim().slice(0, MAX_DESCRIPTION_LENGTH);
+}
+function cleanTranslations(v) {
+  if (!v || typeof v !== "object" || Array.isArray(v)) return void 0;
+  const out = {};
+  let n = 0;
+  for (const [key, given] of Object.entries(v)) {
+    const lang2 = key.toLowerCase();
+    if (!MAP_LANG_RE.test(lang2) || lang2 in out || !given || typeof given !== "object") continue;
+    const { name, description } = given;
+    const text = {};
+    const line = typeof name === "string" ? cleanLine(name) : "";
+    if (line) text.name = line;
+    const blurb = typeof description === "string" ? cleanDescription(description) : "";
+    if (blurb) text.description = blurb;
+    if (!text.name && !text.description) continue;
+    if (++n > MAX_TRANSLATIONS) break;
+    out[lang2] = text;
+  }
+  return n ? out : void 0;
+}
+function parseCustomMap(json, opts = {}) {
+  if (typeof json !== "string" || json.length === 0 || json.length > 4 * 1024 * 1024) {
+    return { ok: false, error: "the file is empty or too large" };
+  }
+  let raw;
+  try {
+    raw = JSON.parse(json);
+  } catch {
+    return { ok: false, error: "not a map file" };
+  }
+  if (!raw || typeof raw !== "object") return { ok: false, error: "not a map file" };
+  const r = raw;
+  if (r.format !== CUSTOM_MAP_FORMAT) return { ok: false, error: "not a Steel Tide map" };
+  if (r.v !== CUSTOM_MAP_VERSION) return { ok: false, error: `unsupported map version ${String(r.v)}` };
+  if (!Number.isInteger(r.w) || !Number.isInteger(r.h) || r.w < MIN_MAP_SIDE || r.h < MIN_MAP_SIDE || r.w > MAX_MAP_SIDE || r.h > MAX_MAP_SIDE) {
+    return { ok: false, error: `the map must be ${MIN_MAP_SIDE}–${MAX_MAP_SIDE} tiles a side` };
+  }
+  const w2 = r.w, h = r.h;
+  if (typeof r.terrain !== "string" || r.terrain.length > 2 * 1024 * 1024) return { ok: false, error: "bad terrain data" };
+  let terrain;
+  try {
+    terrain = rleDecode(r.terrain, w2 * h);
+  } catch {
+    return { ok: false, error: "bad terrain data" };
+  }
+  for (let i = 0; i < terrain.length; i++) {
+    if (terrain[i] > Terrain.CliffWest) return { ok: false, error: "the map uses a terrain this build does not know" };
+  }
+  const points = (list, max, what) => {
+    if (list === void 0) return [];
+    if (!Array.isArray(list)) return `bad ${what}`;
+    if (list.length > max) return `too many ${what}`;
+    const out = [];
+    const seen = /* @__PURE__ */ new Set();
+    for (const p of list) {
+      if (!p || typeof p !== "object") return `bad ${what}`;
+      const { x, y } = p;
+      if (!Number.isInteger(x) || !Number.isInteger(y) || x < 0 || y < 0 || x >= w2 || y >= h) {
+        return `a ${what.replace(/s$/, "")} lies outside the map`;
+      }
+      const key = y * w2 + x;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ x, y });
+    }
+    return out;
+  };
+  const deposits = points(r.deposits, MAX_DEPOSITS, "deposits");
+  if (typeof deposits === "string") return { ok: false, error: deposits };
+  const spawns = points(r.spawns, MAX_PLAYERS, "spawns");
+  if (typeof spawns === "string") return { ok: false, error: spawns };
+  const decor = readDecor(r.decor, w2, h);
+  if (typeof decor === "string") return { ok: false, error: decor };
+  const units = readUnits(r.units, w2, h, opts.only);
+  if (typeof units === "string") return { ok: false, error: units };
+  const description = cleanDescription(typeof r.description === "string" ? r.description : "");
+  const translations = cleanTranslations(r.translations);
+  return {
+    ok: true,
+    data: {
+      format: CUSTOM_MAP_FORMAT,
+      v: CUSTOM_MAP_VERSION,
+      name: cleanName(typeof r.name === "string" ? r.name : ""),
+      ...description ? { description } : {},
+      ...translations ? { translations } : {},
+      w: w2,
+      h,
+      terrain: rleEncode(terrain),
+      deposits,
+      spawns,
+      ...decor.length ? { decor } : {},
+      ...units.length ? { units } : {}
+    }
+  };
+}
 const MOD_FORMAT = "steel-tide-mod";
 const MOD_FORMAT_VERSION = 1;
 const MOD_FILE_EXT = ".steel-tide-mod";
@@ -4589,6 +4924,8 @@ const MAX_MOD_DEFS = 200;
 const MAX_MOD_SPRITES = 120;
 const MAX_MOD_SOUNDS = 60;
 const MAX_MOD_SCREENSHOTS = 8;
+const MAX_MOD_MAPS = 8;
+const MAX_MOD_MAP_BYTES = 512 * 1024;
 const MIN_SCREENSHOT_WIDTH = 640;
 const MAX_SCREENSHOT_BYTES = 2 * 1024 * 1024;
 const SCREENSHOT_ASPECT = 4 / 3;
@@ -4600,6 +4937,10 @@ const ID_RE = /^[a-z0-9][a-z0-9_-]{1,39}$/;
 const ATLAS_KEY_RE = /^(u|tur)\.[a-z0-9][a-z0-9_-]{1,39}$/;
 const FILE_RE = /^(?!\/)(?!.*\.\.)[A-Za-z0-9_./-]{1,120}$/;
 const IMAGE_FILE_RE = /\.(png|jpe?g|webp)$/i;
+const MAP_FILE_RE = /\.(steel-tide-map|json)$/i;
+function modFiles(mod) {
+  return [...(mod.sprites ?? []).map((s) => s.file), ...(mod.sounds ?? []).map((s) => s.file), ...mod.maps ?? []];
+}
 const ARMOR_CLASSES = ["light", "medium", "heavy", "ship", "sub", "air", "structure"];
 const TARGET_DOMAINS = ["ground", "ship", "sub", "air"];
 const WEAPON_CLASSES = ["mg", "autocannon", "cannon", "at", "he", "rocket", "navgun", "ashm", "torpedo", "aa"];
@@ -4622,7 +4963,8 @@ const MANIFEST_SPECS = [
   { name: "sprites", type: "sprites", doc: ["the sheets the defs draw with (see below)", "各定义使用的精灵图（见下）"] },
   { name: "sounds", type: "sounds", doc: ["the recordings the weapons fire with (see below)", "武器开火时播放的录音（见下）"] },
   { name: "screenshots", type: "images", doc: [`pictures of the mod in play, relative to mod.json (\`screenshots/1.png\`): 4:3, at least ${MIN_SCREENSHOT_WIDTH} px wide, under ${MAX_SCREENSHOT_BYTES / 1048576} MB each, up to ${MAX_MOD_SCREENSHOTS}. The registry asks for at least one and shows them on the mod's page`, `模组游玩截图，路径相对 mod.json（\`screenshots/1.png\`）：4:3，宽至少 ${MIN_SCREENSHOT_WIDTH} 像素，每张不超过 ${MAX_SCREENSHOT_BYTES / 1048576} MB，最多 ${MAX_MOD_SCREENSHOTS} 张。仓库要求至少一张，并展示在模组页面上`] },
-  { name: "files", type: "files", doc: ["single-file form only: the sheets and sounds, embedded as data URLs by path", "仅单文件形式：按路径内嵌的图片与音频（data URL）"] }
+  { name: "maps", type: "maps", doc: [`maps the mod carries, relative to mod.json (\`maps/city.steel-tide-map\`): files exported from the Map Editor, up to ${MAX_MOD_MAPS}, each under ${MAX_MOD_MAP_BYTES / 1024} KB. A map may stand the mod's own units; the setup screens offer it beside the player's own map while the mod is on`, `模组自带的地图，路径相对 mod.json（\`maps/city.steel-tide-map\`）：地图编辑器导出的文件，最多 ${MAX_MOD_MAPS} 张，每张不超过 ${MAX_MOD_MAP_BYTES / 1024} KB。地图上可以预置本模组的单位；模组开启时，设置界面会把它列在自定义地图旁`] },
+  { name: "files", type: "files", doc: ["single-file form only: the sheets, sounds and maps, embedded as data URLs by path", "仅单文件形式：按路径内嵌的图片、音频与地图（data URL）"] }
 ];
 const DEF_SPECS = [
   { name: "id", type: "id", required: true, doc: ["unique across every mod and the vanilla roster; prefix a generic word with your mod's id", "在所有模组和原版中唯一；通用名字前加上模组 id 前缀"] },
@@ -4748,7 +5090,7 @@ function cloneTable(table) {
   return structuredClone(table);
 }
 const VANILLA = cloneTable(DEFS);
-const VANILLA_IDS = new Set(Object.keys(VANILLA));
+const VANILLA_IDS = VANILLA_DEF_IDS;
 function aliasesOf(table) {
   const out = /* @__PURE__ */ new Set();
   for (const d of Object.values(table)) for (const a of d.aliases ?? []) out.add(a);
@@ -4886,6 +5228,14 @@ function checkField(spec, value, path, issues) {
         if (typeof x !== "string" || !FILE_RE.test(x)) return bad(`"${String(x)}" is not a relative path inside the mod`);
         if (!IMAGE_FILE_RE.test(x)) return bad(`${x} is not a PNG, JPEG or WebP`);
       }
+      return true;
+    case "maps":
+      if (!Array.isArray(value) || value.length > MAX_MOD_MAPS) return bad(`must be a list of up to ${MAX_MOD_MAPS} map paths`);
+      for (const x of value) {
+        if (typeof x !== "string" || !FILE_RE.test(x)) return bad(`"${String(x)}" is not a relative path inside the mod`);
+        if (!MAP_FILE_RE.test(x)) return bad(`${x} is not a .steel-tide-map file`);
+      }
+      if (new Set(value).size !== value.length) return bad("names a map twice");
       return true;
     case "targets":
       if (!Array.isArray(value) || value.length === 0 || value.length > 4) return bad("must list one to four of ground, ship, sub, air");
@@ -5459,6 +5809,7 @@ function indexEntryFor(mod, path, base, extra = {}) {
     ...extra.updated ? { updated: extra.updated } : {},
     ...extra.downloads !== void 0 ? { downloads: extra.downloads } : {},
     ...screenshots.length > 0 ? { screenshots } : {},
+    ...extra.maps?.length ? { maps: extra.maps } : {},
     defs: r.defs.map((d) => {
       const own = mod.defs.find((x) => x.id === d.id);
       return {
@@ -5511,6 +5862,9 @@ function parseModIndex(json) {
       ...typeof m.downloads === "number" && m.downloads >= 0 ? { downloads: Math.floor(m.downloads) } : {},
       ...Array.isArray(m.screenshots) ? {
         screenshots: m.screenshots.filter((x) => isPlainObject(x) && typeof x.file === "string" && typeof x.w === "number" && typeof x.h === "number" && x.w > 0 && x.h > 0)
+      } : {},
+      ...Array.isArray(m.maps) ? {
+        maps: m.maps.filter((x) => isPlainObject(x) && typeof x.file === "string" && typeof x.name === "string" && typeof x.w === "number" && typeof x.h === "number" && typeof x.spawns === "number")
       } : {},
       defs: Array.isArray(m.defs) ? m.defs.filter((d) => isPlainObject(d) && typeof d.id === "string") : [],
       sprites: Array.isArray(m.sprites) ? m.sprites.filter((s) => isPlainObject(s) && typeof s.key === "string") : [],
@@ -5698,6 +6052,7 @@ function agentPrompt() {
   p("  mod.json          the manifest: the mod's identity, its defs, and the sheets they draw with");
   p("  sprites/*.png     optional art (a def without any is drawn as a plain placeholder)");
   p("  screenshots/*.png the mod in play, 4:3 (the registry asks for at least one; see Publish)");
+  p("  maps/*.steel-tide-map  optional maps from the Map Editor, offered in the setup screens while the mod is on (see Maps)");
   p("  README.md         optional");
   p("```");
   p();
@@ -5757,6 +6112,10 @@ function agentPrompt() {
   p();
   p("A weapon fires with the game's sound for its class unless its `sound` names one of these keys. A recording is a dry, close-miked one-shot under a second with no reverb tail; the engine attenuates and pans it by distance, and forty overlapping echoes turn to mud. Mono MP3 is the safe format.");
   p();
+  p("## Maps");
+  p();
+  p(`A mod may carry maps: files the game's Map Editor exports (\`${CUSTOM_MAP_EXT}\`), named under \`maps\` in mod.json, up to ${MAX_MOD_MAPS} of them and each under ${MAX_MOD_MAP_BYTES / 1024} KB. While the mod is on, the Conquest setup and the lobby offer them as cards beside the player's own map; choosing one plays it exactly as painted. A map may stand the mod's own units and buildings before the whistle: with the mod on, they are in the editor's forces palette, and the map reads on any game that has the mod (the registry checks it against the mod's own defs, not the vanilla roster). A scene laid this way — a base built up, a horde at the gate — is how a mod shows what it is without a word.`);
+  p();
   p("## Units of measure");
   p();
   p("- A tile is 32 world pixels. `speed` and projectile `speed` are world px/s; `range`, `minRange`, `vision`, `sonar`, `stealth`, `detect`, `repairRange` and `interceptRange` are tiles; `radius`, `body.r`, `body.len`, `splash`, `spread`, `muzzleOffset` are world px.");
@@ -5810,12 +6169,15 @@ function modTitle(mod, lang2 = "en") {
 export {
   ARMOR_CLASSES,
   ARMOR_MATRIX,
+  CUSTOM_MAP_EXT,
   FIELD_SPECS,
   ID_RE,
   MAX_HELLO_MODS,
   MAX_MANIFEST_BYTES,
   MAX_MOD_DEFS,
   MAX_MOD_FILES_BYTES,
+  MAX_MOD_MAPS,
+  MAX_MOD_MAP_BYTES,
   MAX_MOD_SCREENSHOTS,
   MAX_MOD_SOUNDS,
   MAX_MOD_SPRITES,
@@ -5862,12 +6224,14 @@ export {
   missingMods,
   modCountUrl,
   modFileUrl,
+  modFiles,
   modName,
   modOfDef,
   modRegistryBase,
   modText,
   modTitle,
   onModsChanged,
+  parseCustomMap,
   parseMod,
   parseModIndex,
   requiredModOf,

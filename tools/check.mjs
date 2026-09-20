@@ -16,7 +16,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { applyMods, checkScreenshot, imageSize, parseMod } from './steel-tide-mod.mjs';
+import { MAX_MOD_MAP_BYTES, applyMods, checkScreenshot, imageSize, parseCustomMap, parseMod } from './steel-tide-mod.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
@@ -88,13 +88,25 @@ for (const folder of folders) {
       const why = checkScreenshot(imageSize(bytes), bytes.length);
       if (why) errors.push({ path: `screenshots[${i}]`, message: `${file} ${why}` });
     }
+    // the maps: read the way the game reads them, with this mod's own pieces in the table
+    const maps = mod.maps ?? [];
+    if (maps.length > 0) applyMods([mod]);
+    for (const [i, file] of maps.entries()) {
+      const path = join(folder, file);
+      if (!existsSync(path)) { errors.push({ path: `maps[${i}]`, message: `${file} is missing` }); continue; }
+      const text = readFileSync(path, 'utf8');
+      if (Buffer.byteLength(text) > MAX_MOD_MAP_BYTES) { errors.push({ path: `maps[${i}]`, message: `${file} is ${(Buffer.byteLength(text) / 1024).toFixed(0)} KB; keep a map under ${MAX_MOD_MAP_BYTES / 1024}` }); continue; }
+      const map = parseCustomMap(text);
+      if (!map.ok) errors.push({ path: `maps[${i}]`, message: `${file}: ${map.error}` });
+      else if (map.data.spawns.length < 2) warnings.push({ path: `maps[${i}]`, message: `${file}: a map needs at least two spawn points to be played` });
+    }
     if (!existsSync(join(folder, 'README.md'))) warnings.push({ path: 'README.md', message: 'a README tells players what the mod is about' });
     loaded.push({ mod, label });
   }
   for (const e of errors) console.error(`  ✗ ${label} ${e.path}: ${e.message}`);
   for (const w of warnings) console.warn(`  ! ${label} ${w.path}: ${w.message}`);
   if (errors.length > 0) failed = true;
-  else console.log(`✓ ${label} (${parsed.mod.defs.length} defs, ${(parsed.mod.sprites ?? []).length} sheets${(parsed.mod.sounds ?? []).length ? `, ${parsed.mod.sounds.length} sounds` : ''}, ${(parsed.mod.screenshots ?? []).length} screenshot${(parsed.mod.screenshots ?? []).length === 1 ? '' : 's'})`);
+  else console.log(`✓ ${label} (${parsed.mod.defs.length} defs, ${(parsed.mod.sprites ?? []).length} sheets${(parsed.mod.sounds ?? []).length ? `, ${parsed.mod.sounds.length} sounds` : ''}${(parsed.mod.maps ?? []).length ? `, ${parsed.mod.maps.length} map${parsed.mod.maps.length === 1 ? '' : 's'}` : ''}, ${(parsed.mod.screenshots ?? []).length} screenshot${(parsed.mod.screenshots ?? []).length === 1 ? '' : 's'})`);
 }
 
 // what only the whole registry can tell: two mods claiming the same id, alias or sheet key

@@ -1,0 +1,1357 @@
+#!/usr/bin/env python3
+"""Port Adolence (罪恶之都) from its Rusted Warfare package into this Steel Tide mod.
+
+Reads the unpacked package at ../../rusted-warfare-mods/A9999[V3.0] (git-ignored),
+converts the curated roster below into defs, composites the art into sheets,
+cuts the firing sounds to mono MP3 one-shots, and writes mod.json.
+
+  python3 mods/adolence/port-rw.py            # convert everything
+  python3 mods/adolence/port-rw.py --dry      # print the conversion, write nothing
+  python3 mods/adolence/port-rw.py --no-media # mod.json only (sheets and sounds kept)
+
+Rusted Warfare conventions this rests on: a tile is 20 px and the sim runs 60
+ticks a second; a bare time is ticks and `5s` is seconds; `moveSpeed` is px per
+tick; unit art faces up; a building's footprint is `left,up,right,down` in
+tiles; `copyFrom` merges other files as defaults; every `all-units.template`
+above a unit's folder applies to it; `@define x: v` and `${x}` are variables.
+This package prices things in three resources: credits, 柴油 (diesel) and 补给
+(supply). Steel Tide has one, so the three are folded into one figure first.
+"""
+import hashlib
+import json
+import math
+import os
+import re
+import shutil
+import subprocess
+import sys
+
+from PIL import Image
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(os.path.dirname(HERE))
+RW = os.path.join(REPO, "rusted-warfare-mods", "A9999[V3.0]")
+MOD_ID = "adolence"
+DRY = "--dry" in sys.argv
+NO_MEDIA = "--no-media" in sys.argv
+# `--out DIR` writes everything to DIR instead of the mod folder (a preview)
+OUT = os.path.abspath(sys.argv[sys.argv.index("--out") + 1]) if "--out" in sys.argv else HERE
+
+# ----------------------------------------------------------------- scaling
+# Sheet px per Rusted Warfare world px: 1 RW px ≈ 1.024 sheet px, drawn at 0.8,
+# the same convention as the Rusted Expansion mod, so the two look consistent
+# side by side. A unit's art is then drawn 1.5625× on the map.
+ART = 0.82
+DISPLAY = 1.5625
+INFANTRY_ART = 0.7          # people are drawn a step smaller still
+SOFT_CAP = 30               # RW px; beyond this the long side grows at 0.35×
+
+# numbers
+COST_A, COST_B = 0.287, 0.763   # metal = A × (folded price)^B
+HP_UNIT = 0.35
+HP_BUILDING = 0.8
+HP_TOWER = 0.35
+DMG = 0.14                      # below HP_UNIT: the package kills ~3× faster than vanilla between equals
+ZOMBIE_DMG = 0.25               # bites stay meaningful
+INFANTRY_SPEED = 1.4            # people were calibrated as tanks otherwise
+RANGE = 0.55 / 20               # RW px → tiles
+SPEED = 96 * 0.55               # RW px/tick → world px/s
+VISION = 0.6
+BUILD_TIME = 2.0
+DIESEL, SUPPLY = 10, 5          # credits one unit of each is worth
+
+
+def shrink(long_px):
+    """size compression for the long side of a drawn unit, in RW px"""
+    if long_px <= SOFT_CAP:
+        return 1.0
+    return (SOFT_CAP + (long_px - SOFT_CAP) * 0.35) / long_px
+
+
+# ------------------------------------------------------------- ini parsing
+def parse_ini(text):
+    secs = {}
+    cur = None
+    lines = text.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        i += 1
+        if not line or line[0] in "#;" or line.startswith("//"):
+            continue
+        m = re.match(r"^\[([^\]]+)\]", line)
+        if m:
+            cur = m.group(1).strip()
+            secs.setdefault(cur, {})
+            continue
+        if cur is None or ":" not in line:
+            continue
+        k, _, v = line.partition(":")
+        k, v = k.strip(), v.strip()
+        if v.startswith('"""'):
+            v = v[3:]
+            if '"""' in v:
+                v = v[: v.index('"""')]
+            else:
+                parts = [v]
+                while i < len(lines):
+                    l = lines[i]
+                    i += 1
+                    if '"""' in l:
+                        parts.append(l[: l.index('"""')])
+                        break
+                    parts.append(l)
+                v = "\n".join(parts).strip()
+        secs[cur][k] = v
+    return secs
+
+
+def resolve(ref, from_dir):
+    r = ref.strip().replace("\\", "/")
+    if not r or r.upper() in ("NONE", "AUTO"):
+        return None
+    up = r.upper()
+    if up.startswith("ROOT:"):
+        p = os.path.join(RW, r[5:].lstrip("/"))
+    elif up.startswith(("SHARED:", "SHADOW:", "CUSTOM:")):
+        return None
+    else:
+        p = os.path.join(from_dir, r)
+    p = os.path.normpath(p)
+    if os.path.exists(p):
+        return p
+    d, b = os.path.split(p)
+    if os.path.isdir(d):
+        for f in os.listdir(d):
+            if f.lower() == b.lower():
+                return os.path.join(d, f)
+    return None
+
+
+def merge_into(dst, src):
+    for sec, kv in src.items():
+        d = dst.setdefault(sec, {})
+        for k, v in kv.items():
+            d[k] = v
+
+
+_cache = {}
+
+
+def load_file(path, stack=()):
+    """one file with its own copyFrom chain merged beneath it"""
+    if path in _cache:
+        return _cache[path]
+    if path in stack:
+        return {}
+    own = parse_ini(open(path, encoding="utf-8", errors="replace").read())
+    out = {}
+    for ref in split_list(own.get("core", {}).get("copyFrom", "")):
+        hit = resolve(ref, os.path.dirname(path))
+        if hit:
+            merge_into(out, load_file(hit, stack + (path,)))
+    merge_into(out, own)
+    _cache[path] = out
+    return out
+
+
+def load_unit(path):
+    """a unit with every folder template above it, then its copyFrom chain, then itself"""
+    out = {}
+    rel = os.path.relpath(os.path.dirname(path), RW)
+    dirs = [RW]
+    if rel != ".":
+        acc = RW
+        for part in rel.split(os.sep):
+            acc = os.path.join(acc, part)
+            dirs.append(acc)
+    for d in dirs:
+        t = os.path.join(d, "all-units.template")
+        if os.path.exists(t):
+            merge_into(out, load_file(t))
+    merge_into(out, load_file(path))
+    expand_vars(out)
+    expand_turret_copies(out)
+    return out
+
+
+def split_list(v):
+    return [s.strip() for s in (v or "").split(",") if s.strip()]
+
+
+def expand_vars(ini):
+    defines = {}
+    for sec, kv in ini.items():
+        for k, v in kv.items():
+            if k.startswith("@define "):
+                defines[k[8:].strip()] = v
+    if not any("${" in v for kv in ini.values() for v in kv.values()):
+        return
+
+    def lookup(tok):
+        if tok in defines:
+            return defines[tok]
+        if "." in tok:
+            s, k = tok.split(".", 1)
+            s = re.sub(r"^\d+", "", s)  # `${8core.maxHp}` is a typo for core.maxHp
+            v = ini.get(s, {}).get(k)
+            if v is not None:
+                return v
+        return None
+
+    for sec, kv in ini.items():
+        for k, v in list(kv.items()):
+            if "${" not in v:
+                continue
+
+            def sub(m):
+                expr = m.group(1)
+                toks = re.findall(r"[A-Za-z_一-鿿][\w一-鿿]*(?:\.[\w一-鿿]+)?", expr)
+                e = expr
+                for t in sorted(set(toks), key=len, reverse=True):
+                    if t in ("int", "min", "max"):
+                        continue
+                    val = lookup(t)
+                    if val is None:
+                        return m.group(0)
+                    e = re.sub(r"(?<![\w.])" + re.escape(t) + r"(?![\w.])", str(num(val) if num(val) is not None else val), e)
+                try:
+                    return str(eval(e, {"__builtins__": {}}, {"int": int, "min": min, "max": max}))
+                except Exception:
+                    return m.group(0)
+
+            kv[k] = re.sub(r"\$\{([^}]*)\}", sub, v)
+
+
+def expand_turret_copies(ini):
+    for _ in range(3):
+        for sec, kv in list(ini.items()):
+            if not sec.startswith("turret_") or "copyFrom" not in kv:
+                continue
+            base = ini.get("turret_" + kv["copyFrom"].strip())
+            if base is None:
+                continue
+            merged = {k: v for k, v in base.items() if k != "copyFrom"}
+            merged.update({k: v for k, v in kv.items() if k != "copyFrom"})
+            ini[sec] = merged
+
+
+def num(v):
+    if v is None:
+        return None
+    m = re.match(r"^\s*(-?\d+(\.\d+)?)", str(v))
+    return float(m.group(1)) if m else None
+
+
+def boolish(v, default=False):
+    if v is None:
+        return default
+    s = str(v).strip().lower()
+    if s.startswith("if "):
+        return True  # a condition: the ability exists
+    return s in ("true", "1", "yes")
+
+
+def seconds(v):
+    n = num(v)
+    if n is None:
+        return None
+    return n if re.search(r"s\s*$", str(v).strip(), re.I) else n / 60
+
+
+def build_seconds(v):
+    n = num(v)
+    if n is None or n <= 0:
+        return None
+    if re.search(r"s\s*$", str(v).strip(), re.I):
+        return n
+    return 1 / (60 * n) if n < 1 else n / 60
+
+
+def price_parts(v):
+    credits = diesel = supply = 0.0
+    for part in split_list(v):
+        if ":" in part or "=" in part:
+            k, val = re.split(r"[:=]", part, maxsplit=1)
+            n = num(val) or 0
+            if "柴油" in k:
+                diesel = n
+            elif "补给" in k:
+                supply = n
+            else:
+                credits = n
+        else:
+            credits = num(part) or 0
+    return credits, diesel, supply
+
+
+def folded_price(v):
+    c, d, s = price_parts(v)
+    return c + DIESEL * d + SUPPLY * s
+
+
+def unit_cost(folded):
+    return int(max(15, min(4000, round(COST_A * folded ** COST_B / 5) * 5)))
+
+
+def strip_quotes(s):
+    return re.sub(r"^[“\"”]+|[“\"”]+$", "", (s or "").strip())
+
+
+def clamp(x, lo, hi):
+    return max(lo, min(hi, x))
+
+
+# ------------------------------------------------------------------ roster
+# (rw name, id suffix, English name, English tooltip, overrides)
+# overrides: tier, armor, pop, hovers, cost, hp, weapons, image, turret_from,
+#            produces, producedBy, requires, power, fw, fh, aiWeight, extra
+B, U, Z = "building", "unit", "zombie"
+ROSTER = [
+    # ---- buildings
+    ("AD-联合警戒中心", "precinct", "Joint Precinct", "The city's police command: trains officers and cruisers, and sees far.",
+     dict(kind=B, power=-8, vision=12, aiWeight=0)),
+    ("VD-联合警戒中心", "precinct-2", "VD Joint Precinct", "The precinct under martial law: the whole garrison is on call here.",
+     dict(kind=B, power=-10, vision=14, upgradeOf="precinct")),
+    ("警用哨所", "outpost", "Police Outpost", "Trains the city's police, and the troops that come to its aid.",
+     dict(kind=B, power=-5)),
+    ("警用车库", "garage", "Police Garage", "Dispatches cruisers, sedans and armoured cars.",
+     dict(kind=B, power=-6)),
+    ("警用军库", "arsenal", "Police Arsenal", "The garage on a war footing: military vehicles, tanks and the Abrams.",
+     dict(kind=B, power=-8, upgradeOf="garage")),
+    ("警用机坪", "helipad", "Police Helipad", "A temporary pad for the police helicopter.",
+     dict(kind=B, power=-6)),
+    ("军用机坪", "airfield", "Military Airfield", "Gunships, fighters, the bomber and the transport fly from here.",
+     dict(kind=B, power=-8, upgradeOf="helipad")),
+    # the coast guard base is left out: the game places a naval yard on the shore by its id
+    # (`navyard…`), so a mod's shipyard would launch its boats onto grass; the boats come
+    # from the vanilla naval yard instead (the default line for their domain)
+    ("太阳能板", "solar", "Solar Array", "A quiet trickle of power. Needs room.",
+     dict(kind=B, power=25, cost=180, hp=900)),
+    ("太阳能板-T2", "solar-2", "Solar Array T2", "Better cells, three times the power.",
+     dict(kind=B, power=75, cost=700, hp=1600, upgradeOf="solar")),
+    ("物资储藏点", "supply-cache", "Supply Cache", "A police stash on a deposit: metal for the effort.",
+     dict(kind=B, power=-4, metalRate=1.4, needsDeposit=True, fw=2, fh=2, cost=140, hp=600)),
+    ("物资储藏点-Ⅱ", "supply-cache-2", "Supply Cache II", "The stash, enlarged.",
+     dict(kind=B, power=-8, metalRate=3.0, needsDeposit=True, fw=2, fh=2, cost=380, hp=950, upgradeOf="supply-cache")),
+    ("机枪塔位", "mg-tower", "MG Tower", "A street barricade with a machine gun on the mount. Fires at aircraft too.",
+     dict(kind=B, power=-2, fw=2, fh=2, cost=220, hp=750, tower=True, zh="街垒机枪塔位，对空对地 “战区争锋！”")),
+    ("基础扭机", "barricade", "Barricade", "A cheap block of steel to funnel the horde.",
+     dict(kind=B, power=0, fw=1, fh=1, cost=40, hp=450)),
+    ("懒惰之罪", "sloth-nest", "Sin of Sloth", "A nest of the SPK strain. It breeds the dead. Place it on a deposit.",
+     dict(kind=B, power=0, fw=2, fh=2, cost=300, hp=900, image="zombies/懒惰之罪/AA.png", needsDeposit=True, aiWeight=0)),
+    # ---- infantry
+    ("民警-手枪", "officer-pistol", "Patrol Officer (Pistol)", "Basic beat cop with a sidearm. Cheap, everywhere, brave.",
+     dict(kind=U)),
+    ("民警-步枪", "officer-rifle", "Patrol Officer (Rifle)", "Basic beat cop with a rifle.",
+     dict(kind=U)),
+    ("交警-步枪", "traffic-officer", "Traffic Officer", "Directs traffic, then the horde. A rifle and a whistle.",
+     dict(kind=U)),
+    ("武警-手枪", "armed-police-pistol", "Armed Police (Pistol)", "Paramilitary police with a sidearm.",
+     dict(kind=U)),
+    ("武警-步枪", "armed-police-rifle", "Armed Police (Rifle)", "Paramilitary police with a rifle.",
+     dict(kind=U)),
+    ("海战-步枪", "swat-sea", "SWAT (Naval Camo)", "Special police in naval camouflage, shotgun.",
+     dict(kind=U)),
+    ("野战-步枪", "swat-field", "SWAT (Desert Camo)", "Special police in desert camouflage, shotgun.",
+     dict(kind=U)),
+    ("草地-步枪", "army-woodland", "Army Trooper (Woodland)", "Regular army, woodland camouflage, shotgun.",
+     dict(kind=U)),
+    ("陆战-步枪", "army-marksman", "Army Marksman", "Regular army marksman with a sniper rifle.",
+     dict(kind=U)),
+    ("民兵-步枪", "guard-rifleman", "National Guard Rifleman", "The state guard, called in when the police broke.",
+     dict(kind=U, zh_name="民兵-步枪")),
+    ("民兵-轻机枪", "guard-gunner", "National Guard Gunner", "Guardsman with a light machine gun.",
+     dict(kind=U, zh_name="民兵-轻机枪")),
+    ("民兵-火焰喷射器", "guard-flamethrower", "National Guard Flamethrower", "Fire clears a street the way nothing else does.",
+     dict(kind=U, flame=True)),
+    ("宪兵-步枪", "military-police", "Military Police", "Provost with a rifle.",
+     dict(kind=U, zh_name="宪兵-步枪")),
+    ("陆战队-步枪A", "taskforce-rifleman", "Task Force Rifleman", "Special task force rifleman. Elite.",
+     dict(kind=U)),
+    ("陆战队-掷弹兵", "taskforce-grenadier", "Task Force Grenadier", "Rifle with an underslung grenade launcher.",
+     dict(kind=U)),
+    ("陆战队-反器材", "taskforce-anti-materiel", "Task Force Anti-Materiel", "A rifle that opens vehicles.",
+     dict(kind=U)),
+    ("陆战队-火箭筒A", "taskforce-rocketeer", "Task Force Rocketeer", "Anti-tank rockets; also reaches aircraft.",
+     dict(kind=U)),
+    ("陆战队-机枪", "taskforce-gunner", "Task Force Gunner", "Squad machine gun.",
+     dict(kind=U)),
+    ("陆战队-霰弹枪", "taskforce-shotgunner", "Task Force Shotgunner", "Automatic shotgun for close work.",
+     dict(kind=U)),
+    ("中州武装步枪", "zhongzhou-rifleman", "Zhongzhou Rifleman", "Zhongzhou armed forces, sent in support.",
+     dict(kind=U, requires=["arsenal"])),
+    ("中州特战狙击", "zhongzhou-sniper", "Zhongzhou Sniper", "Zhongzhou special forces marksman.",
+     dict(kind=U, requires=["arsenal"], zh_name="中州特战狙击")),
+    ("肃清协议-MG", "purge-gunner", "Purge Protocol Gunner", "Heavily armoured escort gunner of the purge protocol.",
+     dict(kind=U, armor="medium", requires=["arsenal"], zh_name="肃清协议-MG")),
+    # ---- vehicles
+    ("轿车-黑", "sedan-black", "Black Sedan", "A civilian car pressed into service. Carries four.",
+     dict(kind=U)),
+    ("警车", "cruiser", "Police Cruiser", "The basic patrol car. Carries four officers.",
+     dict(kind=U)),
+    ("警用装甲车-B", "armoured-car", "Police Armoured Car", "Armoured patrol vehicle. Carries five.",
+     dict(kind=U, armor="medium")),
+    ("警用两栖车-A", "amphibious-car", "Police Amphibious Car", "Light amphibious carrier for three.",
+     dict(kind=U, armor="medium")),
+    ("警用指挥车-A3", "command-van", "Police Command Van", "Mobile command post. Carries six.",
+     dict(kind=U, armor="medium")),
+    ("警用通讯车", "comms-van", "Police Comms Van", "Communications van: unarmed, but it sees very far.",
+     dict(kind=U, armor="medium")),
+    ("警用重卫车-U0", "heavy-escort", "Police Heavy Escort", "Heavy escort truck. Carries nine.",
+     dict(kind=U, armor="medium")),
+    ("装甲车", "ambush-car", "Ambush Armoured Car", "Mine-resistant ambush-protected carrier. Unarmed, thick-skinned, carries seven.",
+     dict(kind=U, armor="heavy", zh="反地雷伏击车，无武装，可载七人")),
+    ("警用迫击炮", "mortar", "Police Mortar", "Short-ranged, accurate, three times as hard on buildings.",
+     dict(kind=U, armor="light", arc=True)),
+    ("重机枪", "heavy-mg", "Heavy Machine Gun", "A crewed heavy machine gun. Slow to move, fast to fire.",
+     dict(kind=U, armor="light", extra={"speed": 24})),
+    ("警卫步械-步枪", "walker-rifle", "Guard Walker (Rifle)", "Police walking armour with an autocannon.",
+     dict(kind=U, armor="medium")),
+    ("警卫步械-榴弹", "walker-grenade", "Guard Walker (Grenade)", "Police walking armour with a grenade launcher.",
+     dict(kind=U, armor="medium")),
+    ("警卫轻坦-轻机枪", "light-tank-lmg", "Guard Light Tank (LMG)", "Black-steel light tank with a light machine gun.",
+     dict(kind=U, armor="heavy")),
+    ("警卫轻坦-机枪", "light-tank-mg", "Guard Light Tank (MG)", "Black-steel light tank with a heavy machine gun.",
+     dict(kind=U, armor="heavy")),
+    ("警卫轻坦-常规", "light-tank", "Guard Light Tank", "Black-steel light tank with a long gun.",
+     dict(kind=U, armor="heavy")),
+    ("警卫轻坦-导弹", "light-tank-missile", "Guard Light Tank (Missile)", "Black-steel chassis with a missile battery.",
+     dict(kind=U, armor="heavy")),
+    ("警卫轻坦-喷火", "light-tank-flame", "Guard Light Tank (Flame)", "Black-steel light tank with a flamethrower.",
+     dict(kind=U, armor="heavy", flame=True)),
+    ("警卫轻坦-狙击", "light-tank-sniper", "Guard Light Tank (Sniper)", "Black-steel light tank with a long-range rifle cannon.",
+     dict(kind=U, armor="heavy")),
+    ("警卫重坦-常规", "heavy-tank", "Guard Heavy Tank", "Riot heavy tank: a huge blast every shot. Clears the ground by force.",
+     dict(kind=U, armor="heavy", tier=3, dmg_mult=2.5)),
+    ("军用侦查车", "scout-car", "Military Scout Car", "Fast light vehicle for a look ahead.",
+     dict(kind=U)),
+    ("军用突击车", "assault-car", "Military Assault Car", "Light military vehicle.",
+     dict(kind=U)),
+    ("多用途轻型车辆", "utility-vehicle", "Light Utility Vehicle", "General-purpose military vehicle; a gun ring on the roof. Carries five.",
+     dict(kind=U, armor="medium")),
+    ("多用途轻型车辆-MP", "utility-vehicle-mp", "Light Utility Vehicle MP", "Military police utility vehicle. Carries five.",
+     dict(kind=U, armor="medium", zh_name="多用途轻型车辆-MP")),
+    ("军用运输卡车-B", "transport-truck", "Military Transport Truck", "A truck for a platoon.",
+     dict(kind=U, armor="medium")),
+    ("M977", "m977", "M977 HEMTT", "Heavy tactical supply truck. Tough and unarmed.",
+     dict(kind=U, armor="medium", tier=2, zh_name="M977")),
+    ("M1128", "m1128", "M1128 Stryker MGS", "Stryker mobile gun system: a 105 mm gun on eight wheels.",
+     dict(kind=U, armor="heavy", tier=3, turret_from="M1128 T", turret_offset=(0, -9.5), weapons=[
+         dict(id="gun", cls="cannon", dmg=95, reload=5.5, range=8.5, targets=["ground", "ship"], projectile="shell", speed=600, splash=14, turret=True, sound="105mm"),
+         dict(id="coax", cls="mg", dmg=9, reload=0.45, range=6, targets=["ground", "ship"], turret=True, sound="mg"),
+     ])),
+    ("M1A2", "m1a2", "M1A2 Abrams", "Main battle tank: 120 mm smoothbore, coaxial gun, thick plate.",
+     dict(kind=U, armor="heavy", tier=3, turret_from="M1A2 T", weapons=[
+         dict(id="gun", cls="cannon", dmg=125, reload=4.5, range=9, targets=["ground", "ship"], projectile="shell", speed=700, splash=12, turret=True, sound="120mm"),
+         dict(id="coax", cls="mg", dmg=9, reload=0.45, range=6, targets=["ground", "ship"], turret=True, sound="mg"),
+     ])),
+    ("M1A2 TUSK II", "m1a2-tusk", "M1A2 TUSK II", "Abrams with the urban survival kit: more armour, same gun.",
+     dict(kind=U, armor="heavy", tier=3, turret_from="M1A2 TUSK II T", weapons=[
+         dict(id="gun", cls="cannon", dmg=125, reload=4.5, range=9, targets=["ground", "ship"], projectile="shell", speed=700, splash=12, turret=True, sound="120mm"),
+         dict(id="coax", cls="mg", dmg=9, reload=0.45, range=6, targets=["ground", "ship"], turret=True, sound="mg"),
+     ])),
+    ("M1A2 SEPV3", "m1a2-sepv3", "M1A2 SEPv3", "The newest Abrams. Better optics, better gun.",
+     dict(kind=U, armor="heavy", tier=3, turret_from="M1A2 SEPV3 T", weapons=[
+         dict(id="gun", cls="cannon", dmg=135, reload=4.2, range=9.5, targets=["ground", "ship"], projectile="shell", speed=700, splash=12, turret=True, sound="120mm"),
+         dict(id="coax", cls="mg", dmg=9, reload=0.45, range=6, targets=["ground", "ship"], turret=True, sound="mg"),
+     ])),
+    ("M1A1 HC 标题党", "m1a1-clickbait", "M1A1 HC \"Clickbait\"", "The old Abrams with a name. 120 mm and a coaxial gun.",
+     dict(kind=U, armor="heavy", tier=3, turret_from="M1A1 HC 标题党 T", zh_name="M1A1 HC“标题党”", weapons=[
+         dict(id="gun", cls="cannon", dmg=120, reload=4.5, range=9, targets=["ground", "ship"], projectile="shell", speed=700, splash=12, turret=True, sound="120mm"),
+         dict(id="coax", cls="mg", dmg=9, reload=0.45, range=6, targets=["ground", "ship"], turret=True, sound="mg"),
+     ])),
+    ("轻型两栖步战", "light-ifv", "Light Amphibious IFV", "Hovercraft infantry carrier with a machine gun. Carries four.",
+     dict(kind=U, armor="medium")),
+    ("重型两栖步战", "heavy-ifv", "Heavy Amphibious IFV", "Big hovercraft carrier with a machine gun. Carries eight.",
+     dict(kind=U, armor="medium")),
+    ("极征主义", "extremism", "\"Extremism\"", "Experimental super-heavy tank. The world belongs to it.",
+     dict(kind=U, armor="heavy", tier=3)),
+    # ---- air
+    # the game lays a spinning rotor on anything that hovers (`rotorMounts`), so the package's blade images stay off
+    ("警用直升机-A", "police-heli", "Police Helicopter", "Unarmed transport helicopter for four.",
+     dict(kind=U, hovers=True, zh="警用运输直升机，无武装，可载四人")),
+    ("轻型武装直升机", "light-gunship", "Light Attack Helicopter", "Light gunship: guns and rockets.",
+     dict(kind=U, hovers=True)),
+    ("重型武装直升机", "heavy-gunship", "Heavy Attack Helicopter", "Twin cannon and rockets, air and ground. Carries a two-man team.",
+     dict(kind=U, hovers=True, tier=2)),
+    ("军用轰炸机", "bomber", "Military Bomber", "Heavy bombs on a slow airframe.",
+     dict(kind=U, tier=2, weapons=[
+         dict(id="bombs", cls="he", dmg=85, reload=6.5, range=2.4, targets=["ground", "ship"], projectile="bomb", speed=120, splash=42, burst=3, burstDelay=0.25, turret=False, sound="bomb"),
+     ])),
+    ("特区运输机", "transport-heli", "SAR Transport Helicopter", "Transport helicopter for a squad.",
+     dict(kind=U, hovers=True)),
+    ("鹰击-U9战斗机", "fighter-u9", "Eagle Strike U9", "Air-superiority fighter.",
+     dict(kind=U, tier=2)),
+    ("鹰击-A2", "fighter-a2", "Eagle Strike A2", "Multirole fighter.",
+     dict(kind=U, tier=2)),
+    # ---- sea
+    ("海警侦船", "scout-boat", "Coast Guard Scout Boat", "Unarmed patrol boat with long eyes.",
+     dict(kind=U)),
+    ("溃北", "drone-carrier", "\"Rout North\" Carrier", "Experimental drone carrier: naval guns and a missile battery.",
+     dict(kind=U, tier=3, no_turret=True, weapons=[
+         dict(id="guns", cls="navgun", dmg=45, reload=1.4, range=8, targets=["ground", "ship"], projectile="shell", speed=520, splash=10, bores=2, boreSpacing=9, turret=False, sound="cannon"),
+         dict(id="sam", cls="aa", dmg=60, reload=2.4, range=8, targets=["air"], projectile="missile", speed=460, homing=True, turret=False, sound="missile"),
+     ])),
+    # ---- the dead
+    ("丧尸-M", "zombie", "Zombie", "The common dead. Slow, weak, many.", dict(kind=Z)),
+    ("丧尸-壮汉", "brute", "Brute", "A big one. Hits hard.", dict(kind=Z)),
+    ("丧尸-胖子", "bloater", "Bloater", "Swollen and slow.", dict(kind=Z)),
+    ("丧尸-囚徒", "prisoner", "Prisoner", "Still in orange. Tougher than it looks.", dict(kind=Z)),
+    ("丧尸-愤怒", "rager", "Rager", "Fast and furious. Goes straight for buildings.", dict(kind=Z, building_breaker=True)),
+    ("丧尸-爆裂者", "burster", "Burster", "Bursts on contact.", dict(kind=Z)),
+    ("丧尸-聚爆者", "imploder", "Imploder", "Collapses inward with a blast.", dict(kind=Z)),
+    ("异常民警-手枪", "turned-officer", "Turned Officer", "Was a beat cop. Still has the pistol.", dict(kind=Z)),
+    ("异常陆战队-反器材", "turned-anti-materiel", "Turned Anti-Materiel", "Was task force. Still has the big rifle.", dict(kind=Z)),
+    ("路怒症", "road-rage", "Road Rage", "A wrecked car that hates vehicles.", dict(kind=Z, armor="medium")),
+    ("血肉酸稠", "acid-mass", "Acid Mass", "A crawling mass that spits acid at vehicles.", dict(kind=Z, armor="medium", no_turret=True)),
+    ("幸灾乐祸", "gloater", "Gloater", "An aquatic mutant.", dict(kind=Z, domain="ship")),
+    # it circles like a bird rather than hovering: a hovering thing is drawn with a rotor
+    ("飞骸", "flying-husk", "Flying Husk", "A winged carcass with a burning gaze.",
+     dict(kind=Z, domain="air", zh="飞行的骸骨，目光灼灼", overlays=[("左1.png", -20, 3, 1.1, True), ("右1.png", 20, 3, 1.1, True)])),
+    ("大猩猩", "gorilla", "Gorilla", "Looks like a gorilla. Can reach aircraft.", dict(kind=Z, armor="heavy", tier=2)),
+    ("人间失格", "no-longer-human", "No Longer Human", "Ten thousand hit points of hate.", dict(kind=Z, armor="heavy", tier=3)),
+    ("暴虐之罪", "sin-of-wrath", "Sin of Wrath", "One of the Sins.", dict(kind=Z, armor="heavy", tier=3)),
+    ("暴食之罪", "sin-of-gluttony", "Sin of Gluttony", "The eater. One of the Sins.", dict(kind=Z, armor="heavy", tier=2)),
+]
+
+# where things that no ported building lists are trained
+EXTRA_PRODUCES = {
+    "outpost": ["zhongzhou-rifleman", "zhongzhou-sniper", "purge-gunner"],
+    "sloth-nest": [r[1] for r in ROSTER if r[4].get("kind") == Z],
+}
+# the builtin Rusted Warfare sound names, to the game's classes
+BUILTIN_SOUNDS = {
+    "tank_firing": "cannon", "missile_fire": "missile", "plasma_fire": "autocannon", "large_gun_fire1": "cannon",
+    "large_gun_fire2": "cannon", "gun_fire": "mg", "firing3": "mg", "nuke_launch": "arty",
+}
+NAMED_SOUNDS = {  # for the hand-written weapons
+    "120mm": "音效/120mm口径1.wav", "105mm": "音效/105mm口径1.wav",
+}
+
+
+# --------------------------------------------------------------- the units
+def index_units():
+    """every unit file, by its [core] name with quotes stripped"""
+    by_name = {}
+    for root, _, files in os.walk(RW):
+        for f in files:
+            if not f.lower().endswith(".ini"):
+                continue
+            p = os.path.join(root, f)
+            raw = parse_ini(open(p, encoding="utf-8", errors="replace").read())
+            name = raw.get("core", {}).get("name")
+            if name:
+                by_name.setdefault(strip_quotes(name), p)
+    return by_name
+
+
+def zh_desc(ini, fallback):
+    d = ini.get("core", {}).get("displayDescription", "") or ""
+    d = d.replace("\\n", "\n")
+    if not d or "DEMO" in d:
+        return fallback
+    items = []
+    quote = None
+    for line in d.split("\n"):
+        s = line.strip().lstrip("-").strip()
+        if not s:
+            continue
+        if s.startswith(("“", "\"", "[")) and quote is None:
+            quote = s
+            continue
+        items.append(s.rstrip("。.，,…"))
+    out = "，".join(items[:2])
+    if len(out) > 40:
+        out = items[0]
+    if quote and len(out) + len(quote) <= 44:
+        out = out + " " + quote
+    return out or fallback
+
+
+# ------------------------------------------------------------------ media
+SOUND_JOBS = {}   # src path -> (key, out file)
+SHEETS = []
+SHEET_BY_HASH = {}
+NOTES = []
+OUT_SPRITES = os.path.join(OUT, "sprites")
+OUT_SOUNDS = os.path.join(OUT, "sounds")
+
+
+def note(unit, msg):
+    NOTES.append(f"{unit}: {msg}")
+
+
+def clean_alpha(im):
+    """drop near-invisible alpha, and keep every pixel out of the game's magenta remap test.
+
+    The package draws no faction colour, and a sheet with `teams: false` does not render
+    (the atlas looks a unit up by its team key), so the sheets stay team-recoloured and
+    the pass below makes sure nothing in them is magenta enough to be recoloured:
+    r>60 && b>60 && (r+b)/2-g>28 && |r-b|<95 — the pinks of the dead would be caught.
+    """
+    im = im.convert("RGBA")
+    px = im.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, g, b, a = px[x, y]
+            if a < 24:
+                px[x, y] = (0, 0, 0, 0)
+                continue
+            if r > 60 and b > 60 and (r + b) / 2 - g > 28 and abs(r - b) < 95:
+                g = min(255, int((r + b) / 2 - 27))
+                px[x, y] = (r, g, b, a)
+    return im
+
+
+def sound_key(src):
+    base = os.path.splitext(os.path.basename(src))[0]
+    slug = re.sub(r"[^a-z0-9]+", "-", base.lower()).strip("-")
+    zh = {"通用机枪": "gpmg", "机炮": "autocannon", "火箭": "rocket", "开火": "mortar", "火": "flame", "爆炸": "blast", "步枪": "rifle"}
+    for k, v in zh.items():
+        if k in base:
+            slug = v
+    if not slug or slug in ("1", "shot3"):
+        folder = os.path.basename(os.path.dirname(src))
+        slug = {"武装直升机": "heli-gun", "民兵": "guard-rifle", "飞骸": "husk-beam", "M921多功能车辆": "hmg", "7.重机枪": "hmg"}.get(folder, slug or "gun")
+    slug = slug.replace("口径", "mm").replace("mm-1", "mm").replace("--", "-")
+    key = f"{MOD_ID}-{slug}"
+    taken = {v[0] for v in SOUND_JOBS.values()}
+    n = 2
+    while key in taken:
+        key = f"{MOD_ID}-{slug}-{n}"
+        n += 1
+    return key
+
+
+SOUND_BY_HASH = {}
+
+
+def add_sound(src):
+    """one slot per recording: the package keeps copies of the same file in several folders"""
+    if src in SOUND_JOBS:
+        return SOUND_JOBS[src][0]
+    h = hashlib.md5(open(src, "rb").read()).hexdigest()
+    if h in SOUND_BY_HASH:
+        SOUND_JOBS[src] = SOUND_JOBS[SOUND_BY_HASH[h]]
+        return SOUND_JOBS[src][0]
+    key = sound_key(src)
+    SOUND_JOBS[src] = (key, f"sounds/{key[len(MOD_ID) + 1:]}.mp3")
+    SOUND_BY_HASH[h] = src
+    return key
+
+
+def weapon_sound(shoot, from_dir, unit):
+    if not shoot:
+        return None
+    first = shoot.split(",")[0].strip()
+    first = re.sub(r":[\d.]+$", "", first)  # `large_gun_fire1:0.18` carries a volume
+    low = first.lower()
+    if low in BUILTIN_SOUNDS:
+        return BUILTIN_SOUNDS[low]
+    if not re.search(r"\.(ogg|wav|mp3)$", low):
+        return None
+    hit = resolve(first, from_dir)
+    if not hit:
+        note(unit, f"shoot_sound {first} not found")
+        return None
+    return add_sound(hit)
+
+
+def write_sounds():
+    if NO_MEDIA or DRY:
+        return
+    shutil.rmtree(OUT_SOUNDS, ignore_errors=True)
+    os.makedirs(OUT_SOUNDS)
+    done = set()
+    for src, (key, out) in SOUND_JOBS.items():
+        if key in done:
+            continue
+        done.add(key)
+        dst = os.path.join(OUT, out)
+        af ="silenceremove=start_periods=1:start_threshold=-38dB,afade=t=out:st=0.72:d=0.18,aformat=channel_layouts=mono,alimiter=limit=0.95"
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", src, "-af", af, "-t", "0.9", "-ar", "44100", "-b:a", "96k", dst], check=True)
+
+
+def sheet_size(px_w, px_h, scale, infantry):
+    k = shrink(max(px_w, px_h) * scale)
+    f = ART * scale * k * (INFANTRY_ART if infantry else 1.0)
+    return max(4, round(px_w * f)), max(4, round(px_h * f)), f
+
+
+def add_sheet(key, im, frames, rotated, fw=None, fh=None, pivot_y=None, mount=None, tag=None):
+    """dedupe identical art: a second def naming the same image shares the sheet"""
+    h = hashlib.md5(im.tobytes()).hexdigest() + f":{frames}:{fw}:{fh}:{pivot_y}"
+    if h in SHEET_BY_HASH:
+        return SHEET_BY_HASH[h]
+    entry = {"key": key, "file": f"sprites/{key}.png", "frames": frames}
+    if rotated:
+        entry.update(rotated=True, fw=fw, fh=fh)
+        if pivot_y is not None and abs(pivot_y - 0.5) > 0.01:
+            entry["pivotY"] = round(pivot_y, 3)
+    if mount:
+        entry["mount"] = [round(mount[0], 3), round(mount[1], 3)]
+    if not DRY and not NO_MEDIA:
+        im.save(os.path.join(OUT_SPRITES, f"{key}.png"))
+    SHEETS.append(entry)
+    SHEET_BY_HASH[h] = key
+    return key
+
+
+def turret_parts(ini, from_dir, ov):
+    """the turret images with their offsets from the main turret pivot (RW px, y forward)"""
+    secs = {s: kv for s, kv in ini.items() if s.startswith("turret_")}
+
+    def abs_pos(s, depth=0):
+        kv = secs[s]
+        x, y = num(kv.get("x")) or 0, num(kv.get("y")) or 0
+        parent = kv.get("attachedTo")
+        if parent and depth < 6:
+            ps = "turret_" + parent.strip()
+            if ps in secs:
+                px, py = abs_pos(ps, depth + 1)
+                return px + x, py + y
+        return x, y
+
+    parts = []
+    for s, kv in secs.items():
+        img = kv.get("image")
+        if not img or (boolish(kv.get("invisible")) and s != "turret_炮管"):
+            continue  # the Stryker's barrel is drawn by a decal in the original; keep it
+        hit = resolve(img, from_dir)
+        if not hit:
+            continue
+        parts.append((s, hit, abs_pos(s)))
+    # the base: the turret others attach to, else the imaged one nearest the hull's centre
+    parents = {kv.get("attachedTo", "").strip() for kv in secs.values() if kv.get("attachedTo")}
+    root = None
+    for s, kv in secs.items():
+        if s[len("turret_"):] in parents and not kv.get("attachedTo"):
+            root = s
+            break
+    if root is None:
+        cands = [p[0] for p in parts if not secs[p[0]].get("attachedTo")]
+        if cands:
+            root = min(cands, key=lambda s: abs(num(secs[s].get("x")) or 0) + abs(num(secs[s].get("y")) or 0))
+
+    def on_root(s, depth=0):
+        if s == root:
+            return True
+        parent = secs[s].get("attachedTo")
+        ps = ("turret_" + parent.strip()) if parent else None
+        return bool(ps and ps in secs and depth < 8 and on_root(ps, depth + 1))
+
+    # guns mounted on the hull that turn on their own: painted onto the hull, still
+    hull_parts = [p for p in parts if root and not on_root(p[0])]
+    parts = [p for p in parts if not root or on_root(p[0])]
+    root_pos = abs_pos(root) if root else (0, 0)
+    turret_image = ini.get("graphics", {}).get("image_turret")
+    if turret_image and turret_image.upper() != "NONE":
+        hit = resolve(turret_image, from_dir)
+        if hit:
+            parts.insert(0, ("image_turret", hit, root_pos))
+    # draw order: bases first, barrels on top; the root part is the base
+    parts.sort(key=lambda p: (p[0] != root and p[0] != "image_turret"))
+    return parts, root_pos, secs, hull_parts
+
+
+def composite(parts, root_pos):
+    """one image centred on the root pivot with every part laid at its offset"""
+    ims = [(Image.open(p).convert("RGBA"), (pos[0] - root_pos[0], pos[1] - root_pos[1])) for _, p, pos in parts]
+    half_w = half_h = 0
+    for im, (dx, dy) in ims:
+        half_w = max(half_w, abs(dx) + im.width / 2)
+        half_h = max(half_h, abs(dy) + im.height / 2)
+    W, H = int(math.ceil(half_w * 2)) + 2, int(math.ceil(half_h * 2)) + 2
+    canvas = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    for im, (dx, dy) in ims:
+        x = int(round(W / 2 + dx - im.width / 2))
+        y = int(round(H / 2 - dy - im.height / 2))
+        canvas.alpha_composite(im, (x, y))
+    return canvas
+
+
+# ------------------------------------------------------------ conversion
+def convert():
+    by_name = index_units()
+    ids = {rw: f"{MOD_ID}-{suffix}" for rw, suffix, *_ in ROSTER}
+    suffix_of = {rw: suffix for rw, suffix, *_ in ROSTER}
+    defs = []
+    produces = {}      # building id -> [unit ids]
+    rw_lists = {}      # building id -> rw names it builds
+
+    if not DRY and not NO_MEDIA:
+        shutil.rmtree(OUT_SPRITES, ignore_errors=True)
+        os.makedirs(OUT_SPRITES)
+
+    for rw_name, suffix, en, desc_en, ov in ROSTER:
+        path = by_name.get(rw_name)
+        if not path:
+            note(rw_name, "NOT FOUND in the package")
+            continue
+        ini = load_unit(path)
+        core = ini.get("core", {})
+        gfx = ini.get("graphics", {})
+        atk = ini.get("attack", {})
+        mov = ini.get("movement", {})
+        d = os.path.dirname(path)
+        did = ids[rw_name]
+        kind = ov["kind"]
+        is_building = kind == B
+        is_zombie = kind == Z
+        tags = [t.strip() for t in core.get("tags", "").split(",")]
+        infantry = "步兵" in tags or (is_zombie and (num(core.get("radius")) or 9) <= 9)
+        zh_name = ov.get("zh_name") or strip_quotes(core.get("displayText") or core.get("name") or rw_name)
+        if is_building and not is_zombie and suffix == "sloth-nest":
+            zh_name = "懒惰之罪"
+
+        # ---- numbers
+        hp_rw = num(core.get("maxHp")) or 100
+        price = core.get("price", "0")
+        folded = folded_price(price)
+        if is_zombie:
+            folded = max(folded, hp_rw * 4)  # the dead are priced by what they take to kill
+        c, dsl, sup = price_parts(price)
+        if is_building:
+            cost = ov.get("cost", int(max(50, round((c + dsl + sup) * 0.1 / 10) * 10)))
+            hp = ov.get("hp", int(round(hp_rw * (HP_TOWER if ov.get("tower") else HP_BUILDING))))
+        else:
+            hp = ov.get("hp", int(clamp(round(hp_rw * HP_UNIT), 40, 6000)))
+            # the package prices by role; keep the metal within sight of the hit points
+            cost = ov.get("cost", int(clamp(unit_cost(folded), max(15, round(hp / 4 / 5) * 5), max(60, round(hp * 2.5 / 5) * 5))))
+        tier = ov.get("tier", int(clamp(round(num(core.get("techLevel")) or 1), 1, 3)))
+        movement = (mov.get("movementType") or "LAND").upper()
+        domain = ov.get("domain") or ("air" if movement == "AIR" else "ship" if movement in ("WATER", "OVER_CLIFF_WATER") else "ground")
+        desc_zh = zh_desc(ini, ov.get("zh", ""))
+
+        df = {"id": did, "name": [en, zh_name], "desc": [desc_en, desc_zh], "kind": "building" if is_building else "unit"}
+        if not is_building:
+            df["domain"] = domain
+        df["tier"] = tier
+        df["cost"] = cost
+        bt = build_seconds(core.get("buildSpeed"))
+        if bt:
+            df["buildTime"] = round(clamp(bt * BUILD_TIME, 4, 120), 1)
+        df["hp"] = hp
+        if not is_building:
+            df["pop"] = ov.get("pop", 1 if infantry else 1 if cost < 150 else 2 if cost < 450 else 3 if cost < 1000 else 4 if cost < 2000 else 5)
+        armor = ov.get("armor")
+        if not armor:
+            if is_building:
+                armor = "structure"
+            elif domain == "air":
+                armor = "air"
+            elif domain == "ship":
+                armor = "ship"
+            elif infantry or is_zombie:
+                armor = "light"
+            elif "tank" in tags or hp_rw >= 2000:
+                armor = "heavy"
+            else:
+                armor = "light"
+        df["armor"] = armor
+        vision = num(core.get("fogOfWarSightRange"))
+        df["vision"] = ov.get("vision", int(clamp(round((vision or 8) * VISION), 3, 16)))
+        radius = num(core.get("radius"))
+        if not is_building:
+            r = radius if radius else (6 if infantry else 10)
+            df["radius"] = int(clamp(round(r), 4, 24))
+            sp = num(mov.get("moveSpeed"))
+            if sp is not None:
+                df["speed"] = int(clamp(round(sp * SPEED * (INFANTRY_SPEED if infantry or is_zombie else 1)), 16, 300))
+            tr = num(mov.get("maxTurnSpeed"))
+            if tr is not None:
+                df["turnRate"] = round(clamp(tr * 60 * math.pi / 180, 0.5, 8), 2)
+            if movement == "HOVER":
+                df["trail"] = "tire"
+            if ov.get("hovers"):
+                df["hovers"] = True
+            cap = num(core.get("maxTransportingUnits"))
+            if cap and suffix not in ("drone-carrier",):
+                df["transportCap"] = int(cap)
+            if domain != "air" and not infantry and not is_zombie:
+                df["fireOnMove"] = True
+        else:
+            fp = [num(x) for x in split_list(core.get("footprint", ""))]
+            if "fw" in ov:
+                df["fw"], df["fh"] = ov["fw"], ov["fh"]
+            elif len(fp) == 4 and all(x is not None for x in fp):
+                df["fw"] = int(clamp(fp[2] - fp[0] + 1, 1, 8))
+                df["fh"] = int(clamp(fp[3] - fp[1] + 1, 1, 8))
+            df["power"] = ov.get("power", 0)
+            for k in ("metalRate", "needsDeposit"):
+                if k in ov:
+                    df[k] = ov[k]
+            if "upgradeOf" in ov:
+                df["upgradeOf"] = f"{MOD_ID}-{ov['upgradeOf']}"
+                up = ini.get("action_upgrade", {})
+                # the upgrade's price lives on the source's action; look it up
+                src_rw = next((r[0] for r in ROSTER if r[1] == ov["upgradeOf"]), None)
+                if src_rw and by_name.get(src_rw):
+                    sini = load_unit(by_name[src_rw])
+                    act = sini.get("action_upgrade", {})
+                    p = folded_price(act.get("price", "0"))
+                    if p:
+                        df["upgradeCost"] = int(max(50, round(p * 0.1 / 10) * 10))
+                    t = build_seconds(act.get("buildSpeed"))
+                    df["upgradeTime"] = int(clamp(round((t or 10) * 3), 15, 90))
+            lists = []
+            for k, v in core.items():
+                if re.match(r"canBuild_\d+_name$", k):
+                    lists += split_list(v)
+            for s, kv in ini.items():
+                if s.startswith("canBuild_") and kv.get("name"):
+                    lists += split_list(kv["name"])
+            rw_lists[did] = [strip_quotes(x) for x in lists]
+
+        # ---- weapons
+        weapons = []
+        if "weapons" in ov:
+            for w in ov["weapons"]:
+                w = dict(w)
+                if w.get("sound") in NAMED_SOUNDS:
+                    w["sound"] = add_sound(os.path.join(RW, NAMED_SOUNDS[w["sound"]]))
+                weapons.append(w)
+        elif boolish(atk.get("canAttack"), False) or (is_zombie and any(s.startswith("projectile_") for s in ini)):
+            weapons = convert_weapons(ini, d, rw_name, domain, infantry, is_zombie, ov)
+        if weapons and not is_zombie and not is_building and "weapons" not in ov:
+            # the package's guns run hot; keep a unit's damage a second within sight of its price
+            mult = ov.get("dmg_mult", 1.0)
+            dps = sum(w["dmg"] * w.get("burst", 1) / w["reload"] for w in weapons) * mult
+            cap = 0.1 * cost + 5
+            if dps > cap:
+                mult *= cap / dps
+            if abs(mult - 1.0) > 1e-6:
+                for w in weapons:
+                    w["dmg"] = round(max(2.0, w["dmg"] * mult), 1)
+                    # a gun's class follows the damage it ends up with
+                    if w["cls"] in ("mg", "autocannon", "cannon") and not w.get("homing") and not w.get("arc"):
+                        w["cls"] = "mg" if w["dmg"] < 8 else "autocannon" if w["dmg"] < 30 else "cannon"
+                        w["projectile"] = "shell" if w["cls"] == "cannon" else "bullet"
+        if weapons:
+            df["weapons"] = weapons[:8]
+        if ov.get("requires"):
+            df["requires"] = [f"{MOD_ID}-{r}" for r in ov["requires"]]
+
+        # ---- art
+        image = ov.get("image")
+        image = os.path.join(RW, image) if image else resolve(gfx.get("image", ""), d)
+        if image and os.path.basename(image).lower() == "blank.png":
+            image = None
+        frames = int(max(1, round(num(gfx.get("total_frames")) or 1)))
+        scale = num(gfx.get("imageScale")) or 1.0
+        sit = num(gfx.get("scaleImagesTo"))
+        tur_scale = num(gfx.get("turretImageScale")) or scale
+        body_sheet = None
+        art_k = 1.0
+        hull_px = None
+        if image:
+            im = clean_alpha(Image.open(image))
+            if sit and sit > 1 and not is_building:
+                scale = sit / (im.width // frames)  # `scaleImagesTo`: the drawn width in px
+                sit = None
+            # rotors and wings the original draws as spinning arms, and guns mounted on the
+            # hull that turn on their own: laid on the body, still
+            body_parts, body_root, _, hull_parts = turret_parts(ini, d, ov)
+            extra = []
+            if not is_building and frames == 1 and not ov.get("turret_from") and not ov.get("no_turret"):
+                extra = [(p[1], p[2][0], p[2][1], tur_scale / scale) for p in hull_parts]
+            for item in list(ov.get("overlays", [])) + extra:
+                oimg, ox, oy, osc = item[:4]
+                under = len(item) > 4 and item[4]
+                op = resolve(oimg, d)
+                if not op:
+                    note(rw_name, f"overlay {oimg} not found")
+                    continue
+                o = clean_alpha(Image.open(op))
+                if osc != 1:
+                    o = o.resize((max(1, round(o.width * osc)), max(1, round(o.height * osc))), Image.LANCZOS)
+                dx, dy = ox / scale, -oy / scale
+                half_w = max(im.width / 2, abs(dx) + o.width / 2)
+                half_h = max(im.height / 2, abs(dy) + o.height / 2)
+                W, H = int(math.ceil(half_w * 2)), int(math.ceil(half_h * 2))
+                cv = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                layers = [(o, (int(round(W / 2 + dx - o.width / 2)), int(round(H / 2 + dy - o.height / 2)))), (im, ((W - im.width) // 2, (H - im.height) // 2))]
+                for layer, at in (layers if under else layers[::-1]):
+                    cv.alpha_composite(layer, at)
+                im = cv
+            if is_building:
+                back = resolve(gfx.get("image_back", ""), d)
+                if back:
+                    b = clean_alpha(Image.open(back))
+                    cv = Image.new("RGBA", (max(b.width, im.width), max(b.height, im.height)), (0, 0, 0, 0))
+                    cv.alpha_composite(b, ((cv.width - b.width) // 2, (cv.height - b.height) // 2))
+                    cv.alpha_composite(im, ((cv.width - im.width) // 2, (cv.height - im.height) // 2))
+                    im = cv
+                body_sheet = add_sheet(f"u.{did}", im, 1, False)
+            else:
+                pw = im.width // frames
+                if sit and sit > 1:
+                    scale = sit / pw
+                fw, fh, f = sheet_size(pw, im.height, scale, infantry)
+                art_k = f / (ART * scale * (INFANTRY_ART if infantry else 1.0))
+                hull_px = (pw, im.height)
+                # the turret ring: where the main turret sits on the hull
+                mount = None
+                parts, root_pos = body_parts, body_root
+                if ov.get("turret_offset"):
+                    root_pos = ov["turret_offset"]
+                if (parts or ov.get("turret_from")) and (abs(root_pos[0]) > 0.5 or abs(root_pos[1]) > 0.5):
+                    mount = (0.5 + root_pos[0] / scale / pw, 0.5 - root_pos[1] / scale / im.height)
+                if frames > 1 and im.width % frames:
+                    im = im.crop((0, 0, pw * frames, im.height))
+                body_sheet = add_sheet(f"u.{did}", im, frames, True, fw, fh, mount=mount)
+                df["body"] = {"r": round(fw * DISPLAY / 2, 1), "len": round(max(0, (fh - fw) * DISPLAY), 1)}
+                df["_art"] = f"{os.path.relpath(image, RW)[-38:]} {pw}x{im.height} f{frames} s{scale:.2f} k{art_k:.2f} -> {fw}x{fh}"
+        else:
+            note(rw_name, "no body image; placeholder")
+        if body_sheet:
+            df["sprite"] = body_sheet
+
+        # turret: this unit's own imaged turrets, or those of a turret unit it spawns
+        tsrc, tdir = ini, d
+        if ov.get("turret_from"):
+            tp = by_name.get(ov["turret_from"])
+            if tp:
+                tsrc, tdir = load_unit(tp), os.path.dirname(tp)
+                tur_scale = num(tsrc.get("graphics", {}).get("turretImageScale")) or num(tsrc.get("graphics", {}).get("imageScale")) or scale
+        if (not is_building or ov.get("tower")) and not ov.get("no_turret"):
+            parts, root_pos, secs, _ = turret_parts(tsrc, tdir, ov)
+            if ov.get("turret_from"):
+                # the turret unit's own body image is the turret; its barrel rides on it
+                bi = resolve(tsrc.get("graphics", {}).get("image", ""), tdir)
+                keep = [p for p in parts if p[0] not in ("image_turret",)]
+                parts = ([("body", bi, (0, 0))] if bi else []) + [p for p in keep if p[0] in ("turret_炮管",)]
+                root_pos = (0, 0)
+            if parts:
+                cv = clean_alpha(composite(parts, root_pos))
+                k = art_k if hull_px else shrink(max(cv.size) * tur_scale)
+                f = ART * tur_scale * k
+                tw, th = max(4, round(cv.width * f)), max(4, round(cv.height * f))
+                df["turretSprite"] = add_sheet(f"tur.{did}", cv, 1, True, tw, th)
+                df["_tur"] = f"{'+'.join(os.path.basename(p[1]) for p in parts)} {cv.width}x{cv.height} ts{tur_scale:.2f} -> {tw}x{th}"
+                # muzzle: the firing turret's forward offset from the pivot plus its barrel length
+                if "weapons" in df:
+                    for w in df["weapons"]:
+                        if w.get("turret", True) and "muzzleOffset" not in w:
+                            reach = w.pop("_reach", None)
+                            if reach is None:
+                                reach = cv.height / 2 * 0.9
+                            w["muzzleOffset"] = round(clamp(reach * tur_scale * k * ART * DISPLAY, 2, 200), 1)
+        if "weapons" in df:
+            for w in df["weapons"]:
+                w.pop("_reach", None)
+                if "turretSprite" not in df:
+                    w["turret"] = False
+                    w.setdefault("muzzleOffset", round((hull_px[1] if hull_px else 20) * scale * art_k * ART * DISPLAY * 0.45, 1))
+                elif w.get("turret") is None:
+                    w["turret"] = True
+        # aiWeight
+        if not is_building:
+            df["aiWeight"] = ov.get("aiWeight", 0 if is_zombie else 2 if infantry else 1.5)
+        for k, v in ov.get("extra", {}).items():
+            df[k] = v
+        defs.append(df)
+
+    # ---- production
+    by_id = {d["id"]: d for d in defs}
+    for bid, names in rw_lists.items():
+        b = by_id.get(bid)
+        if not b:
+            continue
+        out = []
+        for n in names:
+            uid = ids.get(n)
+            if not uid or uid not in by_id or uid in out:
+                continue
+            u = by_id[uid]
+            if u["kind"] != "unit":
+                continue
+            if bid.endswith("coast-guard") and u.get("domain") != "ship":
+                continue  # the hovercraft are land vehicles here; the arsenal builds them
+            out.append(uid)
+        produces[bid] = out
+    for suffix, extra in EXTRA_PRODUCES.items():
+        bid = f"{MOD_ID}-{suffix}"
+        produces.setdefault(bid, [])
+        for s in extra:
+            uid = f"{MOD_ID}-{s}"
+            if uid in by_id and uid not in produces[bid]:
+                produces[bid].append(uid)
+    for bid, lst in produces.items():
+        if lst:
+            by_id[bid]["produces"] = lst
+    for d in defs:
+        if d["kind"] == "unit":
+            homes = [bid for bid, lst in produces.items() if d["id"] in lst]
+            if homes:
+                d["producedBy"] = homes
+            else:
+                note(d["id"], "nobody builds it; it falls to the default line")
+
+    # the zombie tier badge follows the nest
+    order = {"building": 0, "unit": 1}
+    defs.sort(key=lambda d: (order[d["kind"]], 0))
+    return defs
+
+
+SCRIPT_PROJECTILES = ("ramOver", "yyyy", "碰撞", "旋转", "推动", "K")
+
+
+def first_projectile(ini):
+    for s, kv in ini.items():
+        if not s.startswith("projectile_"):
+            continue
+        n = s[len("projectile_"):]
+        if n in SCRIPT_PROJECTILES or boolish(kv.get("invisible")):
+            continue
+        if (num(kv.get("directDamage")) or 0) > 0 or (num(kv.get("areaDamage")) or 0) > 0:
+            return n
+    return None
+
+
+def convert_weapons(ini, d, unit, domain, infantry, is_zombie, ov):
+    atk = ini.get("attack", {})
+    secs = {s: kv for s, kv in ini.items() if s.startswith("turret_")}
+    range_px = num(atk.get("maxAttackRange")) or 130
+    delay_default = seconds(atk.get("shootDelay")) or 1.0
+    can_land = boolish(atk.get("canAttackLandUnits"), True)
+    can_air = boolish(atk.get("canAttackFlyingUnits"), False)
+    can_sub = boolish(atk.get("canAttackUnderwaterUnits"), False)
+    turret_size = num(atk.get("turretSize")) or 0
+
+    def abs_pos(s, depth=0):
+        kv = secs[s]
+        x, y = num(kv.get("x")) or 0, num(kv.get("y")) or 0
+        parent = kv.get("attachedTo")
+        if parent and depth < 6 and ("turret_" + parent.strip()) in secs:
+            px, py = abs_pos("turret_" + parent.strip(), depth + 1)
+            return px + x, py + y
+        return x, y
+
+    groups = {}  # projectile -> list of (turret name, kv, pos)
+    for s, kv in secs.items():
+        if boolish(kv.get("canShoot"), True) is False:
+            continue
+        if kv.get("canAttack", "").strip().lower() == "false":
+            continue
+        proj = (kv.get("projectile") or "").strip()
+        if not proj:
+            # a bare turret fires projectile_<its number>, else the first real projectile section
+            n = s[len("turret_"):]
+            proj = n if f"projectile_{n}" in ini else (first_projectile(ini) or "")
+        if not proj or f"projectile_{proj}" not in ini:
+            continue
+        pos = abs_pos(s)
+        lst = groups.setdefault(proj, [])
+        if any(abs(p[2][0] - pos[0]) < 0.5 and abs(p[2][1] - pos[1]) < 0.5 for p in lst):
+            continue  # the -2 alternates of the same gun
+        lst.append((s, kv, pos))
+    if not groups and f"projectile_1" in ini:
+        groups["1"] = [("turret_1", {}, (0, 0))]
+
+    weapons = []
+    for proj, turrets in groups.items():
+        p = ini[f"projectile_{proj}"]
+        if boolish(p.get("invisible")) and not is_zombie:
+            continue
+        direct = num(p.get("directDamage")) or 0
+        area = num(p.get("areaDamage")) or 0
+        pellets = 1
+        spawn = p.get("spawnProjectilesOnCreate")
+        if direct <= 0 and area <= 0 and spawn:
+            # a shotgun: a spawner projectile that scatters N real pellets
+            m = re.match(r"\s*([^*(,\s]+)\s*\*\s*(\d+)", spawn)
+            if m and f"projectile_{m.group(1)}" in ini:
+                p = ini[f"projectile_{m.group(1)}"]
+                pellets = int(m.group(2))
+                direct = num(p.get("directDamage")) or 0
+                area = num(p.get("areaDamage")) or 0
+        target_ground = boolish(p.get("targetGround"))
+        dmg_rw = max(direct, area) * (1 + (pellets - 1) * 0.6)
+        if dmg_rw <= 0:
+            continue
+        kv = turrets[0][1]
+        reload = seconds(kv.get("delay")) or delay_default
+        # the energy magazine: N shots, then a recharge; the average is what a reload means here
+        core = ini.get("core", {})
+        usage = num(kv.get("energyUsage")) or 0
+        emax = num(core.get("energyMax")) or 0
+        regen = num(core.get("energyRegenWhenRecharging")) or num(core.get("energyRegen")) or 0
+        if usage > 0 and emax > 0 and regen > 0:
+            shots = max(1, emax / usage)
+            recharge = emax / regen / 60
+            reload = reload + recharge / shots
+        snd_name = (kv.get("shoot_sound") or "").lower()
+        homing = (num(p.get("turnSpeed")) or 0) > 0 or "missile" in snd_name or "rocket" in snd_name or "火箭" in snd_name
+        arc = boolish(p.get("ballistic")) or (num(p.get("initialUnguidedSpeedHeight")) or 0) > 0 or ov.get("arc", False)
+        flame = boolish(p.get("flameWeapon")) or ov.get("flame", False)
+        instant = boolish(p.get("instant"))
+        melee = boolish(atk.get("isMelee")) or range_px < 25
+        t_air = boolish(kv.get("canAttackFlyingUnits"), can_air)
+        t_land = boolish(kv.get("canAttackLandUnits"), can_land)
+        t_sub = boolish(kv.get("canAttackUnderwaterUnits"), can_sub)
+        targets = []
+        if t_land:
+            targets += ["ground", "ship"]
+        if t_air:
+            targets.append("air")
+        if t_sub:
+            targets.append("sub")
+        if not targets:
+            targets = ["ground", "ship"]
+        only_air = t_air and not t_land and not t_sub
+        dmg = dmg_rw * (ZOMBIE_DMG if is_zombie else DMG)
+        if reload < 0.3:
+            k = math.ceil(0.3 / reload)
+            reload *= k
+            dmg *= k
+        rng = clamp(range_px * RANGE, 0.6, 12)
+        if melee:
+            rng = 0.6
+        if flame:
+            cls, projectile = "he", "flame"
+        elif only_air:
+            cls, projectile = "aa", ("missile" if homing else "flak")
+        elif t_sub and not t_land:
+            cls, projectile = "torpedo", "torpedo"
+        elif arc or (target_ground and not melee and area > 0 and not homing and domain != "air" and not infantry):
+            cls, projectile = "he", "shell"
+        elif target_ground and domain == "air":
+            cls, projectile = "he", "bomb"
+        elif homing or proj.upper().startswith("R") and infantry:
+            cls, projectile = "at", "missile"
+        elif melee:
+            cls, projectile = ("he" if ov.get("building_breaker") else "autocannon"), "bullet"
+        elif domain == "ship" and dmg >= 20:
+            cls, projectile = "navgun", "shell"
+        elif dmg < 8:
+            cls, projectile = "mg", "bullet"
+        elif dmg < 30:
+            cls, projectile = "autocannon", "bullet"
+        else:
+            cls, projectile = "cannon", "shell"
+        w = {"id": re.sub(r"[^a-z0-9_-]", "", proj.lower()) or f"w{len(weapons) + 1}", "cls": cls,
+             "dmg": round(dmg, 1), "reload": round(max(0.05, reload), 2), "range": round(rng, 1), "targets": targets, "projectile": projectile}
+        speed = num(p.get("speed"))
+        if speed and not instant and not flame:
+            w["speed"] = int(clamp(round(speed * 96), 60, 1500))
+        elif flame:
+            w["speed"] = 240
+        else:
+            w["speed"] = 900 if cls in ("mg", "autocannon") else 500
+        ar = num(p.get("areaRadius"))
+        if area > 0 and ar and not flame:
+            w["splash"] = int(round(clamp(ar * ART * DISPLAY * 0.6, 4, 90)))
+        if homing:
+            w["homing"] = True
+        if arc and cls == "he" and projectile == "shell":
+            w["arc"] = True
+        w["dmg"] = round(max(2.0, dmg), 1)
+        if flame:
+            glob = clamp(dmg * 0.5, 3, 9)
+            w.update(fan=0.22, burn=round(clamp(glob * 1.5, 4, 14), 1), burnLife=5, splash=30, burst=12, burstDelay=0.04)
+            w["dmg"] = round(glob, 1)
+            w["reload"] = round(max(2.2, reload * 4), 2)
+        n = len(turrets)
+        if n > 1 and not flame:
+            xs = sorted(t[2][0] for t in turrets)
+            if n == 2 and abs(xs[0] + xs[1]) < 1 and abs(xs[1] - xs[0]) > 1:
+                w["bores"] = 2
+                w["boreSpacing"] = round((xs[1] - xs[0]) * ART * DISPLAY, 1)
+            else:
+                w["burst"] = min(8, n)
+                w["burstDelay"] = 0.12
+        spread = num(p.get("targetGroundSpread"))
+        if spread:
+            w["spread"] = int(round(clamp(spread * ART * DISPLAY, 2, 60)))
+        if pellets > 1:
+            w["spread"] = max(w.get("spread", 0), 10)
+            w["projectile"] = "bullet"
+        w["_reach"] = turrets[0][2][1] + (num(kv.get("size")) or turret_size or 0)
+        snd = weapon_sound(kv.get("shoot_sound"), d, unit)
+        if snd:
+            w["sound"] = snd
+        elif flame:
+            w["sound"] = "flame"
+        weapons.append(w)
+    # the strongest weapon leads; a def gets at most 8
+    weapons.sort(key=lambda w: -(w["dmg"] / max(0.05, w["reload"])))
+    return weapons
+
+
+def dump(name):
+    by_name = index_units()
+    p = by_name.get(strip_quotes(name))
+    if not p:
+        print("not found:", name)
+        return
+    ini = load_unit(p)
+    print("#", p)
+    for s, kv in ini.items():
+        if re.match(r"^(core|graphics|attack|movement|turret_.*|projectile_.*)$", s):
+            keep = {k: v for k, v in kv.items() if not k.startswith(("@", "effect", "shoot_flame", "shoot_light", "idleSweep", "recoil", "explodeEffect", "trailEffect", "mutator", "display", "tags", "copyFrom", "soundOn"))}
+            print(f"[{s}] " + ", ".join(f"{k}={v[:40]}" for k, v in keep.items()))
+
+
+def main():
+    if "--dump" in sys.argv:
+        for n in sys.argv[sys.argv.index("--dump") + 1:]:
+            dump(n)
+        return
+    defs = convert()
+    write_sounds()
+    desc_en = ("Adolence, the City of Sin, ported from the Rusted Warfare mod with its authors' permission: "
+               "the city police and the troops that come to their aid, their cruisers, tanks and helicopters, "
+               "and the dead they are fighting, bred from a nest you can place yourself.")
+    desc_zh = "《Adolence-罪恶之都》经原作者授权移植：都市警力与前来增援的部队、他们的警车、坦克和直升机，以及他们要对付的死者——可以自己放置巢穴繁殖。"
+    manifest = {
+        "format": "steel-tide-mod",
+        "v": 1,
+        "id": MOD_ID,
+        "name": ["Adolence: City of Sin", "Adolence·罪恶之都"],
+        "version": "1.0.0",
+        "author": "自然常数也有人用? and the Adolence team; port by Steel Tide",
+        "description": [desc_en, desc_zh],
+        "homepage": "https://github.com/steel-tide/mods/tree/main/mods/adolence",
+        "license": "LicenseRef-Adolence",
+        "defs": defs,
+        "sprites": SHEETS,
+        "sounds": [{"key": k, "file": f} for k, f in dict(SOUND_JOBS.values()).items()],
+        "screenshots": [],
+    }
+    if os.path.exists(os.path.join(HERE, "mod.json")):
+        old = json.load(open(os.path.join(HERE, "mod.json"), encoding="utf-8"))
+        manifest["version"] = old.get("version", "1.0.0")
+        manifest["screenshots"] = old.get("screenshots", [])
+    if not manifest["screenshots"]:
+        # whatever pictures sit in screenshots/, in name order: drop them there and re-run
+        shots_dir = os.path.join(HERE, "screenshots")
+        if os.path.isdir(shots_dir):
+            manifest["screenshots"] = [f"screenshots/{f}" for f in sorted(os.listdir(shots_dir)) if re.search(r"\.(png|jpe?g|webp)$", f, re.I)]
+        if old.get("maps"):
+            manifest["maps"] = old["maps"]  # the map make-map.py writes; it is the mod's own, not the package's
+    text = json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
+    if DRY:
+        art = "--art" in sys.argv
+        for d in defs:
+            if art:
+                print(f"{d['id'][9:]:28} {d.get('_art', '-')}" + (f"  | tur {d['_tur']}" if '_tur' in d else "") + (f"  mz {[w.get('muzzleOffset') for w in d['weapons']]}" if 'weapons' in d else ""))
+                continue
+            ws = "; ".join(f"{w['id']}:{w['cls']} {w['dmg']}/{w['reload']}s r{w['range']}" + (f" ×{w['burst']}" if 'burst' in w else "") + (f" b{w['bores']}" if 'bores' in w else "") for w in d.get("weapons", []))
+            print(f"{d['id']:34} {d['kind'][0]} T{d['tier']} cost {d['cost']:>5} hp {d['hp']:>5} pop {d.get('pop','-'):>2} spd {d.get('speed','-'):>3} {d.get('armor','')[:5]:5} | {ws}")
+        print(f"\n{len(defs)} defs, {len(SHEETS)} sheets, {len(SOUND_JOBS)} sounds")
+    else:
+        for d in defs:
+            d.pop("_art", None)
+            d.pop("_tur", None)
+        text = json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
+        os.makedirs(OUT, exist_ok=True)
+        open(os.path.join(OUT, "mod.json"), "w", encoding="utf-8").write(text)
+        print(f"wrote mod.json: {len(defs)} defs, {len(SHEETS)} sheets, {len(SOUND_JOBS)} sounds")
+    for n in NOTES:
+        print("note:", n)
+
+
+if __name__ == "__main__":
+    main()
