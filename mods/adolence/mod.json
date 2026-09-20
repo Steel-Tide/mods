@@ -453,7 +453,14 @@
         }
       ],
       "sprite": "u.adolence-mg-tower",
-      "turretSprite": "tur.adolence-mg-tower"
+      "turretSprite": "tur.adolence-mg-tower",
+      "decals": [
+        {
+          "sprite": "dec.adolence-3c",
+          "on": "turret",
+          "when": "firing"
+        }
+      ]
     },
     {
       "id": "adolence-barricade",
@@ -563,6 +570,16 @@
         "r": 5.5,
         "len": 0
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.25,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-officer-pistol",
       "aiWeight": 2,
       "producedBy": [
@@ -615,6 +632,16 @@
         "r": 5.5,
         "len": 6.2
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-officer-rifle",
       "aiWeight": 2,
       "producedBy": [
@@ -665,6 +692,16 @@
         "r": 5.5,
         "len": 6.2
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-traffic-officer",
       "aiWeight": 2,
       "producedBy": [
@@ -717,6 +754,16 @@
         "r": 5.5,
         "len": 1.6
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.25,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-armed-police-pistol",
       "aiWeight": 2,
       "producedBy": [
@@ -769,6 +816,16 @@
         "r": 4.7,
         "len": 6.2
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-armed-police-rifle",
       "aiWeight": 2,
       "producedBy": [
@@ -822,6 +879,16 @@
         "r": 5.5,
         "len": 4.7
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-swat-sea",
       "aiWeight": 2,
       "producedBy": [
@@ -874,6 +941,16 @@
         "r": 5.5,
         "len": 4.7
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-swat-field",
       "aiWeight": 2,
       "producedBy": [
@@ -925,6 +1002,16 @@
         "r": 4.7,
         "len": 4.7
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-army-woodland",
       "aiWeight": 2,
       "producedBy": [
@@ -976,6 +1063,16 @@
         "r": 5.5,
         "len": 4.7
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-army-marksman",
       "aiWeight": 2,
       "producedBy": [
@@ -1027,6 +1124,16 @@
         "r": 4.7,
         "len": 6.2
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-guard-rifleman",
       "aiWeight": 2,
       "producedBy": [
@@ -1078,6 +1185,16 @@
         "r": 4.7,
         "len": 6.2
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-guard-gunner",
       "aiWeight": 2,
       "producedBy": [
@@ -1187,6 +1304,16 @@
         "r": 4.7,
         "len": 6.2
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-military-police",
       "aiWeight": 2,
       "producedBy": [
@@ -1238,6 +1365,16 @@
         "r": 5.5,
         "len": 6.2
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-taskforce-rifleman",
       "aiWeight": 2,
       "producedBy": [
@@ -1308,6 +1445,16 @@
         "r": 5.5,
         "len": 6.2
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-taskforce-grenadier",
       "aiWeight": 2,
       "producedBy": [
@@ -1359,6 +1506,16 @@
         "r": 5.5,
         "len": 9.4
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-taskforce-anti-materiel",
       "aiWeight": 2,
       "producedBy": [
@@ -1413,6 +1570,16 @@
         "r": 7.0,
         "len": 3.1
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-taskforce-rocketeer",
       "aiWeight": 2,
       "producedBy": [
@@ -1464,6 +1631,16 @@
         "r": 5.5,
         "len": 7.8
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-taskforce-gunner",
       "aiWeight": 2,
       "producedBy": [
@@ -1516,6 +1693,16 @@
         "r": 5.5,
         "len": 6.2
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-taskforce-shotgunner",
       "aiWeight": 2,
       "producedBy": [
@@ -1570,6 +1757,16 @@
         "r": 5.5,
         "len": 4.7
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-zhongzhou-rifleman",
       "aiWeight": 2,
       "producedBy": [
@@ -1623,6 +1820,16 @@
         "r": 5.5,
         "len": 6.2
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "x": 0.5,
+          "y": -17.2,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-zhongzhou-sniper",
       "aiWeight": 2,
       "producedBy": [
@@ -1678,6 +1885,17 @@
         "r": 7.8,
         "len": 15.6
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-torch",
+          "layer": "over",
+          "scale": 1.429,
+          "x": 0.7,
+          "y": -24.6,
+          "alpha": 0.2,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-purge-gunner",
       "aiWeight": 1.5,
       "producedBy": [
@@ -1713,6 +1931,24 @@
         "r": 11.7,
         "len": 26.6
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "x": 4.2,
+          "y": -32.5,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "x": -3.3,
+          "y": -32.5,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-sedan-black",
       "aiWeight": 1.5,
       "producedBy": [
@@ -1751,6 +1987,26 @@
         "r": 11.7,
         "len": 26.6
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.982,
+          "x": 4.1,
+          "y": -31.9,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.982,
+          "x": -3.3,
+          "y": -31.9,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-cruiser",
       "aiWeight": 1.5,
       "producedBy": [
@@ -1789,6 +2045,26 @@
         "r": 12.5,
         "len": 28.1
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.946,
+          "x": 4.0,
+          "y": -31.8,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.946,
+          "x": -3.1,
+          "y": -31.8,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-armoured-car",
       "aiWeight": 1.5,
       "producedBy": [
@@ -1827,6 +2103,26 @@
         "r": 14.1,
         "len": 23.4
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.951,
+          "x": 2.6,
+          "y": -20.5,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.951,
+          "x": -1.8,
+          "y": -20.5,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-amphibious-car",
       "aiWeight": 1.5,
       "producedBy": [
@@ -1865,6 +2161,26 @@
         "r": 12.5,
         "len": 40.6
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.804,
+          "x": 3.1,
+          "y": -32.2,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.804,
+          "x": -2.4,
+          "y": -32.2,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-command-van",
       "aiWeight": 1.5,
       "producedBy": [
@@ -1899,9 +2215,29 @@
       "transportCap": 4,
       "fireOnMove": true,
       "body": {
-        "r": 11.7,
-        "len": 40.6
+        "r": 14.1,
+        "len": 35.9
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.818,
+          "x": 3.2,
+          "y": -32.7,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.818,
+          "x": -2.5,
+          "y": -32.7,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-comms-van",
       "aiWeight": 1.5,
       "producedBy": [
@@ -1938,6 +2274,26 @@
         "r": 10.2,
         "len": 37.5
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.876,
+          "x": 2.4,
+          "y": -22.9,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.876,
+          "x": -1.6,
+          "y": -22.9,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-heavy-escort",
       "aiWeight": 1.5,
       "producedBy": [
@@ -1975,6 +2331,33 @@
         "r": 14.1,
         "len": 37.5
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 1.17,
+          "x": 4.2,
+          "y": -41.0,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 1.17,
+          "x": -3.2,
+          "y": -41.0,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-taillight",
+          "layer": "under",
+          "y": 18.9,
+          "alpha": 0.7,
+          "when": "still"
+        }
+      ],
       "sprite": "u.adolence-ambush-car",
       "aiWeight": 1.5,
       "producedBy": [
@@ -2248,6 +2631,13 @@
       },
       "sprite": "u.adolence-light-tank-lmg",
       "turretSprite": "tur.adolence-light-tank-lmg",
+      "decals": [
+        {
+          "sprite": "dec.adolence-3c-2",
+          "on": "turret",
+          "when": "firing"
+        }
+      ],
       "aiWeight": 1.5,
       "producedBy": [
         "adolence-precinct-2",
@@ -2302,6 +2692,13 @@
       },
       "sprite": "u.adolence-light-tank-lmg",
       "turretSprite": "tur.adolence-light-tank-mg",
+      "decals": [
+        {
+          "sprite": "dec.adolence-3c-3",
+          "on": "turret",
+          "when": "firing"
+        }
+      ],
       "aiWeight": 1.5,
       "producedBy": [
         "adolence-precinct-2",
@@ -2618,6 +3015,26 @@
         "r": 10.9,
         "len": 23.4
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 1.098,
+          "x": 3.0,
+          "y": -28.7,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 1.098,
+          "x": -2.1,
+          "y": -28.7,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-scout-car",
       "aiWeight": 1.5,
       "producedBy": [
@@ -2654,6 +3071,26 @@
         "r": 11.7,
         "len": 25.0
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 1.029,
+          "x": 2.8,
+          "y": -26.9,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 1.029,
+          "x": -1.9,
+          "y": -26.9,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-assault-car",
       "aiWeight": 1.5,
       "producedBy": [
@@ -2690,6 +3127,26 @@
         "r": 12.5,
         "len": 20.3
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 1.098,
+          "x": 3.0,
+          "y": -28.7,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 1.098,
+          "x": -2.1,
+          "y": -28.7,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-utility-vehicle",
       "aiWeight": 1.5,
       "producedBy": [
@@ -2726,6 +3183,26 @@
         "r": 12.5,
         "len": 20.3
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 1.098,
+          "x": 4.6,
+          "y": -35.7,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 1.098,
+          "x": -3.6,
+          "y": -35.7,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-utility-vehicle-mp",
       "aiWeight": 1.5,
       "producedBy": [
@@ -2762,6 +3239,26 @@
         "r": 12.5,
         "len": 39.1
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.808,
+          "x": 3.4,
+          "y": -26.3,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.808,
+          "x": -2.7,
+          "y": -26.3,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-transport-truck",
       "aiWeight": 1.5,
       "producedBy": [
@@ -2798,6 +3295,26 @@
         "r": 10.9,
         "len": 60.9
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.852,
+          "x": 3.6,
+          "y": -40.6,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.852,
+          "x": -2.9,
+          "y": -40.6,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-m977",
       "aiWeight": 1.5,
       "producedBy": [
@@ -2845,7 +3362,7 @@
           "splash": 14,
           "turret": true,
           "sound": "adolence-105mm",
-          "muzzleOffset": 37.9
+          "muzzleOffset": 40.7
         },
         {
           "id": "coax",
@@ -2859,13 +3376,36 @@
           ],
           "turret": true,
           "sound": "mg",
-          "muzzleOffset": 37.9
+          "muzzleOffset": 40.7
         }
       ],
       "body": {
         "r": 14.1,
         "len": 54.7
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-m1-lamp-1",
+          "x": -0.2,
+          "y": -45.6,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-m1128t-outline",
+          "on": "turret",
+          "layer": "under",
+          "x": -0.2,
+          "y": 2.5,
+          "alpha": 0.8
+        },
+        {
+          "sprite": "dec.adolence-m68a1e4-outline",
+          "on": "turret",
+          "layer": "under",
+          "y": -14.9,
+          "alpha": 0.8
+        }
+      ],
       "sprite": "u.adolence-m1128",
       "turretSprite": "tur.adolence-m1128",
       "aiWeight": 1.5,
@@ -2935,6 +3475,30 @@
         "r": 17.2,
         "len": 57.8
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-m1-lamp-1",
+          "scale": 0.958,
+          "x": -0.2,
+          "y": -43.7,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-m1t-outline",
+          "on": "turret",
+          "layer": "under",
+          "y": 1.6,
+          "alpha": 0.8
+        },
+        {
+          "sprite": "dec.adolence-m256-outline-1",
+          "on": "turret",
+          "layer": "under",
+          "x": -0.4,
+          "y": -19.7,
+          "alpha": 0.8
+        }
+      ],
       "sprite": "u.adolence-m1a2",
       "turretSprite": "tur.adolence-m1a2",
       "aiWeight": 1.5,
@@ -3004,6 +3568,30 @@
         "r": 17.2,
         "len": 57.8
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-m1-lamp-1",
+          "scale": 0.958,
+          "x": -0.2,
+          "y": -43.7,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-tusk-outline",
+          "on": "turret",
+          "layer": "under",
+          "y": 1.6,
+          "alpha": 0.8
+        },
+        {
+          "sprite": "dec.adolence-m256-outline",
+          "on": "turret",
+          "layer": "under",
+          "x": -0.4,
+          "y": -19.7,
+          "alpha": 0.8
+        }
+      ],
       "sprite": "u.adolence-m1a2-tusk",
       "turretSprite": "tur.adolence-m1a2-tusk",
       "aiWeight": 1.5,
@@ -3073,6 +3661,30 @@
         "r": 17.2,
         "len": 57.8
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-m1-lamp-1",
+          "scale": 0.958,
+          "x": -0.2,
+          "y": -43.7,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-sepv3-outline",
+          "on": "turret",
+          "layer": "under",
+          "y": 1.6,
+          "alpha": 0.8
+        },
+        {
+          "sprite": "dec.adolence-m256-outline-1",
+          "on": "turret",
+          "layer": "under",
+          "x": -0.4,
+          "y": -19.7,
+          "alpha": 0.8
+        }
+      ],
       "sprite": "u.adolence-m1a2-sepv3",
       "turretSprite": "tur.adolence-m1a2-sepv3",
       "aiWeight": 1.5,
@@ -3142,6 +3754,30 @@
         "r": 17.2,
         "len": 57.8
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-m1-lamp-1",
+          "scale": 0.958,
+          "x": -0.2,
+          "y": -43.7,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-m1a1-t-outline",
+          "on": "turret",
+          "layer": "under",
+          "y": 1.0,
+          "alpha": 0.8
+        },
+        {
+          "sprite": "dec.adolence-m256-outline",
+          "on": "turret",
+          "layer": "under",
+          "x": -0.4,
+          "y": -19.7,
+          "alpha": 0.8
+        }
+      ],
       "sprite": "u.adolence-m1a1-clickbait",
       "turretSprite": "tur.adolence-m1a1-clickbait",
       "aiWeight": 1.5,
@@ -3197,6 +3833,24 @@
         "r": 13.3,
         "len": 21.9
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "x": 4.2,
+          "y": -32.8,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "x": -3.4,
+          "y": -32.8,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-light-ifv",
       "turretSprite": "tur.adolence-light-ifv",
       "aiWeight": 1.5,
@@ -3251,6 +3905,26 @@
         "r": 15.6,
         "len": 28.1
       },
+      "decals": [
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.852,
+          "x": 3.6,
+          "y": -27.7,
+          "alpha": 0.5,
+          "when": "night"
+        },
+        {
+          "sprite": "dec.adolence-headlight",
+          "layer": "over",
+          "scale": 0.852,
+          "x": -2.8,
+          "y": -27.7,
+          "alpha": 0.5,
+          "when": "night"
+        }
+      ],
       "sprite": "u.adolence-heavy-ifv",
       "turretSprite": "tur.adolence-heavy-ifv",
       "aiWeight": 1.5,
@@ -4790,8 +5464,16 @@
       "file": "sprites/tur.adolence-mg-tower.png",
       "frames": 1,
       "rotated": true,
-      "fw": 4,
+      "fw": 12,
       "fh": 36
+    },
+    {
+      "key": "dec.adolence-3c",
+      "file": "sprites/dec.adolence-3c.png",
+      "frames": 3,
+      "fw": 11,
+      "fh": 36,
+      "fps": 30
     },
     {
       "key": "u.adolence-barricade",
@@ -4810,6 +5492,14 @@
       "rotated": true,
       "fw": 7,
       "fh": 7
+    },
+    {
+      "key": "dec.adolence-torch",
+      "file": "sprites/dec.adolence-torch.png",
+      "frames": 1,
+      "fw": 18,
+      "fh": 38,
+      "rotated": true
     },
     {
       "key": "u.adolence-officer-rifle",
@@ -4988,6 +5678,14 @@
       "fh": 32
     },
     {
+      "key": "dec.adolence-headlight",
+      "file": "sprites/dec.adolence-headlight.png",
+      "frames": 1,
+      "fw": 15,
+      "fh": 42,
+      "rotated": true
+    },
+    {
       "key": "u.adolence-cruiser",
       "file": "sprites/u.adolence-cruiser.png",
       "frames": 1,
@@ -5024,7 +5722,7 @@
       "file": "sprites/u.adolence-comms-van.png",
       "frames": 1,
       "rotated": true,
-      "fw": 15,
+      "fw": 18,
       "fh": 41
     },
     {
@@ -5042,6 +5740,14 @@
       "rotated": true,
       "fw": 18,
       "fh": 42
+    },
+    {
+      "key": "dec.adolence-taillight",
+      "file": "sprites/dec.adolence-taillight.png",
+      "frames": 1,
+      "fw": 17,
+      "fh": 6,
+      "rotated": true
     },
     {
       "key": "u.adolence-mortar",
@@ -5097,15 +5803,31 @@
       "frames": 1,
       "rotated": true,
       "fw": 14,
-      "fh": 40
+      "fh": 42
+    },
+    {
+      "key": "dec.adolence-3c-2",
+      "file": "sprites/dec.adolence-3c-2.png",
+      "frames": 3,
+      "fw": 13,
+      "fh": 41,
+      "fps": 30
     },
     {
       "key": "tur.adolence-light-tank-mg",
       "file": "sprites/tur.adolence-light-tank-mg.png",
       "frames": 1,
       "rotated": true,
-      "fw": 4,
-      "fh": 40
+      "fw": 14,
+      "fh": 42
+    },
+    {
+      "key": "dec.adolence-3c-3",
+      "file": "sprites/dec.adolence-3c-3.png",
+      "frames": 3,
+      "fw": 13,
+      "fh": 41,
+      "fps": 30
     },
     {
       "key": "u.adolence-light-tank",
@@ -5121,7 +5843,7 @@
       "frames": 1,
       "rotated": true,
       "fw": 14,
-      "fh": 50
+      "fh": 51
     },
     {
       "key": "tur.adolence-light-tank-missile",
@@ -5169,7 +5891,7 @@
       "frames": 1,
       "rotated": true,
       "fw": 13,
-      "fh": 36
+      "fh": 43
     },
     {
       "key": "u.adolence-scout-car",
@@ -5232,12 +5954,36 @@
       ]
     },
     {
+      "key": "dec.adolence-m1-lamp-1",
+      "file": "sprites/dec.adolence-m1-lamp-1.png",
+      "frames": 1,
+      "fw": 26,
+      "fh": 55,
+      "rotated": true
+    },
+    {
       "key": "tur.adolence-m1128",
       "file": "sprites/tur.adolence-m1128.png",
       "frames": 1,
       "rotated": true,
-      "fw": 19,
-      "fh": 54
+      "fw": 52,
+      "fh": 58
+    },
+    {
+      "key": "dec.adolence-m1128t-outline",
+      "file": "sprites/dec.adolence-m1128t-outline.png",
+      "frames": 1,
+      "fw": 13,
+      "fh": 18,
+      "rotated": true
+    },
+    {
+      "key": "dec.adolence-m68a1e4-outline",
+      "file": "sprites/dec.adolence-m68a1e4-outline.png",
+      "frames": 1,
+      "fw": 4,
+      "fh": 19,
+      "rotated": true
     },
     {
       "key": "u.adolence-m1a2",
@@ -5252,8 +5998,24 @@
       "file": "sprites/tur.adolence-m1a2.png",
       "frames": 1,
       "rotated": true,
-      "fw": 22,
+      "fw": 37,
       "fh": 60
+    },
+    {
+      "key": "dec.adolence-m1t-outline",
+      "file": "sprites/dec.adolence-m1t-outline.png",
+      "frames": 1,
+      "fw": 19,
+      "fh": 33,
+      "rotated": true
+    },
+    {
+      "key": "dec.adolence-m256-outline-1",
+      "file": "sprites/dec.adolence-m256-outline-1.png",
+      "frames": 1,
+      "fw": 4,
+      "fh": 20,
+      "rotated": true
     },
     {
       "key": "u.adolence-m1a2-tusk",
@@ -5272,6 +6034,22 @@
       "fh": 60
     },
     {
+      "key": "dec.adolence-tusk-outline",
+      "file": "sprites/dec.adolence-tusk-outline.png",
+      "frames": 1,
+      "fw": 22,
+      "fh": 33,
+      "rotated": true
+    },
+    {
+      "key": "dec.adolence-m256-outline",
+      "file": "sprites/dec.adolence-m256-outline.png",
+      "frames": 1,
+      "fw": 4,
+      "fh": 20,
+      "rotated": true
+    },
+    {
       "key": "u.adolence-m1a2-sepv3",
       "file": "sprites/u.adolence-m1a2-sepv3.png",
       "frames": 1,
@@ -5284,8 +6062,16 @@
       "file": "sprites/tur.adolence-m1a2-sepv3.png",
       "frames": 1,
       "rotated": true,
-      "fw": 22,
+      "fw": 37,
       "fh": 60
+    },
+    {
+      "key": "dec.adolence-sepv3-outline",
+      "file": "sprites/dec.adolence-sepv3-outline.png",
+      "frames": 1,
+      "fw": 22,
+      "fh": 33,
+      "rotated": true
     },
     {
       "key": "u.adolence-m1a1-clickbait",
@@ -5302,6 +6088,14 @@
       "rotated": true,
       "fw": 22,
       "fh": 60
+    },
+    {
+      "key": "dec.adolence-m1a1-t-outline",
+      "file": "sprites/dec.adolence-m1a1-t-outline.png",
+      "frames": 1,
+      "fw": 21,
+      "fh": 32,
+      "rotated": true
     },
     {
       "key": "u.adolence-light-ifv",
@@ -5361,7 +6155,7 @@
       "frames": 1,
       "rotated": true,
       "fw": 16,
-      "fh": 51
+      "fh": 53
     },
     {
       "key": "u.adolence-police-heli",

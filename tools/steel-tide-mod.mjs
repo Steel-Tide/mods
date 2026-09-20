@@ -989,7 +989,6 @@ const STRINGS = {
   "hud.nukeFabricating": ["Fabricating warhead (click to cancel)", "正在制造核弹头（点击取消）", "핵탄두 제조 중 (클릭하면 취소)"],
   "hud.nukeEmpty": ["Empty warhead slot", "空核弹槽位", "빈 핵탄두 슬롯"],
   "hud.watchHint": ["Select a faction's HQ to watch its economy", "选择某阵营的指挥中心以查看其经济", "진영의 사령부를 선택하면 그 경제를 볼 수 있습니다"],
-  "hud.tab.map": ["Overview", "总览", "개요"],
   "hud.battleMap": ["Battle map", "战场地图", "전장 지도"],
   "hud.mapRoster": ["Forces", "兵力", "병력"],
   "hud.mapRosterSearch": ["Search units…", "搜索单位…", "유닛 검색…"],
@@ -1003,7 +1002,6 @@ const STRINGS = {
   "hud.legendNaval": ["Ship", "舰船", "함선"],
   "hud.legendOre": ["Metal deposit", "金属矿脉", "금속 광맥"],
   "hud.legendAlarm": ["Under attack", "遭到攻击", "공격받는 중"],
-  "hud.tab.command": ["Unit", "单位", "유닛"],
   "hud.chat": ["Chat", "聊天", "채팅"],
   "hud.chatEmpty": ["Press Enter to say something.", "按 Enter 发言。", "Enter를 눌러 말하세요."],
   "hud.chatPlaceholder": ["Message… (/t = team)", "输入消息…（/t = 队伍）", "메시지… (/t = 팀)"],
@@ -1378,15 +1376,15 @@ const STRINGS = {
   "mods.installing": ["Installing…", "安装中…", "설치 중…"],
   "mods.installedMark": ["Installed", "已安装", "설치됨"],
   "mods.add": ["Add your own", "添加自制模组", "직접 만든 모드 추가"],
-  "mods.add.file": ["Upload file…", "上传文件…", "파일 업로드…"],
+  "mods.add.file": ["Upload file", "上传文件", "파일 업로드"],
   "mods.add.fileTip": ["A .steel-tide-mod file, or a zip of the mod folder", ".steel-tide-mod 文件，或模组文件夹的压缩包", ".steel-tide-mod 파일 또는 모드 폴더의 zip"],
-  "mods.add.folder": ["Open folder…", "打开文件夹…", "폴더 열기…"],
+  "mods.add.folder": ["Open folder", "打开文件夹", "폴더 열기"],
   "mods.add.folderTip": [
     "Pick the mod folder itself; Chrome keeps it open so Reload re-reads your edits",
     "选择模组文件夹本身；Chrome 会记住它，修改后可点“重新读取”",
     "모드 폴더 자체를 고르세요. Chrome은 폴더를 열어 두어서 다시 읽기로 수정 내용을 다시 읽습니다"
   ],
-  "mods.add.url": ["Add from URL…", "从网址添加…", "URL로 추가…"],
+  "mods.add.url": ["Add from URL", "从网址添加", "URL로 추가"],
   "mods.add.urlPrompt": [
     "The address of a mod folder (where mod.json is) or of a .steel-tide-mod file",
     "模组文件夹（mod.json 所在处）或 .steel-tide-mod 文件的网址",
@@ -1478,6 +1476,7 @@ const STRINGS = {
   "replay.teamWon": ["Team {0} won", "{0}队获胜", "{0} 팀 승리"],
   "replay.unfinished": ["Unfinished", "未完成", "미완료"],
   "replay.match": ["Match", "对局", "대전"],
+  "replay.selection": ["Unit", "单位", "유닛"],
   "replay.orders": ["orders", "条指令", "개 명령"],
   "replay.copy": ["Copy profile", "复制记录", "프로필 복사"],
   "replay.copyTip": ["The match profile as JSON, to paste for analysis", "对局记录 JSON，可粘贴用于分析", "분석용으로 붙여 넣을 대전 프로필 JSON"],
@@ -4921,7 +4920,8 @@ function modCountUrl(id) {
   return `${MOD_REGISTRY_WEB}/releases/download/${MOD_REGISTRY_RELEASE}/${id}${MOD_FILE_EXT}`;
 }
 const MAX_MOD_DEFS = 200;
-const MAX_MOD_SPRITES = 120;
+const MAX_MOD_SPRITES = 160;
+const MAX_DEF_DECALS = 12;
 const MAX_MOD_SOUNDS = 60;
 const MAX_MOD_SCREENSHOTS = 8;
 const MAX_MOD_MAPS = 8;
@@ -4934,7 +4934,7 @@ const SOUND_KEY_RE = /^[a-z0-9][a-z0-9-]{1,59}$/;
 const MAX_MANIFEST_BYTES = 1024 * 1024;
 const MAX_MOD_FILES_BYTES = 24 * 1024 * 1024;
 const ID_RE = /^[a-z0-9][a-z0-9_-]{1,39}$/;
-const ATLAS_KEY_RE = /^(u|tur)\.[a-z0-9][a-z0-9_-]{1,39}$/;
+const ATLAS_KEY_RE = /^(u|tur|dec)\.[a-z0-9][a-z0-9_-]{1,39}$/;
 const FILE_RE = /^(?!\/)(?!.*\.\.)[A-Za-z0-9_./-]{1,120}$/;
 const IMAGE_FILE_RE = /\.(png|jpe?g|webp)$/i;
 const MAP_FILE_RE = /\.(steel-tide-map|json)$/i;
@@ -4948,6 +4948,9 @@ const PROJECTILES = ["bullet", "shell", "missile", "rocket", "bomb", "torpedo", 
 const UNIT_DOMAINS = ["ground", "ship", "air"];
 const TRAILS = ["tread", "tire", "wake"];
 const WEAPON_SOUNDS = ["mg", "autocannon", "cannon", "missile", "flak", "arty", "rocket", "torpedo", "bomb", "flame"];
+const DECAL_LAYERS = ["under", "hull", "over"];
+const DECAL_ANCHORS = ["hull", "turret"];
+const DECAL_WHENS = ["always", "moving", "still", "firing", "damaged", "night"];
 const MANIFEST_SPECS = [
   { name: "format", type: "string", required: true, doc: [`always "${MOD_FORMAT}"`, `固定为 "${MOD_FORMAT}"`] },
   { name: "v", type: "int", required: true, min: 1, max: 1, doc: [`format version, ${MOD_FORMAT_VERSION}`, `格式版本，${MOD_FORMAT_VERSION}`] },
@@ -5026,8 +5029,10 @@ const DEF_SPECS = [
   { name: "fireOnMove", type: "bool", only: "unit", doc: ["keeps shooting on a plain move", "移动时持续开火"] },
   { name: "burnMult", type: "number", only: "unit", min: 0, max: 4, def: "1", doc: ["what fire on the ground does to it, as a multiplier (the Drake's 0.5)", "地面火焰对它的伤害倍率（火龙为 0.5）"] },
   { name: "trail", type: "enum", values: TRAILS, only: "unit", def: "by domain", doc: ["the mark it leaves", "留下的痕迹"] },
+  { name: "shadow", type: "bool", only: "unit", def: "true", doc: ["the shadow the game casts for it: the hull's and the turret's silhouettes, a step to the south-east on the ground, further off in the air; `false` when the art brings its own, or none is wanted (a submarine casts none)", "游戏为它投下的影子：车体与炮塔的剪影，在地面上向东南偏一步，在空中则更远；图像自带阴影或不需要时设为 `false`（潜艇不投影）"] },
   { name: "sprite", type: "string", max: 48, def: "this mod's u.<id> sheet, else the base's art", doc: ["the body's atlas key: one of this mod's sheets, or a vanilla key to borrow its art", "主体图像键：本模组的精灵图，或借用原版的键"] },
   { name: "turretSprite", type: "string", max: 48, def: "this mod's tur.<id> sheet, else the base's (when its art is kept)", doc: ["the rotating part's key, if any", "旋转部件的图像键（若有）"] },
+  { name: "decals", type: "decals", def: "the base's, when its art is kept", doc: [`pictures laid on the hull and the turret besides their own sheets (see below), up to ${MAX_DEF_DECALS}`, `除车体与炮塔本身之外贴在其上的图像（见下），最多 ${MAX_DEF_DECALS} 个`] },
   { name: "aliases", type: "strings", doc: ["other names the console's `give` accepts", "控制台 `give` 接受的别名"] },
   { name: "aiWeight", type: "number", only: "unit", min: 0, max: 10, def: "0", doc: ["how readily the AI builds it: a Bison is 3, a scout car 1; 0 never", "AI 生产它的倾向：野牛是 3，侦察车 1；0 为从不"] }
 ];
@@ -5059,12 +5064,24 @@ const WEAPON_SPECS = [
   { name: "burnLife", type: "number", min: 0, max: 120, doc: ["a `flame` jet: seconds that fire keeps burning", "`flame` 喷流：火焰持续秒数"] },
   { name: "sound", type: "string", max: 64, def: "by class", doc: [`the firing sound: ${WEAPON_SOUNDS.join(", ")}, or the key of one of this mod's \`sounds\``, `开火音效：${WEAPON_SOUNDS.join("、")}，或本模组 \`sounds\` 中的一个键`] }
 ];
+const DECAL_SPECS = [
+  { name: "sprite", type: "string", max: 48, required: true, doc: ["the sheet drawn: one of this mod's `dec.<name>` sheets, or any body or turret key", "所绘精灵图：本模组的 `dec.<名字>` 精灵图，或任一车体/炮塔键"] },
+  { name: "on", type: "enum", values: DECAL_ANCHORS, def: "hull", doc: ["what it is fixed to and turns with; `turret` needs a `turretSprite`", "固定在何处并随之转动；`turret` 要求该定义有 `turretSprite`"] },
+  { name: "layer", type: "enum", values: DECAL_LAYERS, def: "hull, or over when on a turret", doc: ["where it goes in the stack: under the body, on the hull under the turret, or over everything", "在图层中的位置：车体之下、车体之上炮塔之下、或最上层"] },
+  { name: "x", type: "number", min: -256, max: 256, def: "0", doc: ["where it sits on the part's up-facing art: px right of the pivot, in the sheet's own px at its `fw`×`fh` size (the game scales it with the unit)", "在部件朝上图像上的位置：枢轴右侧的像素，按精灵图 `fw`×`fh` 尺寸计（游戏随单位一并缩放）"] },
+  { name: "y", type: "number", min: -256, max: 256, def: "0", doc: ["px down from the pivot, toward the tail", "枢轴下方（车尾方向）的像素"] },
+  { name: "angle", type: "number", min: -360, max: 360, def: "0", doc: ["turned this much further than what it is fixed to, degrees clockwise", "相对所固定部件再顺时针转动的角度"] },
+  { name: "upright", type: "bool", doc: ["never turned: laid screen-up wherever its anchor is", "永不旋转：始终朝屏幕上方"] },
+  { name: "scale", type: "number", min: 0.05, max: 8, def: "1", doc: ["drawn at this multiple of its sheet's size", "按精灵图尺寸的此倍数绘制"] },
+  { name: "alpha", type: "number", min: 0, max: 1, def: "1", doc: ["opacity", "不透明度"] },
+  { name: "when", type: "enum", values: DECAL_WHENS, def: "always", doc: ["shown only while the unit moves or stands (`moving`, `still`), within a reload of its last shot (`firing`), under half health (`damaged`), or after dusk (`night`: laid over the dark like a lamp, and the game's own headlights stay off a unit that has one)", "仅在移动/静止（`moving`/`still`）、上次开火后一次装填时间内（`firing`）、生命低于一半（`damaged`）或天黑后（`night`：像灯一样亮于夜色之上，且游戏不再为该单位画自己的车灯）时显示"] }
+];
 const SOUND_SPECS = [
   { name: "key", type: "string", max: 60, required: true, doc: ["`<mod id>-<name>`, lower case; what a weapon's `sound` names", "`<模组 id>-<名字>`，小写；武器 `sound` 引用的键"] },
   { name: "file", type: "string", max: 120, required: true, doc: ["the recording, relative to mod.json. An MP3 plays everywhere; WAV works, OGG not on Safari. Dry, close, under a second", "录音路径，相对 mod.json。MP3 处处可播；WAV 可用，OGG 在 Safari 上不行。干声、近距、一秒以内"] }
 ];
 const SPRITE_SPECS = [
-  { name: "key", type: "string", max: 48, required: true, doc: ["`u.<id>` for a body, `tur.<id>` for a rotating part; never a vanilla key", "主体用 `u.<id>`，旋转部件用 `tur.<id>`；不可与原版键重名"] },
+  { name: "key", type: "string", max: 48, required: true, doc: ["`u.<id>` for a body, `tur.<id>` for a rotating part, `dec.<name>` for a decal; never a vanilla key", "主体用 `u.<id>`，旋转部件用 `tur.<id>`，贴花用 `dec.<名字>`；不可与原版键重名"] },
   { name: "file", type: "string", max: 120, required: true, doc: ["the image, relative to mod.json (PNG, WebP or JPEG)", "图片路径，相对 mod.json（PNG、WebP 或 JPEG）"] },
   { name: "frames", type: "int", min: 1, max: 64, def: "1", doc: ["animation frames, left to right in one strip", "动画帧数，横向排列"] },
   { name: "fw", type: "number", min: 4, max: 512, def: "the footprint (a building) or the image", doc: ["in-game frame width, whole world px", "游戏内帧宽（世界像素，整数）"] },
@@ -5075,7 +5092,7 @@ const SPRITE_SPECS = [
   { name: "anchorY", type: "number", min: 0, max: 512, doc: ["px from the top to the footprint centre (tall buildings)", "顶部到占地中心的像素（高建筑）"] },
   { name: "mount", type: "pair", doc: ["a body: where its turret sits (or, with a repair aura, where the beam leaves), as `[fx, fy]`", "主体：炮塔安装位置（带维修光环时则是光束的起点），写作 `[fx, fy]`"] },
   { name: "fps", type: "number", min: 0, max: 60, doc: ["animation speed", "动画速度"] },
-  { name: "teams", type: "bool", def: "true", doc: ["recolour magenta per faction", "按阵营重着色品红部分"] },
+  { name: "teams", type: "bool", def: "true", doc: ["recolour magenta per faction; `false` draws the sheet as painted for every faction, and for the wreck", "按阵营重着色品红部分；`false` 则各阵营（以及残骸）都按原图绘制"] },
   { name: "ss", type: "int", min: 1, max: 4, doc: ["supersample factor; omit to let the game choose", "超采样倍率；留空由游戏决定"] },
   { name: "fitFootprint", type: "bool", doc: ["scale the drawn content to fill the frame", "缩放内容以填满帧"] },
   { name: "animRegion", type: "quad", doc: ["where the animation lives, `[x0, y0, x1, y1]` fractions; the rest is frozen", "动画所在区域 `[x0, y0, x1, y1]`（比例）；其余部分冻结"] },
@@ -5085,7 +5102,7 @@ const SPRITE_SPECS = [
   { name: "bgMinLuma", type: "number", min: 0, max: 255, doc: ["lightest colour still taken as background", "仍视为背景的最亮颜色"] },
   { name: "artifactCleanup", type: "bool", doc: ["sweep specks left by background removal", "清理背景去除后的杂点"] }
 ];
-const FIELD_SPECS = { manifest: MANIFEST_SPECS, def: DEF_SPECS, weapon: WEAPON_SPECS, sprite: SPRITE_SPECS, sound: SOUND_SPECS };
+const FIELD_SPECS = { manifest: MANIFEST_SPECS, def: DEF_SPECS, weapon: WEAPON_SPECS, decal: DECAL_SPECS, sprite: SPRITE_SPECS, sound: SOUND_SPECS };
 function cloneTable(table) {
   return structuredClone(table);
 }
@@ -5101,6 +5118,7 @@ function spriteKeysOf(table) {
   for (const d of Object.values(table)) {
     out.add(d.sprite);
     if (d.turretSprite) out.add(d.turretSprite);
+    for (const dc of d.decals ?? []) out.add(dc.sprite);
   }
   return out;
 }
@@ -5260,6 +5278,8 @@ function checkField(spec, value, path, issues) {
       return Array.isArray(value) && value.length === 2 && value.every((n) => typeof n === "number" && n >= 0 && n <= 1) || bad("must be [x, y] fractions between 0 and 1");
     case "quad":
       return Array.isArray(value) && value.length === 4 && value.every((n) => typeof n === "number" && n >= 0 && n <= 1) || bad("must be [x0, y0, x1, y1] fractions between 0 and 1");
+    case "decals":
+      return Array.isArray(value) && value.length <= MAX_DEF_DECALS || bad(`must be a list of up to ${MAX_DEF_DECALS} decals`);
     case "weapons":
     case "defs":
     case "sprites":
@@ -5354,7 +5374,7 @@ function resolveMod(mod, table = VANILLA) {
     const clean = checkObject(raw, SPRITE_SPECS, path, errors, warnings);
     if (typeof clean.key !== "string" || typeof clean.file !== "string") return;
     if (!ATLAS_KEY_RE.test(clean.key)) {
-      errors.push({ path: `${path}.key`, message: "must be u.<id> or tur.<id>" });
+      errors.push({ path: `${path}.key`, message: "must be u.<id>, tur.<id> or dec.<name>" });
       return;
     }
     if (VANILLA_SPRITE_KEYS.has(clean.key) || tableSprites.has(clean.key) && !sheetKeys.has(clean.key) && !mod.defs.some((d) => d && (d.sprite === clean.key || d.turretSprite === clean.key || `u.${d.id}` === clean.key || `tur.${d.id}` === clean.key))) {
@@ -5473,6 +5493,30 @@ function resolveMod(mod, table = VANILLA) {
       } else def.turretSprite = turretKey;
     } else delete def.turretSprite;
     for (const wp of def.weapons) if (wp.turret === void 0) wp.turret = !!def.turretSprite;
+    const rawDecals = own.decals ?? (own.sprite !== void 0 || ownSheet ? void 0 : base?.decals);
+    delete def.decals;
+    if (rawDecals) {
+      const list = [];
+      rawDecals.forEach((rawDecal, k) => {
+        const dpath = `${path}.decals[${k}]`;
+        if (!isPlainObject(rawDecal)) {
+          errors.push({ path: dpath, message: "must be an object" });
+          return;
+        }
+        const dc = checkObject(rawDecal, DECAL_SPECS, dpath, errors, warnings);
+        if (typeof dc.sprite !== "string") return;
+        if (!sheetKeys.has(dc.sprite) && !tableSprites.has(dc.sprite)) {
+          errors.push({ path: `${dpath}.sprite`, message: `"${dc.sprite}" is neither a sheet of this mod nor art the game has` });
+          return;
+        }
+        if (dc.on === "turret" && !def.turretSprite) {
+          errors.push({ path: `${dpath}.on`, message: "fixed to a turret the def does not have" });
+          return;
+        }
+        list.push(dc);
+      });
+      if (list.length > 0) def.decals = list;
+    }
     for (const a of def.aliases ?? []) {
       if (aliases.has(a) || table[a] || built.has(a)) errors.push({ path: `${path}.aliases`, message: `"${a}" is already a name of another def` });
       aliases.add(a);
@@ -5647,7 +5691,7 @@ function buildDef(own, kind, base, modId, soundKeys, path, errors, warnings) {
   return def;
 }
 function stripModOnly(own) {
-  const { name: _n, desc: _d, extends: _e, weapons: _w, producedBy: _p, builtBy: _b, upgradeOf: _u, sprite: _s, turretSprite: _t, ...rest } = own;
+  const { name: _n, desc: _d, extends: _e, weapons: _w, producedBy: _p, builtBy: _b, upgradeOf: _u, sprite: _s, turretSprite: _t, decals: _dc, ...rest } = own;
   return rest;
 }
 let active = [];
@@ -5907,6 +5951,8 @@ function typeLabel(spec) {
       return "boolean";
     case "weapons":
       return "weapon[]";
+    case "decals":
+      return "decal[]";
     case "defs":
       return "def[]";
     case "sprites":
@@ -6102,6 +6148,12 @@ function agentPrompt() {
   for (const [cls, row] of Object.entries(ARMOR_MATRIX)) p(`${cls.padEnd(11)} ${Object.entries(row).map(([a, m]) => `${a} ×${m}`).join("  ")}`);
   p("```");
   p();
+  p("### A decal (`defs[].decals[]`)");
+  p();
+  p(markdownTable(fieldRows("decal")));
+  p();
+  p(`A decal is a picture laid on a def besides its body and its turret — a hatch, a crew figure, an outline, a lamp — fixed to the hull or the turret (\`on\`) and turned with it. Up to ${MAX_DEF_DECALS} on a def, drawn in the order listed within a layer. \`x\`/\`y\` are a point on that part's up-facing art: right and down (toward the tail) of its pivot, in the px of the sheet at its \`fw\`×\`fh\` size; the game scales them with the unit. The sheet is one of the mod's own under a \`dec.<name>\` key (see Art), or a body or turret key it borrows. A \`night\` decal is a lamp: laid over the dark rather than dimmed by it, so a headlight or a lit window reads as light, and a unit that carries one gets none of the game's own headlights. Paint a beam soft — a wide, faint falloff, not a hard-edged triangle — or it reads as glass.`);
+  p();
   p("### A sheet (`sprites[]`)");
   p();
   p(markdownTable(fieldRows("sprite")));
@@ -6129,6 +6181,7 @@ function agentPrompt() {
   p('- Hulls, turrets and everything that turns: draw ONE image facing UP and set `"rotated": true`; the game bakes the 24 headings. `fw`/`fh` are the in-game size of that up-facing image in world px (a tank hull is about 24×24; the image itself may be any resolution, 2–4× is best). `pivotX`/`pivotY` put the pivot on the turret ring (default centre).');
   p("- Buildings: one strip of frames, not rotated, drawn with a slight top-down southern tilt. The footprint is the bottom `fw×32` by `fh×32` px of the frame; anything above overhangs the terrain behind (towers, masts). Width, height and anchor are sized from the def's footprint automatically.");
   p('- A building with a gun that turns is two sheets like a hull and turret: the body with an empty ring and `"mount": [fx, fy]` saying where the ring sits as fractions of the frame, and a `tur.<id>` sheet for the gun; its weapons carry `"turret": true`.');
+  p("- A decal's sheet (`dec.<name>`) is drawn like a turret's: one up-facing image, or a strip of `frames` at `fps` for something that moves (a spinning barrel, a blinking light), sized by `fw`/`fh` and drawn about its centre. Static detail belongs in the body's own sheet; a decal is for what the body cannot hold — a part that turns with the turret, a hatch the barrel sweeps over, a light that comes on at night, a barrel that spins while it fires.");
   p("- Faction colour: paint team-coloured parts in pure magenta (highlight #FF66FF, base #FF00FF, shadow #990099) and use magenta nowhere else; the game recolours it per player.");
   p("- Style: crisp pixel art, hard edges, no anti-aliasing, a muted military palette (DawnBringer-32), dark #222034 outlines. Generated sheets are cleaned automatically (background removal, frame registration), but a transparent background is best.");
   p();
@@ -6170,8 +6223,12 @@ export {
   ARMOR_CLASSES,
   ARMOR_MATRIX,
   CUSTOM_MAP_EXT,
+  DECAL_ANCHORS,
+  DECAL_LAYERS,
+  DECAL_WHENS,
   FIELD_SPECS,
   ID_RE,
+  MAX_DEF_DECALS,
   MAX_HELLO_MODS,
   MAX_MANIFEST_BYTES,
   MAX_MOD_DEFS,

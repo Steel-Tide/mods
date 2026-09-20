@@ -305,8 +305,10 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `fireOnMove` | boolean | units only |  | keeps shooting on a plain move |
 | `burnMult` | number 0–4 | units only | 1 | what fire on the ground does to it, as a multiplier (the Drake's 0.5) |
 | `trail` | tread \| tire \| wake | units only | by domain | the mark it leaves |
+| `shadow` | boolean | units only | true | the shadow the game casts for it: the hull's and the turret's silhouettes, a step to the south-east on the ground, further off in the air; `false` when the art brings its own, or none is wanted (a submarine casts none) |
 | `sprite` | string |  | this mod's u.<id> sheet, else the base's art | the body's atlas key: one of this mod's sheets, or a vanilla key to borrow its art |
 | `turretSprite` | string |  | this mod's tur.<id> sheet, else the base's (when its art is kept) | the rotating part's key, if any |
+| `decals` | decal[] |  | the base's, when its art is kept | pictures laid on the hull and the turret besides their own sheets (see below), up to 12 |
 | `aliases` | string[] |  |  | other names the console's `give` accepts |
 | `aiWeight` | number 0–10 | units only | 0 | how readily the AI builds it: a Bison is 3, a scout car 1; 0 never |
 
@@ -360,11 +362,28 @@ torpedo     ship ×1.3  sub ×1.2
 aa          air ×1
 ```
 
+### A decal (`defs[].decals[]`)
+
+| field | type | required | default | meaning |
+| --- | --- | --- | --- | --- |
+| `sprite` | string | yes |  | the sheet drawn: one of this mod's `dec.<name>` sheets, or any body or turret key |
+| `on` | hull \| turret |  | hull | what it is fixed to and turns with; `turret` needs a `turretSprite` |
+| `layer` | under \| hull \| over |  | hull, or over when on a turret | where it goes in the stack: under the body, on the hull under the turret, or over everything |
+| `x` | number -256–256 |  | 0 | where it sits on the part's up-facing art: px right of the pivot, in the sheet's own px at its `fw`×`fh` size (the game scales it with the unit) |
+| `y` | number -256–256 |  | 0 | px down from the pivot, toward the tail |
+| `angle` | number -360–360 |  | 0 | turned this much further than what it is fixed to, degrees clockwise |
+| `upright` | boolean |  |  | never turned: laid screen-up wherever its anchor is |
+| `scale` | number 0.05–8 |  | 1 | drawn at this multiple of its sheet's size |
+| `alpha` | number 0–1 |  | 1 | opacity |
+| `when` | always \| moving \| still \| firing \| damaged \| night |  | always | shown only while the unit moves or stands (`moving`, `still`), within a reload of its last shot (`firing`), under half health (`damaged`), or after dusk (`night`: laid over the dark like a lamp, and the game's own headlights stay off a unit that has one) |
+
+A decal is a picture laid on a def besides its body and its turret — a hatch, a crew figure, an outline, a lamp — fixed to the hull or the turret (`on`) and turned with it. Up to 12 on a def, drawn in the order listed within a layer. `x`/`y` are a point on that part's up-facing art: right and down (toward the tail) of its pivot, in the px of the sheet at its `fw`×`fh` size; the game scales them with the unit. The sheet is one of the mod's own under a `dec.<name>` key (see Art), or a body or turret key it borrows. A `night` decal is a lamp: laid over the dark rather than dimmed by it, so a headlight or a lit window reads as light, and a unit that carries one gets none of the game's own headlights. Paint a beam soft — a wide, faint falloff, not a hard-edged triangle — or it reads as glass.
+
 ### A sheet (`sprites[]`)
 
 | field | type | required | default | meaning |
 | --- | --- | --- | --- | --- |
-| `key` | string | yes |  | `u.<id>` for a body, `tur.<id>` for a rotating part; never a vanilla key |
+| `key` | string | yes |  | `u.<id>` for a body, `tur.<id>` for a rotating part, `dec.<name>` for a decal; never a vanilla key |
 | `file` | string | yes |  | the image, relative to mod.json (PNG, WebP or JPEG) |
 | `frames` | integer 1–64 |  | 1 | animation frames, left to right in one strip |
 | `fw` | number 4–512 |  | the footprint (a building) or the image | in-game frame width, whole world px |
@@ -375,7 +394,7 @@ aa          air ×1
 | `anchorY` | number 0–512 |  |  | px from the top to the footprint centre (tall buildings) |
 | `mount` | [x, y] |  |  | a body: where its turret sits (or, with a repair aura, where the beam leaves), as `[fx, fy]` |
 | `fps` | number 0–60 |  |  | animation speed |
-| `teams` | boolean |  | true | recolour magenta per faction |
+| `teams` | boolean |  | true | recolour magenta per faction; `false` draws the sheet as painted for every faction, and for the wreck |
 | `ss` | integer 1–4 |  |  | supersample factor; omit to let the game choose |
 | `fitFootprint` | boolean |  |  | scale the drawn content to fill the frame |
 | `animRegion` | [x0, y0, x1, y1] |  |  | where the animation lives, `[x0, y0, x1, y1]` fractions; the rest is frozen |
@@ -411,6 +430,7 @@ A mod may carry maps: files the game's Map Editor exports (`.steel-tide-map`), n
 - Hulls, turrets and everything that turns: draw ONE image facing UP and set `"rotated": true`; the game bakes the 24 headings. `fw`/`fh` are the in-game size of that up-facing image in world px (a tank hull is about 24×24; the image itself may be any resolution, 2–4× is best). `pivotX`/`pivotY` put the pivot on the turret ring (default centre).
 - Buildings: one strip of frames, not rotated, drawn with a slight top-down southern tilt. The footprint is the bottom `fw×32` by `fh×32` px of the frame; anything above overhangs the terrain behind (towers, masts). Width, height and anchor are sized from the def's footprint automatically.
 - A building with a gun that turns is two sheets like a hull and turret: the body with an empty ring and `"mount": [fx, fy]` saying where the ring sits as fractions of the frame, and a `tur.<id>` sheet for the gun; its weapons carry `"turret": true`.
+- A decal's sheet (`dec.<name>`) is drawn like a turret's: one up-facing image, or a strip of `frames` at `fps` for something that moves (a spinning barrel, a blinking light), sized by `fw`/`fh` and drawn about its centre. Static detail belongs in the body's own sheet; a decal is for what the body cannot hold — a part that turns with the turret, a hatch the barrel sweeps over, a light that comes on at night, a barrel that spins while it fires.
 - Faction colour: paint team-coloured parts in pure magenta (highlight #FF66FF, base #FF00FF, shadow #990099) and use magenta nowhere else; the game recolours it per player.
 - Style: crisp pixel art, hard edges, no anti-aliasing, a muted military palette (DawnBringer-32), dark #222034 outlines. Generated sheets are cleaned automatically (background removal, frame registration), but a transparent background is best.
 

@@ -26,7 +26,7 @@ import shutil
 import subprocess
 import sys
 
-from PIL import Image
+from PIL import Image, ImageFilter, ImageStat
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
@@ -698,6 +698,320 @@ def add_sheet(key, im, frames, rotated, fw=None, fh=None, pivot_y=None, mount=No
     return key
 
 
+# ------------------------------------------------------------------ decals
+# The package draws much of a unit with `[decal_*]` sections: pictures laid on the
+# body or on a turret. Most are still, and are painted into the sheet in the order
+# the original draws them; the rest become the game's own decals (`decals` on the
+# def): an outline or a shadow the turret carries under the hull, a lamp that comes
+# on at night, brake lights when the car stands, barrels that turn while the gun
+# fires. The interface ones (selection rings, waypoints, ammo counters, preview
+# icons) and the ones that follow a script (a flash off `memory`, shading that
+# follows the heading) have no counterpart here and are left out.
+DECAL_SLUGS = [("前灯", "headlight"), ("手电", "torch"), ("灯光", "lamp"), ("黑边", "outline"), ("阴影", "shadow"), ("炮管", "barrel"),
+               ("尾灯", "taillight"), ("座圈", "ring"), ("驾驶", "driver"), ("车长", "commander"), ("炮手", "gunner"), ("轮胎", "tyre"),
+               ("泄压阀", "vent"), ("观察", "sight"), ("红外", "ir"), ("杂物", "stowage"), ("抛瓦", "tile"), ("箱子", "crate"),
+               ("挡板", "shield"), ("标题党", "m1a1"), ("轮左", "wheel")]
+UI_DECAL_KEYS = ("onlyInPreview", "onlyWhenSelectedByAnyPlayer", "onlyWhenSelectedByOwnPlayer", "drawLineTo", "basePosition",
+                 "basePositionFromLegEnd", "onlyTeam", "alwaysStartDirAtZero", "alwayStartDirAtZero")
+RW_LAYERS = ("shadow", "beforebody", "afterbody", "ontop")
+
+
+def slugify(path):
+    base = os.path.splitext(os.path.basename(path))[0]
+    for zh, en in DECAL_SLUGS:
+        base = base.replace(zh, "-" + en + "-")
+    return re.sub(r"[^a-z0-9]+", "-", base.lower()).strip("-") or "part"
+
+
+def numeric(v):
+    return v is None or re.match(r"^\s*-?[\d.]+\s*$", str(v)) is not None
+
+
+def decal_list(ini, d):
+    """the image decals of a unit that are pictures of it, in file order, each with its place in RW px
+    (x right, y forward) about what it is fixed to, and when the game is to show it"""
+    out = []
+    for s, kv in ini.items():
+        if not s.startswith("decal_") or boolish(kv.get("@copyFrom_skipThisSection")):
+            continue
+        if any(k in kv for k in UI_DECAL_KEYS) or (kv.get("layer") or "").lower() == "inactive":
+            continue
+        img = kv.get("image") or kv.get("imageStack")
+        path = resolve(img, d) if img else None
+        if not path:
+            continue
+        when = "always"
+        vis = (kv.get("isVisible") or "true").strip()
+        if vis.lower() not in ("true", "1"):
+            if "开前灯" in vis or "开灯" in vis:
+                when = "night"
+            else:
+                continue  # ammo, cargo, script states
+        alpha = kv.get("alpha")
+        if not numeric(alpha):
+            if "speed()" in alpha:
+                when, alpha = "still", "0.7"  # brake lights: bright when the car stands
+            else:
+                continue  # shading that follows the heading, a scripted flash
+        if alpha is None and kv.get("image_shadow"):
+            alpha = "0.5"  # drawn as a shadow in the original
+        if not all(numeric(kv.get(k)) for k in ("imageScale", "imageScaleX", "imageScaleY")):
+            continue
+        frame = kv.get("frame")
+        if frame and "frameSpeed" in frame:
+            when = "firing"
+        elif frame and not numeric(frame):
+            continue
+        layer = (kv.get("layer") or "afterBody").lower()
+        if layer not in RW_LAYERS:
+            continue
+        out.append(dict(
+            name=s[6:], path=path, frames=int(num(kv.get("total_frames")) or 1), layer=layer,
+            on=(kv.get("basePositionFromTurret") or "").strip() or None,
+            # an absolute offset is a screen one (down positive); read as if the unit faced up
+            x=(num(kv.get("xOffsetRelative")) or 0) + (num(kv.get("xOffsetAbsolute")) or 0) + (num(kv.get("shadowOffsetX")) or 0 if kv.get("image_shadow") else 0),
+            y=(num(kv.get("yOffsetRelative")) or 0) - (num(kv.get("yOffsetAbsolute")) or 0) - (num(kv.get("shadowOffsetY")) or 0 if kv.get("image_shadow") else 0),
+            angle=num(kv.get("dirOffset")) or 0,  # degrees clockwise on screen, as the game's decals turn
+            scale=num(kv.get("imageScale")) or 1.0,
+            sx=num(kv.get("imageScaleX")) or 1.0, sy=num(kv.get("imageScaleY")) or 1.0,
+            alpha=num(alpha) if alpha is not None else 1.0,
+            when=when,
+            shadow=bool(kv.get("image_shadow")) or "阴影" in s,
+        ))
+    return out
+
+
+def crop_content(im, pad=1):
+    """the image cut to what it paints, and how far its centre moved (image px, x right, y down)"""
+    bb = im.getbbox()
+    if not bb:
+        return im, 0.0, 0.0
+    x0, y0 = max(0, bb[0] - pad), max(0, bb[1] - pad)
+    x1, y1 = min(im.width, bb[2] + pad), min(im.height, bb[3] + pad)
+    return im.crop((x0, y0, x1, y1)), (x0 + x1) / 2 - im.width / 2, (y0 + y1) / 2 - im.height / 2
+
+
+def soften_lamp(im, up=4):
+    """a lamp's beam as light rather than paint. The package's cones are flat, hard-edged
+    triangles at half alpha, which read as glass on this game's pixel grid beside its own
+    headlights; blown up and blurred — the alpha, and the colour under it with the surround
+    filled in first so no black is dragged into the edge — they fall off the way light does.
+    Returns the picture at `up` times its size, and that factor."""
+    w, h = im.size
+    big = im.resize((w * up, h * up), Image.LANCZOS)
+    a = big.getchannel("A")
+    lit = a.point(lambda v: 255 if v > 40 else 0)
+    stat = ImageStat.Stat(big.convert("RGB"), mask=lit)
+    mean = tuple(int(round(v)) for v in stat.mean) if stat.count[0] else (255, 255, 255)
+    rgb = Image.composite(big.convert("RGB"), Image.new("RGB", big.size, mean), lit)
+    radius = max(2.0, min(w, h) * up * 0.12)
+    out = rgb.filter(ImageFilter.GaussianBlur(radius / 2)).convert("RGBA")
+    out.putalpha(a.filter(ImageFilter.GaussianBlur(radius)))
+    return out, up
+
+
+def prep(im, scale=1.0, sx=1.0, sy=1.0, alpha=1.0, angle=0.0, frame0=1):
+    """an image as the package draws it: the first frame of a strip, scaled, turned (degrees clockwise), faded"""
+    im = clean_alpha(im)
+    if frame0 > 1:
+        im = im.crop((0, 0, im.width // frame0, im.height))
+    w, h = im.width * scale * sx, im.height * scale * sy
+    if abs(w - im.width) > 0.5 or abs(h - im.height) > 0.5:
+        im = im.resize((max(1, round(w)), max(1, round(h))), Image.LANCZOS)
+    if angle:
+        im = im.rotate(-angle, resample=Image.BICUBIC, expand=True)
+    if alpha < 1:
+        im.putalpha(im.getchannel("A").point(lambda v: int(v * alpha)))
+    return im
+
+
+def lay_stack(items):
+    """one image centred on the pivot with every item laid at its offset: (image, x, y), RW px, y forward"""
+    half_w = half_h = 1.0
+    for im, x, y in items:
+        half_w = max(half_w, abs(x) + im.width / 2)
+        half_h = max(half_h, abs(y) + im.height / 2)
+    W, H = int(math.ceil(half_w * 2)) + 2, int(math.ceil(half_h * 2)) + 2
+    cv = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    for im, x, y in items:
+        cv.alpha_composite(im, (int(round(W / 2 + x - im.width / 2)), int(round(H / 2 - y - im.height / 2))))
+    return cv
+
+
+def turret_positions(ini):
+    """every turret's place about the unit's origin, up its attachedTo chain (RW px, y forward)"""
+    secs = {s: kv for s, kv in ini.items() if s.startswith("turret_")}
+
+    def abs_pos(s, depth=0):
+        kv = secs[s]
+        x, y = num(kv.get("x")) or 0, num(kv.get("y")) or 0
+        parent = kv.get("attachedTo")
+        ps = "turret_" + parent.strip() if parent else None
+        if ps and ps in secs and depth < 6:
+            px, py = abs_pos(ps, depth + 1)
+            return px + x, py + y
+        return x, y
+    return secs, abs_pos
+
+
+def unit_picture(ini, d, by_name, depth=0):
+    """what the package draws for a unit whose body turns with its gun — a turret unit, a gun bolted on:
+    the still parts in draw order as (image, x, y) about the unit's origin (RW px, y forward), and the
+    decals the game is to draw itself (shadow-layer ones go under the hull; the rest are conditional)"""
+    gfx = ini.get("graphics", {})
+    scale = num(gfx.get("imageScale")) or 1.0
+    tscale = num(gfx.get("turretImageScale")) or scale
+    secs, abs_pos = turret_positions(ini)
+    stills, dyn = [], []
+    decs = decal_list(ini, d)
+
+    def place(dc):
+        x, y = dc["x"], dc["y"]
+        if dc["on"] and ("turret_" + dc["on"]) in secs:
+            px, py = abs_pos("turret_" + dc["on"])
+            x, y = x + px, y + py
+        return x, y
+
+    def still(dc):
+        im = prep(Image.open(dc["path"]), dc["scale"], dc["sx"], dc["sy"], dc["alpha"], dc["angle"], dc["frames"])
+        x, y = place(dc)
+        return im, x, y
+
+    def statics(layer):
+        # one that animates while the gun fires stands at its first frame the rest of the time
+        return [still(dc) for dc in decs if dc["when"] in ("always", "firing") and dc["layer"] == layer]
+
+    # the original's order: what goes before the body, the body, what comes after it,
+    # the turrets as declared (the last on top), what rides over everything
+    stills += statics("beforebody")
+    body = resolve(gfx.get("image", ""), d)
+    if body and os.path.basename(body).lower() not in ("blank.png", "空.png"):
+        stills.append((prep(Image.open(body), scale), 0, 0))
+    stills += statics("afterbody")
+    for s, kv in secs.items():
+        img = kv.get("image")
+        if not img or boolish(kv.get("invisible")):
+            continue
+        hit = resolve(img, d)
+        if not hit:
+            continue
+        x, y = abs_pos(s)
+        stills.append((prep(Image.open(hit), tscale, angle=num(kv.get("idleDir")) or 0), x, y))
+    stills += statics("ontop")
+    # the crew and their guns: units the original attaches, drawn on top and turned with it
+    if depth < 2:
+        for s, kv in ini.items():
+            if not s.startswith("attachment_") or boolish(kv.get("@copyFrom_skipThisSection")):
+                continue
+            p = by_name.get(strip_quotes(kv.get("onCreateSpawnUnitOf", "")))
+            if not p:
+                continue
+            sub_stills, sub_dyn = unit_picture(load_unit(p), os.path.dirname(p), by_name, depth + 1)
+            ax, ay = num(kv.get("x")) or 0, num(kv.get("y")) or 0
+            stills += [(im, x + ax, y + ay) for im, x, y in sub_stills]
+            dyn += [dict(dc, x=dc["x"] + ax, y=dc["y"] + ay) for dc in sub_dyn]
+    for dc in decs:
+        # a drop shadow the original lays under the hull went with the hull's own shadow,
+        # which the game does not draw for this art (`shadow: false`); alone it is a smudge
+        if dc["layer"] == "shadow" and dc["shadow"]:
+            continue
+        if dc["when"] != "always" or dc["layer"] == "shadow":
+            x, y = place(dc)
+            dyn.append(dict(dc, x=x, y=y))
+    return stills, dyn
+
+
+def add_decal_sheet(im, slug, frames, fw, fh, fps=None):
+    """a decal's sheet, `dec.<mod>-<name>`: one per distinct picture at a size"""
+    h = hashlib.md5(im.tobytes()).hexdigest() + f":{frames}:{fw}:{fh}:{fps}"
+    if h in SHEET_BY_HASH:
+        return SHEET_BY_HASH[h]
+    taken = {e["key"] for e in SHEETS}
+    key = f"dec.{MOD_ID}-{slug}"
+    n = 2
+    while key in taken:
+        key = f"dec.{MOD_ID}-{slug}-{n}"
+        n += 1
+    entry = {"key": key, "file": f"sprites/{key}.png", "frames": frames, "fw": fw, "fh": fh}
+    if frames == 1:
+        entry["rotated"] = True
+    if fps:
+        entry["fps"] = fps
+    if not DRY and not NO_MEDIA:
+        im.save(os.path.join(OUT_SPRITES, f"{key}.png"))
+    SHEETS.append(entry)
+    SHEET_BY_HASH[h] = key
+    return key
+
+
+DECAL_REFS = {}  # (path, frames, aspect) -> the sizes (sheet px per source px) the picture has been cut at
+
+
+def emit_decals(df, dyn, ppr, on, over_when_ontop):
+    """the game's decals for a def, at their place in the part's sheet px (`ppr` sheet px per RW px),
+    in the game's layer. A picture is cut once near the size it is drawn at, and a unit that draws it
+    a little larger or smaller than that says so with `scale`, so thirty cruisers share one headlight"""
+    for dc in dyn:
+        im = Image.open(dc["path"]).convert("RGBA")
+        frames = dc["frames"]
+        src_w = im.width // frames
+        src_h = im.height
+        dx = dy = 0.0
+        if frames > 1:
+            im = clean_alpha(im.crop((0, 0, src_w * frames, im.height)))
+        else:
+            # cut to what it paints: a lamp's beam sits in one corner of a big blank image
+            im, dx, dy = crop_content(clean_alpha(im))
+            if im.getbbox() is None:
+                continue
+            src_w, src_h = im.size
+            if dc["when"] == "night":
+                # the beam softened, at a finer grid so the falloff survives the cut
+                im, up = soften_lamp(im)
+                im, dx2, dy2 = crop_content(im, pad=2)
+                dx += dx2 / up
+                dy += dy2 / up
+                src_w, src_h = im.width / up, im.height / up
+        k = dc["scale"] * ppr * dc["sx"]
+        aspect = round(dc["sy"] / dc["sx"], 3)
+        refs = DECAL_REFS.setdefault((dc["path"], frames, aspect), [])
+        ref = next((r for r in refs if 0.6 <= k / r <= 1.6), None)
+        if ref is None:
+            refs.append(k)
+            ref = k
+        fw = max(4, round(src_w * ref))
+        fh = max(4, round(src_h * ref * aspect))
+        if max(fw, fh) > 512:
+            note(df["id"], f"decal {dc['name']} too large ({fw}x{fh}); dropped")
+            continue
+        x = (dc["x"] + dx * dc["scale"]) * ppr
+        y = (-dc["y"] + dy * dc["scale"]) * ppr
+        layer = {"shadow": "under", "beforebody": "under", "afterbody": "hull", "ontop": "over" if over_when_ontop else "hull"}[dc["layer"]]
+        key = add_decal_sheet(im, slugify(dc["path"]), frames, fw, fh, fps=30 if dc["when"] == "firing" else None)
+        entry = {"sprite": key}
+        if on == "turret":
+            entry["on"] = "turret"
+        if layer != ("over" if on == "turret" else "hull"):
+            entry["layer"] = layer
+        if abs(k / ref - 1) > 0.01:
+            entry["scale"] = round(k / ref, 3)
+        if abs(x) >= 0.05:
+            entry["x"] = round(x, 1)
+        if abs(y) >= 0.05:
+            entry["y"] = round(y, 1)
+        if dc["angle"] % 360:
+            entry["angle"] = round(dc["angle"] % 360, 1)
+        if dc["alpha"] < 1:
+            entry["alpha"] = round(dc["alpha"], 2)
+        if dc["when"] != "always":
+            entry["when"] = dc["when"]
+        decals = df.setdefault("decals", [])
+        if len(decals) >= 12:
+            note(df["id"], f"more than 12 decals; {dc['name']} dropped")
+            continue
+        decals.append(entry)
+
+
 def turret_parts(ini, from_dir, ov):
     """the turret images with their offsets from the main turret pivot (RW px, y forward)"""
     secs = {s: kv for s, kv in ini.items() if s.startswith("turret_")}
@@ -752,7 +1066,7 @@ def turret_parts(ini, from_dir, ov):
             parts.insert(0, ("image_turret", hit, root_pos))
     # draw order: bases first, barrels on top; the root part is the base
     parts.sort(key=lambda p: (p[0] != root and p[0] != "image_turret"))
-    return parts, root_pos, secs, hull_parts
+    return parts, root_pos, secs, hull_parts, root, on_root
 
 
 def composite(parts, root_pos):
@@ -952,20 +1266,44 @@ def convert():
                 sit = None
             # rotors and wings the original draws as spinning arms, and guns mounted on the
             # hull that turn on their own: laid on the body, still
-            body_parts, body_root, _, hull_parts = turret_parts(ini, d, ov)
-            extra = []
-            if not is_building and frames == 1 and not ov.get("turret_from") and not ov.get("no_turret"):
-                extra = [(p[1], p[2][0], p[2][1], tur_scale / scale) for p in hull_parts]
-            for item in list(ov.get("overlays", [])) + extra:
+            body_parts, body_root, hull_secs, hull_parts, _, hull_on_root = turret_parts(ini, d, ov)
+            _, hull_abs = turret_positions(ini)
+            lays = []  # (image in body px, x, y in RW px with y forward, under the body?)
+            for item in ov.get("overlays", []):
                 oimg, ox, oy, osc = item[:4]
-                under = len(item) > 4 and item[4]
                 op = resolve(oimg, d)
                 if not op:
                     note(rw_name, f"overlay {oimg} not found")
                     continue
-                o = clean_alpha(Image.open(op))
-                if osc != 1:
-                    o = o.resize((max(1, round(o.width * osc)), max(1, round(o.height * osc))), Image.LANCZOS)
+                lays.append((prep(Image.open(op), osc), ox, oy, len(item) > 4 and item[4]))
+            if not is_building and frames == 1 and not ov.get("turret_from") and not ov.get("no_turret"):
+                lays += [(prep(Image.open(p[1]), tur_scale / scale), p[2][0], p[2][1], False) for p in hull_parts]
+            # the hull's own decals: the still ones are painted on (before or after the body, as
+            # the original draws them), the ones fixed to the gun go to the turret's sheet, the
+            # conditional ones become the game's decals (`emit_decals`, once the sheet's scale is known)
+            own_gun = (not is_building or ov.get("tower")) and not ov.get("no_turret") and not ov.get("turret_from")
+            hull_dyn, tur_decs = [], []
+            for dc in decal_list(ini, d):
+                on_t = ("turret_" + dc["on"]) if dc["on"] else None
+                if on_t and on_t in hull_secs and own_gun and hull_on_root(on_t):
+                    tur_decs.append(dc)
+                    continue
+                x, y = dc["x"], dc["y"]
+                if on_t and on_t in hull_secs:
+                    px, py = hull_abs(on_t)
+                    x, y = x + px, y + py
+                dc = dict(dc, x=x, y=y)
+                if dc["when"] != "always":
+                    hull_dyn.append(dc)
+                if dc["when"] not in ("always", "firing"):
+                    continue
+                if dc["layer"] == "shadow":
+                    continue  # the game lays a unit's shadow itself
+                elif frames == 1:
+                    lays.append((prep(Image.open(dc["path"]), dc["scale"] / scale, dc["sx"], dc["sy"], dc["alpha"], dc["angle"], dc["frames"]), x, y, dc["layer"] == "beforebody"))
+                else:
+                    note(rw_name, f"decal {dc['name']} on an animated body; dropped")
+            for o, ox, oy, under in lays:
                 dx, dy = ox / scale, -oy / scale
                 half_w = max(im.width / 2, abs(dx) + o.width / 2)
                 half_h = max(im.height / 2, abs(dy) + o.height / 2)
@@ -1003,6 +1341,10 @@ def convert():
                 body_sheet = add_sheet(f"u.{did}", im, frames, True, fw, fh, mount=mount)
                 df["body"] = {"r": round(fw * DISPLAY / 2, 1), "len": round(max(0, (fh - fw) * DISPLAY), 1)}
                 df["_art"] = f"{os.path.relpath(image, RW)[-38:]} {pw}x{im.height} f{frames} s{scale:.2f} k{art_k:.2f} -> {fw}x{fh}"
+                # the hull's own decals the game draws: lamps, brake lights, in the sheet's px. One the
+                # original lays over its own turrets goes over the game's; over a turret *unit* (which
+                # is drawn above the whole hull) it stays on the hull, under the gun
+                emit_decals(df, hull_dyn, f / scale, "hull", not ov.get("turret_from"))
         else:
             note(rw_name, "no body image; placeholder")
         if body_sheet:
@@ -1016,20 +1358,39 @@ def convert():
                 tsrc, tdir = load_unit(tp), os.path.dirname(tp)
                 tur_scale = num(tsrc.get("graphics", {}).get("turretImageScale")) or num(tsrc.get("graphics", {}).get("imageScale")) or scale
         if (not is_building or ov.get("tower")) and not ov.get("no_turret"):
-            parts, root_pos, secs, _ = turret_parts(tsrc, tdir, ov)
-            if ov.get("turret_from"):
-                # the turret unit's own body image is the turret; its barrel rides on it
-                bi = resolve(tsrc.get("graphics", {}).get("image", ""), tdir)
-                keep = [p for p in parts if p[0] not in ("image_turret",)]
-                parts = ([("body", bi, (0, 0))] if bi else []) + [p for p in keep if p[0] in ("turret_炮管",)]
-                root_pos = (0, 0)
-            if parts:
-                cv = clean_alpha(composite(parts, root_pos))
+            cv, tur_dyn, tur_names = None, [], []
+            if ov.get("turret_from") and tsrc is not ini:
+                # a turret unit: its body turns with its gun, so everything it draws still —
+                # body, barrel, fittings, the crew and their guns — is one picture (`unit_picture`)
+                stills, tur_dyn = unit_picture(tsrc, tdir, by_name)
+                if stills:
+                    cv = clean_alpha(lay_stack(stills))
+                tur_scale = 1.0  # the picture is in RW px already
+                tur_names = [os.path.basename(resolve(tsrc.get("graphics", {}).get("image", "") or "", tdir) or "-"), f"{len(stills)} parts"]
+            else:
+                parts, root_pos, _, _, _, _ = turret_parts(tsrc, tdir, ov)
+                _, tabs = turret_positions(tsrc)
+                # the parts in the turret's own px (one px is `tur_scale` RW px), about the root
+                items = [(prep(Image.open(pth)), (pos[0] - root_pos[0]) / tur_scale, (pos[1] - root_pos[1]) / tur_scale) for _, pth, pos in parts]
+                tur_names = [os.path.basename(pth) for _, pth, _ in parts]
+                for dc in tur_decs:
+                    px, py = tabs("turret_" + dc["on"])
+                    dc = dict(dc, x=dc["x"] + px - root_pos[0], y=dc["y"] + py - root_pos[1])
+                    if dc["when"] in ("always", "firing") and dc["layer"] != "shadow":
+                        items.append((prep(Image.open(dc["path"]), dc["scale"] / tur_scale, dc["sx"], dc["sy"], dc["alpha"], dc["angle"], dc["frames"]), dc["x"] / tur_scale, dc["y"] / tur_scale))
+                        tur_names.append(os.path.basename(dc["path"]))
+                    if dc["when"] != "always" or dc["layer"] == "shadow":
+                        tur_dyn.append(dc)
+                if items:
+                    cv = clean_alpha(lay_stack(items))
+            if cv is not None and cv.getbbox():
                 k = art_k if hull_px else shrink(max(cv.size) * tur_scale)
                 f = ART * tur_scale * k
                 tw, th = max(4, round(cv.width * f)), max(4, round(cv.height * f))
                 df["turretSprite"] = add_sheet(f"tur.{did}", cv, 1, True, tw, th)
-                df["_tur"] = f"{'+'.join(os.path.basename(p[1]) for p in parts)} {cv.width}x{cv.height} ts{tur_scale:.2f} -> {tw}x{th}"
+                df["_tur"] = f"{'+'.join(tur_names)} {cv.width}x{cv.height} ts{tur_scale:.2f} -> {tw}x{th}"
+                # the decals the game draws on the gun, in the sheet's px
+                emit_decals(df, tur_dyn, f / tur_scale, "turret", True)
                 # muzzle: the firing turret's forward offset from the pivot plus its barrel length
                 if "weapons" in df:
                     for w in df["weapons"]:
@@ -1320,6 +1681,7 @@ def main():
         "sounds": [{"key": k, "file": f} for k, f in dict(SOUND_JOBS.values()).items()],
         "screenshots": [],
     }
+    old = {}
     if os.path.exists(os.path.join(HERE, "mod.json")):
         old = json.load(open(os.path.join(HERE, "mod.json"), encoding="utf-8"))
         manifest["version"] = old.get("version", "1.0.0")
@@ -1329,8 +1691,8 @@ def main():
         shots_dir = os.path.join(HERE, "screenshots")
         if os.path.isdir(shots_dir):
             manifest["screenshots"] = [f"screenshots/{f}" for f in sorted(os.listdir(shots_dir)) if re.search(r"\.(png|jpe?g|webp)$", f, re.I)]
-        if old.get("maps"):
-            manifest["maps"] = old["maps"]  # the map make-map.py writes; it is the mod's own, not the package's
+    if old.get("maps"):
+        manifest["maps"] = old["maps"]  # the map make-map.py writes; it is the mod's own, not the package's
     text = json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
     if DRY:
         art = "--art" in sys.argv

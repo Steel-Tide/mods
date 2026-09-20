@@ -81,6 +81,23 @@ dead, mostly) just out of its reach, so nothing changes colour: your police
 and the enemy's look the same, as they did there. Helicopter rotors and the
 husk's wings, spinning arms in the original, are painted onto the bodies.
 
+The original draws much of a vehicle with decals: pictures laid on the body or
+on a turret besides their own images. The still ones are painted into the
+sheets in the order the original draws them — the hull's outline and the
+driver's hatch on the hull; on the Abrams' turret the vents, sights, stowage
+and crates, the crew hatches with their machine guns at rest, the Stryker's
+gun and its shadow. The rest are the game's own decals (`decals` on the def),
+because a sheet cannot hold them: the outline a turret carries *under* the
+hull, showing where the gun overhangs it; the headlights of every
+vehicle and the torches of the infantry, which come on at dusk and are laid
+over the dark like lamps; the ambush car's brake lights when it stands; and
+the barrels of the machine-gun tower and the MG tanks, which turn while the
+gun fires. The interface decals — selection rings, waypoints, ammunition
+counters, preview icons — and the ones a script drives are left out. So are
+the original's shadow decals: it casts an offset silhouette under every
+vehicle and its turret, and so does this game now, hull and turret each,
+from the art itself — the same look without a sheet for it.
+
 The firing sounds are the package's recordings, cut to dry mono one-shots
 under a second. The Abrams and the Stryker fire the 120 mm and 105 mm
 recordings; small arms fire the calibre recordings the original assigned them.
