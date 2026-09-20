@@ -1,18 +1,17 @@
-# steel-tide-mods
+# Steel Tide Mods
 
-The public registry of mods for [Steel Tide](https://steelti.de), the browser RTS.
+The public registry of mods for [Steel Tide](https://steelti.de), the cross-platform RTS.
 A mod adds **units, buildings and upgrade levels** — described in one `mod.json`,
 with sprite sheets beside it if the author drew some — and every folder under
-`mods/` here is listed in the game under *Settings → Mods* and on
+`mods/` here is listed in the game under _Settings → Mods_ and on
 [steelti.de/mods](https://steelti.de/mods).
 
-- **Play one:** in the game, *Settings → Mods → Official registry → Install*, or
+- **Play one:** in the game, _Settings → Mods → Official registry → Install_, or
   open `https://play.steelti.de/?mod=<id>`.
 - **Make one:** read the [modding guide](https://steelti.de/wiki/modding) — the
   whole format, generated from the game's own validator — or give it to a
   coding agent as a skill: `npx skills add steel-tide/mods --skill steel-tide-mods-guideline`
   ([skills.sh](https://skills.sh); the same text is [`AGENTS.md`](AGENTS.md)).
-  A Rusted Warfare mod can be [converted in the browser](https://steelti.de/mods/convert).
 - **Publish one:** fork, add `mods/<id>/`, run the check, open a pull request.
 
 ## Adding a mod
@@ -49,18 +48,18 @@ the mod installed.
 
 ## What is here
 
-| Path | What |
-| --- | --- |
-| `mods/<id>/` | one mod each; `mods/ironworks` has its own art and sounds, a turreted building and an upgrade level; `mods/rusted-expansion` is the official Rusted Warfare tribute |
-| `index.json` | what the game and the website read — generated, never edited by hand; carries each mod's download count and screenshot sizes |
-| `tools/check.mjs` | validate one mod or all of them |
-| `tools/build-index.mjs` | rebuild `index.json` (CI does this on `main`, and nightly for the counts) |
-| `tools/pack.mjs` | a mod folder into the single-file form the game's *Upload file…* takes |
-| `tools/sync-release.mjs` | keep the `registry` release in step with `mods/`: every mod packed as an asset, which is how the download counts are kept (CI) |
-| `tools/steel-tide-mod.mjs` | the game's own mod code — validator, resolver, the vanilla roster — bundled from the game repository; do not edit here |
-| `AGENTS.md` | the brief for a coding agent: the whole format, how to test, how to publish |
-| `skills/steel-tide-mods-guideline/` | the same brief as a skill for `npx skills add` |
-| `mods/<id>/PROMPTS.md`, `SFX-PROMPTS.md` | how a mod's sheets were painted and its sounds recorded, where they were generated |
+| Path                                     | What                                                                                                                                                                |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mods/<id>/`                             | one mod each; `mods/ironworks` has its own art and sounds, a turreted building and an upgrade level; `mods/rusted-expansion` is the official Rusted Warfare tribute |
+| `index.json`                             | what the game and the website read — generated, never edited by hand; carries each mod's download count and screenshot sizes                                        |
+| `tools/check.mjs`                        | validate one mod or all of them                                                                                                                                     |
+| `tools/build-index.mjs`                  | rebuild `index.json` (CI does this on `main`, and nightly for the counts)                                                                                           |
+| `tools/pack.mjs`                         | a mod folder into the single-file form the game's _Upload file…_ takes                                                                                              |
+| `tools/sync-release.mjs`                 | keep the `registry` release in step with `mods/`: every mod packed as an asset, which is how the download counts are kept (CI)                                      |
+| `tools/steel-tide-mod.mjs`               | the game's own mod code — validator, resolver, the vanilla roster — bundled from the game repository; do not edit here                                              |
+| `AGENTS.md`                              | the brief for a coding agent: the whole format, how to test, how to publish                                                                                         |
+| `skills/steel-tide-mods-guideline/`      | the same brief as a skill for `npx skills add`                                                                                                                      |
+| `mods/<id>/PROMPTS.md`, `SFX-PROMPTS.md` | how a mod's sheets were painted and its sounds recorded, where they were generated                                                                                  |
 
 ## Download counts
 
