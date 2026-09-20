@@ -365,8 +365,8 @@ aa          air ×1
 | `key` | string | yes |  | `u.<id>` for a body, `tur.<id>` for a rotating part; never a vanilla key |
 | `file` | string | yes |  | the image, relative to mod.json (PNG, WebP or JPEG) |
 | `frames` | integer 1–64 |  | 1 | animation frames, left to right in one strip |
-| `fw` | number 4–512 |  | the footprint (a building) or the image | in-game frame width, world px |
-| `fh` | number 4–512 |  |  | in-game frame height, world px |
+| `fw` | number 4–512 |  | the footprint (a building) or the image | in-game frame width, whole world px |
+| `fh` | number 4–512 |  |  | in-game frame height, whole world px |
 | `rotated` | boolean |  |  | one up-facing image; the game bakes the 24 headings (hulls, turrets) |
 | `pivotX` | number 0–1 |  | 0.5 | rotation pivot, as a fraction of the frame |
 | `pivotY` | number 0–1 |  | 0.5 | rotation pivot, as a fraction of the frame |

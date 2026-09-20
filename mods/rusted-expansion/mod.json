@@ -6,14 +6,14 @@
     "Rusted Expansion",
     "铁锈扩展包"
   ],
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Steel Tide",
   "description": [
-    "An official tribute to Rusted Warfare: six classic units — Tank, Heavy Tank, Helicopter, Bomber, Gun Boat, Battle Ship — with their own sprites and firing sounds, and their numbers brought across as near as the counter web allows.",
-    "向《铁锈战争》致敬的官方模组：坦克、重型坦克、直升机、轰炸机、机枪艇、战列舰六个经典单位，用的是原版的贴图和开火音效，数值尽量按原样带过来。"
+    "An official tribute to a certain rusty little RTS a lot of us played on the bus before this one — the one where the money came in dollars and your side was green. Six of its classics, Tank, Heavy Tank, Helicopter, Bomber, Gun Boat and Battle Ship, repainted from memory, with their numbers brought across as near as the counter web allows.",
+    "向某款铁锈味十足、许多人上课时偷偷玩过的老牌手机 RTS 致敬的官方模组——就是那个钱按美元算、自己人是绿色的。它的六个经典单位：坦克、重型坦克、直升机、轰炸机、机枪艇、战列舰，凭记忆重新绘制，数值尽量按原样带过来。"
   ],
   "license": "CC-BY-4.0",
-  "homepage": "https://store.steampowered.com/app/370390/Rusted_Warfare__RTS/",
+  "homepage": "https://github.com/steel-tide/mods/tree/main/mods/rusted-expansion",
   "defs": [
     {
       "id": "rusted-tank",
@@ -22,8 +22,8 @@
         "坦克"
       ],
       "desc": [
-        "Can attack ground only. Fast, cheap and everywhere — the workhorse of every Rusted Warfare army.",
-        "只能攻击地面目标。快、便宜、到处都是——《铁锈战争》每支军队的主力。"
+        "Can attack ground only. Fast, cheap and everywhere — the $350 workhorse of every green army you remember.",
+        "只能攻击地面目标。快、便宜、到处都是——你记忆里那支绿色大军的 350 块主力。"
       ],
       "kind": "unit",
       "domain": "ground",

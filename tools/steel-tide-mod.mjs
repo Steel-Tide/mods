@@ -4725,8 +4725,8 @@ const SPRITE_SPECS = [
   { name: "key", type: "string", max: 48, required: true, doc: ["`u.<id>` for a body, `tur.<id>` for a rotating part; never a vanilla key", "主体用 `u.<id>`，旋转部件用 `tur.<id>`；不可与原版键重名"] },
   { name: "file", type: "string", max: 120, required: true, doc: ["the image, relative to mod.json (PNG, WebP or JPEG)", "图片路径，相对 mod.json（PNG、WebP 或 JPEG）"] },
   { name: "frames", type: "int", min: 1, max: 64, def: "1", doc: ["animation frames, left to right in one strip", "动画帧数，横向排列"] },
-  { name: "fw", type: "number", min: 4, max: 512, def: "the footprint (a building) or the image", doc: ["in-game frame width, world px", "游戏内帧宽（世界像素）"] },
-  { name: "fh", type: "number", min: 4, max: 512, doc: ["in-game frame height, world px", "游戏内帧高（世界像素）"] },
+  { name: "fw", type: "number", min: 4, max: 512, def: "the footprint (a building) or the image", doc: ["in-game frame width, whole world px", "游戏内帧宽（世界像素，整数）"] },
+  { name: "fh", type: "number", min: 4, max: 512, doc: ["in-game frame height, whole world px", "游戏内帧高（世界像素，整数）"] },
   { name: "rotated", type: "bool", doc: ["one up-facing image; the game bakes the 24 headings (hulls, turrets)", "一张朝上的图；游戏烘焙 24 个朝向（车体、炮塔）"] },
   { name: "pivotX", type: "number", min: 0, max: 1, def: "0.5", doc: ["rotation pivot, as a fraction of the frame", "旋转枢轴（帧宽比例）"] },
   { name: "pivotY", type: "number", min: 0, max: 1, def: "0.5", doc: ["rotation pivot, as a fraction of the frame", "旋转枢轴（帧高比例）"] },
@@ -5020,6 +5020,10 @@ function resolveMod(mod, table = VANILLA) {
       return;
     }
     if (mod.files && !(clean.file in mod.files)) errors.push({ path: `${path}.file`, message: `"${clean.file}" is not among the embedded files` });
+    for (const side of ["fw", "fh"]) {
+      const v = clean[side];
+      if (typeof v === "number" && !Number.isInteger(v)) warnings.push({ path: `${path}.${side}`, message: `${v} is not a whole number of pixels; the game bakes it as ${Math.round(v)}` });
+    }
     sheetKeys.add(clean.key);
     cleanSprites.push({ ...clean, frames: clean.frames ?? 1 });
   });
