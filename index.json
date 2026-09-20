@@ -1,7 +1,7 @@
 {
   "format": "steel-tide-mod-index",
   "v": 1,
-  "generated": "2026-09-19T12:24:53.449Z",
+  "generated": "2026-09-20T05:06:43.593Z",
   "mods": [
     {
       "id": "ironworks",
@@ -21,7 +21,7 @@
       "path": "mods/ironworks",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/ironworks/",
       "updated": "2026-09-19T20:24:28+08:00",
-      "downloads": 0,
+      "downloads": 5,
       "screenshots": [
         {
           "file": "screenshots/skimmers.webp",
@@ -120,18 +120,18 @@
         "铁锈扩展包",
         "Rusted Expansion"
       ],
-      "version": "1.0.0",
+      "version": "2.0.0",
       "author": "Steel Tide",
       "description": [
-        "An official tribute to Rusted Warfare: six classic units — Tank, Heavy Tank, Helicopter, Bomber, Gun Boat, Battle Ship — with their names and their numbers brought across as near as the counter web allows.",
-        "向《铁锈战争》致敬的官方模组：坦克、重型坦克、直升机、轰炸机、炮艇、战列舰六个经典单位，名字与数值尽量按原样带过来。",
-        "An official tribute to Rusted Warfare: six classic units — Tank, Heavy Tank, Helicopter, Bomber, Gun Boat, Battle Ship — with their names and their numbers brought across as near as the counter web allows."
+        "An official tribute to Rusted Warfare: six classic units — Tank, Heavy Tank, Helicopter, Bomber, Gun Boat, Battle Ship — with their own sprites and firing sounds, and their numbers brought across as near as the counter web allows.",
+        "向《铁锈战争》致敬的官方模组：坦克、重型坦克、直升机、轰炸机、机枪艇、战列舰六个经典单位，用的是原版的贴图和开火音效，数值尽量按原样带过来。",
+        "An official tribute to Rusted Warfare: six classic units — Tank, Heavy Tank, Helicopter, Bomber, Gun Boat, Battle Ship — with their own sprites and firing sounds, and their numbers brought across as near as the counter web allows."
       ],
       "license": "CC-BY-4.0",
       "homepage": "https://store.steampowered.com/app/370390/Rusted_Warfare__RTS/",
       "path": "mods/rusted-expansion",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/rusted-expansion/",
-      "updated": "2026-09-19T20:24:28+08:00",
+      "updated": "2026-09-20T13:06:09+08:00",
       "downloads": 0,
       "screenshots": [
         {
@@ -208,7 +208,7 @@
           "cost": 240,
           "name": [
             "Gun Boat",
-            "炮艇",
+            "机枪艇",
             "Gun Boat"
           ],
           "sprite": "u.rusted-gun-boat",
@@ -235,80 +235,106 @@
           "file": "sprites/u.rusted-tank.png",
           "frames": 1,
           "rotated": true,
-          "w": 432,
-          "h": 512
+          "w": 941,
+          "h": 1672
         },
         {
           "key": "tur.rusted-tank",
           "file": "sprites/tur.rusted-tank.png",
           "frames": 1,
           "rotated": true,
-          "w": 271,
-          "h": 512
+          "w": 887,
+          "h": 1774
         },
         {
           "key": "u.rusted-heavy-tank",
           "file": "sprites/u.rusted-heavy-tank.png",
           "frames": 1,
           "rotated": true,
-          "w": 431,
-          "h": 512
+          "w": 1024,
+          "h": 1536
         },
         {
           "key": "tur.rusted-heavy-tank",
           "file": "sprites/tur.rusted-heavy-tank.png",
           "frames": 1,
           "rotated": true,
-          "w": 271,
-          "h": 512
+          "w": 887,
+          "h": 1774
         },
         {
           "key": "u.rusted-helicopter",
           "file": "sprites/u.rusted-helicopter.png",
           "frames": 1,
           "rotated": true,
-          "w": 394,
-          "h": 512
+          "w": 941,
+          "h": 1672
         },
         {
           "key": "u.rusted-bomber",
           "file": "sprites/u.rusted-bomber.png",
           "frames": 1,
           "rotated": true,
-          "w": 455,
-          "h": 512
+          "w": 1024,
+          "h": 1024
         },
         {
           "key": "u.rusted-gun-boat",
           "file": "sprites/u.rusted-gun-boat.png",
           "frames": 1,
           "rotated": true,
-          "w": 276,
-          "h": 512
+          "w": 941,
+          "h": 1672
         },
         {
           "key": "tur.rusted-gun-boat",
           "file": "sprites/tur.rusted-gun-boat.png",
           "frames": 1,
           "rotated": true,
-          "w": 341,
-          "h": 512
+          "w": 887,
+          "h": 1774
         },
         {
           "key": "u.rusted-battle-ship",
           "file": "sprites/u.rusted-battle-ship.png",
           "frames": 1,
           "rotated": true,
-          "w": 215,
-          "h": 512
+          "w": 724,
+          "h": 2172
         },
         {
           "key": "tur.rusted-battle-ship",
           "file": "sprites/tur.rusted-battle-ship.png",
           "frames": 1,
           "rotated": true,
-          "w": 288,
-          "h": 512
+          "w": 887,
+          "h": 1774
+        }
+      ],
+      "sounds": [
+        {
+          "key": "rusted-expansion-tank-gun",
+          "file": "sounds/tank-gun.mp3"
+        },
+        {
+          "key": "rusted-expansion-heavy-gun",
+          "file": "sounds/heavy-gun.mp3"
+        },
+        {
+          "key": "rusted-expansion-heavy-missile",
+          "file": "sounds/heavy-missile.mp3"
+        },
+        {
+          "key": "rusted-expansion-heli-gun",
+          "file": "sounds/heli-gun.mp3"
+        },
+        {
+          "key": "rusted-expansion-boat-gun",
+          "file": "sounds/boat-gun.mp3"
+        },
+        {
+          "key": "rusted-expansion-ship-gun",
+          "file": "sounds/ship-gun.mp3"
         }
       ]
     }
