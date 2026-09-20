@@ -335,6 +335,9 @@ const STRINGS = {
   "setup.you": ["You", "你", "당신"],
   "setup.seat": ["Your faction. It decides which spawn you start from.", "你的阵营，决定你从哪个出生点开局。", "당신의 진영. 어느 시작 지점에서 출발할지 정합니다."],
   "setup.playHere": ["Play this faction too", "你也操作此阵营", "이 진영도 직접 조종"],
+  "setup.openSeat": ["Open faction {0} here", "在此开启阵营 {0}", "여기에 진영 {0} 열기"],
+  "setup.addFaction": ["Add a faction", "添加阵营", "진영 추가"],
+  "setup.staging": ["Staging ground: the attackers start here", "集结地：进攻方从这里出发", "집결지: 공격측이 여기서 시작합니다"],
   "setup.mapSize": ["Map size", "地图尺寸", "지도 크기"],
   "setup.symmetric": ["Mirrored map", "镜像地图", "대칭 지도"],
   "setup.symmetricTip": [
@@ -354,6 +357,7 @@ const STRINGS = {
   "setup.customMap": ["Custom map", "自定义地图", "사용자 지도"],
   "setup.uploadMap": ["Upload map…", "上传地图…", "지도 업로드…"],
   "setup.uploadMapTip": ["A map exported from the Map Editor (.steel-tide-map)", "从地图编辑器导出的地图（.steel-tide-map）", "맵 에디터에서 내보낸 지도(.steel-tide-map)"],
+  "setup.dropMap": ["Drop the map file here", "把地图文件拖到这里", "지도 파일을 여기에 놓으세요"],
   "setup.deleteMap": ["Remove this map", "移除此地图", "이 지도 제거"],
   "setup.browseMaps": ["Community maps…", "社区地图…", "커뮤니티 지도…"],
   "setup.browseMapsTip": ["Maps other players have published to the registry", "其他玩家发布到地图仓库的地图", "다른 플레이어가 레지스트리에 공개한 지도"],
@@ -412,6 +416,7 @@ const STRINGS = {
   "mp.ai": ["AI", "AI", "AI"],
   "mp.closed": ["Closed", "关闭", "닫힘"],
   "mp.slot": ["Faction {0}", "阵营 {0}", "진영 {0}"],
+  "mp.seatOpen": ["Open seat", "空位", "빈 자리"],
   "mp.spectator": ["Spectator", "观战者", "관전자"],
   "mp.spectators": ["Spectators", "观战者", "관전자"],
   "mp.rosterUnknown": ["This server does not report who else is here.", "此服务器不提供在场玩家列表。", "이 서버는 다른 참가자가 누구인지 알려 주지 않습니다."],
@@ -494,9 +499,72 @@ const STRINGS = {
     "对局正在进行中。对局结束后大厅将重新开放。",
     "대전이 진행 중입니다. 대전이 끝나면 로비가 다시 열립니다."
   ],
-  // the invite plate, behind the share glyph in the lobby's title strip:
-  // everything somebody needs to join this room, each line with its copy
-  // button, and the whole of it as one text to share
+  // the server settings plate, behind the gear in the lobby's title strip
+  // (`ui/serverSettings.ts`): the mods the room requires, the leader's to
+  // set between matches, and the invite section under it
+  "mp.serverSettings": ["Server settings", "服务器设置", "서버 설정"],
+  "mp.mods.title": ["Required mods", "所需模组", "필요한 모드"],
+  "mp.mods.intro": [
+    "Pick the mods this server plays with. Everyone who joins must have them installed.",
+    "选择本服务器使用的模组。加入的玩家必须安装这些模组。",
+    "이 서버에서 사용할 모드를 고르세요. 참가하는 모든 플레이어가 설치해야 합니다."
+  ],
+  "mp.mods.none": ["None", "无", "없음"],
+  "mp.mods.noneInstalled": [
+    "You have no mods installed. Install some from Settings first.",
+    "你尚未安装任何模组。请先在设置中安装。",
+    "설치된 모드가 없습니다. 먼저 설정에서 설치하세요."
+  ],
+  // a mod that did not come from the registry: a guest cannot fetch it on their own
+  "mp.mods.notRegistry": [
+    "Not in the registry: players must install it themselves.",
+    "不在官方仓库中：玩家需要自行安装。",
+    "레지스트리에 없는 모드입니다. 플레이어가 직접 설치해야 합니다."
+  ],
+  // the leader's copy is behind the registry's, which is the only version a guest can fetch
+  "mp.mods.updateFirst": [
+    "The registry has {0}: update your copy before requiring it.",
+    "官方仓库已有 {0}：请先更新你的模组再设为必需。",
+    "레지스트리에 {0} 버전이 있습니다. 필수로 지정하기 전에 먼저 업데이트하세요."
+  ],
+  "mp.mods.bounceNote": [
+    "Players without these mods will be asked to install them and rejoin.",
+    "没有这些模组的玩家将被要求安装后重新加入。",
+    "이 모드가 없는 플레이어는 설치 후 다시 참가하라는 안내를 받습니다."
+  ],
+  "mp.mods.apply": ["Apply", "应用", "적용"],
+  "mp.mods.applied.toast": ["Required mods updated", "所需模组已更新", "필요한 모드를 갱신했습니다"],
+  "mp.mods.manage": ["Manage mods…", "管理模组…", "모드 관리…"],
+  // the read-only row in the lobby's rules pane
+  "mp.mods.row": ["Mods", "模组", "모드"],
+  // the plate a player meets at the door of a server that requires mods (`ui/requiredMods.ts`)
+  "mp.modsRequired.title": ["Mods required", "需要模组", "모드 필요"],
+  "mp.modsRequired.intro": [
+    "This server plays with mods you do not have. Install them to join.",
+    "本服务器使用了你尚未安装的模组。安装后即可加入。",
+    "이 서버는 아직 설치하지 않은 모드를 사용합니다. 설치하면 참가할 수 있습니다."
+  ],
+  "mp.modsRequired.status": ["This server requires mods.", "本服务器需要模组。", "이 서버는 모드가 필요합니다."],
+  "mp.modsRequired.install": ["Install and join", "安装并加入", "설치 후 참가"],
+  "mp.modsRequired.installing": ["Installing {0}…", "正在安装 {0}…", "{0} 설치 중…"],
+  "mp.modsRequired.missing": ["Not installed", "未安装", "설치되지 않음"],
+  "mp.modsRequired.otherVersion": ["You have {0}", "你已安装 {0}", "{0} 버전이 설치됨"],
+  "mp.modsRequired.notInRegistry": [
+    "Not in the registry: install it yourself from Settings, Mods.",
+    "不在官方仓库中：请在“设置 > 模组”中自行安装。",
+    "레지스트리에 없습니다. 설정의 모드에서 직접 설치하세요."
+  ],
+  "mp.modsRequired.registryVersion": [
+    "The registry has {0}; ask the host to update.",
+    "官方仓库的版本是 {0}，请房主更新。",
+    "레지스트리에는 {0} 버전이 있습니다. 호스트에게 업데이트를 요청하세요."
+  ],
+  "mp.modsRequired.checking": ["Checking the registry…", "正在查询模组仓库…", "레지스트리 확인 중…"],
+  // the LAN page's badge on a game that requires mods
+  "mp.lanMods": ["{0} mods", "{0} 个模组", "모드 {0}개"],
+  // the invite section of the server settings plate: everything somebody
+  // needs to join this room, each line with its copy button, and the whole
+  // of it as one text to share
   "mp.invite": ["Invite players", "邀请玩家", "플레이어 초대"],
   "mp.inviteIntro": [
     "Whoever is joining enters these on the Join page of the Multiplayer screen.",
@@ -924,6 +992,13 @@ const STRINGS = {
   "hud.mapRosterEmpty": ["Nothing in sight.", "视野内没有单位。", "시야에 아무것도 없습니다."],
   "hud.mapRosterNoMatch": ['No unit matches "{0}".', "没有匹配“{0}”的单位。", '"{0}"에 맞는 유닛이 없습니다.'],
   "hud.mapSpot": ["{0}: click to spot on the map, again to clear", "{0}：点击在地图上标出，再次点击取消", "{0}: 클릭하면 지도에 표시, 다시 클릭하면 해제"],
+  // the battle map's legend: what each mark is (the headquarters' line is `unit.hq.name`)
+  "hud.legendBuilding": ["Building", "建筑", "건물"],
+  "hud.legendGround": ["Ground unit", "地面单位", "지상 유닛"],
+  "hud.legendAir": ["Aircraft", "飞机", "항공기"],
+  "hud.legendNaval": ["Ship", "舰船", "함선"],
+  "hud.legendOre": ["Metal deposit", "金属矿脉", "금속 광맥"],
+  "hud.legendAlarm": ["Under attack", "遭到攻击", "공격받는 중"],
   "hud.tab.command": ["Unit", "单位", "유닛"],
   "hud.chat": ["Chat", "聊天", "채팅"],
   "hud.chatEmpty": ["Press Enter to say something.", "按 Enter 发言。", "Enter를 눌러 말하세요."],
@@ -1221,6 +1296,8 @@ const STRINGS = {
   "settings.touchUi": ["Touch controls", "触屏操作", "터치 조작"],
   "settings.touchUi.auto": ["Auto", "自动", "자동"],
   "settings.touchUi.desc": ["On-screen order buttons and tap-to-command.", "屏幕指令按钮与点触下令。", "화면 명령 버튼과 탭으로 명령하기."],
+  "settings.portrait": ["Portrait play", "竖屏游玩", "세로 화면 플레이"],
+  "settings.portrait.desc": ["Play with the phone held upright; the panels lie along the bottom.", "竖握手机游玩，面板排在屏幕底部。", "휴대폰을 세워 들고 플레이합니다. 패널은 화면 아래에 놓입니다."],
   "settings.sidebarSide": ["Sidebar position", "侧边栏位置", "사이드바 위치"],
   "settings.sidebarSide.left": ["Left", "左侧", "왼쪽"],
   "settings.sidebarSide.right": ["Right", "右侧", "오른쪽"],
@@ -1590,6 +1667,7 @@ const STRINGS = {
   "touch.cancel": ["Cancel", "取消", "취소"],
   "touch.rotateTitle": ["Rotate your device", "请横屏游玩", "기기를 돌려 주세요"],
   "touch.rotateBody": ["Steel Tide is played in landscape.", "钢铁浪潮需要横屏操作。", "스틸 타이드는 가로 화면으로 플레이합니다."],
+  "touch.keepPortrait": ["Keep portrait", "保持竖屏", "세로 화면 유지"],
   "touch.hintPlace": ["Drag to aim, then confirm", "拖动定位，然后确认", "끌어서 위치를 잡은 뒤 확인"],
   "touch.hintBox": ["Drag to select · tap ▣ again to pan", "拖动框选 · 再次点击 ▣ 恢复平移", "끌어서 선택 · ▣를 다시 탭하면 화면 이동"],
   "touch.hintRepair": ["Tap a friendly building to repair or finish construction", "点击友军建筑以维修或继续建造", "아군 건물을 탭하면 수리하거나 건설을 마칩니다"],
@@ -1966,6 +2044,9 @@ const STRINGS = {
     "关于地图的一两句话，会显示在设置界面的地图旁边。",
     "지도에 대한 한두 줄. 설정 화면에서 지도 옆에 표시됩니다."
   ],
+  "editor.translations": ["Translations", "翻译", "번역"],
+  "editor.translationAdd": ["Add the name and description in {0}", "添加{0}的名称与简介", "{0} 이름과 설명 추가"],
+  "editor.translationRemove": ["Remove this translation", "删除此翻译", "이 번역 삭제"],
   "editor.autosaveFailed": [
     "The draft could not be kept: storage is full or unavailable. Export the map to keep it.",
     "无法保存草稿：存储空间已满或不可用。请导出地图以保留它。",
@@ -2682,8 +2763,8 @@ const DEFS = {
    * - **Thin skin over a full fuel tank.** 260 hit points of *medium* armour
    *   at Tier 2 — less than the Tier-1 Wolf it is built to burn. A Bison's
    *   gun opens it in six seconds and it rarely sees a second cooldown out.
-   *   It is priced to be spent — cheaper than the Viper it eats — and it is
-   *   meant to be.
+   *   It is priced to be spent — cheaper than the Viper it eats, though
+   *   300 metal since 2026-09-19 (280 before) — and it is meant to be.
    * - **Nothing for aircraft**, and a hull in the water does not burn.
    * - **The fire is nobody's friend.** A curtain a column could walk through
    *   unharmed would not be a curtain, so `force` rides on every patch and
@@ -2712,7 +2793,7 @@ const DEFS = {
     aliases: ["flametank", "flamer"],
     domain: "ground",
     tier: 2,
-    cost: 280,
+    cost: 300,
     buildTime: 16,
     pop: 2,
     power: -2,
@@ -2730,10 +2811,11 @@ const DEFS = {
       // then the tank is empty. The reload is a **cooldown** — pressure back
       // in the bottles — and it is more than twice the pour, so two thirds of
       // the Drake's life is spent at four tiles from something it cannot
-      // touch. The fire it left is what fights for it meanwhile.
+      // touch. The fire it left is what fights for it meanwhile. 7.8 a glob
+      // since 2026-09-19 (9 before): 90 dps over the cycle, down from 104.
       id: "flamejet",
       cls: "he",
-      dmg: 9,
+      dmg: 7.8,
       reload: 2.6,
       range: 4,
       projectile: "flame",
@@ -5271,6 +5353,24 @@ function activeMods() {
 function activeModStamps() {
   return active.map((m) => ({ id: m.id, version: m.version }));
 }
+const MAX_REQUIRED_MODS = 16;
+const MAX_HELLO_MODS = 64;
+const VERSION_MAX = 32;
+function stampOf(mod) {
+  return { id: mod.id, version: mod.version };
+}
+function requiredModOf(mod) {
+  return { id: mod.id, version: mod.version, name: mod.name };
+}
+function isModStamp(value) {
+  return isPlainObject(value) && typeof value.id === "string" && ID_RE.test(value.id) && typeof value.version === "string" && value.version.length > 0 && value.version.length <= VERSION_MAX;
+}
+function sameStamps(a, b) {
+  return a.length === b.length && a.every((s, i) => s.id === b[i].id && s.version === b[i].version);
+}
+function missingMods(required, have) {
+  return required.filter((r) => !(have ?? []).some((h) => h.id === r.id && h.version === r.version));
+}
 function onModsChanged(fn) {
   listeners.add(fn);
   return () => listeners.delete(fn);
@@ -5708,12 +5808,14 @@ export {
   ARMOR_MATRIX,
   FIELD_SPECS,
   ID_RE,
+  MAX_HELLO_MODS,
   MAX_MANIFEST_BYTES,
   MAX_MOD_DEFS,
   MAX_MOD_FILES_BYTES,
   MAX_MOD_SCREENSHOTS,
   MAX_MOD_SOUNDS,
   MAX_MOD_SPRITES,
+  MAX_REQUIRED_MODS,
   MAX_SCREENSHOT_BYTES,
   MIN_SCREENSHOT_WIDTH,
   MOD_FILE_EXT,
@@ -5752,6 +5854,8 @@ export {
   fieldRows,
   imageSize,
   indexEntryFor,
+  isModStamp,
+  missingMods,
   modCountUrl,
   modFileUrl,
   modName,
@@ -5762,6 +5866,9 @@ export {
   onModsChanged,
   parseMod,
   parseModIndex,
+  requiredModOf,
   resolveMod,
-  rosterLines
+  rosterLines,
+  sameStamps,
+  stampOf
 };
