@@ -256,7 +256,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `desc` | text |  | "" | the tooltip line |
 | `extends` | id |  |  | a vanilla def id (or an earlier def of this mod) to copy, then override field by field; inherits its art and where it is built |
 | `kind` | unit \| building | yes |  | a unit or a building (required unless `extends` says) |
-| `domain` | ground \| ship \| air | units only | ground | where it moves; a submarine is a `ship` with `underwater` |
+| `domain` | ground \| ship \| air \| amphibious | units only | ground | where it moves; a submarine is a `ship` with `underwater`, and an `amphibious` hull drives and swims (a ship target afloat, a ground one ashore) |
 | `tier` | integer 1–3 |  | 1 | the factory level it appears at, and the badge |
 | `cost` | number 0–99999 | yes |  | metal |
 | `buildTime` | number 0–3600 |  | cost ÷ 14 | seconds at full power |
@@ -309,7 +309,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `altitude` | number 0–64 | units only | 12 | an aircraft's drawn height, px |
 | `fireOnMove` | boolean | units only |  | keeps shooting on a plain move |
 | `burnMult` | number 0–4 | units only | 1 | what fire on the ground does to it, as a multiplier (the Drake's 0.5) |
-| `trail` | tread \| tire \| wake | units only | by domain | the mark it leaves |
+| `trail` | tread \| tire \| wake \| none | units only | by domain | the mark it leaves, and the sound of it: treads and tyres are heard rolling; `none` for a unit on foot or a hovercraft, which neither cuts a rut nor is heard as an engine |
 | `shadow` | boolean | units only | true | the shadow the game casts for it: the hull's and the turret's silhouettes, a step to the south-east on the ground, further off in the air; `false` when the art brings its own, or none is wanted (a submarine casts none) |
 | `sprite` | string |  | this mod's u.<id> sheet, else the base's art | the body's atlas key: one of this mod's sheets, or a vanilla key to borrow its art |
 | `turretSprite` | string |  | this mod's tur.<id> sheet, else the base's (when its art is kept) | the rotating part's key, if any |
@@ -317,8 +317,8 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `aliases` | string[] |  |  | other names the console's `give` accepts |
 | `aiWeight` | number 0–10 | units only | 0 | how readily the AI builds it: a Bison is 3, a scout car 1; 0 never |
 
-Defaults when `extends` is absent: a unit is `domain: "ground"`, `tier: 1`, `pop: 1`, `speed: 60`, `turnRate: 3.5`, `vision: 8`, `radius: 9`, no `body` (units part on the circle of `radius`), armour by domain (ground `medium`, ship `ship`, air `air`), a tread trail on land and a wake at sea; a building is `fw: 2, fh: 2`, `armor: "structure"`, `power: 0`, `pop: 0`. `buildTime` defaults to cost ÷ 14 seconds.
-Where a unit is built when `producedBy` is absent: its domain's line from its tier up (ground: T1 → factory+factory2+factory3, T2 → factory2+factory3, T3 → factory3; ship: T1 → navyard+navyard2+navyard3, T2 → navyard2+navyard3, T3 → navyard3; air: T1 → airbase+airbase2+airbase3, T2 → airbase2+airbase3, T3 → airbase3).
+Defaults when `extends` is absent: a unit is `domain: "ground"`, `tier: 1`, `pop: 1`, `speed: 60`, `turnRate: 3.5`, `vision: 8`, `radius: 9`, no `body` (units part on the circle of `radius`), armour by domain (ground and amphibious `medium`, ship `ship`, air `air`), a tread trail on land (`trail: "none"` for a unit on foot, which is then not heard rolling either) and a wake at sea; a building is `fw: 2, fh: 2`, `armor: "structure"`, `power: 0`, `pop: 0`. `buildTime` defaults to cost ÷ 14 seconds.
+Where a unit is built when `producedBy` is absent: its domain's line from its tier up (ground: T1 → factory+factory2+factory3, T2 → factory2+factory3, T3 → factory3; ship: T1 → navyard+navyard2+navyard3, T2 → navyard2+navyard3, T3 → navyard3; air: T1 → airbase+airbase2+airbase3, T2 → airbase2+airbase3, T3 → airbase3; amphibious: T1 → factory+navyard+factory2+navyard2+factory3+navyard3, T2 → factory2+navyard2+factory3+navyard3, T3 → factory3+navyard3).
 An `upgradeOf` def becomes upgrade-only (never placed directly): the named building gains an Upgrade button that turns it into this def, at `upgradeCost` over `upgradeTime`. A building may have only one next level, so `upgradeOf` can name a vanilla building at the end of its line (`power3`, `factory3`, `extractor3`, `gatling`, `cannonturret2`, `samsite`, `interceptor2`, `radar`, `repairtower`, `reactor`, `nukesilo`) or one of this mod's.
 
 ### A weapon (`defs[].weapons[]`)
@@ -443,6 +443,7 @@ A mod may carry maps: files the game's Map Editor exports (`.steel-tide-map`), n
 
 - ground units: engineer (T1, 200), buggy (T1, 60), ltank (T1, 120), mbt (T2, 280), htank (T3, 900), td (T2, 320), flak (T1, 170), sam (T2, 400), arty (T2, 420), mlrs (T3, 760), radarcar (T3, 480), salamander (T3, 800), bulwark (T3, 650), drake (T2, 300)
 - ships: gunboat (T1, 130), mboat (T1, 280), frigate (T2, 600), destroyer (T2, 700), sub (T2, 480), btlship (T3, 1700), seatrans (T1, 220), engboat (T1, 200), kraken (T3, 1000), moray (T3, 700)
+- amphibious units: gator (T2, 240)
 - aircraft: drone (T1, 40), fighter (T2, 380), heli (T1, 340), jet (T2, 400), mjet (T2, 520), bomber (T2, 1000), theli (T1, 280), c47 (T2, 650), gunship (T3, 1600), wraith (T3, 1400), cormorant (T3, 700)
 - buildings: hq (T1, 2500), extractor (T1, 120), extractor2 (T2, 310, upgrade level), extractor3 (T3, 810, upgrade level), power (T1, 140), power2 (T2, 400, upgrade level), power3 (T3, 1100, upgrade level), factory (T1, 320), factory2 (T2, 740, upgrade level), factory3 (T3, 1640, upgrade level), airbase (T1, 350), airbase2 (T2, 830, upgrade level), airbase3 (T3, 1780, upgrade level), navyard (T1, 380), navyard2 (T2, 800, upgrade level), navyard3 (T3, 1750, upgrade level), mgturret (T1, 130), gatling (T2, 390, upgrade level), cannonturret (T1, 320), cannonturret2 (T2, 740, upgrade level), aaturret (T1, 240), samsite (T2, 560, upgrade level), interceptor (T2, 450), interceptor2 (T3, 1100, upgrade level), repairtower (T1, 360), radar (T2, 400), reactor (T3, 1400), nukesilo (T3, 1800)
 

@@ -1334,6 +1334,7 @@ const STRINGS = {
   "settings.snowCover": ["Snow settles", "积雪", "쌓이는 눈"],
   "settings.cloudShadows": ["Cloud shadows", "云影", "구름 그림자"],
   "settings.chimneySmoke": ["Chimney smoke", "烟囱烟雾", "굴뚝 연기"],
+  "settings.muzzleSmoke": ["Gun smoke", "炮口硝烟", "포연"],
   "settings.heatHaze": ["Heat haze over fire", "火焰热浪", "불길의 아지랑이"],
   "settings.lavaGlow": ["Lava glow", "熔岩辉光", "용암 불빛"],
   "settings.screenShake": ["Screen shake", "画面震动", "화면 흔들림"],
@@ -1663,8 +1664,6 @@ const STRINGS = {
   "pwa.updateReady": ["A new version is ready.", "新版本已就绪。", "새 버전이 준비되었습니다."],
   "pwa.reload": ["Reload", "重新载入", "다시 불러오기"],
   // ------------------------------------------------------------- touch play
-  "touch.boxSelect": ["Box select", "框选", "범위 선택"],
-  "touch.selectArmy": ["Select army", "选择全军", "전군 선택"],
   "touch.deselect": ["Deselect", "取消选择", "선택 해제"],
   "touch.confirm": ["Place", "放置", "놓기"],
   "touch.cancel": ["Cancel", "取消", "취소"],
@@ -1672,8 +1671,7 @@ const STRINGS = {
   "touch.rotateBody": ["Steel Tide is played in landscape.", "钢铁浪潮需要横屏操作。", "스틸 타이드는 가로 화면으로 플레이합니다."],
   "touch.keepPortrait": ["Keep portrait", "保持竖屏", "세로 화면 유지"],
   "touch.hintPlace": ["Drag to aim, then confirm", "拖动定位，然后确认", "끌어서 위치를 잡은 뒤 확인"],
-  "touch.hintBox": ["Drag to select · tap ▣ again to pan", "拖动框选 · 再次点击 ▣ 恢复平移", "끌어서 선택 · ▣를 다시 탭하면 화면 이동"],
-  "touch.hintRepair": ["Tap a friendly building to repair or finish construction", "点击友军建筑以维修或继续建造", "아군 건물을 탭하면 수리하거나 건설을 마칩니다"],
+  "touch.hintPlaceMore": ["Confirm for another · ✕ to stop", "再次确认可继续建造 · ✕ 结束", "확인하면 하나 더 · ✕로 마침"],
   "touch.hintMove": ["Tap where to move", "点击移动目的地", "이동할 곳을 탭"],
   "touch.hintAttackMove": ["Tap where to attack-move", "点击攻击移动目的地", "공격 이동할 곳을 탭"],
   "touch.hintNuke": ["Tap the map to choose the nuclear target", "点击地图选择核打击目标", "지도를 탭해 핵 표적을 고르세요"],
@@ -1820,6 +1818,13 @@ const STRINGS = {
     "Pours fire in bursts, and the ground it washes over keeps burning under friend and foe alike. Paper-thin and short-armed: it is meant to be spent.",
     "一阵阵喷射火焰，被它浇过的地面会持续燃烧，敌我不分。装甲薄如纸、射程短：它本来就是消耗品。",
     "불을 한바탕씩 쏟아붓고, 불이 휩쓴 땅은 피아를 가리지 않고 계속 탑니다. 종잇장 장갑에 짧은 팔: 소모품으로 만들어졌습니다."
+  ],
+  // ------------------------------------------------------------- units: amphibious
+  "unit.gator.name": ["Gator Amphibious Combat Vehicle", "鳄鱼两栖战车", "게이터 상륙 전투차"],
+  "unit.gator.desc": [
+    "An armoured car that swims: it lands itself, no craft and no beach needed. A ship to torpedoes while afloat, a vehicle once ashore. Slow in the water.",
+    "会游泳的装甲车：自行登陆，无需登陆艇也无需滩头。在水上会被鱼雷当作舰船，上岸后又是地面载具。水中速度慢。",
+    "헤엄치는 장갑차: 상륙정도 해변도 없이 스스로 상륙합니다. 물 위에서는 어뢰에 함선으로 잡히고, 뭍에 오르면 차량입니다. 물속에서는 느립니다."
   ],
   // ------------------------------------------------------------- units: sea
   "unit.gunboat.name": ["Gunboat", "炮艇", "포함"],
@@ -2914,6 +2919,74 @@ const DEFS = {
     turretSprite: "tur.drake",
     turretMounts: [{ x: 0, y: -5 }]
   },
+  /**
+   * The amphibian: an eight-wheeled armoured car that swims. The one unit
+   * with the `amphibious` domain — it drives on everything a tank drives on
+   * and floats on everything a ship floats on, at `SWIM_FACTOR` of its road
+   * speed in the water (`game/map.ts`), so a crossing is slow and the way
+   * round by land is taken when it is quicker (the pathfinder weighs the
+   * water, `terrCostAmphib`). Afloat it is a *ship* to every gun — a
+   * torpedo, an anti-ship missile and a naval gun all find it — and ashore
+   * a vehicle, judged by the tile under it (`targetCat`); it is medium
+   * armour either way, and a flak gun never reaches it. It never boards a
+   * transport: it is its own.
+   *
+   * Built at the level-2 naval yard *and* the level-2 war factory — it
+   * leaves either by its own domain, the one off the slip already afloat
+   * and the one off the ramp already rolling — and priced against the
+   * landing it replaces. Its gun is the Wolf's class — a 30 mm autocannon, soft skins
+   * and light armour, half value against heavy plate and a wall — on a hull
+   * a quarter tougher, at twice the price and twice the population: two
+   * Wolves beat one Gator on land, plainly, and that gap is what the swim
+   * costs. Against the landing craft it is even by the metal (three Gators
+   * for a craft and four Wolves) and different in kind: no beach to load
+   * from and none to unload onto, no hull that takes four tanks down with
+   * it, and a crossing at 44 px/s against the craft's 70. A raider from the
+   * sea — the howitzer line, the air defence, the engineer's outlying
+   * extractor — and a beachhead's first armour, not a line unit: a Bison
+   * opens it in five shots and a cannon turret outranges it. The AI never
+   * fields it; its landings go by the lift (`manageLift`), and teaching a
+   * commander to swim an assault is its own job. `gator.test.ts`.
+   */
+  gator: {
+    id: "gator",
+    kind: "unit",
+    aliases: ["acv", "amphibian", "amtrac"],
+    domain: "amphibious",
+    tier: 2,
+    cost: 240,
+    buildTime: 15,
+    pop: 2,
+    power: -2,
+    hp: 380,
+    armor: "medium",
+    speed: 80,
+    turnRate: 4.5,
+    vision: 8,
+    radius: 10,
+    fireOnMove: true,
+    // the sheet's hull is 18 by 38 world px with the wheels: a half-beam and
+    // a pixel, and the length less the two round ends
+    body: { r: 10, len: 18 },
+    weapons: [w({
+      // the muzzle is 8.3 art px past the ring on `tur.gator` (the tip at a
+      // fifth of the sheet, the ring at three fifths), at the display scale
+      id: "autocannon",
+      cls: "autocannon",
+      dmg: 20,
+      reload: 0.5,
+      range: 4.2,
+      projectile: "bullet",
+      speed: 520,
+      targets: ["ground", "ship"],
+      turret: true,
+      muzzleOffset: 13,
+      sound: "autocannon"
+    })],
+    trail: "tire",
+    sprite: "u.gator",
+    turretSprite: "tur.gator"
+  },
   // ================================================================== SEA
   //
   // Every hull carries a `body`: the capsule `separation()` parts ships by,
@@ -3006,7 +3079,9 @@ const DEFS = {
     turnRate: 2.6,
     vision: 10,
     radius: 13,
-    body: { r: 14, len: 45 },
+    // measured at the ship's display scale (core/metrics.ts): a beam of 42
+    // world px, over a tile, so it needs two tiles of water abeam
+    body: { r: 21, len: 67.5 },
     weapons: [
       w({
         id: "navgun",
@@ -3018,7 +3093,7 @@ const DEFS = {
         speed: 420,
         targets: ["ground", "ship"],
         turret: true,
-        muzzleOffset: 15.75,
+        muzzleOffset: 23.625,
         splash: 10,
         sound: "cannon"
       }),
@@ -3056,7 +3131,8 @@ const DEFS = {
     vision: 10,
     sonar: 9,
     radius: 15,
-    body: { r: 16, len: 42 },
+    // at the ship's display scale: a beam of 48 world px, two tiles of water abeam
+    body: { r: 24, len: 63 },
     weapons: [
       w({
         id: "navgun",
@@ -3069,7 +3145,7 @@ const DEFS = {
         targets: ["ground", "ship"],
         mult: { medium: 1.1, heavy: 0.8, structure: 0.8 },
         turret: true,
-        muzzleOffset: 22.5,
+        muzzleOffset: 33.75,
         splash: 12,
         sound: "cannon"
       }),
@@ -3168,8 +3244,10 @@ const DEFS = {
     radius: 20,
     requires: ["radar"],
     // the hull is drawn at its own display scale (core/metrics.ts), and the
-    // capsule is measured off the drawing at that scale
-    body: { r: 11, len: 96 },
+    // capsule is measured off the drawing at that scale: 236 world px stem
+    // to stern, over seven tiles, on a beam of 44 — over a tile, so two
+    // tiles of water abeam and never a channel a tile wide (`hullBeam`)
+    body: { r: 22, len: 192 },
     weapons: [w({
       id: "bigguns",
       cls: "he",
@@ -3184,9 +3262,9 @@ const DEFS = {
       // measured from the ring the gun turns on, not the hull's centre, at the
       // display scale the gun is drawn at
       turret: true,
-      muzzleOffset: 16.8,
+      muzzleOffset: 33.6,
       bores: 2,
-      boreSpacing: 3.3,
+      boreSpacing: 6.6,
       splash: 54,
       arc: true,
       burst: 3,
@@ -4012,7 +4090,7 @@ const DEFS = {
     fh: 3,
     weapons: [],
     power: -12,
-    produces: ["engineer", "buggy", "ltank", "flak", "mbt", "td", "sam", "arty", "drake", "htank", "radarcar"],
+    produces: ["engineer", "buggy", "ltank", "flak", "mbt", "td", "sam", "arty", "drake", "gator", "htank", "radarcar"],
     upgradesTo: "factory3",
     upgradeCost: 900,
     upgradeTime: 45,
@@ -4053,7 +4131,7 @@ const DEFS = {
     weapons: [],
     power: -20,
     requires: ["radar"],
-    produces: ["engineer", "buggy", "ltank", "flak", "mbt", "td", "sam", "arty", "drake", "htank", "radarcar", "mlrs", "salamander", "bulwark"],
+    produces: ["engineer", "buggy", "ltank", "flak", "mbt", "td", "sam", "arty", "drake", "gator", "htank", "radarcar", "mlrs", "salamander", "bulwark"],
     sprite: "u.factory3",
     sound: "bld-extractor2"
   },
@@ -4173,7 +4251,7 @@ const DEFS = {
     fh: 3,
     weapons: [],
     power: -12,
-    produces: ["engboat", "gunboat", "mboat", "seatrans", "frigate", "destroyer", "sub", "btlship"],
+    produces: ["engboat", "gunboat", "mboat", "seatrans", "frigate", "destroyer", "sub", "gator", "btlship"],
     upgradesTo: "navyard3",
     upgradeCost: 950,
     upgradeTime: 48,
@@ -4200,7 +4278,7 @@ const DEFS = {
     weapons: [],
     power: -20,
     requires: ["radar"],
-    produces: ["engboat", "gunboat", "mboat", "seatrans", "frigate", "destroyer", "sub", "btlship", "kraken", "moray"],
+    produces: ["engboat", "gunboat", "mboat", "seatrans", "frigate", "destroyer", "sub", "gator", "btlship", "kraken", "moray"],
     sprite: "u.navyard3",
     sound: "unit-ship"
   },
@@ -4945,8 +5023,8 @@ const ARMOR_CLASSES = ["light", "medium", "heavy", "ship", "sub", "air", "struct
 const TARGET_DOMAINS = ["ground", "ship", "sub", "air"];
 const WEAPON_CLASSES = ["mg", "autocannon", "cannon", "at", "he", "rocket", "navgun", "ashm", "torpedo", "aa"];
 const PROJECTILES = ["bullet", "shell", "missile", "rocket", "bomb", "torpedo", "flak", "flame"];
-const UNIT_DOMAINS = ["ground", "ship", "air"];
-const TRAILS = ["tread", "tire", "wake"];
+const UNIT_DOMAINS = ["ground", "ship", "air", "amphibious"];
+const TRAILS = ["tread", "tire", "wake", "none"];
 const WEAPON_SOUNDS = ["mg", "autocannon", "cannon", "missile", "flak", "arty", "rocket", "torpedo", "bomb", "flame"];
 const DECAL_LAYERS = ["under", "hull", "over"];
 const DECAL_ANCHORS = ["hull", "turret"];
@@ -4975,7 +5053,7 @@ const DEF_SPECS = [
   { name: "desc", type: "text", def: '""', doc: ["the tooltip line", "提示中的描述"] },
   { name: "extends", type: "id", doc: ["a vanilla def id (or an earlier def of this mod) to copy, then override field by field; inherits its art and where it is built", "要复制的原版定义 id（或本模组中前面的定义），再逐字段覆盖；继承其图像和生产位置"] },
   { name: "kind", type: "enum", values: ["unit", "building"], required: true, doc: ["a unit or a building (required unless `extends` says)", "单位或建筑（除非 `extends` 已说明，否则必填）"] },
-  { name: "domain", type: "enum", values: UNIT_DOMAINS, only: "unit", def: "ground", doc: ["where it moves; a submarine is a `ship` with `underwater`", "移动域；潜艇是带 `underwater` 的 `ship`"] },
+  { name: "domain", type: "enum", values: UNIT_DOMAINS, only: "unit", def: "ground", doc: ["where it moves; a submarine is a `ship` with `underwater`, and an `amphibious` hull drives and swims (a ship target afloat, a ground one ashore)", "移动域；潜艇是带 `underwater` 的 `ship`，`amphibious` 既能行驶也能泅渡（在水上算舰船目标，上岸算地面目标）"] },
   { name: "tier", type: "int", min: 1, max: 3, def: "1", doc: ["the factory level it appears at, and the badge", "出现的工厂等级与徽标"] },
   { name: "cost", type: "number", required: true, min: 0, max: 99999, doc: ["metal", "金属造价"] },
   { name: "buildTime", type: "number", min: 0, max: 3600, def: "cost ÷ 14", doc: ["seconds at full power", "满电力下的建造秒数"] },
@@ -5028,7 +5106,7 @@ const DEF_SPECS = [
   { name: "altitude", type: "number", only: "unit", min: 0, max: 64, def: "12", doc: ["an aircraft's drawn height, px", "飞行器的绘制高度（像素）"] },
   { name: "fireOnMove", type: "bool", only: "unit", doc: ["keeps shooting on a plain move", "移动时持续开火"] },
   { name: "burnMult", type: "number", only: "unit", min: 0, max: 4, def: "1", doc: ["what fire on the ground does to it, as a multiplier (the Drake's 0.5)", "地面火焰对它的伤害倍率（火龙为 0.5）"] },
-  { name: "trail", type: "enum", values: TRAILS, only: "unit", def: "by domain", doc: ["the mark it leaves", "留下的痕迹"] },
+  { name: "trail", type: "enum", values: TRAILS, only: "unit", def: "by domain", doc: ["the mark it leaves, and the sound of it: treads and tyres are heard rolling; `none` for a unit on foot or a hovercraft, which neither cuts a rut nor is heard as an engine", "留下的痕迹，也决定行驶声：履带与轮胎行驶时可闻；步行单位或气垫船用 `none`，既不留痕也没有引擎声"] },
   { name: "shadow", type: "bool", only: "unit", def: "true", doc: ["the shadow the game casts for it: the hull's and the turret's silhouettes, a step to the south-east on the ground, further off in the air; `false` when the art brings its own, or none is wanted (a submarine casts none)", "游戏为它投下的影子：车体与炮塔的剪影，在地面上向东南偏一步，在空中则更远；图像自带阴影或不需要时设为 `false`（潜艇不投影）"] },
   { name: "sprite", type: "string", max: 48, def: "this mod's u.<id> sheet, else the base's art", doc: ["the body's atlas key: one of this mod's sheets, or a vanilla key to borrow its art", "主体图像键：本模组的精灵图，或借用原版的键"] },
   { name: "turretSprite", type: "string", max: 48, def: "this mod's tur.<id> sheet, else the base's (when its art is kept)", doc: ["the rotating part's key, if any", "旋转部件的图像键（若有）"] },
@@ -5124,13 +5202,14 @@ function spriteKeysOf(table) {
 }
 const VANILLA_SPRITE_KEYS = spriteKeysOf(VANILLA);
 const LINES = {
-  ground: ["factory", "factory2", "factory3"],
-  ship: ["navyard", "navyard2", "navyard3"],
-  air: ["airbase", "airbase2", "airbase3"]
+  ground: [["factory"], ["factory2"], ["factory3"]],
+  ship: [["navyard"], ["navyard2"], ["navyard3"]],
+  air: [["airbase"], ["airbase2"], ["airbase3"]],
+  amphibious: [["factory", "navyard"], ["factory2", "navyard2"], ["factory3", "navyard3"]]
 };
 function defaultProducers(domain, tier) {
   const line = LINES[domain] ?? LINES.ground;
-  return line.slice(Math.max(0, Math.min(2, tier - 1)));
+  return line.slice(Math.max(0, Math.min(2, tier - 1))).flat();
 }
 const SOUND_BY_CLASS = {
   mg: "mg",
@@ -5645,7 +5724,7 @@ function buildDef(own, kind, base, modId, soundKeys, path, errors, warnings) {
   } else {
     if (def.power === void 0) def.power = -def.pop;
     if (own.trail === void 0 && inherited.trail === void 0) {
-      if (domain === "ground") def.trail = "tread";
+      if (domain === "ground" || domain === "amphibious") def.trail = "tread";
       else if (domain === "ship" && !def.underwater) def.trail = "wake";
     }
   }
@@ -5984,6 +6063,7 @@ function rosterLines() {
   const by = (kind, domain) => Object.values(DEFS).filter((d) => d.kind === kind && (domain === void 0 || d.domain === domain) && !d.warhead).map((d) => `${d.id} (T${d.tier}, ${d.cost}${d.upgradeOnly ? ", upgrade level" : ""})`);
   out.push(`ground units: ${by("unit", "ground").join(", ")}`);
   out.push(`ships: ${by("unit", "ship").join(", ")}`);
+  out.push(`amphibious units: ${by("unit", "amphibious").join(", ")}`);
   out.push(`aircraft: ${by("unit", "air").join(", ")}`);
   out.push(`buildings: ${by("building").join(", ")}`);
   return out;
@@ -6134,8 +6214,8 @@ function agentPrompt() {
   p();
   p(markdownTable(fieldRows("def")));
   p();
-  p('Defaults when `extends` is absent: a unit is `domain: "ground"`, `tier: 1`, `pop: 1`, `speed: 60`, `turnRate: 3.5`, `vision: 8`, `radius: 9`, no `body` (units part on the circle of `radius`), armour by domain (ground `medium`, ship `ship`, air `air`), a tread trail on land and a wake at sea; a building is `fw: 2, fh: 2`, `armor: "structure"`, `power: 0`, `pop: 0`. `buildTime` defaults to cost ÷ 14 seconds.');
-  p("Where a unit is built when `producedBy` is absent: its domain's line from its tier up (" + ["ground", "ship", "air"].map((d) => `${d}: ${[1, 2, 3].map((t) => `T${t} → ${defaultProducers(d, t).join("+")}`).join(", ")}`).join("; ") + ").");
+  p('Defaults when `extends` is absent: a unit is `domain: "ground"`, `tier: 1`, `pop: 1`, `speed: 60`, `turnRate: 3.5`, `vision: 8`, `radius: 9`, no `body` (units part on the circle of `radius`), armour by domain (ground and amphibious `medium`, ship `ship`, air `air`), a tread trail on land (`trail: "none"` for a unit on foot, which is then not heard rolling either) and a wake at sea; a building is `fw: 2, fh: 2`, `armor: "structure"`, `power: 0`, `pop: 0`. `buildTime` defaults to cost ÷ 14 seconds.');
+  p("Where a unit is built when `producedBy` is absent: its domain's line from its tier up (" + ["ground", "ship", "air", "amphibious"].map((d) => `${d}: ${[1, 2, 3].map((t) => `T${t} → ${defaultProducers(d, t).join("+")}`).join(", ")}`).join("; ") + ").");
   p("An `upgradeOf` def becomes upgrade-only (never placed directly): the named building gains an Upgrade button that turns it into this def, at `upgradeCost` over `upgradeTime`. A building may have only one next level, so `upgradeOf` can name a vanilla building at the end of its line (`power3`, `factory3`, `extractor3`, `gatling`, `cannonturret2`, `samsite`, `interceptor2`, `radar`, `repairtower`, `reactor`, `nukesilo`) or one of this mod's.");
   p();
   p("### A weapon (`defs[].weapons[]`)");

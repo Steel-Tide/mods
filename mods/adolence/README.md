@@ -16,8 +16,9 @@ behind.
 
 Fourteen buildings, all placed by the engineer (the original's coast guard
 base is left out: the game puts a naval yard on the shore by its id, so a
-mod's shipyard would launch its boats onto grass; the scout boat and the
-carrier come from the vanilla naval yard instead):
+mod's shipyard would launch its boats onto grass; the scout boat, the
+carrier and the two hovercraft it launched come from the vanilla naval yard
+instead):
 
 | building | line | what it does |
 | --- | --- | --- |
@@ -97,6 +98,17 @@ counters, preview icons — and the ones a script drives are left out. So are
 the original's shadow decals: it casts an offset silhouette under every
 vehicle and its turret, and so does this game now, hull and turret each,
 from the art itself — the same look without a sheet for it.
+
+Three of the vehicles swim, as they do in the original: the police amphibious
+car and the two hovercraft IFVs, the hulls the package lets into the water
+without drowning (its other cars drift in and sink five seconds later). They
+are `amphibious` here — driven ashore, afloat at the game's swimming pace, a
+ship to every gun while they swim — and the hovercraft leave the naval yard as
+well as the arsenal. Every vehicle also says what it rolls on: the Abrams
+family on treads, the cars, the trucks and the Stryker on tyres, so each cuts
+its own marks and is heard as its own engine; the infantry, the crewed pieces,
+the walkers and the hovercraft (`trail: "none"`) cut nothing and are not heard
+rolling.
 
 The firing sounds are the package's recordings, cut to dry mono one-shots
 under a second. The Abrams and the Stryker fire the 120 mm and 105 mm

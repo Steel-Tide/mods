@@ -548,6 +548,7 @@
       "radius": 8,
       "speed": 44,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -610,6 +611,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -670,6 +672,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -732,6 +735,7 @@
       "radius": 8,
       "speed": 44,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -794,6 +798,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -856,6 +861,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "s",
@@ -918,6 +924,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "s",
@@ -979,6 +986,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "s",
@@ -1041,6 +1049,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -1102,6 +1111,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -1163,6 +1173,7 @@
       "radius": 8,
       "speed": 30,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -1224,6 +1235,7 @@
       "radius": 8,
       "speed": 30,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -1282,6 +1294,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -1343,6 +1356,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -1404,6 +1418,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -1484,6 +1499,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -1545,6 +1561,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "r",
@@ -1609,6 +1626,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -1670,6 +1688,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "s",
@@ -1732,6 +1751,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -1795,6 +1815,7 @@
       "radius": 8,
       "speed": 37,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -1858,6 +1879,7 @@
       "radius": 8,
       "speed": 53,
       "turnRate": 8,
+      "trail": "none",
       "fireOnMove": true,
       "weapons": [
         {
@@ -2081,11 +2103,11 @@
         "警用两栖车-A"
       ],
       "desc": [
-        "Light amphibious carrier for three.",
+        "Light amphibious carrier for three. Swims.",
         "警用两栖突击车，水陆通用 “冲锋，冲锋！”"
       ],
       "kind": "unit",
-      "domain": "ground",
+      "domain": "amphibious",
       "tier": 1,
       "cost": 85,
       "buildTime": 10.0,
@@ -2386,6 +2408,7 @@
       "radius": 12,
       "speed": 32,
       "turnRate": 3.35,
+      "trail": "none",
       "transportCap": 1,
       "fireOnMove": true,
       "weapons": [
@@ -2443,6 +2466,7 @@
       "radius": 12,
       "speed": 24,
       "turnRate": 3.14,
+      "trail": "none",
       "transportCap": 1,
       "fireOnMove": true,
       "weapons": [
@@ -2497,6 +2521,7 @@
       "radius": 11,
       "speed": 42,
       "turnRate": 7.33,
+      "trail": "none",
       "fireOnMove": true,
       "weapons": [
         {
@@ -2549,6 +2574,7 @@
       "radius": 11,
       "speed": 42,
       "turnRate": 5.76,
+      "trail": "none",
       "fireOnMove": true,
       "weapons": [
         {
@@ -3436,7 +3462,7 @@
       "radius": 24,
       "speed": 53,
       "turnRate": 0.84,
-      "trail": "tire",
+      "trail": "tread",
       "fireOnMove": true,
       "weapons": [
         {
@@ -3529,7 +3555,7 @@
       "radius": 24,
       "speed": 53,
       "turnRate": 0.84,
-      "trail": "tire",
+      "trail": "tread",
       "fireOnMove": true,
       "weapons": [
         {
@@ -3622,7 +3648,7 @@
       "radius": 24,
       "speed": 53,
       "turnRate": 0.84,
-      "trail": "tire",
+      "trail": "tread",
       "fireOnMove": true,
       "weapons": [
         {
@@ -3715,7 +3741,7 @@
       "radius": 24,
       "speed": 53,
       "turnRate": 0.84,
-      "trail": "tire",
+      "trail": "tread",
       "fireOnMove": true,
       "weapons": [
         {
@@ -3793,11 +3819,11 @@
         "轻型两栖步战"
       ],
       "desc": [
-        "Hovercraft infantry carrier with a machine gun. Carries four.",
+        "Hovercraft infantry carrier with a machine gun. Carries four. Swims.",
         "海面运输，搭载机枪 “战争在召唤!”"
       ],
       "kind": "unit",
-      "domain": "ground",
+      "domain": "amphibious",
       "tier": 2,
       "cost": 175,
       "buildTime": 6.0,
@@ -3808,8 +3834,8 @@
       "radius": 18,
       "speed": 48,
       "turnRate": 2.09,
-      "trail": "tire",
-      "transportCap": 1,
+      "trail": "none",
+      "transportCap": 4,
       "fireOnMove": true,
       "weapons": [
         {
@@ -3855,7 +3881,9 @@
       "turretSprite": "tur.adolence-light-ifv",
       "aiWeight": 1.5,
       "producedBy": [
-        "adolence-arsenal"
+        "adolence-arsenal",
+        "navyard2",
+        "navyard3"
       ]
     },
     {
@@ -3865,11 +3893,11 @@
         "重型两栖步战"
       ],
       "desc": [
-        "Big hovercraft carrier with a machine gun. Carries eight.",
+        "Big hovercraft carrier with a machine gun. Carries eight. Swims.",
         "海面运输，搭载机枪 “战争在召唤!”"
       ],
       "kind": "unit",
-      "domain": "ground",
+      "domain": "amphibious",
       "tier": 2,
       "cost": 220,
       "buildTime": 10.0,
@@ -3880,7 +3908,7 @@
       "radius": 24,
       "speed": 48,
       "turnRate": 2.09,
-      "trail": "tire",
+      "trail": "none",
       "transportCap": 8,
       "fireOnMove": true,
       "weapons": [
@@ -3929,7 +3957,9 @@
       "turretSprite": "tur.adolence-heavy-ifv",
       "aiWeight": 1.5,
       "producedBy": [
-        "adolence-arsenal"
+        "adolence-arsenal",
+        "navyard2",
+        "navyard3"
       ]
     },
     {
@@ -4557,6 +4587,7 @@
       "radius": 9,
       "speed": 81,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "2",
@@ -4606,6 +4637,7 @@
       "radius": 9,
       "speed": 67,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "2",
@@ -4655,6 +4687,7 @@
       "radius": 7,
       "speed": 30,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "2",
@@ -4704,6 +4737,7 @@
       "radius": 9,
       "speed": 30,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "2",
@@ -4753,6 +4787,7 @@
       "radius": 9,
       "speed": 30,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "2",
@@ -4802,6 +4837,7 @@
       "radius": 9,
       "speed": 30,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "2",
@@ -4851,6 +4887,7 @@
       "radius": 9,
       "speed": 30,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "2",
@@ -4900,6 +4937,7 @@
       "radius": 5,
       "speed": 52,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "2",
@@ -4965,6 +5003,7 @@
       "radius": 5,
       "speed": 52,
       "turnRate": 8,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -5032,6 +5071,7 @@
       "radius": 9,
       "speed": 30,
       "turnRate": 2.09,
+      "trail": "none",
       "weapons": [
         {
           "id": "2",
@@ -5081,6 +5121,7 @@
       "radius": 9,
       "speed": 30,
       "turnRate": 2.09,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",
@@ -5234,6 +5275,7 @@
       "radius": 13,
       "speed": 52,
       "turnRate": 2.09,
+      "trail": "none",
       "weapons": [
         {
           "id": "2",
@@ -5285,6 +5327,7 @@
       "radius": 24,
       "speed": 67,
       "turnRate": 2.09,
+      "trail": "none",
       "weapons": [
         {
           "id": "2",
@@ -5335,6 +5378,7 @@
       "radius": 13,
       "speed": 74,
       "turnRate": 2.09,
+      "trail": "none",
       "weapons": [
         {
           "id": "2",
@@ -5385,6 +5429,7 @@
       "radius": 12,
       "speed": 74,
       "turnRate": 2.6,
+      "trail": "none",
       "weapons": [
         {
           "id": "1",

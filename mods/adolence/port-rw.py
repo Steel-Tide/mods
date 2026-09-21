@@ -305,7 +305,9 @@ def clamp(x, lo, hi):
 # ------------------------------------------------------------------ roster
 # (rw name, id suffix, English name, English tooltip, overrides)
 # overrides: tier, armor, pop, hovers, cost, hp, weapons, image, turret_from,
-#            produces, producedBy, requires, power, fw, fh, aiWeight, extra
+#            produces, producedBy, requires, power, fw, fh, aiWeight, extra,
+#            domain (amphibious: the package's hulls that swim and never drown),
+#            trail (tread, tire, none: what it cuts in the ground, and sounds like)
 B, U, Z = "building", "unit", "zombie"
 ROSTER = [
     # ---- buildings
@@ -384,7 +386,7 @@ ROSTER = [
     ("中州特战狙击", "zhongzhou-sniper", "Zhongzhou Sniper", "Zhongzhou special forces marksman.",
      dict(kind=U, requires=["arsenal"], zh_name="中州特战狙击")),
     ("肃清协议-MG", "purge-gunner", "Purge Protocol Gunner", "Heavily armoured escort gunner of the purge protocol.",
-     dict(kind=U, armor="medium", requires=["arsenal"], zh_name="肃清协议-MG")),
+     dict(kind=U, armor="medium", requires=["arsenal"], zh_name="肃清协议-MG", trail="none")),
     # ---- vehicles
     ("轿车-黑", "sedan-black", "Black Sedan", "A civilian car pressed into service. Carries four.",
      dict(kind=U)),
@@ -392,8 +394,8 @@ ROSTER = [
      dict(kind=U)),
     ("警用装甲车-B", "armoured-car", "Police Armoured Car", "Armoured patrol vehicle. Carries five.",
      dict(kind=U, armor="medium")),
-    ("警用两栖车-A", "amphibious-car", "Police Amphibious Car", "Light amphibious carrier for three.",
-     dict(kind=U, armor="medium")),
+    ("警用两栖车-A", "amphibious-car", "Police Amphibious Car", "Light amphibious carrier for three. Swims.",
+     dict(kind=U, armor="medium", domain="amphibious")),
     ("警用指挥车-A3", "command-van", "Police Command Van", "Mobile command post. Carries six.",
      dict(kind=U, armor="medium")),
     ("警用通讯车", "comms-van", "Police Comms Van", "Communications van: unarmed, but it sees very far.",
@@ -402,14 +404,15 @@ ROSTER = [
      dict(kind=U, armor="medium")),
     ("装甲车", "ambush-car", "Ambush Armoured Car", "Mine-resistant ambush-protected carrier. Unarmed, thick-skinned, carries seven.",
      dict(kind=U, armor="heavy", zh="反地雷伏击车，无武装，可载七人")),
+    # crewed pieces and walkers go on feet: no ruts, and no engine heard
     ("警用迫击炮", "mortar", "Police Mortar", "Short-ranged, accurate, three times as hard on buildings.",
-     dict(kind=U, armor="light", arc=True)),
+     dict(kind=U, armor="light", arc=True, trail="none")),
     ("重机枪", "heavy-mg", "Heavy Machine Gun", "A crewed heavy machine gun. Slow to move, fast to fire.",
-     dict(kind=U, armor="light", extra={"speed": 24})),
+     dict(kind=U, armor="light", extra={"speed": 24}, trail="none")),
     ("警卫步械-步枪", "walker-rifle", "Guard Walker (Rifle)", "Police walking armour with an autocannon.",
-     dict(kind=U, armor="medium")),
+     dict(kind=U, armor="medium", trail="none")),
     ("警卫步械-榴弹", "walker-grenade", "Guard Walker (Grenade)", "Police walking armour with a grenade launcher.",
-     dict(kind=U, armor="medium")),
+     dict(kind=U, armor="medium", trail="none")),
     ("警卫轻坦-轻机枪", "light-tank-lmg", "Guard Light Tank (LMG)", "Black-steel light tank with a light machine gun.",
      dict(kind=U, armor="heavy")),
     ("警卫轻坦-机枪", "light-tank-mg", "Guard Light Tank (MG)", "Black-steel light tank with a heavy machine gun.",
@@ -442,29 +445,30 @@ ROSTER = [
          dict(id="coax", cls="mg", dmg=9, reload=0.45, range=6, targets=["ground", "ship"], turret=True, sound="mg"),
      ])),
     ("M1A2", "m1a2", "M1A2 Abrams", "Main battle tank: 120 mm smoothbore, coaxial gun, thick plate.",
-     dict(kind=U, armor="heavy", tier=3, turret_from="M1A2 T", weapons=[
+     dict(kind=U, armor="heavy", tier=3, trail="tread", turret_from="M1A2 T", weapons=[
          dict(id="gun", cls="cannon", dmg=125, reload=4.5, range=9, targets=["ground", "ship"], projectile="shell", speed=700, splash=12, turret=True, sound="120mm"),
          dict(id="coax", cls="mg", dmg=9, reload=0.45, range=6, targets=["ground", "ship"], turret=True, sound="mg"),
      ])),
     ("M1A2 TUSK II", "m1a2-tusk", "M1A2 TUSK II", "Abrams with the urban survival kit: more armour, same gun.",
-     dict(kind=U, armor="heavy", tier=3, turret_from="M1A2 TUSK II T", weapons=[
+     dict(kind=U, armor="heavy", tier=3, trail="tread", turret_from="M1A2 TUSK II T", weapons=[
          dict(id="gun", cls="cannon", dmg=125, reload=4.5, range=9, targets=["ground", "ship"], projectile="shell", speed=700, splash=12, turret=True, sound="120mm"),
          dict(id="coax", cls="mg", dmg=9, reload=0.45, range=6, targets=["ground", "ship"], turret=True, sound="mg"),
      ])),
     ("M1A2 SEPV3", "m1a2-sepv3", "M1A2 SEPv3", "The newest Abrams. Better optics, better gun.",
-     dict(kind=U, armor="heavy", tier=3, turret_from="M1A2 SEPV3 T", weapons=[
+     dict(kind=U, armor="heavy", tier=3, trail="tread", turret_from="M1A2 SEPV3 T", weapons=[
          dict(id="gun", cls="cannon", dmg=135, reload=4.2, range=9.5, targets=["ground", "ship"], projectile="shell", speed=700, splash=12, turret=True, sound="120mm"),
          dict(id="coax", cls="mg", dmg=9, reload=0.45, range=6, targets=["ground", "ship"], turret=True, sound="mg"),
      ])),
     ("M1A1 HC 标题党", "m1a1-clickbait", "M1A1 HC \"Clickbait\"", "The old Abrams with a name. 120 mm and a coaxial gun.",
-     dict(kind=U, armor="heavy", tier=3, turret_from="M1A1 HC 标题党 T", zh_name="M1A1 HC“标题党”", weapons=[
+     dict(kind=U, armor="heavy", tier=3, trail="tread", turret_from="M1A1 HC 标题党 T", zh_name="M1A1 HC“标题党”", weapons=[
          dict(id="gun", cls="cannon", dmg=120, reload=4.5, range=9, targets=["ground", "ship"], projectile="shell", speed=700, splash=12, turret=True, sound="120mm"),
          dict(id="coax", cls="mg", dmg=9, reload=0.45, range=6, targets=["ground", "ship"], turret=True, sound="mg"),
      ])),
-    ("轻型两栖步战", "light-ifv", "Light Amphibious IFV", "Hovercraft infantry carrier with a machine gun. Carries four.",
-     dict(kind=U, armor="medium")),
-    ("重型两栖步战", "heavy-ifv", "Heavy Amphibious IFV", "Big hovercraft carrier with a machine gun. Carries eight.",
-     dict(kind=U, armor="medium")),
+    # hovercraft: they swim, and a skirt cuts no rut and rolls on no wheel
+    ("轻型两栖步战", "light-ifv", "Light Amphibious IFV", "Hovercraft infantry carrier with a machine gun. Carries four. Swims.",
+     dict(kind=U, armor="medium", domain="amphibious", trail="none", extra={"transportCap": 4})),
+    ("重型两栖步战", "heavy-ifv", "Heavy Amphibious IFV", "Big hovercraft carrier with a machine gun. Carries eight. Swims.",
+     dict(kind=U, armor="medium", domain="amphibious", trail="none")),
     ("极征主义", "extremism", "\"Extremism\"", "Experimental super-heavy tank. The world belongs to it.",
      dict(kind=U, armor="heavy", tier=3)),
     # ---- air
@@ -516,6 +520,22 @@ ROSTER = [
 ]
 
 # where things that no ported building lists are trained
+COAST_GUARD = "海警基地"  # the package's shipyard: the game's own naval yard stands in for it
+NAVYARD_LINE = ["navyard", "navyard2", "navyard3"]
+
+
+def build_list(ini):
+    """the rw names a building's canBuild entries name, in order"""
+    lists = []
+    for k, v in ini.get("core", {}).items():
+        if re.match(r"canBuild_\d+_name$", k):
+            lists += split_list(v)
+    for sec, kv in ini.items():
+        if sec.startswith("canBuild_") and kv.get("name"):
+            lists += split_list(kv["name"])
+    return [strip_quotes(x) for x in lists]
+
+
 EXTRA_PRODUCES = {
     "outpost": ["zhongzhou-rifleman", "zhongzhou-sniper", "purge-gunner"],
     "sloth-nest": [r[1] for r in ROSTER if r[4].get("kind") == Z],
@@ -1176,8 +1196,15 @@ def convert():
             tr = num(mov.get("maxTurnSpeed"))
             if tr is not None:
                 df["turnRate"] = round(clamp(tr * 60 * math.pi / 180, 0.5, 8), 2)
+            # HOVER is the package's car movement (its police cars drift, and drown five
+            # seconds into the water): tyres, unless the roster says treads. A thing on
+            # foot cuts no rut and is not heard as an engine.
             if movement == "HOVER":
                 df["trail"] = "tire"
+            if (infantry or is_zombie) and domain == "ground":
+                df["trail"] = "none"
+            if "trail" in ov:
+                df["trail"] = ov["trail"]
             if ov.get("hovers"):
                 df["hovers"] = True
             cap = num(core.get("maxTransportingUnits"))
@@ -1209,14 +1236,7 @@ def convert():
                         df["upgradeCost"] = int(max(50, round(p * 0.1 / 10) * 10))
                     t = build_seconds(act.get("buildSpeed"))
                     df["upgradeTime"] = int(clamp(round((t or 10) * 3), 15, 90))
-            lists = []
-            for k, v in core.items():
-                if re.match(r"canBuild_\d+_name$", k):
-                    lists += split_list(v)
-            for s, kv in ini.items():
-                if s.startswith("canBuild_") and kv.get("name"):
-                    lists += split_list(kv["name"])
-            rw_lists[did] = [strip_quotes(x) for x in lists]
+            rw_lists[did] = build_list(ini)
 
         # ---- weapons
         weapons = []
@@ -1416,6 +1436,9 @@ def convert():
 
     # ---- production
     by_id = {d["id"]: d for d in defs}
+    # the coast guard base is not in the roster (the game's own naval yard stands on
+    # the shore in its place), but what it launched is: its amphibians join that line
+    coast = {ids.get(n) for n in build_list(load_unit(by_name[COAST_GUARD]))} if COAST_GUARD in by_name else set()
     for bid, names in rw_lists.items():
         b = by_id.get(bid)
         if not b:
@@ -1428,8 +1451,6 @@ def convert():
             u = by_id[uid]
             if u["kind"] != "unit":
                 continue
-            if bid.endswith("coast-guard") and u.get("domain") != "ship":
-                continue  # the hovercraft are land vehicles here; the arsenal builds them
             out.append(uid)
         produces[bid] = out
     for suffix, extra in EXTRA_PRODUCES.items():
@@ -1445,6 +1466,8 @@ def convert():
     for d in defs:
         if d["kind"] == "unit":
             homes = [bid for bid, lst in produces.items() if d["id"] in lst]
+            if d.get("domain") == "amphibious" and d["id"] in coast:
+                homes += NAVYARD_LINE[d["tier"] - 1:]
             if homes:
                 d["producedBy"] = homes
             else:
