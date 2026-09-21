@@ -1,7 +1,7 @@
 {
   "format": "steel-tide-mod-index",
   "v": 1,
-  "generated": "2026-09-20T14:08:30.940Z",
+  "generated": "2026-09-21T03:29:25.658Z",
   "mods": [
     {
       "id": "adolence",
@@ -21,8 +21,8 @@
       "homepage": "https://github.com/steel-tide/mods/tree/main/mods/adolence",
       "path": "mods/adolence",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/adolence/",
-      "updated": "2026-09-20T22:07:58+08:00",
-      "downloads": 5,
+      "updated": "2026-09-21T11:28:54+08:00",
+      "downloads": 13,
       "screenshots": [
         {
           "file": "screenshots/cover.png",
@@ -566,7 +566,7 @@
         {
           "id": "adolence-amphibious-car",
           "kind": "unit",
-          "domain": "ground",
+          "domain": "amphibious",
           "tier": 1,
           "cost": 85,
           "name": [
@@ -930,7 +930,7 @@
         {
           "id": "adolence-light-ifv",
           "kind": "unit",
-          "domain": "ground",
+          "domain": "amphibious",
           "tier": 2,
           "cost": 175,
           "name": [
@@ -944,7 +944,7 @@
         {
           "id": "adolence-heavy-ifv",
           "kind": "unit",
-          "domain": "ground",
+          "domain": "amphibious",
           "tier": 2,
           "cost": 220,
           "name": [
@@ -2373,7 +2373,7 @@
       "path": "mods/ironworks",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/ironworks/",
       "updated": "2026-09-19T20:24:28+08:00",
-      "downloads": 7,
+      "downloads": 8,
       "screenshots": [
         {
           "file": "screenshots/skimmers.webp",
@@ -2484,7 +2484,7 @@
       "path": "mods/rusted-expansion",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/rusted-expansion/",
       "updated": "2026-09-20T13:14:42+08:00",
-      "downloads": 0,
+      "downloads": 1,
       "screenshots": [
         {
           "file": "screenshots/armour.webp",
