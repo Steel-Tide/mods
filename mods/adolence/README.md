@@ -97,7 +97,8 @@ gun fires. The interface decals — selection rings, waypoints, ammunition
 counters, preview icons — and the ones a script drives are left out. So are
 the original's shadow decals: it casts an offset silhouette under every
 vehicle and its turret, and so does this game now, hull and turret each,
-from the art itself — the same look without a sheet for it.
+and a building's gun on its roof, from the art itself — the same look
+without a sheet for it.
 
 Three of the vehicles swim, as they do in the original: the police amphibious
 car and the two hovercraft IFVs, the hulls the package lets into the water
