@@ -727,9 +727,9 @@ const STRINGS = {
   ],
   "map.pacificStorm": ["Pacific Storm", "太平洋风暴", "퍼시픽 스톰"],
   "map.pacificStorm.style": [
-    "An island chain: a mountain mainland across a strait, an airfield island off it with the strip up its spine, a knot of islands in the middle cut by shallow channels and a lagoon, and an anchorage among skerries in the open sea to the east.",
-    "一条岛链：海峡对岸是山地大陆，机场岛卧在近海，跑道沿岛脊延伸；正中一簇岛屿被浅水航道和一片潟湖切开；东面的开阔海上有一处锚地和一串散落的礁屿。",
-    "열도 하나: 해협 건너 산악 본토, 그 앞바다에 등줄기를 따라 활주로가 놓인 비행장 섬, 얕은 수로와 석호로 갈라진 한가운데의 섬 무리, 그리고 동쪽 먼바다의 흩어진 암초 섬 사이의 정박지."
+    "An island chain in open sea: an airfield island in the west with the strip up its spine, a knot of islands in the middle cut by shallow channels and a lagoon, and an anchorage among skerries out to the east.",
+    "大洋中的一条岛链：西面是机场岛，跑道沿岛脊延伸；正中一簇岛屿被浅水航道和一片潟湖切开；东面的开阔海上有一处锚地和一串散落的礁屿。",
+    "먼바다의 열도 하나: 서쪽에 등줄기를 따라 활주로가 놓인 비행장 섬, 얕은 수로와 석호로 갈라진 한가운데의 섬 무리, 그리고 동쪽 먼바다의 흩어진 암초 섬 사이의 정박지."
   ],
   "map.iwoJima": ["Iwo Jima", "硫磺岛", "이오지마"],
   "map.iwoJima.style": [
@@ -986,6 +986,9 @@ const STRINGS = {
   "hud.roundReady": ["Interceptor ready", "拦截弹已就绪", "요격 준비 완료"],
   "hud.roundReloading": ["Reloading", "装填中", "재장전 중"],
   "hud.nukeReady": ["Warhead ready", "核弹头已就绪", "핵탄두 준비 완료"],
+  "hud.empReady": ["EMP warhead ready", "电磁脉冲弹头已就绪", "EMP 탄두 준비 완료"],
+  "hud.empFabricating": ["Fabricating EMP warhead (click to cancel)", "正在制造电磁脉冲弹头（点击取消）", "EMP 탄두 제조 중 (클릭하면 취소)"],
+  "hud.disabled": ["Disabled for {0} s", "瘫痪 {0} 秒", "{0}초 동안 무력화"],
   "hud.nukeFabricating": ["Fabricating warhead (click to cancel)", "正在制造核弹头（点击取消）", "핵탄두 제조 중 (클릭하면 취소)"],
   "hud.nukeEmpty": ["Empty warhead slot", "空核弹槽位", "빈 핵탄두 슬롯"],
   "hud.watchHint": ["Select a faction's HQ to watch its economy", "选择某阵营的指挥中心以查看其经济", "진영의 사령부를 선택하면 그 경제를 볼 수 있습니다"],
@@ -1041,6 +1044,8 @@ const STRINGS = {
   "cmd.upgrade": ["Upgrade", "升级", "업그레이드"],
   "cmd.fabricateNuke": ["Fabricate warhead", "制造核弹头", "핵탄두 제조"],
   "cmd.launchNuke": ["Launch nuke", "发射核弹", "핵 발사"],
+  "cmd.fabricateEmp": ["Fabricate EMP warhead", "制造电磁脉冲弹头", "EMP 탄두 제조"],
+  "cmd.launchEmp": ["Launch EMP", "发射电磁脉冲弹", "EMP 발사"],
   "cmd.resume": ["Resume construction", "继续建造", "건설 재개"],
   "cmd.unload": ["Unload all", "全部卸载", "모두 하차"],
   "cmd.sellRefund": ["Sell (+{0})", "出售 (+{0})", "판매 (+{0})"],
@@ -1063,6 +1068,8 @@ const STRINGS = {
   "alert.nukeReady": ["Nuclear warhead ready", "核弹头已就绪", "핵탄두 준비 완료"],
   "alert.nukeLaunched": ["Nuclear launch detected", "检测到核弹发射", "핵 발사 감지"],
   "alert.nukeIntercepted": ["Nuclear warhead shot down", "核弹头已被击落", "핵탄두 격추됨"],
+  "alert.empReady": ["EMP warhead ready", "电磁脉冲弹头已就绪", "EMP 탄두 준비 완료"],
+  "alert.empLaunched": ["EMP launch detected", "检测到电磁脉冲弹发射", "EMP 발사 감지"],
   "alert.promoted": ["{0} promoted to {1}", "{0} 晋升为{1}", "{0}이(가) {1}(으)로 진급"],
   "alert.respawned": ["{0} has been given a new headquarters", "{0} 获得了新的总部", "{0}이(가) 새 사령부를 받았습니다"],
   "alert.handover": ["{0} is now under AI command", "{0} 已交由 AI 指挥", "{0}이(가) 이제 AI 지휘를 받습니다"],
@@ -1675,6 +1682,7 @@ const STRINGS = {
   "touch.hintMove": ["Tap where to move", "点击移动目的地", "이동할 곳을 탭"],
   "touch.hintAttackMove": ["Tap where to attack-move", "点击攻击移动目的地", "공격 이동할 곳을 탭"],
   "touch.hintNuke": ["Tap the map to choose the nuclear target", "点击地图选择核打击目标", "지도를 탭해 핵 표적을 고르세요"],
+  "touch.hintEmp": ["Tap the map to choose the EMP target", "点击地图选择电磁脉冲打击目标", "지도를 탭해 EMP 표적을 고르세요"],
   // ------------------------------------------------------------- about (the settings' last page) / help
   "about.title": ["About", "关于", "정보"],
   "about.website": ["Official website", "官方网站", "공식 웹사이트"],
@@ -1963,6 +1971,12 @@ const STRINGS = {
     "射程更远、备弹更多、装甲更厚的点防御设施。",
     "더 긴 사거리, 더 깊은 탄창, 더 두꺼운 벽을 가진 요격 방어입니다."
   ],
+  "unit.sandbag.name": ["Sandbags", "沙袋", "모래주머니"],
+  "unit.sandbag.desc": [
+    "A tile of wall, cheap and quick. Lay it across a chokepoint: a column has to go round it or shoot through it, and your turrets get the time either costs. Tiles laid side by side join into one line.",
+    "一格廉价而快速的工事。横放在隘口上：敌军纵队只能绕行或将它打穿，而无论哪种都在为你的炮塔争取时间。相邻的沙袋会连成一道防线。",
+    "값싸고 빠른 한 타일짜리 벽. 길목을 가로질러 쌓으면 적 종대는 돌아가거나 뚫어야 하고, 그 시간은 아군 포탑의 것입니다. 나란히 놓은 타일은 한 줄로 이어집니다."
+  ],
   "unit.repairtower.name": ["Repair Tower", "维修塔", "수리탑"],
   "unit.repairtower.desc": [
     "Mends damaged allies in range, worst hit first. Repairs cost metal.",
@@ -1992,6 +2006,12 @@ const STRINGS = {
     "A warhead in flight: no gun, no orders, a straight line to the point it was sent to.",
     "飞行中的核弹头：没有武器、不接受指令，直线飞向目标点。",
     "비행 중인 탄두: 무기도 명령도 없이 보내진 지점으로 직선 비행합니다."
+  ],
+  "unit.emp.name": ["EMP Warhead", "电磁脉冲弹头", "EMP 탄두"],
+  "unit.emp.desc": [
+    "The same missile with a pulse in it: where it comes down, every vehicle, ship and building within seven tiles is dead for twelve seconds. Aircraft are above it. Half the price of a nuclear warhead, and the radar alone unlocks it.",
+    "同一枚导弹换上脉冲弹头：落点七格内的所有车辆、舰船与建筑瘫痪十二秒。飞行器不受影响。造价仅核弹头的一半，只需雷达即可解锁。",
+    "같은 미사일에 펄스를 실은 것: 떨어진 곳 7타일 안의 모든 차량, 함선, 건물이 12초 동안 멈춥니다. 항공기는 그 위에 있습니다. 핵탄두의 절반 가격이며 레이더만으로 해금됩니다."
   ],
   // ------------------------------------------------------------- terrain
   // the map's props (`game/decor.ts`), named on the editor's palette
@@ -2034,7 +2054,7 @@ const STRINGS = {
   "community.downloads": ["Times taken", "下载次数", "다운로드 횟수"],
   "community.taking": ["Fetching {0}…", "正在获取 {0}…", "{0} 가져오는 중…"],
   "community.takeFailed": ["Could not fetch that map: {0}", "无法获取该地图：{0}", "지도를 가져올 수 없습니다: {0}"],
-  "community.openRegistry": ["The registry on GitHub", "GitHub 上的地图仓库", "GitHub의 레지스트리"],
+  "community.publish": ["Publish your map", "发布你的地图", "내 지도 공개하기"],
   // ------------------------------------------------------------- map editor
   "editor.title": ["Map Editor", "地图编辑器", "맵 에디터"],
   "editor.terrain": ["Terrain", "地形", "지형"],
@@ -2236,6 +2256,9 @@ const STRINGS = {
   "voice.nuke.intercepted": ["Warhead intercepted.", "核弹头已被拦截。", "핵탄두 요격."],
   "voice.nuke.shotDown": ["Our warhead has been shot down.", "我方核弹头被击落。", "아군 핵탄두가 격추되었습니다."],
   "voice.nuke.impact": ["Nuclear detonation confirmed.", "核爆已确认。", "핵폭발 확인."],
+  "voice.emp.ready": ["EMP warhead ready.", "电磁脉冲弹头已就绪。", "EMP 탄두 준비 완료."],
+  "voice.emp.launch": ["Warning. EMP launch detected.", "警告，检测到电磁脉冲弹发射。", "경고. EMP 발사 감지."],
+  "voice.emp.impact": ["EMP detonation confirmed. Systems down.", "电磁脉冲已引爆，区域内系统瘫痪。", "EMP 폭발 확인. 시스템 정지."],
   "voice.ack.move.1": ["Moving out.", "出发。", "이동합니다."],
   "voice.ack.move.2": ["On our way.", "正在前往。", "가는 중입니다."],
   "voice.ack.attack.1": ["Engaging.", "开始交战。", "교전 개시."],
@@ -2352,7 +2375,7 @@ const DEFS = {
     radius: 8,
     weapons: [],
     body: { r: 8, len: 12 },
-    builds: ["extractor", "power", "factory", "airbase", "navyard", "mgturret", "cannonturret", "aaturret", "interceptor", "repairtower", "radar", "reactor", "nukesilo", "hq"],
+    builds: ["extractor", "power", "factory", "airbase", "navyard", "mgturret", "cannonturret", "aaturret", "interceptor", "repairtower", "sandbag", "radar", "reactor", "nukesilo", "hq"],
     buildRate: 30,
     trail: "tread",
     sprite: "u.engineer"
@@ -2965,9 +2988,9 @@ const DEFS = {
     vision: 8,
     radius: 10,
     fireOnMove: true,
-    // the sheet's hull is 18 by 38 world px with the wheels: a half-beam and
+    // the sheet's hull is 20 by 36 world px with the wheels: a half-beam and
     // a pixel, and the length less the two round ends
-    body: { r: 10, len: 18 },
+    body: { r: 11, len: 14 },
     weapons: [w({
       // the muzzle is 8.3 art px past the ring on `tur.gator` (the tip at a
       // fifth of the sheet, the ring at three fifths), at the display scale
@@ -2985,7 +3008,11 @@ const DEFS = {
     })],
     trail: "tire",
     sprite: "u.gator",
-    turretSprite: "tur.gator"
+    turretSprite: "tur.gator",
+    // the ring the sheet paints, an art px forward of the frame's centre
+    // (measured at 0.462 of the sheet's height; a body whose turret fires
+    // declares it here, not in the manifest)
+    turretMounts: [{ x: 0, y: -1 }]
   },
   // ================================================================== SEA
   //
@@ -3098,6 +3125,10 @@ const DEFS = {
         sound: "cannon"
       }),
       w({
+        // vertical-launch cells amidships: the missile is aimed on launch
+        // rather than by the hull (`turret`, no ring of its own — it fires
+        // as the gun's ring bears), since a ship never swings on the spot
+        // to point its bow at an aircraft (`standingTurn` in game/move.ts)
         id: "navsam",
         cls: "aa",
         dmg: 80,
@@ -3107,6 +3138,7 @@ const DEFS = {
         speed: 430,
         targets: ["air"],
         homing: true,
+        turret: true,
         sound: "missile"
       })
     ],
@@ -3339,7 +3371,7 @@ const DEFS = {
     radius: 9,
     weapons: [],
     body: { r: 6, len: 18 },
-    builds: ["extractor", "power", "factory", "airbase", "navyard", "mgturret", "cannonturret", "aaturret", "interceptor", "repairtower", "radar", "reactor", "nukesilo", "hq"],
+    builds: ["extractor", "power", "factory", "airbase", "navyard", "mgturret", "cannonturret", "aaturret", "interceptor", "repairtower", "sandbag", "radar", "reactor", "nukesilo", "hq"],
     buildRate: 30,
     reach: 64,
     trail: "wake",
@@ -3831,6 +3863,44 @@ const DEFS = {
     weapons: [],
     requires: ["radar", "reactor"],
     sprite: "u.warhead"
+  },
+  /**
+   * The other thing a silo or a Barracuda may put in the shaft: an
+   * electromagnetic pulse where the nuclear warhead has a blast. Same
+   * missile, same flight, same hit points against the same anti-air — and
+   * where it comes down every circuit within `emp.radius` tiles is dead for
+   * `emp.seconds` (`pulse` in combat.ts): a column stands still with its
+   * guns silent, a radar goes blind, a repair tower and a turret line stop,
+   * a plant makes nothing, its own side's included. Nothing in the air is
+   * touched, which is what makes air the answer to it, and a wall draws no
+   * power and stands as it stood. It leaves no crater and kills nothing,
+   * which is why it is half the price and half the wait, needs only the
+   * radar, and is the one a player who wants the base rather than the
+   * ground it stood on reaches for. `cost` and `buildTime` are its own:
+   * the nuclear warhead's are the launcher's (`warheadCost` in
+   * game/warheads.ts).
+   */
+  emp: {
+    id: "emp",
+    kind: "unit",
+    aliases: ["empwarhead", "pulse"],
+    domain: "air",
+    tier: 3,
+    warhead: true,
+    cost: 1200,
+    buildTime: 90,
+    pop: 0,
+    hp: 700,
+    armor: "air",
+    speed: 96,
+    turnRate: 0,
+    vision: 0,
+    radius: 7,
+    altitude: 36,
+    weapons: [],
+    requires: ["radar"],
+    emp: { radius: 7, seconds: 12 },
+    sprite: "u.emp"
   },
   // ============================================================ BUILDINGS
   /**
@@ -4606,6 +4676,39 @@ const DEFS = {
     sound: "bld-cannonturret"
   },
   /**
+   * The sandbag line: a tile of wall, and the cheapest hit points in the
+   * game. It stands across a chokepoint so a column has to go round it or
+   * shoot through it (`acquireTarget` puts it last on every gun's list, so
+   * an attacker grinds through it only when nothing else is in reach), and
+   * every tile laid beside another joins it — the sixteen joints are the
+   * sheet's frames, picked off the neighbours (`game/walls.ts`). It has no
+   * gun, draws no power (so a pulse leaves it standing), takes no
+   * production slot, is built on the ground its headquarters hold like any
+   * building, and comes down without a charge (`raze`). Structure armour:
+   * a shell or a bomb takes it apart, small arms barely scratch it, which
+   * is the point of stacking bags in front of a gun.
+   */
+  sandbag: {
+    id: "sandbag",
+    kind: "building",
+    domain: "none",
+    tier: 1,
+    wall: true,
+    cost: 40,
+    buildTime: 4,
+    pop: 0,
+    hp: 500,
+    armor: "structure",
+    speed: 0,
+    turnRate: 0,
+    vision: 3,
+    radius: 14,
+    fw: 1,
+    fh: 1,
+    weapons: [],
+    sprite: "u.sandbag"
+  },
+  /**
    * One tile, like a gun pad: a base wants it beside the turret line and at
    * the staging point, and a 2×2 was a footprint that did not fit either.
    */
@@ -5064,7 +5167,7 @@ const DEF_SPECS = [
   { name: "turnRate", type: "number", only: "unit", min: 0, max: 50, def: "3.5", doc: ["rad/s", "弧度/秒"] },
   { name: "vision", type: "number", min: 0, max: 64, def: "8", doc: ["sight, in tiles", "视野（格）"] },
   { name: "radius", type: "number", min: 1, max: 200, def: "9, or the footprint", doc: ["collision radius, world px, and the *combat* yardstick: range, splash and hits are measured to it", "碰撞半径（世界像素），也是*战斗*基准：射程、溅射与命中都以它为准"] },
-  { name: "body", type: "body", only: "unit", def: "the circle of `radius`", doc: ["the room the hull takes up when units push each other apart, world px: `r` its half-width, `len` its length less the two round ends. A long hull is what a circle cannot say", "单位互相推挤时所占的形状（世界像素）：`r` 为半宽，`len` 为去掉两端半圆后的长度。圆形无法表达细长的船体"] },
+  { name: "body", type: "body", only: "unit", def: "the circle of `radius`", doc: ["the room the hull takes up when units push each other apart, world px: `r` its half-width, `len` its length less the two round ends. A long hull is what a circle cannot say. A ship whose beam (`r` twice) is over a tile (32) needs that many tiles of water abeam, rounded up: it never enters a channel narrower than itself", "单位互相推挤时所占的形状（世界像素）：`r` 为半宽，`len` 为去掉两端半圆后的长度。圆形无法表达细长的船体。船宽（`r` 的两倍）超过一格（32）的舰船需要相应格数的水面（向上取整），永远不会驶入比自身更窄的水道"] },
   { name: "weapons", type: "weapons", def: "[]", doc: ["the weapons (see below); an empty list is unarmed", "武器列表（见下）；空列表即无武装"] },
   { name: "fw", type: "int", only: "building", min: 1, max: 8, def: "2", doc: ["footprint width, tiles", "占地宽度（格）"] },
   { name: "fh", type: "int", only: "building", min: 1, max: 8, def: "2", doc: ["footprint height, tiles", "占地高度（格）"] },
@@ -5077,6 +5180,7 @@ const DEF_SPECS = [
   { name: "power", type: "number", min: -1e4, max: 1e4, def: "−pop for a unit, 0 for a building", doc: ["positive produces, negative draws; every unit draws its population", "正为发电，负为耗电；单位默认耗电等于其人口"] },
   { name: "metalRate", type: "number", only: "building", min: 0, max: 1e3, doc: ["metal per second (an extractor)", "每秒金属（采矿场）"] },
   { name: "needsDeposit", type: "bool", only: "building", doc: ["must stand on a deposit", "必须建在矿点上"] },
+  { name: "wall", type: "bool", only: "building", doc: ["a wall: one tile that joins its neighbours of the same def (its sheet is sixteen frames, one per set of neighbours: north 1, east 2, south 4, west 8), the last thing a gun shoots at, untouched by a pulse, and it falls without a charge", "墙：单格建筑，与相邻的同种建筑连成一体（精灵图为 16 帧，按相邻方向的掩码取帧：北 1、东 2、南 4、西 8），是火炮最后才会射击的目标，不受电磁脉冲影响，倒塌时没有爆炸"] },
   { name: "repairRange", type: "number", only: "building", min: 0, max: 64, doc: ["a repair aura, tiles", "维修光环范围（格）"] },
   { name: "repairRate", type: "number", only: "building", min: 0, max: 1e4, doc: ["hp per second per target", "每目标每秒维修量"] },
   { name: "repairTargets", type: "int", only: "building", min: 1, max: 50, doc: ["targets served at once", "同时维修的目标数"] },
@@ -5107,7 +5211,7 @@ const DEF_SPECS = [
   { name: "fireOnMove", type: "bool", only: "unit", doc: ["keeps shooting on a plain move", "移动时持续开火"] },
   { name: "burnMult", type: "number", only: "unit", min: 0, max: 4, def: "1", doc: ["what fire on the ground does to it, as a multiplier (the Drake's 0.5)", "地面火焰对它的伤害倍率（火龙为 0.5）"] },
   { name: "trail", type: "enum", values: TRAILS, only: "unit", def: "by domain", doc: ["the mark it leaves, and the sound of it: treads and tyres are heard rolling; `none` for a unit on foot or a hovercraft, which neither cuts a rut nor is heard as an engine", "留下的痕迹，也决定行驶声：履带与轮胎行驶时可闻；步行单位或气垫船用 `none`，既不留痕也没有引擎声"] },
-  { name: "shadow", type: "bool", only: "unit", def: "true", doc: ["the shadow the game casts for it: the hull's and the turret's silhouettes, a step to the south-east on the ground, further off in the air; `false` when the art brings its own, or none is wanted (a submarine casts none)", "游戏为它投下的影子：车体与炮塔的剪影，在地面上向东南偏一步，在空中则更远；图像自带阴影或不需要时设为 `false`（潜艇不投影）"] },
+  { name: "shadow", type: "bool", def: "true", doc: ["the shadow the game casts for it: a unit's hull and turret silhouettes, a step to the south-east on the ground, further off in the air; a building's gun's, on its roof; `false` when the art brings its own, or none is wanted (a submarine casts none)", "游戏为它投下的影子：单位是车体与炮塔的剪影，在地面上向东南偏一步，在空中则更远；建筑是其炮塔投在屋顶上的影子；图像自带阴影或不需要时设为 `false`（潜艇不投影）"] },
   { name: "sprite", type: "string", max: 48, def: "this mod's u.<id> sheet, else the base's art", doc: ["the body's atlas key: one of this mod's sheets, or a vanilla key to borrow its art", "主体图像键：本模组的精灵图，或借用原版的键"] },
   { name: "turretSprite", type: "string", max: 48, def: "this mod's tur.<id> sheet, else the base's (when its art is kept)", doc: ["the rotating part's key, if any", "旋转部件的图像键（若有）"] },
   { name: "decals", type: "decals", def: "the base's, when its art is kept", doc: [`pictures laid on the hull and the turret besides their own sheets (see below), up to ${MAX_DEF_DECALS}`, `除车体与炮塔本身之外贴在其上的图像（见下），最多 ${MAX_DEF_DECALS} 个`] },
@@ -5685,6 +5789,7 @@ function buildDef(own, kind, base, modId, soundKeys, path, errors, warnings) {
   delete inherited.upgradeOnly;
   delete inherited.isHQ;
   delete inherited.warhead;
+  delete inherited.emp;
   delete inherited.aiWeight;
   if (base && base.kind !== kind) {
     errors.push({ path: `${path}.kind`, message: `a ${kind} cannot extend a ${base.kind}` });

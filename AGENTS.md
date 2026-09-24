@@ -262,7 +262,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `turnRate` | number 0–50 | units only | 3.5 | rad/s |
 | `vision` | number 0–64 |  | 8 | sight, in tiles |
 | `radius` | number 1–200 |  | 9, or the footprint | collision radius, world px, and the *combat* yardstick: range, splash and hits are measured to it |
-| `body` | { r, len } | units only | the circle of `radius` | the room the hull takes up when units push each other apart, world px: `r` its half-width, `len` its length less the two round ends. A long hull is what a circle cannot say |
+| `body` | { r, len } | units only | the circle of `radius` | the room the hull takes up when units push each other apart, world px: `r` its half-width, `len` its length less the two round ends. A long hull is what a circle cannot say. A ship whose beam (`r` twice) is over a tile (32) needs that many tiles of water abeam, rounded up: it never enters a channel narrower than itself |
 | `weapons` | weapon[] |  | [] | the weapons (see below); an empty list is unarmed |
 | `fw` | integer 1–8 | buildings only | 2 | footprint width, tiles |
 | `fh` | integer 1–8 | buildings only | 2 | footprint height, tiles |
@@ -275,6 +275,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `power` | number -10000–10000 |  | −pop for a unit, 0 for a building | positive produces, negative draws; every unit draws its population |
 | `metalRate` | number 0–1000 | buildings only |  | metal per second (an extractor) |
 | `needsDeposit` | boolean | buildings only |  | must stand on a deposit |
+| `wall` | boolean | buildings only |  | a wall: one tile that joins its neighbours of the same def (its sheet is sixteen frames, one per set of neighbours: north 1, east 2, south 4, west 8), the last thing a gun shoots at, untouched by a pulse, and it falls without a charge |
 | `repairRange` | number 0–64 | buildings only |  | a repair aura, tiles |
 | `repairRate` | number 0–10000 | buildings only |  | hp per second per target |
 | `repairTargets` | integer 1–50 | buildings only |  | targets served at once |
@@ -305,7 +306,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `fireOnMove` | boolean | units only |  | keeps shooting on a plain move |
 | `burnMult` | number 0–4 | units only | 1 | what fire on the ground does to it, as a multiplier (the Drake's 0.5) |
 | `trail` | tread \| tire \| wake \| none | units only | by domain | the mark it leaves, and the sound of it: treads and tyres are heard rolling; `none` for a unit on foot or a hovercraft, which neither cuts a rut nor is heard as an engine |
-| `shadow` | boolean | units only | true | the shadow the game casts for it: the hull's and the turret's silhouettes, a step to the south-east on the ground, further off in the air; `false` when the art brings its own, or none is wanted (a submarine casts none) |
+| `shadow` | boolean |  | true | the shadow the game casts for it: a unit's hull and turret silhouettes, a step to the south-east on the ground, further off in the air; a building's gun's, on its roof; `false` when the art brings its own, or none is wanted (a submarine casts none) |
 | `sprite` | string |  | this mod's u.<id> sheet, else the base's art | the body's atlas key: one of this mod's sheets, or a vanilla key to borrow its art |
 | `turretSprite` | string |  | this mod's tur.<id> sheet, else the base's (when its art is kept) | the rotating part's key, if any |
 | `decals` | decal[] |  | the base's, when its art is kept | pictures laid on the hull and the turret besides their own sheets (see below), up to 12 |
@@ -440,7 +441,7 @@ A mod may carry maps: files the game's Map Editor exports (`.steel-tide-map`), n
 - ships: gunboat (T1, 130), mboat (T1, 280), frigate (T2, 600), destroyer (T2, 700), sub (T2, 480), btlship (T3, 1700), seatrans (T1, 220), engboat (T1, 200), kraken (T3, 1000), moray (T3, 700)
 - amphibious units: gator (T2, 240)
 - aircraft: drone (T1, 40), fighter (T2, 380), heli (T1, 340), jet (T2, 400), mjet (T2, 520), bomber (T2, 1000), theli (T1, 280), c47 (T2, 650), gunship (T3, 1600), wraith (T3, 1400), cormorant (T3, 700)
-- buildings: hq (T1, 2500), extractor (T1, 120), extractor2 (T2, 310, upgrade level), extractor3 (T3, 810, upgrade level), power (T1, 140), power2 (T2, 400, upgrade level), power3 (T3, 1100, upgrade level), factory (T1, 320), factory2 (T2, 740, upgrade level), factory3 (T3, 1640, upgrade level), airbase (T1, 350), airbase2 (T2, 830, upgrade level), airbase3 (T3, 1780, upgrade level), navyard (T1, 380), navyard2 (T2, 800, upgrade level), navyard3 (T3, 1750, upgrade level), mgturret (T1, 130), gatling (T2, 390, upgrade level), cannonturret (T1, 320), cannonturret2 (T2, 740, upgrade level), aaturret (T1, 240), samsite (T2, 560, upgrade level), interceptor (T2, 450), interceptor2 (T3, 1100, upgrade level), repairtower (T1, 360), radar (T2, 400), reactor (T3, 1400), nukesilo (T3, 1800)
+- buildings: hq (T1, 2500), extractor (T1, 120), extractor2 (T2, 310, upgrade level), extractor3 (T3, 810, upgrade level), power (T1, 140), power2 (T2, 400, upgrade level), power3 (T3, 1100, upgrade level), factory (T1, 320), factory2 (T2, 740, upgrade level), factory3 (T3, 1640, upgrade level), airbase (T1, 350), airbase2 (T2, 830, upgrade level), airbase3 (T3, 1780, upgrade level), navyard (T1, 380), navyard2 (T2, 800, upgrade level), navyard3 (T3, 1750, upgrade level), mgturret (T1, 130), gatling (T2, 390, upgrade level), cannonturret (T1, 320), cannonturret2 (T2, 740, upgrade level), aaturret (T1, 240), samsite (T2, 560, upgrade level), interceptor (T2, 450), interceptor2 (T3, 1100, upgrade level), sandbag (T1, 40), repairtower (T1, 360), radar (T2, 400), reactor (T3, 1400), nukesilo (T3, 1800)
 
 ## Test
 
