@@ -1,7 +1,7 @@
 {
   "format": "steel-tide-mod-index",
   "v": 1,
-  "generated": "2026-09-26T09:25:38.280Z",
+  "generated": "2026-09-27T06:59:53.604Z",
   "mods": [
     {
       "id": "adolence",
@@ -22,7 +22,7 @@
       "path": "mods/adolence",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/adolence/",
       "updated": "2026-09-24T13:07:45+08:00",
-      "downloads": 44,
+      "downloads": 49,
       "screenshots": [
         {
           "file": "screenshots/cover.png",
@@ -2356,6 +2356,132 @@
       ]
     },
     {
+      "id": "hades-arsenal",
+      "name": [
+        "Hades Arsenal",
+        "冥府军械",
+        "Hades Arsenal"
+      ],
+      "version": "1.0.0",
+      "author": "11的沧斯拉",
+      "description": [
+        "Starships from the underworld's armoury: the Hades Star tier-5 battleship, the Ceasefire-class siege battleship, the Hades Hound storm fighter, and a strategic strike missile tower that fires thirty-two rockets a salvo.",
+        "来自冥府军械库的星舰：Hades Star 5级战斗舰、止战级攻坚战列舰、冥犬风暴舰，以及一次齐射三十二枚火箭的战略打击导弹塔。",
+        "Starships from the underworld's armoury: the Hades Star tier-5 battleship, the Ceasefire-class siege battleship, the Hades Hound storm fighter, and a strategic strike missile tower that fires thirty-two rockets a salvo."
+      ],
+      "license": "CC-BY-4.0",
+      "homepage": "https://github.com/steel-tide/mods/tree/main/mods/hades-arsenal",
+      "path": "mods/hades-arsenal",
+      "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/hades-arsenal/",
+      "updated": "2026-09-27T14:59:28+08:00",
+      "downloads": 0,
+      "screenshots": [
+        {
+          "file": "screenshots/cover.webp",
+          "w": 960,
+          "h": 720
+        },
+        {
+          "file": "screenshots/fleet.webp",
+          "w": 1600,
+          "h": 1200
+        }
+      ],
+      "defs": [
+        {
+          "id": "hades-arsenal-battleship",
+          "kind": "unit",
+          "domain": "ship",
+          "tier": 3,
+          "cost": 2600,
+          "name": [
+            "Hades Star Battleship",
+            "Hades Star 5级战斗舰",
+            "Hades Star Battleship"
+          ],
+          "sprite": "u.hades-arsenal-battleship"
+        },
+        {
+          "id": "hades-arsenal-ceasefire",
+          "kind": "unit",
+          "domain": "ship",
+          "tier": 3,
+          "cost": 1900,
+          "name": [
+            "Ceasefire-class Siege Battleship",
+            "止战级攻坚战列舰",
+            "Ceasefire-class Siege Battleship"
+          ],
+          "sprite": "u.hades-arsenal-ceasefire"
+        },
+        {
+          "id": "hades-arsenal-hound",
+          "kind": "unit",
+          "domain": "air",
+          "tier": 2,
+          "cost": 600,
+          "name": [
+            "Hades Hound Storm Fighter",
+            "冥犬风暴舰",
+            "Hades Hound Storm Fighter"
+          ],
+          "sprite": "u.hades-arsenal-hound"
+        },
+        {
+          "id": "hades-arsenal-missile-tower",
+          "kind": "building",
+          "domain": "none",
+          "tier": 3,
+          "cost": 2400,
+          "name": [
+            "Strategic Strike Missile Tower",
+            "战略打击导弹塔",
+            "Strategic Strike Missile Tower"
+          ],
+          "sprite": "u.hades-arsenal-missile-tower"
+        }
+      ],
+      "sprites": [
+        {
+          "key": "u.hades-arsenal-battleship",
+          "file": "sprites/u.hades-arsenal-battleship.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 85,
+          "h": 190
+        },
+        {
+          "key": "u.hades-arsenal-ceasefire",
+          "file": "sprites/u.hades-arsenal-ceasefire.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 85,
+          "h": 277
+        },
+        {
+          "key": "u.hades-arsenal-hound",
+          "file": "sprites/u.hades-arsenal-hound.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 39,
+          "h": 42
+        },
+        {
+          "key": "u.hades-arsenal-missile-tower",
+          "file": "sprites/u.hades-arsenal-missile-tower.png",
+          "frames": 1,
+          "w": 104,
+          "h": 103
+        }
+      ],
+      "sounds": [
+        {
+          "key": "hades-arsenal-fire",
+          "file": "sfx/hades-arsenal-fire.mp3"
+        }
+      ]
+    },
+    {
       "id": "ironworks",
       "name": [
         "Ironworks",
@@ -2373,7 +2499,7 @@
       "path": "mods/ironworks",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/ironworks/",
       "updated": "2026-09-19T20:24:28+08:00",
-      "downloads": 18,
+      "downloads": 23,
       "screenshots": [
         {
           "file": "screenshots/skimmers.webp",
@@ -2484,7 +2610,7 @@
       "path": "mods/rusted-expansion",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/rusted-expansion/",
       "updated": "2026-09-20T13:14:42+08:00",
-      "downloads": 9,
+      "downloads": 11,
       "screenshots": [
         {
           "file": "screenshots/armour.webp",
