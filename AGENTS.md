@@ -282,7 +282,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `upgradeOf` | id | buildings only |  | the building this is the next level of; that one gains the upgrade button |
 | `upgradeCost` | number 0–99999 | buildings only | cost − the source's cost | with `upgradeOf`: the upgrade's price |
 | `upgradeTime` | number 0–3600 | buildings only | buildTime | with `upgradeOf`: seconds |
-| `requires` | id[] |  |  | building ids that must stand before it can be built |
+| `requires` | id[] |  |  | building ids that must stand before it can be built, or tech node ids that must be researched (`suicideDrones`, `activeProtection`…) |
 | `nukeCapacity` | integer 0–10 |  |  | a launcher: warheads it holds |
 | `nukeCost` | number 0–99999 |  |  | a launcher: metal per warhead |
 | `nukeTime` | number 0–3600 |  |  | a launcher: seconds per warhead |
@@ -302,6 +302,9 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `detect` | number 0–64 |  |  | reveals stealth within this many tiles |
 | `radar` | boolean |  |  | sees by radio: the sight circle ignores weather and the hour, and drops to 7 tiles when short of power |
 | `hovers` | boolean | units only |  | an aircraft that hovers instead of orbiting |
+| `kamikaze` | boolean | units only |  | the unit is its own round: it never picks a target, and its one weapon flies it into what it is ordered at (the Hornet) |
+| `lowFlying` | boolean | units only |  | an aircraft at treetop height: machine guns and autocannons that fire on the ground reach it too (the Hornet) |
+| `limit` | integer 1–200 | units only |  | at most this many a faction at once, alive and queued together (the Hornet's 6) |
 | `altitude` | number 0–64 | units only | 12 | an aircraft's drawn height, px |
 | `fireOnMove` | boolean | units only |  | keeps shooting on a plain move |
 | `burnMult` | number 0–4 | units only | 1 | what fire on the ground does to it, as a multiplier (the Drake's 0.5) |
@@ -310,6 +313,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `sprite` | string |  | this mod's u.<id> sheet, else the base's art | the body's atlas key: one of this mod's sheets, or a vanilla key to borrow its art |
 | `turretSprite` | string |  | this mod's tur.<id> sheet, else the base's (when its art is kept) | the rotating part's key, if any |
 | `decals` | decal[] |  | the base's, when its art is kept | pictures laid on the hull and the turret besides their own sheets (see below), up to 12 |
+| `ability` | sprint \| afterburner \| smoke \| incendiary \| barrage \| countermeasures \| damageControl \| emergencyRepair | units only | the base's | its one active ability, a vanilla one by id (`sprint`, `smoke`, `countermeasures`…): the same click, clock and unlock as on the game's own units |
 | `aliases` | string[] |  |  | other names the console's `give` accepts |
 | `aiWeight` | number 0–10 | units only | 0 | how readily the AI builds it: a Bison is 3, a scout car 1; 0 never |
 
@@ -376,7 +380,7 @@ aa          air ×1
 | `upright` | boolean |  |  | never turned: laid screen-up wherever its anchor is |
 | `scale` | number 0.05–8 |  | 1 | drawn at this multiple of its sheet's size |
 | `alpha` | number 0–1 |  | 1 | opacity |
-| `when` | always \| moving \| still \| firing \| damaged \| night |  | always | shown only while the unit moves or stands (`moving`, `still`), within a reload of its last shot (`firing`), under half health (`damaged`), or after dusk (`night`: laid over the dark like a lamp, and the game's own headlights stay off a unit that has one) |
+| `when` | always \| moving \| still \| firing \| damaged \| night \| ability |  | always | shown only while the unit moves or stands (`moving`, `still`), within a reload of its last shot (`firing`), under half health (`damaged`), while its ability runs or is armed (`ability`), or after dusk (`night`: laid over the dark like a lamp, and the game's own headlights stay off a unit that has one) |
 
 A decal is a picture laid on a def besides its body and its turret — a hatch, a crew figure, an outline, a lamp — fixed to the hull or the turret (`on`) and turned with it. Up to 12 on a def, drawn in the order listed within a layer. `x`/`y` are a point on that part's up-facing art: right and down (toward the tail) of its pivot, in the px of the sheet at its `fw`×`fh` size; the game scales them with the unit. The sheet is one of the mod's own under a `dec.<name>` key (see Art), or a body or turret key it borrows. A `night` decal is a lamp: laid over the dark rather than dimmed by it, so a headlight or a lit window reads as light, and a unit that carries one gets none of the game's own headlights. Paint a beam soft — a wide, faint falloff, not a hard-edged triangle — or it reads as glass.
 
@@ -437,11 +441,11 @@ A mod may carry maps: files the game's Map Editor exports (`.steel-tide-map`), n
 
 ## The vanilla roster (ids you may `extends`, name in `producedBy`/`builtBy`/`requires`/`upgradeOf`, or borrow art from)
 
-- ground units: engineer (T1, 200), buggy (T1, 60), ltank (T1, 120), mbt (T2, 280), htank (T3, 900), td (T2, 320), flak (T1, 170), sam (T2, 400), arty (T2, 420), mlrs (T3, 760), radarcar (T3, 480), salamander (T3, 800), bulwark (T3, 650), drake (T2, 300)
+- ground units: engineer (T1, 200), buggy (T1, 60), ltank (T1, 120), mbt (T2, 280), htank (T3, 900), td (T2, 320), flak (T1, 170), sam (T2, 400), arty (T2, 420), mlrs (T3, 760), radarcar (T3, 480), salamander (T3, 800), bulwark (T3, 650), drake (T2, 300), hercules (T2, 350), scorpion (T3, 1100)
 - ships: gunboat (T1, 130), mboat (T1, 280), frigate (T2, 600), destroyer (T2, 700), sub (T2, 480), btlship (T3, 1700), seatrans (T1, 220), engboat (T1, 200), kraken (T3, 1000), moray (T3, 700)
 - amphibious units: gator (T2, 240)
-- aircraft: drone (T1, 40), fighter (T2, 380), heli (T1, 340), jet (T2, 400), mjet (T2, 520), bomber (T2, 1000), theli (T1, 280), c47 (T2, 650), gunship (T3, 1600), wraith (T3, 1400), cormorant (T3, 700)
-- buildings: hq (T1, 2500), extractor (T1, 120), extractor2 (T2, 310, upgrade level), extractor3 (T3, 810, upgrade level), power (T1, 140), power2 (T2, 400, upgrade level), power3 (T3, 1100, upgrade level), factory (T1, 320), factory2 (T2, 740, upgrade level), factory3 (T3, 1640, upgrade level), airbase (T1, 350), airbase2 (T2, 830, upgrade level), airbase3 (T3, 1780, upgrade level), navyard (T1, 380), navyard2 (T2, 800, upgrade level), navyard3 (T3, 1750, upgrade level), mgturret (T1, 130), gatling (T2, 390, upgrade level), cannonturret (T1, 320), cannonturret2 (T2, 740, upgrade level), aaturret (T1, 240), samsite (T2, 560, upgrade level), interceptor (T2, 450), interceptor2 (T3, 1100, upgrade level), sandbag (T1, 40), repairtower (T1, 360), radar (T2, 400), reactor (T3, 1400), nukesilo (T3, 1800)
+- aircraft: hornet (T2, 120), drone (T1, 40), fighter (T2, 380), heli (T1, 340), jet (T2, 400), mjet (T2, 520), bomber (T2, 1000), theli (T1, 280), c47 (T2, 650), gunship (T3, 1600), wraith (T3, 1400), cormorant (T3, 700)
+- buildings: hq (T1, 2500), extractor (T1, 120), extractor2 (T2, 310, upgrade level), extractor3 (T3, 810, upgrade level), power (T1, 140), power2 (T2, 400, upgrade level), power3 (T3, 1100, upgrade level), factory (T1, 320), factory2 (T2, 740, upgrade level), factory3 (T3, 1640, upgrade level), airbase (T1, 350), airbase2 (T2, 830, upgrade level), airbase3 (T3, 1780, upgrade level), navyard (T1, 380), navyard2 (T2, 800, upgrade level), navyard3 (T3, 1750, upgrade level), mgturret (T1, 130), gatling (T2, 390, upgrade level), cannonturret (T1, 320), cannonturret2 (T2, 740, upgrade level), aaturret (T1, 240), samsite (T2, 560, upgrade level), interceptor (T2, 450), interceptor2 (T3, 1100, upgrade level), sandbag (T1, 40), repairtower (T1, 360), radar (T2, 400), warlab (T1, 500), reactor (T3, 1400), nukesilo (T3, 1800)
 
 ## Test
 

@@ -135,6 +135,9 @@ const STRINGS = {
   // the corner tile to the players: the QQ group under a Chinese interface, the Discord under the rest
   "menu.discord": ["Join the Discord", "加入 Discord", "Discord 참여"],
   "menu.qq": ["Join the QQ group ({0})", "加入 QQ 群（{0}）", "QQ 그룹 참여 ({0})"],
+  // where QQ did not take the join link: the number is on the clipboard, or at least on screen
+  "menu.qqCopied": ["QQ group number {0} copied. Search for it in QQ to join.", "已复制 QQ 群号 {0}，请在 QQ 中搜索加群。", "QQ 그룹 번호 {0}을(를) 복사했습니다. QQ에서 검색해 참여하세요."],
+  "menu.qqNumber": ["QQ group number: {0}. Search for it in QQ to join.", "QQ 群号：{0}，请在 QQ 中搜索加群。", "QQ 그룹 번호: {0}. QQ에서 검색해 참여하세요."],
   "menu.exit": ["Exit game", "退出游戏", "게임 종료"],
   "menu.continue": ["Continue", "继续游戏", "이어하기"],
   "menu.version": ["v{0}", "v{0}", "v{0}"],
@@ -144,15 +147,22 @@ const STRINGS = {
   "menu.cuts": ["Cuts", "过场镜头", "컷 장면"],
   "menu.replays": ["Replays", "回放", "리플레이"],
   // ---- the cuts viewer's own column. Each cut is named by what it shows, so
-  // a recording session can be talked about; `cuts.<id>` matches `REEL`.
+  // a recording session can be talked about; `cuts.<id>` matches `REEL` and
+  // `MORE_CUTS` (menuCuts.ts), in the order the viewer lists them.
   "cuts.reel": ["Reel", "镜头列表", "릴"],
   "cuts.flank": ["Flank Assault", "侧翼突击", "측면 강습"],
   "cuts.sea": ["Sea Battle", "海战", "해전"],
+  "cuts.winter": ["Winter Line", "冬季防线", "겨울 방어선"],
+  "cuts.raid": ["Air Raid", "空袭", "공습"],
+  "cuts.landing": ["Beachhead", "抢滩登陆", "교두보"],
   "cuts.rockets": ["Rocket Storm", "火箭洗地", "로켓 폭풍"],
   "cuts.home": ["Home Front", "大后方", "후방"],
   "cuts.nuke": ["Nuclear Strike", "核打击", "핵 공격"],
+  // ---- the cuts the menu never loops, each showing what the reel has no room for
+  "cuts.more": ["Extras", "额外镜头", "추가 컷"],
   "cuts.airlift": ["Airlift", "空运登陆", "공수 작전"],
-  "cuts.raid": ["Air Raid", "空袭", "공습"],
+  "cuts.emp": ["Blackout", "断电突袭", "블랙아웃"],
+  "cuts.ice": ["Ice Road", "冰上补给线", "얼음 보급로"],
   // ---- and the raster test's, under a card of their own (`RASTER_CUTS` in
   // rasterCuts.ts): named by what they are for, so each row says what is in it
   "cuts.raster": ["Raster test", "光栅测试", "래스터 테스트"],
@@ -174,6 +184,12 @@ const STRINGS = {
   "cuts.pause": ["Hold the picture", "暂停画面", "화면 멈춤"],
   "cuts.resume": ["Let it run", "继续播放", "계속 재생"],
   "cuts.sky": ["Sky", "天空", "하늘"],
+  "cuts.ownSky": ["Scene's own sky", "场景自带天空", "장면 고유 하늘"],
+  "cuts.ownSkyTip": [
+    "Every cut under the weather and the hour it was written for. Touch the weather or the hour below and every cut is held under yours instead.",
+    "每个镜头都用它自己设定的天气与时刻。调整下方的天气或时刻后，所有镜头都改用你的设置。",
+    "각 컷을 원래 정해진 날씨와 시각으로 보여 줍니다. 아래의 날씨나 시각을 바꾸면 모든 컷에 그 설정이 적용됩니다."
+  ],
   "cuts.time": ["Hour", "时刻", "시각"],
   "cuts.timeTip": [
     "Where the sun is, from dawn through midnight. The sun is stopped while the viewer is open, so a cut stays under the light you framed it in.",
@@ -211,7 +227,8 @@ const STRINGS = {
   "common.back": ["Back", "返回", "뒤로"],
   "common.start": ["Start", "开始", "시작"],
   "common.cancel": ["Cancel", "取消", "취소"],
-  "common.ok": ["OK", "确定", "확인"],
+  "common.undo": ["Undo", "撤销", "실행 취소"],
+  "common.quit": ["Quit", "退出", "나가기"],
   "common.close": ["Close", "关闭", "닫기"],
   "common.done": ["Done", "完成", "완료"],
   "common.delete": ["Delete", "删除", "삭제"],
@@ -225,6 +242,10 @@ const STRINGS = {
   "common.player": ["Player", "玩家", "플레이어"],
   "common.confirmDelete": ["Delete this save?", "确定删除该存档？", "이 저장을 삭제할까요?"],
   "common.overwrite": ["Overwrite this slot?", "覆盖该存档位？", "이 슬롯을 덮어쓸까요?"],
+  // the plates the two questions above are asked on, and the answers that say what happens
+  "save.delete": ["Delete save", "删除存档", "저장 삭제"],
+  "save.overwriteTitle": ["Overwrite slot", "覆盖存档位", "슬롯 덮어쓰기"],
+  "save.overwrite": ["Overwrite", "覆盖", "덮어쓰기"],
   // ------------------------------------------------------------- save slots
   "save.auto": ["Autosave", "自动存档", "자동 저장"],
   "save.quick": ["Quicksave", "快速存档", "빠른 저장"],
@@ -274,6 +295,12 @@ const STRINGS = {
   "setup.rules": ["Game config", "对局设置", "게임 설정"],
   "setup.startMetal": ["Starting metal", "初始金属", "시작 금속"],
   "setup.fog": ["Fog of war", "战争迷雾", "전장의 안개"],
+  "setup.tech": ["Tech tree", "科技树", "기술 트리"],
+  "setup.tech.desc": [
+    "The War Lab: a doctrine for each side, the units and abilities it unlocks, and economy upgrades.",
+    "战争实验室：每方选择一种学说，以及它解锁的单位、技能和经济升级。",
+    "전쟁 연구소: 진영마다 교리를 고르고, 교리가 해금하는 유닛과 능력, 경제 향상을 연구합니다."
+  ],
   // ---- weather. The name is a word, the sentence beneath it is the whole
   // rule: what it takes off sight, and what it takes off speed.
   "setup.weather": ["Weather", "天气", "날씨"],
@@ -376,6 +403,17 @@ const STRINGS = {
   "mp.title": ["Multiplayer", "多人游戏", "멀티플레이어"],
   "mp.server": ["Server IP or address", "服务器 IP 或地址", "서버 IP 또는 주소"],
   "mp.name": ["Commander name", "指挥官名称", "사령관 이름"],
+  // the plate that asks for the name: once, the first time Multiplayer is
+  // pressed, and again with a door's reason when a server refuses the name
+  "mp.nameFirst.title": ["Your commander name", "你的指挥官名称", "사령관 이름"],
+  "mp.nameFirst.intro": [
+    "This is how other players see you on a server. Change it any time in Settings ▸ General.",
+    "其他玩家在服务器上会以此称呼你。随时可以在“设置 ▸ 常规”中修改。",
+    "서버에서 다른 플레이어에게 보이는 이름입니다. 언제든 설정 ▸ 일반에서 바꿀 수 있습니다."
+  ],
+  "mp.nameFirst.go": ["Continue", "继续", "계속"],
+  // under the name on the General page
+  "settings.commanderName.desc": ["How other players see you on a server.", "其他玩家在服务器上看到的你的名字。", "서버에서 다른 플레이어에게 보이는 이름입니다."],
   "mp.joinCode": ["Join code", "加入码", "참가 코드"],
   "mp.hostKey": ["Host key (host only)", "主机密钥（仅房主）", "호스트 키(호스트 전용)"],
   "mp.connect": ["Connect", "连接", "접속"],
@@ -416,6 +454,8 @@ const STRINGS = {
   "mp.notReady": ["Not ready", "取消准备", "준비 해제"],
   "mp.human": ["Human", "玩家", "플레이어"],
   "mp.ai": ["AI", "AI", "AI"],
+  // an AI seat named by its difficulty: {0} is Relaxed, Standard or Veteran
+  "mp.aiPersona": ["AI ({0})", "AI（{0}）", "AI ({0})"],
   "mp.closed": ["Closed", "关闭", "닫힘"],
   "mp.slot": ["Faction {0}", "阵营 {0}", "진영 {0}"],
   "mp.seatOpen": ["Open seat", "空位", "빈 자리"],
@@ -491,6 +531,7 @@ const STRINGS = {
   "mp.downloadSave": ["Download server save", "下载服务器存档", "서버 저장 다운로드"],
   "mp.returnLobby": ["Return everyone to lobby", "所有人返回大厅", "모두 로비로 돌려보내기"],
   // pressed from the lobby screen while a match is on without us: it ends that match
+  "mp.endMatch": ["End match", "结束对局", "대전 종료"],
   "mp.returnLobbyConfirm": [
     "End the match in progress and bring everyone back to the lobby?",
     "结束进行中的对局并让所有人返回大厅？",
@@ -600,11 +641,38 @@ const STRINGS = {
   "common.copy": ["Copy", "复制", "복사"],
   "mp.copied": ["Copied", "已复制", "복사됨"],
   "mp.chat": ["Lobby chat", "大厅聊天", "로비 채팅"],
+  // the same pane as a tab, on a folded screen (`addSetupTabs`): one word, since four tabs share a phone's column
+  "mp.chatTab": ["Chat", "聊天", "채팅"],
   "mp.chatEmpty": ["Nobody has said anything yet.", "还没有人说话。", "아직 아무도 말하지 않았습니다."],
   "mp.chatPlaceholder": ["Say something… (/t for team only)", "说点什么…（/t 仅队伍可见）", "메시지 입력… (/t 는 팀에게만)"],
   "mp.chatSend": ["Send", "发送", "보내기"],
   "chat.teamTag": ["[Team]", "[队伍]", "[팀]"],
+  // the console's channel switch, where the prompt stood (a desktop's chat line)
+  "chat.channel.all": ["To everyone. Click or press Tab to talk to your team", "发给所有人。点击或按 Tab 改为只发给队伍", "모두에게. 클릭하거나 Tab을 누르면 팀에게만"],
+  "chat.channel.team": ["To your team only. Click or press Tab to talk to everyone", "只发给队伍。点击或按 Tab 改为发给所有人", "팀에게만. 클릭하거나 Tab을 누르면 모두에게"],
   "mp.spectating": ["SPECTATING", "观战中", "관전 중"],
+  // the stands' board across the top of the map (ui/spectateBoard.ts)
+  "spec.faction": ["Faction", "阵营", "진영"],
+  "spec.h.metal": ["Metal", "金属", "금속"],
+  "spec.h.income": ["Income", "收入", "수입"],
+  "spec.h.army": ["Army", "军力", "병력"],
+  "spec.h.pop": ["Units", "单位", "유닛"],
+  "spec.h.tech": ["Tech", "科技", "기술"],
+  "spec.h.kills": ["Kills", "击毁", "격파"],
+  "spec.col.metal": ["Metal in the bank", "库存金属", "보유 금속"],
+  "spec.col.income": ["Metal mined a second", "每秒开采的金属", "초당 채굴 금속"],
+  "spec.col.army": ["What the army on the field cost, in metal", "场上军队的金属造价", "전장에 있는 병력의 금속 가치"],
+  "spec.col.pop": ["Units against the cap", "单位数 / 上限", "유닛 수 / 한도"],
+  "spec.col.tech": ["The highest level a production line stands at", "生产线的最高等级", "생산 라인의 최고 레벨"],
+  "spec.col.kills": ["Units and buildings destroyed", "击毁的单位与建筑", "격파한 유닛과 건물"],
+  "spec.seeingAll": ["Whole map", "全图视野", "전체 지도"],
+  "spec.seeingAs": ["Seeing as {0}", "{0} 的视野", "{0}의 시야"],
+  "spec.watchTip": ["See the field as this side does; again for the whole map", "以该方的视野观看；再点一次恢复全图", "이 진영의 시야로 보기, 다시 누르면 전체 지도"],
+  "spec.aiSeesAll": ["The built-in AI sees the whole map: its side has no view of its own to watch", "内置 AI 无视野限制：该方没有可供观看的视野", "내장 AI는 전체 지도를 봅니다: 이 진영에는 볼 수 있는 시야가 따로 없습니다"],
+  "spec.wholeMap": ["Whole map", "全图", "전체 지도"],
+  "spec.wholeMapTip": ["Back to the whole map", "恢复全图视野", "전체 지도로 돌아가기"],
+  "spec.fold": ["Fold the board", "收起面板", "패널 접기"],
+  "spec.unfold": ["Open the board", "展开面板", "패널 펼치기"],
   "mp.kicked": ["Removed from the match by the host.", "已被房主移出对局。", "호스트가 대전에서 내보냈습니다."],
   "mp.mapChosen": ["The host picks the map.", "由房主选择地图。", "지도는 호스트가 고릅니다."],
   "mp.tooManyFactions": ["This map holds {0} factions; close the rest.", "此地图最多 {0} 个阵营，请关闭其余席位。", "이 지도는 진영 {0}개까지입니다. 나머지를 닫으세요."],
@@ -615,9 +683,10 @@ const STRINGS = {
     "진영 {0}에 아무도 없습니다. 플레이어를 앉히거나 AI 또는 닫힘으로 바꾸세요."
   ],
   "mp.needReady": ["Waiting for {0} to press Ready.", "等待 {0} 点击准备。", "{0}이(가) 준비를 누르기를 기다리는 중입니다."],
-  // the connect modal in a store shell: a game hosted on this device, and
-  // the games announced on the local network
+  // the Browse page's two sections: the games announced on the local network
+  // (a section an app fills; a browser gets the signpost below), the public servers
   "mp.tabLan": ["LAN", "局域网", "LAN"],
+  "mp.browsePublic": ["Public", "公开服务器", "공개 서버"],
   // a browser sees the LAN page too, as a signpost: the network is the app's to see
   "mp.lanBrowserIntro": [
     "Games hosted on this network can only be found from the app. The desktop version scans for them and joins with one click, and hosts games of its own, as do the phone apps.",
@@ -645,6 +714,67 @@ const STRINGS = {
   "mp.phase.playing": ["Match in progress", "对局进行中", "대전 진행 중"],
   "mp.phase.paused": ["Paused", "已暂停", "일시 정지"],
   "mp.phase.ended": ["Match over", "对局结束", "대전 종료"],
+  // ---- the Browse page: the public servers (net/servers.ts)
+  "mp.tabBrowse": ["Browse", "浏览", "찾아보기"],
+  "mp.browseIntro": [
+    "Public servers, run by Steel Tide and by friends of the game, open to everyone. Pick one to join. Strangers meet here, so keep it kind: the room removes players for language, and the seated can vote one out.",
+    "由《钢铁浪潮》官方和游戏的朋友们运营、向所有人开放的服务器。选择一个加入。这里会遇到陌生人，请友善相待：言语不当会被移出，就座玩家也可以投票移出他人。",
+    "Steel Tide와 게임의 친구들이 운영하는 모두에게 열린 서버입니다. 하나를 골라 참가하세요. 낯선 사람을 만나는 곳이니 예의를 지켜 주세요. 욕설은 퇴장 사유이며 착석한 플레이어는 투표로 퇴장시킬 수 있습니다."
+  ],
+  "mp.browseLoading": ["Looking up the servers…", "正在查找服务器…", "서버를 찾는 중…"],
+  "mp.browseEmpty": ["No public server is listed right now.", "目前没有公开的服务器。", "지금은 공개 서버가 없습니다."],
+  "mp.browseOffline": [
+    "The list could not be fetched; these are the servers this version knows.",
+    "无法获取列表，以下是此版本内置的服务器。",
+    "목록을 가져올 수 없어 이 버전에 내장된 서버를 표시합니다."
+  ],
+  "mp.browseRefresh": ["Refresh", "刷新", "새로 고침"],
+  // {0} seated of {1} seats the match will have
+  "mp.browseSeats": ["{0}/{1} seats", "{0}/{1} 席", "좌석 {0}/{1}"],
+  "mp.browseUnreachable": ["Unreachable", "无法连接", "연결 불가"],
+  "mp.browseFull": ["Full", "已满", "만석"],
+  "mp.browseVersion": [
+    "This server runs another version of the game; update to join it.",
+    "此服务器运行的是其他版本，请更新后再加入。",
+    "이 서버는 다른 버전의 게임을 실행합니다. 업데이트 후 참가하세요."
+  ],
+  // ---- conduct: mute, report, the vote, and what the room says (mp.notice.*)
+  "mp.mute": ["Mute", "屏蔽", "음소거"],
+  "mp.unmute": ["Unmute", "取消屏蔽", "음소거 해제"],
+  "mp.muted": ["{0} is muted: their chat is hidden on this device.", "已屏蔽 {0}：其聊天在本设备上不再显示。", "{0}님을 음소거했습니다. 이 기기에서는 채팅이 표시되지 않습니다."],
+  "mp.report": ["Report…", "举报…", "신고…"],
+  "mp.reportTitle": ["Report {0}", "举报 {0}", "{0} 신고"],
+  "mp.reportIntro": [
+    "The server's admin reads reports together with the last lines of chat. Nothing happens to the player on the spot.",
+    "服务器管理员会连同最近的聊天记录一起查看举报。举报不会立即对该玩家产生影响。",
+    "서버 관리자가 최근 채팅 내용과 함께 신고를 확인합니다. 신고해도 그 자리에서 바로 조치되지는 않습니다."
+  ],
+  "mp.reportReason": ["What happened", "发生了什么", "무슨 일이 있었나요"],
+  "mp.reason.language": ["Language", "言语不当", "욕설"],
+  "mp.reason.harassment": ["Harassment", "骚扰", "괴롭힘"],
+  "mp.reason.griefing": ["Griefing or blocking the room", "搅局或阻碍开局", "방해 행위"],
+  "mp.reason.cheating": ["Cheating", "作弊", "치팅"],
+  "mp.reason.other": ["Something else", "其他", "기타"],
+  "mp.reportNote": ["Anything else (optional)", "补充说明（可选）", "추가 설명(선택)"],
+  "mp.reportSend": ["Send report", "发送举报", "신고 보내기"],
+  "mp.voteKick": ["Vote to remove", "投票移出", "퇴장 투표"],
+  "mp.voteKickConfirm": [
+    "Call a vote to remove {0}? A majority of the seated players carries it, and they are kept out for a while.",
+    "发起投票移出 {0}？多数就座玩家同意即通过，被移出者一段时间内无法再加入。",
+    "{0} 퇴장 투표를 시작할까요? 착석한 플레이어 과반이 찬성하면 통과되며, 한동안 다시 들어올 수 없습니다."
+  ],
+  "mp.notice.voteCalled": ["{0} called a vote to remove {1} ({2}/{3})", "{0} 发起投票移出 {1}（{2}/{3}）", "{0}님이 {1} 퇴장 투표를 시작했습니다 ({2}/{3})"],
+  "mp.notice.votePassed": ["{0} was removed by vote.", "{0} 已被投票移出。", "{0}님이 투표로 퇴장되었습니다."],
+  "mp.notice.languageKick": ["{0} was removed for language.", "{0} 因言语不当被移出。", "{0}님이 욕설로 퇴장되었습니다."],
+  "mp.notice.afk": ["{0} was moved to the stands: away while the room waited.", "{0} 长时间未响应，已移至观众席。", "{0}님이 자리를 비워 관전석으로 이동되었습니다."],
+  "mp.notice.say": ["Server: {0}", "服务器：{0}", "서버: {0}"],
+  "mp.notice.reported": ["Your report on {0} was sent to the server's admin.", "对 {0} 的举报已发送给服务器管理员。", "{0}님에 대한 신고가 서버 관리자에게 전달되었습니다."],
+  // a public room did not relay a line; {0} is how many more end in removal
+  "mp.chatRefused": ["That line was not sent: keep it civil. {0} more and you are out.", "该消息未发送：请保持文明。再有 {0} 次将被移出。", "메시지가 전송되지 않았습니다. 예의를 지켜 주세요. {0}번 더 반복하면 퇴장됩니다."],
+  "mp.removedLanguage": ["Removed from the server for language.", "因言语不当被移出服务器。", "욕설로 서버에서 퇴장되었습니다."],
+  "mp.removedVote": ["Removed from the server by a vote of the players.", "经玩家投票被移出服务器。", "플레이어 투표로 서버에서 퇴장되었습니다."],
+  "mp.removedBanned": ["Removed from the server by its admin.", "已被服务器管理员移出。", "서버 관리자가 퇴장시켰습니다."],
+  "mp.nameRefused": ["That name is not allowed here. Choose another.", "此名称不可用，请换一个。", "이 이름은 사용할 수 없습니다. 다른 이름을 고르세요."],
   "mp.hostLanIntro": [
     "Host a game on this device. Players on your network find it under LAN; anyone else joins with the address the lobby shows.",
     "在此设备上架设对局。同一网络的玩家可在“局域网”页找到它；其他人用大厅中显示的地址加入。",
@@ -673,27 +803,27 @@ const STRINGS = {
   "map.riftValley.style": ["Mountain ridges channel every advance into a handful of passes.", "山脊把每一次推进都逼进少数几处隘口。", "산줄기가 모든 진격을 몇 개의 고개로 몰아넣습니다."],
   "map.burnoutHighway": ["Burnout Highway", "燃速公路", "번아웃 하이웨이"],
   "map.burnoutHighway.style": [
-    "A trunk road straight across open ground, with a ring road round it.",
-    "一条笔直横穿旷野的干道，外面绕着一圈环路。",
-    "탁 트인 땅을 곧게 가로지르는 간선 도로와, 그 둘레를 도는 순환 도로."
+    "A four-lane highway straight across open country: a town astride it at either end, a burnt-out crossroads in the middle, and a ring road round it past a village and a wood.",
+    "一条四车道公路笔直横穿旷野：两端各有一座城镇跨路而建，中央是烧毁的十字路口，外围一圈环路途经村庄和树林。",
+    "탁 트인 들판을 곧게 가로지르는 4차선 고속도로: 양 끝에는 도로를 끼고 선 마을, 한가운데에는 불탄 교차로, 그리고 그 둘레를 돌며 마을과 숲을 지나는 순환 도로."
   ],
-  "map.blackMarsh": ["Black Marsh", "黑泽", "검은 늪"],
-  "map.blackMarsh.style": [
-    "Two dry homelands in a marsh, a causeway between them, and two channels of open water cut across it.",
-    "沼泽中的两座旱地家园，一条堤道相连，两道水道横切其间。",
-    "습지 속의 마른 본거지 둘, 그 사이의 둑길, 그리고 그것을 가로지르는 물길 둘."
+  "map.pripet": ["Pripet Marshes", "普里皮亚季沼泽", "프리퍄트 습지"],
+  "map.pripet.style": [
+    "The bog on the Pripyat: causeways across marsh and pine islands, one bridge in the river town at the centre, and a ford upstream on each side for the flank.",
+    "普里皮亚季河畔的大沼泽：堤道穿过沼地与松林岛，中央河镇里只有一座桥，两侧上游各有一处浅滩可供迂回。",
+    "프리퍄트 강의 늪지대: 습지와 소나무 섬을 가로지르는 둑길, 한가운데 강변 마을의 유일한 다리, 그리고 양쪽 상류에 우회용 여울이 하나씩."
   ],
-  "map.frostline": ["Frostline", "冻土战线", "프로스트라인"],
-  "map.frostline.style": [
-    "A frozen front: one long ridge with three passes through it, and long firing lanes over the snow.",
-    "冻土战线：一道长长的山脊上开着三处隘口，雪地上射界开阔。",
-    "얼어붙은 전선: 고개 셋이 뚫린 긴 능선 하나, 그리고 눈 위의 긴 사선."
+  "map.ladoga": ["Lake Ladoga", "拉多加湖", "라도가 호"],
+  "map.ladoga.style": [
+    "The lake frozen in the winter of the siege: an ice road over the open ice between two taiga shores, open water round the island in the middle, and the long way round by Shlisselburg.",
+    "围城之冬冰封的湖面：两岸泰加林之间，一条冰上道路横越开阔冰面，湖心岛周围的水面没有封冻，陆路则要绕经施吕瑟尔堡。",
+    "포위전의 겨울에 얼어붙은 호수: 타이가 숲 두 기슭 사이 트인 빙판을 가로지르는 얼음길, 호수 한가운데 섬 둘레의 얼지 않은 물, 그리고 실리셀부르크를 돌아가는 먼 길."
   ],
   "map.shatteredCity": ["Shattered City", "破碎城区", "부서진 도시"],
   "map.shatteredCity.style": [
-    "A ruined town on a tight street grid, rubble between the streets.",
-    "一座废墟小城：紧凑的街道网格，街道之间尽是瓦砾。",
-    "촘촘한 격자 도로 위의 폐허가 된 도시, 거리 사이는 잔해뿐입니다."
+    "A city on a river, fought street by street: three bridges, a flattened centre between them, and rubble lanes the shelling cut through the blocks.",
+    "一座临河的城市，逐街争夺：三座桥，桥间被夷平的市中心，以及炮火在街区中轰出的瓦砾通道。",
+    "강을 낀 도시, 거리마다 벌어지는 싸움: 다리 셋, 그 사이의 평평해진 도심, 그리고 포격이 블록 사이로 뚫어 놓은 잔해 통로."
   ],
   "map.caldera": ["Caldera Crown", "火山王冠", "칼데라 크라운"],
   "map.caldera.style": [
@@ -701,17 +831,23 @@ const STRINGS = {
     "灰原上的一座火山：三层崖壁台地直上火口缘，火口内的熔岩湖周围有矿脉，四条熔岩流沿山坡而下，每条上各有一道堤道。",
     "잿빛 평원 위의 화산: 절벽으로 둘러싸인 세 단의 대지가 분화구 가장자리까지 오르고, 그 안 용암 호수 둘레에 광석이 있으며, 네 줄기 용암류가 산비탈을 타고 내려오고 그 위마다 둑길이 하나씩 놓여 있습니다."
   ],
-  "map.leviathanStrait": ["Leviathan Strait", "巨舰海峡", "리바이어던 해협"],
-  "map.leviathanStrait.style": [
-    "Two narrow homelands across a strait, the ore on the islets between them, and reefs scattered through the water.",
-    "海峡两岸各一座狭长家园，矿脉在其间的小岛上，礁石散布水中。",
-    "해협을 사이에 둔 좁은 본거지 둘, 그 사이 작은 섬들의 광석, 바다 곳곳에 흩어진 암초."
+  "map.hormuz": ["Strait of Hormuz", "霍尔木兹海峡", "호르무즈 해협"],
+  "map.hormuz.style": [
+    "Two desert coasts under bare mountains, and the strait between: an oilfield and a port city on each, a long island behind a mangrove channel, and reefs that squeeze the fleets into the deep water.",
+    "荒山下的两道沙漠海岸隔峡相望：两岸各有油田与港城，一座长岛隔着红树林水道，暗礁把舰队逼进中央深水航道。",
+    "민둥산 아래 사막 해안 둘과 그 사이의 해협: 양쪽마다 유전과 항구 도시, 맹그로브 수로 너머의 긴 섬, 그리고 함대를 깊은 물로 몰아넣는 암초."
   ],
-  "map.sixCrowns": ["Six Crowns", "六冠", "여섯 왕관"],
-  "map.sixCrowns.style": [
-    "Six homelands ring a lake, a mountain spoke with a single pass between each pair of neighbours, and the ore on the shore.",
-    "六座家园环绕中央湖泊，相邻两家之间各有一道仅留单一隘口的山脊，矿脉在湖岸上。",
-    "여섯 본거지가 호수를 둘러싸고, 이웃한 두 곳 사이마다 고개 하나만 남긴 산줄기가 서 있으며, 광석은 호숫가에 있습니다."
+  "map.kazungula": ["Kazungula", "卡宗古拉", "카중굴라"],
+  "map.kazungula.style": [
+    "Savanna where the Chobe meets the Zambezi: three banks between three rivers, a bridge by the confluence and a ford upstream between every two, and a sandbar island in the pool.",
+    "乔贝河汇入赞比西河处的稀树草原：三条河隔出三片河岸，每两岸之间在汇流处附近有一座桥、上游有一处浅滩，汇流潭中还有一座沙洲岛。",
+    "초베 강이 잠베지 강과 만나는 사바나: 세 강 사이의 세 기슭, 두 기슭 사이마다 합류점 근처의 다리 하나와 상류의 여울 하나, 그리고 합류 웅덩이의 모래톱 섬."
+  ],
+  "map.lucerne": ["Lake Lucerne", "琉森湖", "루체른 호"],
+  "map.lucerne.style": [
+    "Six valleys round an Alpine lake: a town and a delta at the head of each arm, a ridge with one pass between every two valleys, and glaciers under the peaks.",
+    "高山湖畔的六条山谷：每道湖湾尽头有一座小镇和一片三角洲，每两条山谷之间隔着一道只有一处山口的山脊，峰下是冰川。",
+    "알프스 호수를 둘러싼 여섯 골짜기: 호수 갈래 끝마다 마을과 삼각주, 골짜기 둘 사이마다 고개 하나 난 능선, 그리고 봉우리 아래의 빙하."
   ],
   "map.solomonIslands": ["Solomon Islands", "所罗门群岛", "솔로몬 제도"],
   "map.solomonIslands.style": [
@@ -925,7 +1061,6 @@ const STRINGS = {
   // ------------------------------------------------------------- game HUD
   "hud.metal": ["Metal", "金属", "금속"],
   "hud.power": ["Power", "电力", "전력"],
-  "hud.pop": ["Units", "单位", "유닛"],
   "hud.income": ["+{0}/s", "+{0}/秒", "+{0}/초"],
   // the economy strip's breakdown popover
   "hud.economy": ["Economy", "经济", "경제"],
@@ -969,6 +1104,7 @@ const STRINGS = {
   "hud.queueReorder": ["Drag to reorder", "拖动调整顺序", "끌어서 순서 변경"],
   "hud.kills": ["Kills: {0}", "击杀：{0}", "격파: {0}"],
   "hud.rank": ["Rank {0}: {1}", "等级 {0}：{1}", "계급 {0}: {1}"],
+  "hud.aggressiveTip": ["On the aggressive stance: it hunts the enemy on its own. Any order stands it down.", "处于主动出击状态：它会自行搜寻并攻击敌人。下达任意命令即可取消。", "적극 교전 상태: 스스로 적을 찾아 공격합니다. 아무 명령이나 내리면 해제됩니다."],
   "hud.highGround": ["High ground", "高地", "고지"],
   "hud.highGroundTip": [
     "High ground: unseen from below, and shots from below do {0}% less. Aircraft and radar see it all the same.",
@@ -993,21 +1129,12 @@ const STRINGS = {
   "hud.nukeEmpty": ["Empty warhead slot", "空核弹槽位", "빈 핵탄두 슬롯"],
   "hud.watchHint": ["Select a faction's HQ to watch its economy", "选择某阵营的指挥中心以查看其经济", "진영의 사령부를 선택하면 그 경제를 볼 수 있습니다"],
   "hud.battleMap": ["Battle map", "战场地图", "전장 지도"],
-  "hud.mapRoster": ["Forces", "兵力", "병력"],
-  "hud.mapRosterSearch": ["Search units…", "搜索单位…", "유닛 검색…"],
-  "hud.mapRosterEmpty": ["Nothing in sight.", "视野内没有单位。", "시야에 아무것도 없습니다."],
-  "hud.mapRosterNoMatch": ['No unit matches "{0}".', "没有匹配“{0}”的单位。", '"{0}"에 맞는 유닛이 없습니다.'],
-  "hud.mapSpot": ["{0}: click to spot on the map, again to clear", "{0}：点击在地图上标出，再次点击取消", "{0}: 클릭하면 지도에 표시, 다시 클릭하면 해제"],
-  // the battle map's legend: what each mark is (the headquarters' line is `unit.hq.name`)
-  "hud.legendBuilding": ["Building", "建筑", "건물"],
-  "hud.legendGround": ["Ground unit", "地面单位", "지상 유닛"],
-  "hud.legendAir": ["Aircraft", "飞机", "항공기"],
-  "hud.legendNaval": ["Ship", "舰船", "함선"],
-  "hud.legendOre": ["Metal deposit", "金属矿脉", "금속 광맥"],
-  "hud.legendAlarm": ["Under attack", "遭到攻击", "공격받는 중"],
   "hud.chat": ["Chat", "聊天", "채팅"],
   "hud.chatEmpty": ["Press Enter to say something.", "按 Enter 发言。", "Enter를 눌러 말하세요."],
   "hud.chatPlaceholder": ["Message… (/t = team)", "输入消息…（/t = 队伍）", "메시지… (/t = 팀)"],
+  // the desktop's chat box, which is the console too: a slash makes a line a command
+  "hud.talk.placeholder": ["Message (/t = team), or /command", "输入消息（/t = 队伍），或以 / 开头输入命令", "메시지 (/t = 팀), 명령은 /로 시작"],
+  "hud.talk.placeholderSolo": ["Type /help for the commands", "输入 /help 查看命令", "/help를 입력하면 명령 목록"],
   "hud.groups": ["Army Groups", "编队", "부대 편성"],
   "hud.groupsAdd": ["Add to Group", "加入编队", "부대에 추가"],
   "hud.groupsHint": ["Select units, then put them in a group.", "选中单位后将其加入编队。", "유닛을 선택한 뒤 부대에 넣으세요."],
@@ -1019,6 +1146,16 @@ const STRINGS = {
   "hud.groupDisband": ["Disband group {0}", "解散编队 {0}", "부대 {0} 해산"],
   "hud.groupAdd": ["Add the selection to group {0}", "将所选单位加入编队 {0}", "선택한 유닛을 부대 {0}에 추가"],
   "hud.groupRemove": ["Take the selection out of group {0}", "将所选单位移出编队 {0}", "선택한 유닛을 부대 {0}에서 제외"],
+  // the work panel: everything of ours at work while nothing is held
+  "hud.work": ["In Progress", "进行中", "진행 중"],
+  "hud.work.produce": ["Producing {0}", "正在生产{0}", "{0} 생산 중"],
+  "hud.work.produceMore": ["Producing {0}, {1} more queued", "正在生产{0}，还有 {1} 个排队", "{0} 생산 중, 대기 {1}개"],
+  "hud.work.build": ["Building {0}", "正在建造{0}", "{0} 건설 중"],
+  "hud.work.upgrade": ["Upgrading to {0}", "正在升级为{0}", "{0}(으)로 업그레이드 중"],
+  "hud.work.research": ["Researching {0}", "正在研究{0}", "{0} 연구 중"],
+  "hud.work.researchMore": ["Researching {0}, {1} more queued", "正在研究{0}，还有 {1} 项排队", "{0} 연구 중, 대기 {1}개"],
+  "hud.work.fabricate": ["Fabricating {0}", "正在制造{0}", "{0} 제조 중"],
+  "hud.work.fabricateMore": ["Fabricating {0}, {1} more queued", "正在制造{0}，还有 {1} 枚排队", "{0} 제조 중, 대기 {1}개"],
   // ------------------------------------------------------- quick selection
   "quick.title": ["Quick selection", "快速选择", "빠른 선택"],
   "quick.land": ["LAND", "陆军", "지상"],
@@ -1029,8 +1166,26 @@ const STRINGS = {
   "quick.factories": ["FACTORIES", "战车工厂", "전차 공장"],
   "quick.airbases": ["AIRBASES", "空军基地", "공군 기지"],
   "quick.navyards": ["NAVAL YARDS", "造船厂", "조선소"],
-  // a line slice with nothing behind it: the hub's reason under the greyed name
+  // the three branches of the dial's first level
+  "quick.factory": ["PRODUCTION", "生产建筑", "생산 건물"],
+  "quick.unit": ["FORCES", "部队", "부대"],
+  "quick.ping": ["MARKS", "标记", "표식"],
+  // the marks themselves (`game/pins.ts`)
+  "quick.ping-attack": ["ATTACK HERE", "攻击此处", "이곳을 공격"],
+  "quick.ping-defend": ["DEFEND HERE", "防守此处", "이곳을 방어"],
+  "quick.ping-watch": ["WATCH OUT", "注意此处", "이곳을 주의"],
+  // a slice with nothing behind it: the hub's reason under the greyed name
   "quick.none": ["None standing", "尚无此建筑", "건설된 것 없음"],
+  // what a branch slice does, and the way back out of an opened one
+  "quick.open": ["Move out to open", "向外展开", "바깥으로 펼치기"],
+  "quick.back": ["Centre to go back", "回中心返回", "중앙에서 뒤로"],
+  // ------------------------------------------------------------ map marks
+  // what a mark is called where it is named in words rather than drawn:
+  // the battle map's legend, the feed, a screen reader
+  "pin.attack": ["Attack here", "攻击此处", "이곳을 공격"],
+  "pin.defend": ["Defend here", "防守此处", "이곳을 방어"],
+  "pin.watch": ["Watch out", "注意此处", "이곳을 주의"],
+  "pin.left": ["{0} left a mark: {1}", "{0} 留下标记：{1}", "{0}님이 표식을 남겼습니다: {1}"],
   // ------------------------------------------------------------- commands
   "cmd.repair": ["Repair", "维修", "수리"],
   "cmd.move": ["Move", "移动", "이동"],
@@ -1039,6 +1194,10 @@ const STRINGS = {
   "cmd.stop": ["Stop", "停止", "정지"],
   "cmd.hold": ["Hold position", "原地驻守", "위치 사수"],
   "cmd.direct": ["Take control", "直接操控", "직접 조종"],
+  "cmd.aggressive": ["Aggressive stance", "主动出击", "적극 교전"],
+  "cmd.aggressiveOff": ["Stand down", "取消出击", "교전 해제"],
+  "cmd.ability": ["Use ability", "使用技能", "능력 사용"],
+  "cmd.research": ["Research", "研究", "연구"],
   "cmd.build": ["Build", "建造", "건설"],
   "cmd.sell": ["Sell", "出售", "판매"],
   "cmd.upgrade": ["Upgrade", "升级", "업그레이드"],
@@ -1053,6 +1212,10 @@ const STRINGS = {
   "alert.underAttack": ["{0} under attack!", "{0} 遭到攻击！", "{0}이(가) 공격받고 있습니다!"],
   "alert.unitsUnderAttack": ["{0} under attack!", "{0} 遭到攻击！", "{0}이(가) 공격받고 있습니다!"],
   "alert.lowPower": ["Power shortage: work and movement slowed", "电力短缺：生产与移动减速", "전력 부족: 작업과 이동이 느려집니다"],
+  // the stands' wording of a faction's own news: {0} is the faction
+  "alert.lowPowerBy": ["{0} is short of power", "{0} 电力短缺", "{0} 전력 부족"],
+  "alert.powerRestoredBy": ["{0} has power again", "{0} 电力已恢复", "{0} 전력 복구"],
+  "alert.lastStandBy": ["{0} has no base left: its forces fight on for {1}s", "{0} 已失去基地，部队将再坚持 {1} 秒", "{0}의 기지가 없습니다. 부대는 {1}초 더 싸웁니다"],
   "alert.powerRestored": ["Power restored", "电力已恢复", "전력 복구"],
   "alert.metalStalled": ["Out of metal: work paused", "金属耗尽：工程暂停", "금속 소진: 작업 중단"],
   "alert.noPop": ["Unit cap reached", "已达人口上限", "유닛 상한 도달"],
@@ -1066,10 +1229,15 @@ const STRINGS = {
   "alert.sellConfirmTap": ["Tap {0} again to sell {1} (+{2})", "再点一次“{0}”出售{1}（+{2}）", "{0}을(를) 한 번 더 누르면 {1}을(를) 판매 (+{2})"],
   "alert.sellConfirmTapMany": ["Tap {0} again to sell {1} buildings (+{2})", "再点一次“{0}”出售 {1} 座建筑（+{2}）", "{0}을(를) 한 번 더 누르면 건물 {1}개를 판매 (+{2})"],
   "alert.nukeReady": ["Nuclear warhead ready", "核弹头已就绪", "핵탄두 준비 완료"],
+  "alert.nukeReadyBy": ["{0} has a nuclear warhead ready", "{0} 的核弹头已就绪", "{0}의 핵탄두 준비 완료"],
   "alert.nukeLaunched": ["Nuclear launch detected", "检测到核弹发射", "핵 발사 감지"],
+  // the same launch told to the stands, who may know who fired: {0} is the faction
+  "alert.nukeLaunchedBy": ["{0} launched a nuclear missile", "{0} 发射了核弹", "{0}이(가) 핵미사일을 발사했습니다"],
   "alert.nukeIntercepted": ["Nuclear warhead shot down", "核弹头已被击落", "핵탄두 격추됨"],
   "alert.empReady": ["EMP warhead ready", "电磁脉冲弹头已就绪", "EMP 탄두 준비 완료"],
+  "alert.empReadyBy": ["{0} has an EMP warhead ready", "{0} 的电磁脉冲弹头已就绪", "{0}의 EMP 탄두 준비 완료"],
   "alert.empLaunched": ["EMP launch detected", "检测到电磁脉冲弹发射", "EMP 발사 감지"],
+  "alert.empLaunchedBy": ["{0} launched an EMP missile", "{0} 发射了电磁脉冲弹", "{0}이(가) EMP 미사일을 발사했습니다"],
   "alert.promoted": ["{0} promoted to {1}", "{0} 晋升为{1}", "{0}이(가) {1}(으)로 진급"],
   "alert.respawned": ["{0} has been given a new headquarters", "{0} 获得了新的总部", "{0}이(가) 새 사령부를 받았습니다"],
   "alert.handover": ["{0} is now under AI command", "{0} 已交由 AI 指挥", "{0}이(가) 이제 AI 지휘를 받습니다"],
@@ -1092,6 +1260,12 @@ const STRINGS = {
   "alert.playerSurrendered": ["{0} has surrendered", "{0} 已投降", "{0}이(가) 항복했습니다"],
   "alert.cannotBuildHere": ["Cannot build here", "无法在此建造", "여기에는 지을 수 없습니다"],
   "alert.farFromHq": ["Too far from a friendly Headquarters to build here", "离己方总部太远，无法在此建造", "아군 사령부에서 너무 멀어 여기에는 지을 수 없습니다"],
+  "alert.onlyOne": ["Only one of these per faction", "每个阵营只能拥有一座", "진영마다 하나만 지을 수 있습니다"],
+  // a unit a faction may hold only so many of (`UnitDef.limit`, the Hornet): {0} out now, counting those queued, of {1}
+  "hud.limit": ["{0} of {1} in service", "在役 {0}/{1}", "운용 중 {0}/{1}"],
+  "hud.atLimit": ["At most {0} per faction: spend one first", "每个阵营最多 {0} 架：先用掉一架", "진영당 최대 {0}대: 먼저 한 대를 쓰세요"],
+  "alert.researchDone": ["Research complete: {0}", "研究完成：{0}", "연구 완료: {0}"],
+  "alert.doctrineChosen": ["{0} adopted the {1}", "{0}采用了{1}", "{0}이(가) {1}을(를) 채택했습니다"],
   "alert.buildUnreachable": ["Builder cannot reach that site", "工程车无法抵达该工地", "공병차가 그 부지에 닿을 수 없습니다"],
   "alert.unloadNoGround": ["{0} cannot unload here: no open ground within reach", "{0}无法在此卸载：附近没有可用的地面", "{0}이(가) 여기서 하차시킬 수 없습니다: 닿는 범위에 빈 지면이 없습니다"],
   "alert.notEnoughMetal": [
@@ -1149,6 +1323,27 @@ const STRINGS = {
   "end.buildingsLost": ["Buildings lost", "损失建筑", "잃은 건물"],
   "end.buildingsKilled": ["Buildings destroyed", "摧毁建筑", "파괴한 건물"],
   "end.metalMined": ["Metal mined", "开采金属", "채굴한 금속"],
+  // ---- the ranking the plate ends on (`game/ranking.ts`, `ui/ranking.ts`)
+  "rank.faction": ["Faction", "阵营", "진영"],
+  "rank.kills": ["Killed", "击毁", "격파"],
+  "rank.losses": ["Lost", "损失", "손실"],
+  "rank.kd": ["K/D", "击损比", "격파/손실"],
+  "rank.built": ["Built", "建造", "생산"],
+  "rank.mined": ["Mined", "开采", "채굴"],
+  "rank.spent": ["Spent", "支出", "지출"],
+  // a seat that destroyed things and lost nothing: not an infinite ratio, a fact
+  "rank.flawless": ["Flawless", "无损", "무손실"],
+  // the accolades, one figure each, handed to whoever has the most of it
+  "rank.awardedTo": ["{0} · {1}", "{0} · {1}", "{0} · {1}"],
+  "rank.mostKills": ["Top gun", "击毁之王", "최다 격파"],
+  "rank.mostRazed": ["Wrecking ball", "拆迁大队", "건물 파괴왕"],
+  "rank.richest": ["Quartermaster", "后勤总管", "보급의 달인"],
+  "rank.busiest": ["Production line", "生产线", "생산 라인"],
+  "rank.cleanest": ["Hardest to kill", "损失最少", "최소 손실"],
+  "rank.veterans": ["Veteran corps", "精锐之师", "정예 부대"],
+  "rank.strategist": ["Strategic command", "战略司令", "전략 사령부"],
+  "rank.shield": ["Shield of the realm", "护国之盾", "왕국의 방패"],
+  "rank.ownGoal": ["Friendly fire", "误伤友军", "아군 오사"],
   "end.nextMission": ["Next mission", "下一关", "다음 임무"],
   "end.retry": ["Retry", "重试", "다시 시도"],
   "end.toMenu": ["Main menu", "主菜单", "메인 메뉴"],
@@ -1297,6 +1492,9 @@ const STRINGS = {
   "settings.voice": ["Voice", "语音音量", "음성"],
   "settings.voiceLang": ["Narrator language", "语音播报语言", "내레이터 언어"],
   "settings.voiceLang.auto": ["Same as interface", "与界面语言一致", "인터페이스와 같게"],
+  "settings.windowMode": ["Window mode", "显示模式", "화면 모드"],
+  "settings.windowMode.windowed": ["Windowed", "窗口", "창 모드"],
+  "settings.windowMode.fullscreen": ["Fullscreen", "全屏", "전체 화면"],
   "settings.edgeScroll": ["Edge scrolling", "屏幕边缘滚动", "가장자리 스크롤"],
   "settings.healthBars": ["Always show health bars", "始终显示血条", "체력 바 항상 표시"],
   "settings.showFps": ["Show FPS", "显示帧率", "FPS 표시"],
@@ -1307,9 +1505,6 @@ const STRINGS = {
   "settings.touchUi.desc": ["On-screen order buttons and tap-to-command.", "屏幕指令按钮与点触下令。", "화면 명령 버튼과 탭으로 명령하기."],
   "settings.portrait": ["Portrait play", "竖屏游玩", "세로 화면 플레이"],
   "settings.portrait.desc": ["Play with the phone held upright; the panels lie along the bottom.", "竖握手机游玩，面板排在屏幕底部。", "휴대폰을 세워 들고 플레이합니다. 패널은 화면 아래에 놓입니다."],
-  "settings.sidebarSide": ["Sidebar position", "侧边栏位置", "사이드바 위치"],
-  "settings.sidebarSide.left": ["Left", "左侧", "왼쪽"],
-  "settings.sidebarSide.right": ["Right", "右侧", "오른쪽"],
   // the picture: a preset is one row of knobs (core/graphics.ts), and touching a knob makes it custom
   "settings.graphicsPreset": ["Quality preset", "画质预设", "품질 프리셋"],
   "settings.graphicsPreset.high": ["High", "高", "높음"],
@@ -1338,8 +1533,10 @@ const STRINGS = {
   "settings.frameCap.display": ["Display", "跟随屏幕", "디스플레이"],
   "settings.wetReflections": ["Wet ground reflections", "地面湿滑倒影", "젖은 땅 반사"],
   "settings.rainRipples": ["Rain on water", "雨打水面", "수면의 빗방울"],
+  "settings.rainOutline": ["Rain on buildings", "雨打建筑", "건물의 빗방울"],
   "settings.snowCover": ["Snow settles", "积雪", "쌓이는 눈"],
   "settings.cloudShadows": ["Cloud shadows", "云影", "구름 그림자"],
+  "settings.buildingShadows": ["Building shadows", "建筑阴影", "건물 그림자"],
   "settings.chimneySmoke": ["Chimney smoke", "烟囱烟雾", "굴뚝 연기"],
   "settings.muzzleSmoke": ["Gun smoke", "炮口硝烟", "포연"],
   "settings.heatHaze": ["Heat haze over fire", "火焰热浪", "불길의 아지랑이"],
@@ -1367,6 +1564,7 @@ const STRINGS = {
   "mods.reloadTip": ["Read the mod again from where it came", "从来源重新读取模组", "모드를 원래 위치에서 다시 읽습니다"],
   "mods.update": ["Update to {0}", "更新到 {0}", "{0}(으)로 업데이트"],
   "mods.remove": ["Remove", "移除", "제거"],
+  "mods.removeTitle": ["Remove mod", "移除模组", "모드 제거"],
   "mods.removeConfirm": [
     "Remove this mod? Saves that use it will not load until it is back.",
     "移除该模组？使用它的存档在重新安装前无法读取。",
@@ -1452,9 +1650,15 @@ const STRINGS = {
   "guide.learnMore": ["Learn more on the website", "在官网了解更多", "웹사이트에서 더 알아보기"],
   "guide.learnMore.sub": ["The full guide: the economy, the counter web, the tech tree.", "完整指南：经济与电力、克制关系、科技树。", "전체 안내서: 경제, 상성 관계, 기술 트리."],
   "settings.devMode": ["Developer mode", "开发者模式", "개발자 모드"],
-  "settings.grid": ["Show grid", "显示网格", "격자 표시"],
+  "settings.grid": ["Always show grid", "始终显示网格", "항상 격자 표시"],
+  "settings.placeGrid": ["Show grid when building", "建造时显示网格", "건설 시 격자 표시"],
+  "settings.actionHints": ["Show action hints", "显示操作提示", "조작 안내 표시"],
   "settings.paths": ["Show paths", "显示寻路路径", "이동 경로 표시"],
   "hud.recording": ["Recording", "录制中", "녹화 중"],
+  "hud.hiddenHint": ["Interface hidden: {0} brings it back", "界面已隐藏：按 {0} 恢复", "인터페이스를 숨겼습니다. {0} 키로 다시 표시합니다"],
+  "shot.saved": ["Screenshot saved: {0}", "截图已保存：{0}", "스크린샷 저장됨: {0}"],
+  "shot.failed": ["The screenshot could not be saved", "截图保存失败", "스크린샷을 저장하지 못했습니다"],
+  "shot.unavailable": ["Screenshots cannot be kept in this app", "此应用无法保存截图", "이 앱에서는 스크린샷을 저장할 수 없습니다"],
   // ------------------------------------------------------------- match profiles (ui/profilesPage.ts)
   "settings.record": ["Record matches", "记录对局", "대전 기록"],
   "profiles.open": ["Open a file…", "打开文件…", "파일 열기…"],
@@ -1478,6 +1682,7 @@ const STRINGS = {
     "还没有录像。开启记录后，每场超过一分钟的对局都会保存在这里。",
     "녹화가 없습니다. 녹화를 켜면 1분이 넘는 모든 대전이 여기에 보관됩니다."
   ],
+  "replay.delete": ["Delete recording", "删除录像", "녹화 삭제"],
   "replay.deleteConfirm": ["Delete this recording?", "确定删除该录像？", "이 녹화를 삭제할까요?"],
   "replay.won": ["Won", "获胜", "승리"],
   "replay.lost": ["Lost", "战败", "패배"],
@@ -1500,16 +1705,16 @@ const STRINGS = {
   ],
   "replay.keyframes": ["keyframes", "个关键帧", "개 키프레임"],
   "replay.storage": ["{0} MB of {1} MB kept; past that the oldest go", "已用 {0} MB / {1} MB，超出后最旧的先删", "{0} MB / {1} MB 사용, 넘으면 오래된 것부터 삭제"],
-  "replay.storageQuota": ["the browser allows {0} MB here", "浏览器此处允许 {0} MB", "브라우저 허용량 {0} MB"],
+  "replay.storageQuota": ["this device allows {0} MB", "本设备允许 {0} MB", "이 기기 허용량 {0} MB"],
   "rec.evicted": [
     "{0} oldest recording(s) dropped to make room. Export the ones to keep under Developer Tools → Replays.",
     "为腾出空间已删除最旧的 {0} 段录像。请到 开发者工具 → 回放 导出想保留的。",
     "공간을 위해 가장 오래된 녹화 {0}개를 삭제했습니다. 남길 것은 개발자 도구 → 리플레이에서 내보내세요."
   ],
   "rec.notKept": [
-    "The recording could not be stored: the browser refused the space. It is kept only until this page closes: export it under Developer Tools → Replays.",
-    "录像无法保存：浏览器拒绝分配空间。它只保留到本页关闭：请到 开发者工具 → 回放 导出。",
-    "녹화를 저장할 수 없습니다. 브라우저가 공간을 거부했습니다. 이 페이지가 닫힐 때까지만 남으니 개발자 도구 → 리플레이에서 내보내세요."
+    "The recording could not be stored: this device refused the space. It is kept only until the game closes: export it under Developer Tools → Replays.",
+    "录像无法保存：本设备拒绝分配空间。它只保留到游戏关闭：请到 开发者工具 → 回放 导出。",
+    "녹화를 저장할 수 없습니다. 이 기기가 공간을 거부했습니다. 게임을 닫을 때까지만 남으니 개발자 도구 → 리플레이에서 내보내세요."
   ],
   "replay.copyReport": ["Copy report", "复制报告", "보고서 복사"],
   "replay.drag": ["Drag to move", "拖动移动", "드래그하여 이동"],
@@ -1521,9 +1726,9 @@ const STRINGS = {
   "replay.exportVideoLeft": ["about {0} left", "剩余约 {0}", "약 {0} 남음"],
   "replay.exportVideoDone": ["Video saved as {0}", "视频已保存为 {0}", "동영상을 {0}(으)로 저장했습니다"],
   "replay.exportVideoUnsupported": [
-    "This browser has no video encoder (WebCodecs); the export needs one.",
-    "此浏览器没有视频编码器（WebCodecs），无法导出。",
-    "이 브라우저에는 동영상 인코더(WebCodecs)가 없어 내보낼 수 없습니다."
+    "No video encoder (WebCodecs) is available here; the export needs one.",
+    "此处没有可用的视频编码器（WebCodecs），无法导出。",
+    "여기서는 동영상 인코더(WebCodecs)를 쓸 수 없어 내보낼 수 없습니다."
   ],
   "replay.exportVideoFailed": ["The video export failed: {0}", "视频导出失败：{0}", "동영상 내보내기 실패: {0}"],
   // ------------------------------------------------------------- controller
@@ -1592,6 +1797,8 @@ const STRINGS = {
   "bind.selfDestruct": ["Self-destruct", "自毁", "자폭"],
   "bind.quickSelect": ["Quick select (hold)", "快速选择（按住）", "빠른 선택(누르고 있기)"],
   "bind.direct": ["Take control of the selection", "直接操控所选单位", "선택 유닛 직접 조종"],
+  "bind.aggressive": ["Aggressive stance for the selection", "所选单位转入主动出击", "선택 유닛 적극 교전"],
+  "bind.ability": ["Use the selection's ability", "所选单位使用技能", "선택 유닛 능력 사용"],
   "bind.steerUp": ["Steer up", "向上驾驶", "위로 조종"],
   "bind.steerDown": ["Steer down", "向下驾驶", "아래로 조종"],
   "bind.steerLeft": ["Steer left", "向左驾驶", "왼쪽으로 조종"],
@@ -1605,6 +1812,9 @@ const STRINGS = {
   "bind.map": ["Battle map (hold to peek)", "战场地图（按住查看）", "전장 지도(누르면 잠깐 보기)"],
   "bind.sidebar": ["Toggle the sidebar", "展开 / 收起侧边栏", "사이드바 전환"],
   "bind.xray": ["Health bars and see-through (hold)", "血条与透视（按住）", "체력 바와 투시(누르고 있기)"],
+  "bind.hideHud": ["Hide the interface", "隐藏界面", "인터페이스 숨기기"],
+  "bind.screenshot": ["Screenshot", "截图", "스크린샷"],
+  "bind.readout": ["Performance readout (FPS)", "性能读数（帧率）", "성능 측정값 표시(FPS)"],
   "bind.pause": ["Pause", "暂停", "일시 정지"],
   "bind.speedDown": ["Slower", "减速", "느리게"],
   "bind.speedUp": ["Faster", "加速", "빠르게"],
@@ -1614,6 +1824,7 @@ const STRINGS = {
   "bind.scoreboard": ["Player list (hold)", "玩家列表（按住）", "플레이어 목록(누르고 있기)"],
   "bind.chat": ["Chat", "聊天", "채팅"],
   "bind.console": ["Admin console", "管理控制台", "관리자 콘솔"],
+  "bind.command": ["Command line", "命令行", "명령줄"],
   "bind.pad.confirm": ["Select / confirm", "选择 / 确认", "선택 / 확인"],
   "bind.pad.cancel": ["Cancel / back", "取消 / 返回", "취소 / 뒤로"],
   "bind.pad.command": ["Command", "下令", "명령"],
@@ -1667,9 +1878,46 @@ const STRINGS = {
   "pad.verb.assist": ["Help build", "协助建造", "건설 돕기"],
   "pad.verb.board": ["Board", "登乘", "탑승"],
   "pad.verb.pickup": ["Pick up", "接载", "태우기"],
+  // the mouse and keyboard's hint bar (ui/actionHints.ts); the rest of its words are the pad's
+  "hint.selectAny": ["Select building or unit", "选择建筑或单位", "건물 또는 유닛 선택"],
+  "hint.pan": ["Pan", "移动视角", "화면 이동"],
+  "hint.wheel": ["mouse wheel", "鼠标滚轮", "마우스 휠"],
+  "hint.turnOff": ["Turn off hints", "关闭操作提示", "조작 안내 끄기"],
+  "hint.offToast": ["Action hints off. {0} › {1} turns them back on.", "操作提示已关闭，可在“{0} › {1}”中重新开启。", "조작 안내를 껐습니다. {0} › {1}에서 다시 켤 수 있습니다."],
   // ------------------------------------------------------------- PWA updates
   "pwa.updateReady": ["A new version is ready.", "新版本已就绪。", "새 버전이 준비되었습니다."],
   "pwa.reload": ["Reload", "重新载入", "다시 불러오기"],
+  // the store apps' own updater: Settings → General → Update (`ui/updateField.ts`)
+  "update.title": ["Update", "更新", "업데이트"],
+  "update.running": ["Version {0}, installed with the app", "版本 {0}，随应用安装", "버전 {0}, 앱과 함께 설치됨"],
+  "update.runningDownloaded": ["Version {0}, downloaded", "版本 {0}，已下载", "버전 {0}, 내려받음"],
+  "update.check": ["Check for updates", "检查更新", "업데이트 확인"],
+  "update.checking": ["Checking…", "正在检查…", "확인 중…"],
+  "update.latest": ["This is the latest version.", "已是最新版本。", "최신 버전입니다."],
+  "update.available": ["Version {0} is available ({1}).", "有新版本 {0}（{1}）。", "버전 {0} 업데이트가 있습니다({1})."],
+  "update.download": ["Download", "下载", "다운로드"],
+  "update.downloading": ["Downloading version {0}: {1}%", "正在下载版本 {0}：{1}%", "버전 {0} 다운로드 중: {1}%"],
+  "update.ready": ["Version {0} is downloaded. Restart to run it.", "版本 {0} 已下载，重启后运行。", "버전 {0} 다운로드를 마쳤습니다. 다시 시작하면 실행됩니다."],
+  "update.readyNextLaunch": ["Version {0} is downloaded and runs the next time the game starts.", "版本 {0} 已下载，将在下次启动游戏时运行。", "버전 {0} 다운로드를 마쳤습니다. 다음에 게임을 시작하면 실행됩니다."],
+  "update.restart": ["Restart", "重启", "다시 시작"],
+  "update.store": ["Version {0} needs a newer app: update it from the store.", "版本 {0} 需要新版应用，请从应用商店更新。", "버전 {0}에는 새 앱이 필요합니다. 스토어에서 업데이트하세요."],
+  "update.error.network": ["Could not reach the update server.", "无法连接更新服务器。", "업데이트 서버에 연결할 수 없습니다."],
+  "update.error.verify": ["The update failed its check and was not installed.", "更新未通过校验，未安装。", "업데이트가 검증을 통과하지 못해 설치하지 않았습니다."],
+  "update.error.space": ["Not enough free space for the update.", "存储空间不足，无法更新。", "업데이트할 저장 공간이 부족합니다."],
+  "update.error.other": ["The update could not be installed.", "无法安装更新。", "업데이트를 설치할 수 없습니다."],
+  "update.failed": ["Version {0} did not start, so the game went back to the version before it.", "版本 {0} 未能启动，游戏已回到之前的版本。", "버전 {0}이(가) 시작되지 않아 이전 버전으로 돌아갔습니다."],
+  "update.revert": ["Version installed with the app", "随应用安装的版本", "앱과 함께 설치된 버전"],
+  "update.revertDesc": ["Go back to version {0}.", "回到版本 {0}。", "버전 {0}(으)로 돌아갑니다."],
+  "update.revertAction": ["Go back", "回退", "되돌리기"],
+  "update.revertConfirm": ["The game restarts on version {0}, the one installed with the app, and the downloaded version is removed.", "游戏将以随应用安装的版本 {0} 重新启动，已下载的版本会被删除。", "앱과 함께 설치된 버전 {0}(으)로 게임을 다시 시작하고, 내려받은 버전은 삭제합니다."],
+  "update.required.title": ["Update required", "需要更新", "업데이트 필요"],
+  "update.required.body": ["Version {0} is required to keep playing ({1}).", "需要更新到版本 {0} 才能继续游戏（{1}）。", "계속 플레이하려면 버전 {0}(으)로 업데이트해야 합니다({1})."],
+  "update.required.store": ["Version {0} is required to keep playing, and it needs a newer app: update Steel Tide from the store.", "需要版本 {0} 才能继续游戏，它需要新版应用：请从应用商店更新钢铁浪潮。", "계속 플레이하려면 버전 {0}이(가) 필요하며, 새 앱이 있어야 합니다. 스토어에서 스틸 타이드를 업데이트하세요."],
+  "update.required.update": ["Update", "更新", "업데이트"],
+  "update.required.openStore": ["Open the store", "打开应用商店", "스토어 열기"],
+  "update.required.retry": ["Try again", "重试", "다시 시도"],
+  "update.required.later": ["Later", "稍后", "나중에"],
+  "update.required.starting": ["Starting version {0}…", "正在启动版本 {0}…", "버전 {0} 시작 중…"],
   // ------------------------------------------------------------- touch play
   "touch.deselect": ["Deselect", "取消选择", "선택 해제"],
   "touch.confirm": ["Place", "放置", "놓기"],
@@ -1694,8 +1942,113 @@ const STRINGS = {
   ],
   "about.author": ["About the author", "关于作者", "제작자 소개"],
   "about.authorBody": ["Steel Tide is made by {0}.", "《钢铁浪潮》由 {0} 制作。", "스틸 타이드는 {0}이 만들었습니다."],
+  // the credits roll (`ui/credits.ts`): the About page's way in, and the lines
+  // round the list itself, which is `CREDITS` at the foot of this file
+  "credits.open": ["Credits", "制作人员名单", "크레디트"],
+  "credits.presents": ["A {0} Production", "{0} 出品", "{0} 제작"],
+  "credits.rights": ["Steel Tide © 2026 {0}. All rights reserved.", "《钢铁浪潮》© 2026 {0}。保留所有权利。", "스틸 타이드 © 2026 {0}. 모든 권리 보유."],
+  "credits.thanks": ["Thank you for playing Steel Tide", "感谢游玩《钢铁浪潮》", "스틸 타이드를 플레이해 주셔서 감사합니다"],
   "help.shiftDesc": ["Queue orders · add to selection", "排队指令 · 加选单位", "명령 대기열 · 선택에 추가"],
   // ------------------------------------------------------------- stats labels (tooltips)
+  // ------------------------------------------------------------- the tech tree
+  // `game/tech.ts`: a node's name and what it does, and the War Lab's card
+  "tech.lightning.name": ["Lightning Doctrine", "闪电学说", "번개 교리"],
+  "tech.lightning.desc": [
+    "Speed is armour. Every unit moves 8% faster. Opens Smoke Dischargers, Suicide Drones and Afterburners.",
+    "速度就是装甲。所有单位移动速度提高 8%。开启烟幕发射器、自杀式无人机与加力燃烧室。",
+    "속도가 곧 장갑입니다. 모든 유닛이 8% 빨라집니다. 연막탄 발사기, 자폭 드론, 애프터버너가 열립니다."
+  ],
+  "tech.smokeDischargers.name": ["Smoke Dischargers", "烟幕发射器", "연막탄 발사기"],
+  "tech.smokeDischargers.desc": ["Wolf, Viper and Gator gain Smoke Screen.", "野狼、蝰蛇与鳄鱼获得烟幕技能。", "울프, 바이퍼, 게이터가 연막 능력을 얻습니다."],
+  "tech.suicideDrones.name": ["Suicide Drones", "自杀式无人机", "자폭 드론"],
+  "tech.suicideDrones.desc": ["Unlocks the Hornet Suicide Drone at the Advanced Airbase.", "在高级空军基地解锁黄蜂自杀式无人机。", "고급 공군 기지에서 호넷 자폭 드론을 해금합니다."],
+  "tech.afterburners.name": ["Afterburners", "加力燃烧室", "애프터버너"],
+  "tech.afterburners.desc": ["Falcon, Thunderbolt and Albatross gain Afterburner. Needs a Radar Station.", "猎隼、霹雳与信天翁获得加力技能。需要雷达站。", "팔콘, 선더볼트, 알바트로스가 애프터버너 능력을 얻습니다. 레이더 기지가 필요합니다."],
+  "tech.hammer.name": ["Hammer Doctrine", "重锤学说", "망치 교리"],
+  "tech.hammer.desc": [
+    "Firepower wins. High-explosive and rocket rounds do 10% more damage. Opens Incendiary Bombs, Ballistic Missiles and Rapid Barrage.",
+    "火力决定胜负。高爆弹与火箭弹伤害提高 10%。开启燃烧弹、弹道导弹与急速弹幕。",
+    "화력이 이깁니다. 고폭탄과 로켓탄의 피해가 10% 늘어납니다. 소이탄, 탄도 미사일, 속사 탄막이 열립니다."
+  ],
+  "tech.incendiaryBombs.name": ["Incendiary Bombs", "燃烧弹", "소이탄"],
+  "tech.incendiaryBombs.desc": ["Vulture and Wraith gain Incendiary Load.", "秃鹫与幽魂获得燃烧弹挂载技能。", "벌처와 레이스가 소이탄 장전 능력을 얻습니다."],
+  "tech.ballisticMissiles.name": ["Ballistic Missiles", "弹道导弹", "탄도 미사일"],
+  "tech.ballisticMissiles.desc": ["Unlocks the Scorpion Ballistic Missile Launcher at the Arsenal.", "在兵工厂解锁蝎子弹道导弹发射车。", "병기창에서 스콜피온 탄도 미사일 발사차를 해금합니다."],
+  "tech.rapidBarrage.name": ["Rapid Barrage", "急速弹幕", "속사 탄막"],
+  "tech.rapidBarrage.desc": ["Thunder, Tempest and Sovereign gain Rapid Barrage. Needs a Radar Station.", "雷霆、暴风雨与君王获得急速弹幕技能。需要雷达站。", "선더, 템페스트, 소버린이 속사 탄막 능력을 얻습니다. 레이더 기지가 필요합니다."],
+  "tech.anvil.name": ["Anvil Doctrine", "铁砧学说", "모루 교리"],
+  "tech.anvil.desc": [
+    "Hold the line. Your buildings take 15% less damage. Opens Active Protection, Field Recovery and Damage Control Parties.",
+    "坚守阵线。你的建筑受到的伤害降低 15%。开启主动防护、战场抢修与损管分队。",
+    "전선을 지킵니다. 내 건물이 받는 피해가 15% 줄어듭니다. 능동 방어, 야전 구난, 손상 통제반이 열립니다."
+  ],
+  "tech.activeProtection.name": ["Active Protection", "主动防护", "능동 방어"],
+  "tech.activeProtection.desc": ["Bison and Mammoth gain Countermeasures + ERA.", "野牛与猛犸获得主动防护+反应装甲技能。", "바이슨과 매머드가 능동 방어+반응 장갑 능력을 얻습니다."],
+  "tech.fieldRecovery.name": ["Field Recovery", "战场抢修", "야전 구난"],
+  "tech.fieldRecovery.desc": ["Unlocks the Hercules Recovery Vehicle at the Advanced War Factory.", "在高级战车工厂解锁大力神装甲抢修车。", "고급 전차 공장에서 허큘리스 구난 전차를 해금합니다."],
+  "tech.damageParties.name": ["Damage Control Parties", "损管分队", "손상 통제반"],
+  "tech.damageParties.desc": ["Aegis and Orca gain Damage Control. Needs a Radar Station.", "神盾与虎鲸获得损管技能。需要雷达站。", "이지스와 오르카가 손상 통제 능력을 얻습니다. 레이더 기지가 필요합니다."],
+  "tech.deepDrilling.name": ["Deep Drilling", "深层钻探", "심층 시추"],
+  "tech.deepDrilling.desc": ["Extractors mine 15% more metal.", "采矿场的金属产量提高 15%。", "채굴장이 금속을 15% 더 캡니다."],
+  "tech.gridTuning.name": ["Grid Tuning", "电网调校", "전력망 조율"],
+  "tech.gridTuning.desc": ["Power plants put out 20% more.", "发电厂输出提高 20%。", "발전소 출력이 20% 늘어납니다."],
+  "tech.fieldEngineering.name": ["Field Engineering", "野战工程", "야전 공병"],
+  "tech.fieldEngineering.desc": ["Engineers build and repair 30% faster.", "工程车建造与维修速度提高 30%。", "공병차가 30% 빠르게 짓고 수리합니다."],
+  "tech.nuclearProgram.name": ["Nuclear Program", "核计划", "핵 개발 계획"],
+  "tech.nuclearProgram.desc": [
+    "The last node of the tree, open to every doctrine once its own column is researched. Unlocks the Nuclear Silo and the Nuclear Warhead.",
+    "科技树的最后一个节点：任何学说研究完自己的全部节点后即可研究。解锁核弹发射井与核弹头。",
+    "기술 트리의 마지막 노드로, 어느 교리든 자기 노드를 모두 연구하면 열립니다. 핵 사일로와 핵탄두를 해금합니다."
+  ],
+  "tech.logistics": ["Logistics", "后勤", "군수"],
+  "tech.doctrine": ["Doctrine", "学说", "교리"],
+  "tech.none": ["No doctrine yet", "尚未选择学说", "아직 교리 없음"],
+  "tech.pickNote": [
+    "Choosing it closes the other two doctrines for the rest of the match.",
+    "选定后，本局将无法再选择另外两种学说。",
+    "선택하면 이번 경기에서 나머지 두 교리는 닫힙니다."
+  ],
+  "tech.needsDoctrine": ["Choose a doctrine first", "请先选择学说", "먼저 교리를 선택하세요"],
+  "tech.needsColumn": ["Research the rest of your doctrine first", "请先研究完本学说的其余节点", "먼저 교리의 나머지 노드를 연구하세요"],
+  "tech.unlocks": ["Unlocks: {0}", "解锁：{0}", "해금: {0}"],
+  "tech.researching": ["Researching {0}", "正在研究：{0}", "연구 중: {0}"],
+  "tech.researched": ["Researched", "已研究", "연구 완료"],
+  // ------------------------------------------------------------- abilities
+  // `game/abilities.ts`: one click, a timed effect, a cooldown
+  "ability.sprint.name": ["Sprint", "冲刺", "질주"],
+  "ability.sprint.desc": ["The governor off: 60% faster for 4 s.", "解除限速：4 秒内速度提高 60%。", "조속기를 풉니다: 4초 동안 60% 빨라집니다."],
+  "ability.afterburner.name": ["Afterburner", "加力", "애프터버너"],
+  "ability.afterburner.desc": ["80% faster for 5 s. The turns open up with the speed.", "5 秒内速度提高 80%，转弯半径也随之变大。", "5초 동안 80% 빨라집니다. 속도만큼 선회 반경도 커집니다."],
+  "ability.smoke.name": ["Smoke Screen", "烟幕", "연막"],
+  "ability.smoke.desc": [
+    "Lays a cloud round the unit for 8 s. Nothing on the ground inside it can be seen from more than 2 tiles away.",
+    "在单位周围释放持续 8 秒的烟幕。烟幕中的地面目标在 2 格之外无法被看见。",
+    "유닛 주위에 8초간 연막을 칩니다. 연막 안의 지상 목표는 2칸 밖에서 보이지 않습니다."
+  ],
+  "ability.incendiary.name": ["Incendiary Load", "燃烧弹挂载", "소이탄 장전"],
+  "ability.incendiary.desc": [
+    "The next bomb run sets the ground alight where it lands. Stays armed for 30 s.",
+    "下一轮投弹会点燃落点的地面。挂载后 30 秒内有效。",
+    "다음 폭격이 떨어진 자리의 땅에 불을 붙입니다. 30초 동안 장전 상태가 유지됩니다."
+  ],
+  "ability.barrage.name": ["Rapid Barrage", "急速弹幕", "속사 탄막"],
+  "ability.barrage.desc": ["Reloads twice as fast for 8 s.", "8 秒内装填速度翻倍。", "8초 동안 두 배로 빨리 재장전합니다."],
+  "ability.countermeasures.name": ["Countermeasures + ERA", "主动防护+反应装甲", "능동 방어+반응 장갑"],
+  "ability.countermeasures.desc": [
+    "For 10 s the launchers shoot down the first 3 missiles or rockets fired at the hull, and the reactive armour takes 40% off every shell. Fights on the move.",
+    "10 秒内，发射器击落射向车体的前 3 枚导弹或火箭弹，反应装甲使每发炮弹的伤害降低 40%。可边走边打。",
+    "10초 동안 발사기가 차체를 향해 날아오는 미사일이나 로켓을 3발까지 격추하고, 반응 장갑이 포탄 피해를 40% 줄입니다. 이동 중에도 싸웁니다."
+  ],
+  "ability.intercepts": ["Countermeasures: {0} of {1} left", "主动防护：剩余 {0}/{1}", "능동 방어: {1}발 중 {0}발 남음"],
+  "ability.damageControl.name": ["Damage Control", "损管", "손상 통제"],
+  "ability.damageControl.desc": ["Mends 30% of the hull over 10 s, paid for like a repair.", "10 秒内修复 30% 的船体，费用与维修相同。", "10초에 걸쳐 선체의 30%를 수리합니다. 비용은 수리와 같습니다."],
+  "ability.emergencyRepair.name": ["Emergency Repair", "紧急抢修", "긴급 수리"],
+  "ability.emergencyRepair.desc": ["Triples the repair aura for 6 s.", "6 秒内维修光环效果提高到三倍。", "6초 동안 수리 범위의 효과가 세 배가 됩니다."],
+  "ability.ready": ["{0} of {1} ready", "{1} 个中 {0} 个就绪", "{1}대 중 {0}대 준비"],
+  "ability.cooldown": ["Ready in {0} s", "{0} 秒后就绪", "{0}초 후 준비"],
+  "ability.locked": ["Research {0} to unlock", "研究{0}后解锁", "{0} 연구 시 해금"],
+  "ability.active": ["Active: {0} s", "生效中：{0} 秒", "작동 중: {0}초"],
+  "stat.ability": ["Ability", "技能", "능력"],
   "stat.cost": ["Cost", "造价", "가격"],
   "stat.time": ["Build time", "建造时间", "건설 시간"],
   "stat.hp": ["HP", "耐久", "체력"],
@@ -1758,6 +2111,7 @@ const STRINGS = {
   "console.placeholder": ["type help for the commands", "输入 help 查看命令", "help를 입력하면 명령 목록"],
   "console.hostOnly": ["Only the host can run commands.", "只有房主可以执行命令。", "호스트만 명령을 실행할 수 있습니다."],
   "console.noKick": ["There is nobody to remove in a local game.", "本地对局中没有可移出的玩家。", "로컬 게임에는 내보낼 사람이 없습니다."],
+  "console.serverOnly": ["That is a server command: it runs on a multiplayer server, as its host.", "这是服务器命令：需要以房主身份在多人服务器上运行。", "서버 명령입니다: 멀티플레이어 서버에서 호스트로 실행하세요."],
   "console.speedSet": ["Game speed ×{0}", "游戏速度 ×{0}", "게임 속도 ×{0}"],
   "console.noControl": ["The server decides which faction you command.", "你操作哪个阵营由服务器决定。", "어느 진영을 지휘할지는 서버가 정합니다."],
   "console.commanding": ["Now commanding {0}.", "现在操作{0}。", "이제 {0}을(를) 지휘합니다."],
@@ -1833,6 +2187,25 @@ const STRINGS = {
     "An armoured car that swims: it lands itself, no craft and no beach needed. A ship to torpedoes while afloat, a vehicle once ashore. Slow in the water.",
     "会游泳的装甲车：自行登陆，无需登陆艇也无需滩头。在水上会被鱼雷当作舰船，上岸后又是地面载具。水中速度慢。",
     "헤엄치는 장갑차: 상륙정도 해변도 없이 스스로 상륙합니다. 물 위에서는 어뢰에 함선으로 잡히고, 뭍에 오르면 차량입니다. 물속에서는 느립니다."
+  ],
+  // ------------------------------------------------------------- units: the doctrines' own
+  "unit.hornet.name": ["Hornet Suicide Drone", "黄蜂自杀式无人机", "호넷 자폭 드론"],
+  "unit.hornet.desc": [
+    "A quadcopter with an anti-tank charge under it. It never attacks on its own: order it at a vehicle, a ship, a building or a spot, and it flies there and explodes. It flies low, so machine guns and autocannons shoot at it as well as anti-air. Six per faction at most. Lightning doctrine.",
+    "挂着反坦克战斗部的四旋翼无人机。它从不自行攻击：命令它攻击车辆、舰船、建筑或地面某处，它就飞过去引爆。它飞得很低，除防空火力外，机枪和机炮也能向它射击。每个阵营最多六架。闪电学说。",
+    "대전차 탄두를 매단 쿼드콥터. 스스로는 절대 공격하지 않습니다. 차량, 함선, 건물이나 지점을 공격하라고 명령하면 날아가 폭발합니다. 낮게 날기 때문에 대공 화기뿐 아니라 기관총과 기관포도 쏠 수 있습니다. 진영당 최대 여섯 대. 번개 교리."
+  ],
+  "unit.hercules.name": ["Hercules Recovery Vehicle", "大力神装甲抢修车", "허큘리스 구난 전차"],
+  "unit.hercules.desc": [
+    "An armoured recovery tank: mends the vehicles and ships around it as a Repair Tower does, and pays the same. No gun. Born with Emergency Repair. Anvil doctrine.",
+    "装甲抢修车：像维修塔一样维修周围的车辆与舰船，费用也相同。没有武器。自带紧急抢修技能。铁砧学说。",
+    "장갑 구난 전차: 수리탑처럼 주위의 차량과 함선을 수리하고, 비용도 같습니다. 무기는 없습니다. 긴급 수리 능력을 타고납니다. 모루 교리."
+  ],
+  "unit.scorpion.name": ["Scorpion Ballistic Missile Launcher", "蝎子弹道导弹发射车", "스콜피온 탄도 미사일 발사차"],
+  "unit.scorpion.desc": [
+    "Two heavy ballistic missiles every 30 s, thrown 18 tiles. Blind without a spotter, and point defence shoots its missiles down. Hammer doctrine.",
+    "每 30 秒发射两枚重型弹道导弹，射程 18 格。没有侦察就是瞎子，拦截塔能击落它的导弹。重锤学说。",
+    "30초마다 무거운 탄도 미사일 두 발을 18칸 너머로 던집니다. 관측 없이는 눈먼 채이고, 요격 방어가 미사일을 떨어뜨립니다. 망치 교리."
   ],
   // ------------------------------------------------------------- units: sea
   "unit.gunboat.name": ["Gunboat", "炮艇", "포함"],
@@ -1983,6 +2356,12 @@ const STRINGS = {
     "维修范围内的受损友军，优先最重伤者。维修消耗金属。",
     "사거리 안의 손상된 아군을 가장 심하게 다친 쪽부터 수리합니다. 수리에는 금속이 듭니다."
   ],
+  "unit.warlab.name": ["War Lab", "战争实验室", "전쟁 연구소"],
+  "unit.warlab.desc": [
+    "Researches the tech tree: the doctrine you fight by, the units and abilities it unlocks, and economy upgrades. One per faction; what it learns is kept if it falls.",
+    "研究科技树：你的作战学说、它解锁的单位与技能，以及经济升级。每个阵营限一座；被摧毁后已研究的成果仍然保留。",
+    "기술 트리를 연구합니다: 싸울 교리와 그 교리가 해금하는 유닛과 능력, 그리고 경제 향상. 진영마다 하나만 지을 수 있고, 무너져도 연구한 것은 남습니다."
+  ],
   "unit.radar.name": ["Radar Station", "雷达站", "레이더 기지"],
   "unit.radar.desc": [
     "Lifts the fog far around it, through night and rain, and unlocks the top tier of weapons.",
@@ -2040,6 +2419,9 @@ const STRINGS = {
   "terrain.13": ["Cliff, facing east", "悬崖（面朝东）", "절벽(동향)"],
   "terrain.14": ["Cliff, facing south", "悬崖（面朝南）", "절벽(남향)"],
   "terrain.15": ["Cliff, facing west", "悬崖（面朝西）", "절벽(서향)"],
+  "terrain.16": ["City", "城镇", "시가지"],
+  "terrain.17": ["Ford", "浅滩", "여울"],
+  "terrain.18": ["Ice", "冰面", "빙판"],
   // ------------------------------------------------------------- community maps
   "community.title": ["Community maps", "社区地图", "커뮤니티 지도"],
   "community.searchHint": ["Name, author, description…", "名称、作者、简介…", "이름, 제작자, 설명…"],
@@ -2057,6 +2439,8 @@ const STRINGS = {
   "community.publish": ["Publish your map", "发布你的地图", "내 지도 공개하기"],
   // ------------------------------------------------------------- map editor
   "editor.title": ["Map Editor", "地图编辑器", "맵 에디터"],
+  // the map's own pane (name, size, grid, the readout) as a plate, on a screen too small for its column
+  "editor.settings": ["Map settings", "地图设置", "지도 설정"],
   "editor.terrain": ["Terrain", "地形", "지형"],
   "editor.decor": ["Props", "装饰物", "장식물"],
   "editor.map": ["Map", "地图", "지도"],
@@ -2124,6 +2508,8 @@ const STRINGS = {
   "editor.newTitle": ["New map", "新建地图", "새 지도"],
   "editor.fill": ["Fill with", "填充", "채우기"],
   "editor.create": ["Create", "创建", "만들기"],
+  "editor.replaceTitle": ["Replace map", "替换地图", "지도 바꾸기"],
+  "editor.replace": ["Replace", "替换", "바꾸기"],
   "editor.confirmReplace": [
     "Replace the map you are editing? Anything not exported is lost.",
     "替换正在编辑的地图？未导出的内容将丢失。",
@@ -2203,7 +2589,7 @@ const STRINGS = {
   "editor.imported": ["Map loaded: {0}", "已载入地图：{0}", "지도를 불러왔습니다: {0}"],
   // ------------------------------------------------------------- misc gameplay
   "game.constructing": ["Constructing…", "建造中…", "건설 중…"],
-  "game.upgrading": ["Upgrading…", "升级中…", "업그레이드 중…"],
+  "game.upgrading": ["Upgrading… ({0}%)", "升级中…（{0}%）", "업그레이드 중… ({0}%)"],
   // ------------------------------------------------------------- voice
   // What Command says over the radio (core/voice.ts lists when). Recorded by
   // `pnpm voice` from these lines, so a change here is a re-take, not a retitle.
@@ -2278,6 +2664,8 @@ function pick(entry, l = lang) {
   return entry[langIndex(l)] ?? entry[0] ?? "";
 }
 const MAX_PLAYERS = 8;
+const MIN_MAP_SIDE = 16;
+const MAX_MAP_SIDE = 512;
 var Terrain = /* @__PURE__ */ ((Terrain2) => {
   Terrain2[Terrain2["DeepWater"] = 0] = "DeepWater";
   Terrain2[Terrain2["Water"] = 1] = "Water";
@@ -2295,8 +2683,12 @@ var Terrain = /* @__PURE__ */ ((Terrain2) => {
   Terrain2[Terrain2["CliffEast"] = 13] = "CliffEast";
   Terrain2[Terrain2["CliffSouth"] = 14] = "CliffSouth";
   Terrain2[Terrain2["CliffWest"] = 15] = "CliffWest";
+  Terrain2[Terrain2["City"] = 16] = "City";
+  Terrain2[Terrain2["Shallows"] = 17] = "Shallows";
+  Terrain2[Terrain2["Ice"] = 18] = "Ice";
   return Terrain2;
 })(Terrain || {});
+const TERRAIN_KINDS = 19;
 ({
   /** open pasture — the generator's old, and still most common, ground */
   meadow: { ground: Terrain.Grass, shore: Terrain.Sand, hollow: Terrain.Mud, height: Terrain.Mountain },
@@ -2346,6 +2738,10 @@ const MG = w({
   muzzleOffset: 9.5,
   sound: "mg"
 });
+const WARHEAD_MOTOR = [
+  { sprite: "dec.afterburner", layer: "under", y: 12, scale: 0.6, when: "always" },
+  { sprite: "dec.afterburner", layer: "under", y: 12, scale: 0.6, when: "night" }
+];
 const DEFS = {
   // ================================================================= LAND
   //
@@ -2375,7 +2771,7 @@ const DEFS = {
     radius: 8,
     weapons: [],
     body: { r: 8, len: 12 },
-    builds: ["extractor", "power", "factory", "airbase", "navyard", "mgturret", "cannonturret", "aaturret", "interceptor", "repairtower", "sandbag", "radar", "reactor", "nukesilo", "hq"],
+    builds: ["extractor", "power", "factory", "airbase", "navyard", "mgturret", "cannonturret", "aaturret", "interceptor", "repairtower", "sandbag", "warlab", "radar", "reactor", "nukesilo", "hq"],
     buildRate: 30,
     trail: "tread",
     sprite: "u.engineer"
@@ -2386,6 +2782,7 @@ const DEFS = {
     aliases: ["recon", "jeep"],
     domain: "ground",
     tier: 1,
+    ability: "sprint",
     cost: 60,
     buildTime: 5,
     pop: 1,
@@ -2407,6 +2804,7 @@ const DEFS = {
     aliases: ["wolf", "light"],
     domain: "ground",
     tier: 1,
+    ability: "smoke",
     cost: 120,
     buildTime: 9,
     pop: 1,
@@ -2442,6 +2840,7 @@ const DEFS = {
     aliases: ["bison", "tank"],
     domain: "ground",
     tier: 2,
+    ability: "countermeasures",
     cost: 280,
     buildTime: 18,
     pop: 2,
@@ -2478,6 +2877,7 @@ const DEFS = {
     aliases: ["mammoth", "heavy"],
     domain: "ground",
     tier: 3,
+    ability: "countermeasures",
     cost: 900,
     buildTime: 45,
     pop: 4,
@@ -2520,6 +2920,7 @@ const DEFS = {
     aliases: ["viper", "at"],
     domain: "ground",
     tier: 2,
+    ability: "smoke",
     cost: 320,
     buildTime: 20,
     pop: 2,
@@ -2633,6 +3034,7 @@ const DEFS = {
     aliases: ["thunder", "howitzer"],
     domain: "ground",
     tier: 2,
+    ability: "barrage",
     cost: 420,
     buildTime: 24,
     pop: 2,
@@ -2669,6 +3071,7 @@ const DEFS = {
     aliases: ["tempest", "rockets"],
     domain: "ground",
     tier: 3,
+    ability: "barrage",
     cost: 760,
     buildTime: 40,
     pop: 3,
@@ -2797,7 +3200,9 @@ const DEFS = {
       arc: true,
       spread: 16,
       friendlyFire: true,
-      sound: "arty"
+      sound: "arty",
+      // a fuel cloud that burns over the ground rather than a charge that digs into it
+      mark: "thermo"
     })],
     trail: "tread",
     sprite: "u.salamander",
@@ -2977,6 +3382,7 @@ const DEFS = {
     aliases: ["acv", "amphibian", "amtrac"],
     domain: "amphibious",
     tier: 2,
+    ability: "smoke",
     cost: 240,
     buildTime: 15,
     pop: 2,
@@ -3013,6 +3419,162 @@ const DEFS = {
     // (measured at 0.462 of the sheet's height; a body whose turret fires
     // declares it here, not in the manifest)
     turretMounts: [{ x: 0, y: -1 }]
+  },
+  // ------------------------------------------------------ the doctrines' own
+  //
+  // Three units the tech tree unlocks (`game/tech.ts`), one a doctrine, each a
+  // rule the game already had put on a new hull the way the Bulwark put the
+  // interrupter on tracks — so the new work stays in the tree and the
+  // abilities. All three are real equipment: the eight-wheeled gun carrier,
+  // the ballistic missile on its launcher truck, the armoured recovery tank.
+  /**
+   * **Lightning's suicide drone** (`suicideDrones`): a quadcopter with a
+   * shaped charge slung under it — the FPV drone of the Ukrainian front, the
+   * Lancet's poorer cousin — flown into what it is sent at and gone with it.
+   * It never picks a target of its own (`kamikaze`): it hovers where it is
+   * put until an order names a unit, a building or a spot on the ground,
+   * then flies there and goes off. Cheap, quick and made of nothing: a Flak
+   * Track or a Hawk swats it, and so does a machine gun or an autocannon,
+   * since it comes in at treetop height (`lowFlying`); the charge is the
+   * anti-tank one (`at`), wasted on a jeep. Six a faction at most, those on
+   * a line's queue counted (`limit`): fifty of them, each a fair trade for
+   * a third of a tank and each certain to arrive, deleted any army (the
+   * user's word, 2026-09-26). Off the
+   * Advanced Airbase, where everything else that flies is built (the Jaguar
+   * it replaced came off the Advanced War Factory, but a line is read by
+   * what it turns out, `yardKind`, and a war factory with a drone on its
+   * list reads as an airbase).
+   */
+  hornet: {
+    id: "hornet",
+    kind: "unit",
+    aliases: ["fpv", "kamikaze", "suicidedrone", "quadcopter"],
+    domain: "air",
+    tier: 2,
+    // light, not `air`: a foam-and-carbon frame is no armoured airframe, and
+    // the small arms that reach it (`lowFlying`) tear it (×1.5) where they
+    // only scratch a helicopter; anti-air hits it the same either way
+    cost: 120,
+    buildTime: 8,
+    pop: 1,
+    power: -1,
+    hp: 60,
+    armor: "light",
+    speed: 130,
+    turnRate: 6,
+    vision: 7,
+    radius: 7,
+    altitude: 8,
+    hovers: true,
+    kamikaze: true,
+    lowFlying: true,
+    limit: 6,
+    requires: ["suicideDrones"],
+    weapons: [w({
+      // the charge: its range is the touch, and its shot is the drone itself
+      id: "charge",
+      cls: "at",
+      dmg: 160,
+      reload: 1,
+      range: 0.5,
+      projectile: "missile",
+      speed: 130,
+      targets: ["ground", "ship"],
+      splash: 12,
+      mark: "cannon",
+      sound: "expl"
+    })],
+    sprite: "u.hornet"
+  },
+  /**
+   * **Anvil's recovery tank** (`fieldRecovery`): the armoured recovery
+   * vehicle — the M88A2 Hercules, the Büffel, the BREM — the Repair Tower's aura on tracks. It
+   * mends vehicles and ships round it as the tower does, billed at the
+   * tower's rate (`REPAIR_TOWER_COST_FRAC`), never a building and never an
+   * aircraft: it is a crane and a welder, not an engineer. No gun and heavy
+   * plate, so it follows the column into the fire; born with the emergency
+   * repair that trebles the aura for six seconds. One Hercules does not mend
+   * another, as one tower does not mend another.
+   */
+  hercules: {
+    id: "hercules",
+    kind: "unit",
+    aliases: ["arv", "recovery", "m88", "buffel"],
+    domain: "ground",
+    tier: 2,
+    ability: "emergencyRepair",
+    cost: 350,
+    buildTime: 18,
+    pop: 1,
+    power: -1,
+    hp: 700,
+    armor: "heavy",
+    speed: 58,
+    turnRate: 3.8,
+    vision: 7,
+    radius: 10,
+    requires: ["fieldRecovery"],
+    body: { r: 13, len: 12 },
+    weapons: [],
+    repairRange: 4,
+    repairRate: 12,
+    repairTargets: 2,
+    trail: "tread",
+    sprite: "u.hercules"
+  },
+  /**
+   * **Hammer's ballistic missile** (`ballisticMissiles`, and the radar the
+   * Arsenal already needs): the launcher truck and its two rounds — the
+   * Iskander's pair. Eighteen tiles, past the Sovereign and everything else
+   * that fires at the ground, one pair every thirty seconds, and a big blast
+   * each. The answer is already standing in most bases: the missile is
+   * ordnance, and point defence takes it out of the air one round a missile
+   * (`interceptable`), so a Scorpion's siege starts with the interrupters.
+   * It sees seven tiles and throws eighteen — a Scorpion is blind without a
+   * radar car, a drone or a plane over the target. No turret: the erector
+   * lays the launcher's whole hull on the bearing, as the howitzer does.
+   */
+  scorpion: {
+    id: "scorpion",
+    kind: "unit",
+    aliases: ["tbm", "iskander", "ballistic"],
+    domain: "ground",
+    tier: 3,
+    cost: 1100,
+    buildTime: 45,
+    pop: 3,
+    power: -3,
+    hp: 320,
+    armor: "light",
+    speed: 40,
+    turnRate: 2.4,
+    vision: 7,
+    radius: 12,
+    requires: ["radar", "ballisticMissiles"],
+    cargoWeight: 4,
+    body: { r: 14, len: 18 },
+    weapons: [w({
+      id: "tbm",
+      cls: "he",
+      dmg: 260,
+      reload: 30,
+      range: 18,
+      minRange: 6,
+      projectile: "missile",
+      speed: 230,
+      targets: ["ground", "ship"],
+      muzzleOffset: 6,
+      splash: 52,
+      arc: true,
+      spread: 30,
+      burst: 2,
+      burstDelay: 0.9,
+      interceptable: true,
+      mark: "bomb",
+      sound: "missile"
+    })],
+    trail: "tire",
+    sprite: "u.scorpion"
   },
   // ================================================================== SEA
   //
@@ -3096,6 +3658,7 @@ const DEFS = {
     aliases: ["aegis", "escort"],
     domain: "ship",
     tier: 2,
+    ability: "damageControl",
     cost: 600,
     buildTime: 30,
     pop: 2,
@@ -3152,6 +3715,7 @@ const DEFS = {
     aliases: ["orca", "dd"],
     domain: "ship",
     tier: 2,
+    ability: "damageControl",
     cost: 700,
     buildTime: 34,
     pop: 3,
@@ -3264,6 +3828,7 @@ const DEFS = {
     aliases: ["sovereign", "battleship"],
     domain: "ship",
     tier: 3,
+    ability: "barrage",
     cost: 1700,
     buildTime: 70,
     pop: 5,
@@ -3371,7 +3936,7 @@ const DEFS = {
     radius: 9,
     weapons: [],
     body: { r: 6, len: 18 },
-    builds: ["extractor", "power", "factory", "airbase", "navyard", "mgturret", "cannonturret", "aaturret", "interceptor", "repairtower", "sandbag", "radar", "reactor", "nukesilo", "hq"],
+    builds: ["extractor", "power", "factory", "airbase", "navyard", "mgturret", "cannonturret", "aaturret", "interceptor", "repairtower", "sandbag", "warlab", "radar", "reactor", "nukesilo", "hq"],
     buildRate: 30,
     reach: 64,
     trail: "wake",
@@ -3491,6 +4056,7 @@ const DEFS = {
     aliases: ["falcon", "cap"],
     domain: "air",
     tier: 2,
+    ability: "afterburner",
     cost: 380,
     buildTime: 22,
     pop: 2,
@@ -3514,7 +4080,8 @@ const DEFS = {
       homing: true,
       sound: "missile"
     })],
-    sprite: "u.fighter"
+    sprite: "u.fighter",
+    decals: [{ sprite: "dec.afterburner", layer: "under", y: 13, scale: 1.5, when: "ability" }]
   },
   heli: {
     id: "heli",
@@ -3556,6 +4123,7 @@ const DEFS = {
     aliases: ["thunderbolt", "strikejet"],
     domain: "air",
     tier: 2,
+    ability: "afterburner",
     cost: 400,
     buildTime: 25,
     pop: 2,
@@ -3582,7 +4150,8 @@ const DEFS = {
       spread: 18,
       sound: "rocket"
     })],
-    sprite: "u.jet"
+    sprite: "u.jet",
+    decals: [{ sprite: "dec.afterburner", layer: "under", x: -2.5, y: 13, scale: 1.3, when: "ability" }, { sprite: "dec.afterburner", layer: "under", x: 2.5, y: 13, scale: 1.3, when: "ability" }]
   },
   mjet: {
     id: "mjet",
@@ -3590,6 +4159,7 @@ const DEFS = {
     aliases: ["albatross", "antiship"],
     domain: "air",
     tier: 2,
+    ability: "afterburner",
     cost: 520,
     buildTime: 28,
     pop: 2,
@@ -3614,7 +4184,8 @@ const DEFS = {
       homing: true,
       sound: "missile"
     })],
-    sprite: "u.mjet"
+    sprite: "u.mjet",
+    decals: [{ sprite: "dec.afterburner", layer: "under", y: 14, scale: 1.5, when: "ability" }]
   },
   bomber: {
     id: "bomber",
@@ -3622,6 +4193,7 @@ const DEFS = {
     aliases: ["vulture", "levelbomber"],
     domain: "air",
     tier: 2,
+    ability: "incendiary",
     // siege from the air is the strongest thing an airbase makes, and it is
     // priced and armoured so a SAM site is a real answer to it
     cost: 1e3,
@@ -3652,7 +4224,8 @@ const DEFS = {
       spread: 20,
       sound: "bomb"
     })],
-    sprite: "u.bomber"
+    sprite: "u.bomber",
+    decals: [{ sprite: "dec.incendiary", layer: "hull", y: -3, when: "ability" }]
   },
   theli: {
     id: "theli",
@@ -3750,6 +4323,7 @@ const DEFS = {
     aliases: ["stealth", "stealthbomber"],
     domain: "air",
     tier: 3,
+    ability: "incendiary",
     cost: 1400,
     buildTime: 55,
     pop: 4,
@@ -3779,7 +4353,8 @@ const DEFS = {
       spread: 10,
       sound: "bomb"
     })],
-    sprite: "u.wraith"
+    sprite: "u.wraith",
+    decals: [{ sprite: "dec.incendiary", layer: "hull", y: 2, when: "ability" }]
   },
   /**
    * The first aircraft that can find a submarine: dipping sonar and homing
@@ -3861,8 +4436,9 @@ const DEFS = {
     radius: 7,
     altitude: 36,
     weapons: [],
-    requires: ["radar", "reactor"],
-    sprite: "u.warhead"
+    requires: ["radar", "reactor", "nuclearProgram"],
+    sprite: "u.warhead",
+    decals: WARHEAD_MOTOR
   },
   /**
    * The other thing a silo or a Barracuda may put in the shaft: an
@@ -3900,7 +4476,8 @@ const DEFS = {
     weapons: [],
     requires: ["radar"],
     emp: { radius: 7, seconds: 12 },
-    sprite: "u.emp"
+    sprite: "u.emp",
+    decals: WARHEAD_MOTOR
   },
   // ============================================================ BUILDINGS
   /**
@@ -4160,7 +4737,7 @@ const DEFS = {
     fh: 3,
     weapons: [],
     power: -12,
-    produces: ["engineer", "buggy", "ltank", "flak", "mbt", "td", "sam", "arty", "drake", "gator", "htank", "radarcar"],
+    produces: ["engineer", "buggy", "ltank", "flak", "mbt", "td", "sam", "arty", "drake", "gator", "htank", "radarcar", "hercules"],
     upgradesTo: "factory3",
     upgradeCost: 900,
     upgradeTime: 45,
@@ -4201,7 +4778,7 @@ const DEFS = {
     weapons: [],
     power: -20,
     requires: ["radar"],
-    produces: ["engineer", "buggy", "ltank", "flak", "mbt", "td", "sam", "arty", "drake", "gator", "htank", "radarcar", "mlrs", "salamander", "bulwark"],
+    produces: ["engineer", "buggy", "ltank", "flak", "mbt", "td", "sam", "arty", "drake", "gator", "htank", "radarcar", "hercules", "mlrs", "salamander", "bulwark", "scorpion"],
     sprite: "u.factory3",
     sound: "bld-extractor2"
   },
@@ -4248,7 +4825,7 @@ const DEFS = {
     fh: 4,
     weapons: [],
     power: -12,
-    produces: ["drone", "heli", "theli", "fighter", "jet", "mjet", "bomber", "c47", "gunship"],
+    produces: ["drone", "heli", "theli", "fighter", "jet", "mjet", "bomber", "c47", "gunship", "hornet"],
     upgradesTo: "airbase3",
     upgradeCost: 950,
     upgradeTime: 48,
@@ -4274,7 +4851,7 @@ const DEFS = {
     weapons: [],
     power: -20,
     requires: ["radar"],
-    produces: ["drone", "heli", "theli", "fighter", "jet", "mjet", "bomber", "c47", "gunship", "wraith", "cormorant"],
+    produces: ["drone", "heli", "theli", "fighter", "jet", "mjet", "bomber", "c47", "gunship", "hornet", "wraith", "cormorant"],
     sprite: "u.airbase3"
   },
   navyard: {
@@ -4479,7 +5056,8 @@ const DEFS = {
     upgradeCost: 420,
     upgradeTime: 22,
     sprite: "u.cannonturret",
-    turretSprite: "tur.cannon"
+    turretSprite: "tur.cannon",
+    turretMounts: [{ x: 0, y: -4 }]
   },
   cannonturret2: {
     id: "cannonturret2",
@@ -4768,6 +5346,38 @@ const DEFS = {
     turretSpins: true
   },
   /**
+   * The War Lab researches the tech tree (`game/tech.ts`): the doctrine a
+   * faction fights by, the units and abilities it unlocks, and the economy
+   * buffs any doctrine may take. One a faction (`unique`); what it has
+   * researched stays researched when it falls, and only the head of its
+   * queue is lost. A Tier-1 building, since the doctrine is a minute-three
+   * decision; it draws a plant's worth of power, so the research is slowed
+   * by a shortage as a factory's work is.
+   */
+  warlab: {
+    id: "warlab",
+    kind: "building",
+    domain: "none",
+    tier: 1,
+    unique: true,
+    lab: true,
+    cost: 500,
+    buildTime: 30,
+    pop: 0,
+    hp: 1200,
+    armor: "structure",
+    speed: 0,
+    turnRate: 0,
+    vision: 6,
+    radius: 30,
+    fw: 2,
+    fh: 2,
+    weapons: [],
+    power: -10,
+    sprite: "u.warlab",
+    sound: "bld-radar"
+  },
+  /**
    * The reactor breeds the cores a warhead is built round: with a radar it is
    * what a silo needs to be built, and what a silo or a submarine needs to
    * fabricate and fire. It feeds the grid as well, though dearer per unit of
@@ -4818,7 +5428,7 @@ const DEFS = {
     fh: 2,
     weapons: [],
     power: -40,
-    requires: ["radar", "reactor"],
+    requires: ["radar", "reactor", "nuclearProgram"],
     nukeCapacity: 3,
     nukeCost: 2500,
     nukeTime: 180,
@@ -4910,9 +5520,7 @@ function rleDecodeInto(s, out) {
 const CUSTOM_MAP_FORMAT = "steel-tide-map";
 const CUSTOM_MAP_VERSION = 1;
 const CUSTOM_MAP_EXT = ".steel-tide-map";
-const MIN_MAP_SIDE = 16;
-const MAX_MAP_SIDE = 256;
-const MAX_DEPOSITS = 200;
+const MAX_DEPOSITS = 400;
 const MAX_DECOR = 4e3;
 const MAX_MAP_UNITS = 400;
 const MAX_NAME_LENGTH = 48;
@@ -5036,7 +5644,7 @@ function parseCustomMap(json, opts = {}) {
     return { ok: false, error: "bad terrain data" };
   }
   for (let i = 0; i < terrain.length; i++) {
-    if (terrain[i] > Terrain.CliffWest) return { ok: false, error: "the map uses a terrain this build does not know" };
+    if (terrain[i] >= TERRAIN_KINDS) return { ok: false, error: "the map uses a terrain this build does not know" };
   }
   const points = (list, max, what) => {
     if (list === void 0) return [];
@@ -5085,6 +5693,66 @@ function parseCustomMap(json, opts = {}) {
     }
   };
 }
+const ABILITIES = {
+  /** the governor off and the throttle to the stop — the Recon Buggy, born with it */
+  sprint: { id: "sprint", cooldown: 20, duration: 4, speedMul: 1.6, sound: "abSprint" },
+  /** reheat: a fighter's dash to a fight or out of one; the turning circle opens with the speed */
+  afterburner: { id: "afterburner", cooldown: 30, duration: 5, speedMul: 1.8, requires: ["afterburners"], sound: "abAfterburner" },
+  /** grenade dischargers: a cloud round the hull that nothing outside it sees into */
+  smoke: { id: "smoke", cooldown: 40, duration: 8, smoke: 2.5, requires: ["smokeDischargers"], sound: "abSmoke" },
+  /** the bomb bay loaded with incendiaries for the next run */
+  incendiary: { id: "incendiary", cooldown: 45, duration: 30, incendiary: true, requires: ["incendiaryBombs"], sound: "abArm" },
+  /** the crew at the guns flat out: every reload halved */
+  barrage: { id: "barrage", cooldown: 45, duration: 8, reloadMul: 0.5, requires: ["rapidBarrage"], sound: "abArm" },
+  /**
+   * A tank's two protections switched on together, the Trophy and the
+   * Kontakt-5: the hard-kill launchers take three missiles or rockets out of
+   * the air at the hull, and the reactive bricks take four tenths off every
+   * shell that lands. It fights on the move; nothing is dropped.
+   */
+  countermeasures: {
+    id: "countermeasures",
+    cooldown: 40,
+    duration: 10,
+    takenMul: 0.6,
+    takenFrom: ["shell"],
+    intercepts: 3,
+    interceptReach: 1.5,
+    requires: ["activeProtection"],
+    sound: "abCountermeasures"
+  },
+  /** the damage control parties at work: fires out, holes plugged */
+  damageControl: { id: "damageControl", cooldown: 60, duration: 10, heal: 0.3, requires: ["damageParties"], sound: "abRepair" },
+  /** every crew of the recovery vehicle at the wrecks at once — the Hercules, born with it */
+  emergencyRepair: { id: "emergencyRepair", cooldown: 30, duration: 6, auraMul: 3, sound: "abRepair" }
+};
+const ABILITY_IDS = Object.keys(ABILITIES);
+const TECH = {
+  // ---- Lightning: speed, the raid, the air
+  lightning: { id: "lightning", branch: "lightning", pick: true, cost: 300, time: 30, buff: { stat: "speed", mul: 1.08, kind: "unit" } },
+  smokeDischargers: { id: "smokeDischargers", branch: "lightning", cost: 450, time: 40 },
+  suicideDrones: { id: "suicideDrones", branch: "lightning", cost: 600, time: 45 },
+  afterburners: { id: "afterburners", branch: "lightning", requires: ["radar"], cost: 700, time: 50 },
+  // ---- Hammer: firepower, the siege, the bomb
+  hammer: { id: "hammer", branch: "hammer", pick: true, cost: 300, time: 30, buff: { stat: "dmg", mul: 1.1, cls: ["he", "rocket"] } },
+  incendiaryBombs: { id: "incendiaryBombs", branch: "hammer", cost: 450, time: 40 },
+  ballisticMissiles: { id: "ballisticMissiles", branch: "hammer", cost: 600, time: 45 },
+  rapidBarrage: { id: "rapidBarrage", branch: "hammer", requires: ["radar"], cost: 700, time: 50 },
+  // ---- Anvil: endurance, the hold, the repair
+  anvil: { id: "anvil", branch: "anvil", pick: true, cost: 300, time: 30, buff: { stat: "taken", mul: 0.85, kind: "building" } },
+  activeProtection: { id: "activeProtection", branch: "anvil", cost: 450, time: 40 },
+  fieldRecovery: { id: "fieldRecovery", branch: "anvil", cost: 600, time: 45 },
+  damageParties: { id: "damageParties", branch: "anvil", requires: ["radar"], cost: 700, time: 50 },
+  // ---- Logistics: any doctrine, any order
+  deepDrilling: { id: "deepDrilling", cost: 500, time: 40, buff: { stat: "mine", mul: 1.15 } },
+  gridTuning: { id: "gridTuning", cost: 450, time: 40, buff: { stat: "plant", mul: 1.2 } },
+  fieldEngineering: { id: "fieldEngineering", cost: 350, time: 30, buff: { stat: "build", mul: 1.3 } },
+  // ---- the last node, any doctrine's, behind its whole column
+  nuclearProgram: { id: "nuclearProgram", final: true, gates: true, cost: 1e3, time: 60 }
+};
+function isTechId(id) {
+  return Object.prototype.hasOwnProperty.call(TECH, id);
+}
 const MOD_FORMAT = "steel-tide-mod";
 const MOD_FORMAT_VERSION = 1;
 const MOD_FILE_EXT = ".steel-tide-mod";
@@ -5131,7 +5799,7 @@ const TRAILS = ["tread", "tire", "wake", "none"];
 const WEAPON_SOUNDS = ["mg", "autocannon", "cannon", "missile", "flak", "arty", "rocket", "torpedo", "bomb", "flame"];
 const DECAL_LAYERS = ["under", "hull", "over"];
 const DECAL_ANCHORS = ["hull", "turret"];
-const DECAL_WHENS = ["always", "moving", "still", "firing", "damaged", "night"];
+const DECAL_WHENS = ["always", "moving", "still", "firing", "damaged", "night", "ability"];
 const MANIFEST_SPECS = [
   { name: "format", type: "string", required: true, doc: [`always "${MOD_FORMAT}"`, `固定为 "${MOD_FORMAT}"`] },
   { name: "v", type: "int", required: true, min: 1, max: 1, doc: [`format version, ${MOD_FORMAT_VERSION}`, `格式版本，${MOD_FORMAT_VERSION}`] },
@@ -5187,7 +5855,7 @@ const DEF_SPECS = [
   { name: "upgradeOf", type: "id", only: "building", doc: ["the building this is the next level of; that one gains the upgrade button", "作为哪座建筑的下一等级；那座建筑获得升级按钮"] },
   { name: "upgradeCost", type: "number", only: "building", min: 0, max: 99999, def: "cost − the source's cost", doc: ["with `upgradeOf`: the upgrade's price", "配合 `upgradeOf`：升级价格"] },
   { name: "upgradeTime", type: "number", only: "building", min: 0, max: 3600, def: "buildTime", doc: ["with `upgradeOf`: seconds", "配合 `upgradeOf`：升级秒数"] },
-  { name: "requires", type: "ids", doc: ["building ids that must stand before it can be built", "建造前必须存在的建筑 id"] },
+  { name: "requires", type: "ids", doc: ["building ids that must stand before it can be built, or tech node ids that must be researched (`suicideDrones`, `activeProtection`…)", "建造前必须存在的建筑 id，或必须研究完成的科技节点 id（`suicideDrones`、`activeProtection`…）"] },
   { name: "nukeCapacity", type: "int", min: 0, max: 10, doc: ["a launcher: warheads it holds", "发射器：可储存的弹头数"] },
   { name: "nukeCost", type: "number", min: 0, max: 99999, doc: ["a launcher: metal per warhead", "发射器：每枚弹头的金属"] },
   { name: "nukeTime", type: "number", min: 0, max: 3600, doc: ["a launcher: seconds per warhead", "发射器：每枚弹头的秒数"] },
@@ -5207,6 +5875,9 @@ const DEF_SPECS = [
   { name: "detect", type: "number", min: 0, max: 64, doc: ["reveals stealth within this many tiles", "在此范围内揭示隐形"] },
   { name: "radar", type: "bool", doc: ["sees by radio: the sight circle ignores weather and the hour, and drops to 7 tiles when short of power", "靠无线电观测：视野不受天气与昼夜影响，电力不足时缩至 7 格"] },
   { name: "hovers", type: "bool", only: "unit", doc: ["an aircraft that hovers instead of orbiting", "悬停而非盘旋的飞行器"] },
+  { name: "kamikaze", type: "bool", only: "unit", doc: ["the unit is its own round: it never picks a target, and its one weapon flies it into what it is ordered at (the Hornet)", "自身即弹药：从不自行索敌，唯一的武器是被命令攻击时撞向目标（黄蜂）"] },
+  { name: "lowFlying", type: "bool", only: "unit", doc: ["an aircraft at treetop height: machine guns and autocannons that fire on the ground reach it too (the Hornet)", "贴着树梢飞行的飞行器：对地的机枪与机炮也能打到它（黄蜂）"] },
+  { name: "limit", type: "int", min: 1, max: 200, only: "unit", doc: ["at most this many a faction at once, alive and queued together (the Hornet's 6)", "每个阵营同时最多拥有的数量，在役与排队中合计（黄蜂为 6）"] },
   { name: "altitude", type: "number", only: "unit", min: 0, max: 64, def: "12", doc: ["an aircraft's drawn height, px", "飞行器的绘制高度（像素）"] },
   { name: "fireOnMove", type: "bool", only: "unit", doc: ["keeps shooting on a plain move", "移动时持续开火"] },
   { name: "burnMult", type: "number", only: "unit", min: 0, max: 4, def: "1", doc: ["what fire on the ground does to it, as a multiplier (the Drake's 0.5)", "地面火焰对它的伤害倍率（火龙为 0.5）"] },
@@ -5215,6 +5886,7 @@ const DEF_SPECS = [
   { name: "sprite", type: "string", max: 48, def: "this mod's u.<id> sheet, else the base's art", doc: ["the body's atlas key: one of this mod's sheets, or a vanilla key to borrow its art", "主体图像键：本模组的精灵图，或借用原版的键"] },
   { name: "turretSprite", type: "string", max: 48, def: "this mod's tur.<id> sheet, else the base's (when its art is kept)", doc: ["the rotating part's key, if any", "旋转部件的图像键（若有）"] },
   { name: "decals", type: "decals", def: "the base's, when its art is kept", doc: [`pictures laid on the hull and the turret besides their own sheets (see below), up to ${MAX_DEF_DECALS}`, `除车体与炮塔本身之外贴在其上的图像（见下），最多 ${MAX_DEF_DECALS} 个`] },
+  { name: "ability", type: "enum", values: ABILITY_IDS, only: "unit", def: "the base's", doc: ["its one active ability, a vanilla one by id (`sprint`, `smoke`, `countermeasures`…): the same click, clock and unlock as on the game's own units", "唯一的主动技能，按 id 取原版技能（`sprint`、`smoke`、`countermeasures`…）：点击、计时与解锁条件与原版单位相同"] },
   { name: "aliases", type: "strings", doc: ["other names the console's `give` accepts", "控制台 `give` 接受的别名"] },
   { name: "aiWeight", type: "number", only: "unit", min: 0, max: 10, def: "0", doc: ["how readily the AI builds it: a Bison is 3, a scout car 1; 0 never", "AI 生产它的倾向：野牛是 3，侦察车 1；0 为从不"] }
 ];
@@ -5256,7 +5928,7 @@ const DECAL_SPECS = [
   { name: "upright", type: "bool", doc: ["never turned: laid screen-up wherever its anchor is", "永不旋转：始终朝屏幕上方"] },
   { name: "scale", type: "number", min: 0.05, max: 8, def: "1", doc: ["drawn at this multiple of its sheet's size", "按精灵图尺寸的此倍数绘制"] },
   { name: "alpha", type: "number", min: 0, max: 1, def: "1", doc: ["opacity", "不透明度"] },
-  { name: "when", type: "enum", values: DECAL_WHENS, def: "always", doc: ["shown only while the unit moves or stands (`moving`, `still`), within a reload of its last shot (`firing`), under half health (`damaged`), or after dusk (`night`: laid over the dark like a lamp, and the game's own headlights stay off a unit that has one)", "仅在移动/静止（`moving`/`still`）、上次开火后一次装填时间内（`firing`）、生命低于一半（`damaged`）或天黑后（`night`：像灯一样亮于夜色之上，且游戏不再为该单位画自己的车灯）时显示"] }
+  { name: "when", type: "enum", values: DECAL_WHENS, def: "always", doc: ["shown only while the unit moves or stands (`moving`, `still`), within a reload of its last shot (`firing`), under half health (`damaged`), while its ability runs or is armed (`ability`), or after dusk (`night`: laid over the dark like a lamp, and the game's own headlights stay off a unit that has one)", "仅在移动/静止（`moving`/`still`）、上次开火后一次装填时间内（`firing`）、生命低于一半（`damaged`）、技能生效或待发时（`ability`）或天黑后（`night`：像灯一样亮于夜色之上，且游戏不再为该单位画自己的车灯）时显示"] }
 ];
 const SOUND_SPECS = [
   { name: "key", type: "string", max: 60, required: true, doc: ["`<mod id>-<name>`, lower case; what a weapon's `sound` names", "`<模组 id>-<名字>`，小写；武器 `sound` 引用的键"] },
@@ -5729,7 +6401,8 @@ function resolveMod(mod, table = VANILLA) {
       }
       return out;
     };
-    def.requires = ids(def.requires, "requires", "building");
+    const nodes = (def.requires ?? []).filter((r) => isTechId(r));
+    def.requires = [...ids((def.requires ?? []).filter((r) => !isTechId(r)), "requires", "building"), ...nodes];
     if (def.requires.length === 0) delete def.requires;
     if (def.kind === "building") {
       if (def.produces) def.produces = ids(def.produces, "produces", "unit");
@@ -5791,6 +6464,8 @@ function buildDef(own, kind, base, modId, soundKeys, path, errors, warnings) {
   delete inherited.warhead;
   delete inherited.emp;
   delete inherited.aiWeight;
+  delete inherited.lab;
+  delete inherited.unique;
   if (base && base.kind !== kind) {
     errors.push({ path: `${path}.kind`, message: `a ${kind} cannot extend a ${base.kind}` });
     return null;
