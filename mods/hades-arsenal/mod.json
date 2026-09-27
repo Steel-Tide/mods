@@ -1,0 +1,215 @@
+{
+  "format": "steel-tide-mod",
+  "v": 1,
+  "id": "hades-arsenal",
+  "name": [
+    "Hades Arsenal",
+    "冥府军械"
+  ],
+  "version": "1.0.0",
+  "author": "11的沧斯拉",
+  "description": [
+    "Starships from the underworld's armoury: the Hades Star tier-5 battleship, the Ceasefire-class siege battleship, the Hades Hound storm fighter, and a strategic strike missile tower that fires thirty-two rockets a salvo.",
+    "来自冥府军械库的星舰：Hades Star 5级战斗舰、止战级攻坚战列舰、冥犬风暴舰，以及一次齐射三十二枚火箭的战略打击导弹塔。"
+  ],
+  "homepage": "https://github.com/steel-tide/mods/tree/main/mods/hades-arsenal",
+  "license": "CC-BY-4.0",
+  "sprites": [
+    { "key": "u.hades-arsenal-battleship", "file": "sprites/u.hades-arsenal-battleship.png", "frames": 1, "rotated": true, "fw": 46, "fh": 102 },
+    { "key": "u.hades-arsenal-ceasefire", "file": "sprites/u.hades-arsenal-ceasefire.png", "frames": 1, "rotated": true, "fw": 41, "fh": 134 },
+    { "key": "u.hades-arsenal-hound", "file": "sprites/u.hades-arsenal-hound.png", "frames": 1, "rotated": true, "fw": 28, "fh": 30 },
+    { "key": "u.hades-arsenal-missile-tower", "file": "sprites/u.hades-arsenal-missile-tower.png", "frames": 1 }
+  ],
+  "sounds": [
+    { "key": "hades-arsenal-fire", "file": "sfx/hades-arsenal-fire.mp3" }
+  ],
+  "screenshots": [
+    "screenshots/cover.webp",
+    "screenshots/fleet.webp"
+  ],
+  "defs": [
+    {
+      "id": "hades-arsenal-battleship",
+      "kind": "unit",
+      "domain": "ship",
+      "name": [ "Hades Star Battleship", "Hades Star 5级战斗舰" ],
+      "desc": [
+        "A tier-5 leviathan through the quantum star. Triple spike cannon on every bearing and the thickest hull afloat, but slow, short-ranged and blind to the sky.",
+        "由 Hades Star 5级战斗舰穿越量子星而来的巨舰。三联尖刺炮可朝任意方向开火，舰体为海上最厚，但航速慢、射程短，且无法对空。"
+      ],
+      "tier": 3,
+      "cost": 2600,
+      "buildTime": 100,
+      "pop": 6,
+      "hp": 5200,
+      "armor": "ship",
+      "speed": 34,
+      "turnRate": 1.2,
+      "vision": 11,
+      "radius": 24,
+      "body": { "r": 28, "len": 103 },
+      "requires": [ "radar" ],
+      "sprite": "u.hades-arsenal-battleship",
+      "weapons": [
+        {
+          "id": "spike",
+          "cls": "cannon",
+          "dmg": 55,
+          "reload": 2.4,
+          "range": 10,
+          "burst": 3,
+          "burstDelay": 0.2,
+          "projectile": "shell",
+          "speed": 480,
+          "splash": 18,
+          "spread": 12,
+          "turret": true,
+          "sound": "hades-arsenal-fire"
+        }
+      ],
+      "aiWeight": 0.8
+    },
+    {
+      "id": "hades-arsenal-ceasefire",
+      "kind": "unit",
+      "domain": "ship",
+      "name": [ "Ceasefire-class Siege Battleship", "止战级攻坚战列舰" ],
+      "desc": [
+        "The Old Empire's finest: war to end war. A heavy siege gun that shells the shore from long range, with rocket pods and an autocannon for anything that closes. No air defence.",
+        "旧帝国科技结晶，以战止战。重型攻坚炮远程轰击海岸，火箭巢与自动炮应付近身之敌。无对空能力。"
+      ],
+      "tier": 3,
+      "cost": 1900,
+      "buildTime": 80,
+      "pop": 5,
+      "hp": 4300,
+      "armor": "ship",
+      "speed": 40,
+      "turnRate": 1.4,
+      "vision": 11,
+      "radius": 22,
+      "body": { "r": 22, "len": 165 },
+      "requires": [ "radar" ],
+      "sprite": "u.hades-arsenal-ceasefire",
+      "weapons": [
+        {
+          "id": "siege",
+          "cls": "he",
+          "dmg": 160,
+          "reload": 4.2,
+          "range": 16,
+          "minRange": 3,
+          "projectile": "shell",
+          "speed": 300,
+          "arc": true,
+          "splash": 44,
+          "spread": 30,
+          "turret": true,
+          "sound": "hades-arsenal-fire"
+        },
+        {
+          "id": "pods",
+          "cls": "rocket",
+          "dmg": 18,
+          "reload": 4.5,
+          "range": 8,
+          "burst": 6,
+          "burstDelay": 0.12,
+          "splash": 12,
+          "spread": 20,
+          "turret": true
+        },
+        {
+          "id": "gun",
+          "cls": "autocannon",
+          "dmg": 18,
+          "reload": 0.35,
+          "range": 6.5,
+          "splash": 6,
+          "turret": true
+        }
+      ],
+      "aiWeight": 0.8
+    },
+    {
+      "id": "hades-arsenal-hound",
+      "kind": "unit",
+      "domain": "air",
+      "name": [ "Hades Hound Storm Fighter", "冥犬风暴舰" ],
+      "desc": [
+        "A twin-role strike craft that hangs over the fight. Its guided rocket salvo hits ground, sea and air alike, and does none of them as well as a specialist.",
+        "悬停作战的双用途打击舰。制导火箭齐射可同时打击地面、海上与空中目标，但每一项都不及专精单位。"
+      ],
+      "tier": 2,
+      "cost": 600,
+      "buildTime": 32,
+      "pop": 3,
+      "hp": 650,
+      "armor": "air",
+      "speed": 105,
+      "turnRate": 2.6,
+      "vision": 10,
+      "radius": 12,
+      "altitude": 14,
+      "hovers": true,
+      "sprite": "u.hades-arsenal-hound",
+      "weapons": [
+        {
+          "id": "pods",
+          "cls": "rocket",
+          "dmg": 14,
+          "reload": 3.2,
+          "range": 6.5,
+          "burst": 6,
+          "burstDelay": 0.1,
+          "homing": true,
+          "splash": 8,
+          "targets": [ "ground", "ship", "air" ],
+          "turret": false,
+          "sound": "hades-arsenal-fire"
+        }
+      ],
+      "aiWeight": 1
+    },
+    {
+      "id": "hades-arsenal-missile-tower",
+      "kind": "building",
+      "name": [ "Strategic Strike Missile Tower", "战略打击导弹塔" ],
+      "desc": [
+        "A long-range missile battery: thirty-two rockets in one salvo on ground and sea targets as far as a radar sees. A long reload, no air defence, and point defence can thin a salvo.",
+        "远程导弹阵列，一次齐射32枚火箭，打击雷达视野内的地面与海上目标。装填时间长，无法对空，且火箭可被点防御拦截。"
+      ],
+      "tier": 3,
+      "cost": 2400,
+      "buildTime": 90,
+      "hp": 2600,
+      "armor": "structure",
+      "fw": 2,
+      "fh": 2,
+      "power": -20,
+      "vision": 8,
+      "requires": [ "radar" ],
+      "sprite": "u.hades-arsenal-missile-tower",
+      "weapons": [
+        {
+          "id": "salvo",
+          "cls": "rocket",
+          "dmg": 40,
+          "reload": 30,
+          "range": 24,
+          "minRange": 6,
+          "burst": 32,
+          "burstDelay": 0.1,
+          "projectile": "rocket",
+          "speed": 300,
+          "arc": true,
+          "splash": 44,
+          "spread": 110,
+          "interceptable": true,
+          "turret": true,
+          "sound": "hades-arsenal-fire"
+        }
+      ]
+    }
+  ]
+}
