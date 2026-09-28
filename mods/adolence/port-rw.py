@@ -325,9 +325,10 @@ ROSTER = [
      dict(kind=B, power=-6)),
     ("军用机坪", "airfield", "Military Airfield", "Gunships, fighters, the bomber and the transport fly from here.",
      dict(kind=B, power=-8, upgradeOf="helipad")),
-    # the coast guard base is left out: the game places a naval yard on the shore by its id
-    # (`navyard…`), so a mod's shipyard would launch its boats onto grass; the boats come
-    # from the vanilla naval yard instead (the default line for their domain)
+    # the game judges a yard by what it trains (`yardKind`): the scout boat on its list makes
+    # this a naval yard, placed on the water by a shore and launching onto it
+    ("海警基地", "coast-guard-base", "Coast Guard Base", "Launches the scout boat, the hovercraft IFVs and the drone carrier. Stands on the water by a shore.",
+     dict(kind=B, power=-6)),
     ("太阳能板", "solar", "Solar Array", "A quiet trickle of power. Needs room.",
      dict(kind=B, power=25, cost=180, hp=900)),
     ("太阳能板-T2", "solar-2", "Solar Array T2", "Better cells, three times the power.",
@@ -518,10 +519,6 @@ ROSTER = [
     ("暴虐之罪", "sin-of-wrath", "Sin of Wrath", "One of the Sins.", dict(kind=Z, armor="heavy", tier=3)),
     ("暴食之罪", "sin-of-gluttony", "Sin of Gluttony", "The eater. One of the Sins.", dict(kind=Z, armor="heavy", tier=2)),
 ]
-
-# where things that no ported building lists are trained
-COAST_GUARD = "海警基地"  # the package's shipyard: the game's own naval yard stands in for it
-NAVYARD_LINE = ["navyard", "navyard2", "navyard3"]
 
 
 def build_list(ini):
@@ -1432,13 +1429,13 @@ def convert():
             df["aiWeight"] = ov.get("aiWeight", 0 if is_zombie else 2 if infantry else 1.5)
         for k, v in ov.get("extra", {}).items():
             df[k] = v
+        # what the package scripts for it, read after the roster is whole (`behaviour`)
+        df["_acts"] = rw_actions(ini)
+        df["_mend"] = num(core.get("selfRegenRate")) or 0
         defs.append(df)
 
     # ---- production
     by_id = {d["id"]: d for d in defs}
-    # the coast guard base is not in the roster (the game's own naval yard stands on
-    # the shore in its place), but what it launched is: its amphibians join that line
-    coast = {ids.get(n) for n in build_list(load_unit(by_name[COAST_GUARD]))} if COAST_GUARD in by_name else set()
     for bid, names in rw_lists.items():
         b = by_id.get(bid)
         if not b:
@@ -1460,23 +1457,166 @@ def convert():
             uid = f"{MOD_ID}-{s}"
             if uid in by_id and uid not in produces[bid]:
                 produces[bid].append(uid)
+    # a building on land never launches a boat: the game takes a building that trains one for
+    # a naval yard (`yardKind`), and the Sin of Sloth could no longer stand on its deposit. The
+    # Gloater, the dead's swimmer, is bred by a nest with water near it instead (`behaviour`)
+    for bid, lst in produces.items():
+        if bid != f"{MOD_ID}-coast-guard-base":
+            produces[bid] = [u for u in lst if by_id[u].get("domain") != "ship"]
     for bid, lst in produces.items():
         if lst:
             by_id[bid]["produces"] = lst
+        else:
+            by_id[bid].pop("produces", None)
     for d in defs:
         if d["kind"] == "unit":
+            # every unit comes from one of the mod's own buildings, as it did in the package,
+            # but what a nest breeds by the water
             homes = [bid for bid, lst in produces.items() if d["id"] in lst]
-            if d.get("domain") == "amphibious" and d["id"] in coast:
-                homes += NAVYARD_LINE[d["tier"] - 1:]
-            if homes:
-                d["producedBy"] = homes
-            else:
-                note(d["id"], "nobody builds it; it falls to the default line")
+            if not homes and d["id"] in WATER_BRED.values():
+                d["producedBy"] = []
+                continue
+            assert homes, f"{d['id']}: no ported building trains it"
+            d["producedBy"] = homes
+
+    behaviour(defs, by_id, ids)
 
     # the zombie tier badge follows the nest
     order = {"building": 0, "unit": 1}
     defs.sort(key=lambda d: (order[d["kind"]], 0))
     return defs
+
+
+def compare_versions(a, b):
+    """positive when `a` is newer, as the game compares them"""
+    pa = [int(x) if x.isdigit() else 0 for x in re.split(r"[.+-]", str(a))]
+    pb = [int(x) if x.isdigit() else 0 for x in re.split(r"[.+-]", str(b))]
+    n = max(len(pa), len(pb))
+    pa += [0] * (n - len(pa)); pb += [0] * (n - len(pb))
+    return (pa > pb) - (pa < pb)
+
+
+def rw_actions(ini):
+    """every action the unit's scripts define, `[action_*]` and `[hiddenAction_*]` alike"""
+    out = []
+    for sec, kv in ini.items():
+        if sec.startswith("action_") or sec.startswith("hiddenAction_"):
+            out.append(dict(kv, _id=sec))
+    return out
+
+
+def spawn_list(v):
+    """`丧尸-壮汉*14(spawnChance=0.7,offsety=70),丧尸-M*25(...)` as (name, count, chance)"""
+    out = []
+    for m in re.finditer(r"([^,*(]+?)\s*(?:\*\s*(\d+))?\s*(?:\(([^)]*)\))?\s*(?:,|$)", v or ""):
+        name = m.group(1).strip()
+        if not name:
+            continue
+        chance = 1.0
+        for kv in (m.group(3) or "").split(","):
+            k, _, val = kv.partition("=")
+            if k.strip() == "spawnChance" and num(val) is not None:
+                chance = num(val)
+        out.append((name, int(m.group(2) or 1), chance, "setToTeamOfLastAttacker=true" in (m.group(3) or "")))
+    return out
+
+
+# a nest's brood, against the package's: the port's dead are fewer and tougher each
+BROOD = 0.35
+# what a nest breeds only with water within a few tiles: its one swimmer (nest -> unit)
+WATER_BRED = {f"{MOD_ID}-sloth-nest": f"{MOD_ID}-gloater"}
+# the dead's rage after a kill: its length and its rest are counters in the package's scripts
+RAGE = {"damage": 1.4, "reload": 0.7, "for": 8}
+RAGE_REST = 20
+
+
+def behaviour(defs, by_id, ids):
+    """The package's scripts that the rules can carry (`game/modRules.ts`): the police and the
+    troops rise as the dead when the dead kill them, the Sins' nests breed on a clock, a patrol
+    car arrives with its officers aboard, and the dead rage after a kill and mend when left be."""
+    dead = sorted(f"{MOD_ID}-{sfx}" for rw, sfx, _, _, ov in ROSTER if ov["kind"] == Z and f"{MOD_ID}-{sfx}" in by_id)
+    for d in defs:
+        rules = []
+        for a in d.pop("_acts", []):
+            ev = (a.get("autoTriggerOnEvent") or "").strip()
+            cond = a.get("requireConditional") or ""
+            spawn = a.get("spawnUnits")
+            # risen: killed by the dead, it gets up as one of them for whoever killed it
+            if ev == "destroyed" and spawn and "丧尸" in cond:
+                for name, n, chance, killer in spawn_list(spawn):
+                    uid = ids.get(name)
+                    if uid in by_id:
+                        rules.append({"on": "destroyed", "if": {"killedBy": dead},
+                                      "do": {"spawn": {"unit": uid, "count": n, **({"side": "killer"} if killer else {})}}})
+                continue
+            # a nest's brood, on the timer the package resets after each
+            timer = re.search(r"customTimer\(laterThanSeconds=([\d.]+)\)", a.get("autoTrigger") or "")
+            if spawn and timer:
+                spawns = []
+                for name, n, chance, _ in spawn_list(spawn):
+                    uid = ids.get(name)
+                    k = round(n * chance * BROOD)
+                    if uid in by_id and k >= 1:
+                        spawns.append({"spawn": {"unit": uid, "count": min(16, k)}})
+                if spawns:
+                    rules.append({"every": max(5, num(timer.group(1))), "do": spawns[:8]})
+                continue
+            # a vehicle arrives crewed
+            crew = a.get("addUnitsIntoTransport")
+            if ev == "created" and crew and d.get("transportCap"):
+                for name, n, _, _ in spawn_list(crew):
+                    uid = ids.get(name)
+                    if uid in by_id:
+                        rules.append({"on": "created", "do": {"spawn": {"unit": uid, "count": n, "into": "hold"}}})
+                continue
+            # the dead's rage after a kill
+            stats = a.get("setUnitStats") or ""
+            if ev == "killedAnyUnit" and "shootDamageMultiplier" in stats:
+                rules.append({"on": "kill", "cooldown": RAGE_REST, "do": {"buff": dict(RAGE)}})
+                continue
+            # the dead mend when they have been left alone a while
+            if "hp=self.hp+" in stats.replace(" ", ""):
+                gain = num(stats.replace(" ", "").split("hp=self.hp+")[1].split(",")[0]) or 0
+                if gain > 0:
+                    rules.append({"every": 2, "if": {"not": {"hurtWithin": 6}}, "do": {"heal": round(gain * HP_UNIT, 1)}})
+        if d["id"] in WATER_BRED and WATER_BRED[d["id"]] in by_id:
+            # the spawn finds water within six tiles or puts nothing down: an inland nest breeds none
+            rules.append({"every": 60, "do": {"spawn": {"unit": WATER_BRED[d["id"]], "count": 1, "max": 2}}})
+        mend = d.pop("_mend", 0)
+        if mend > 0:
+            regen = min(mend * 60 * HP_UNIT, d["hp"] * 0.005)
+            if regen >= 0.3:
+                d["regen"] = round(regen, 1)
+        # one of each: the package repeats a rule per slot of its own bookkeeping
+        seen, kept = set(), []
+        for r in rules:
+            key = json.dumps(r, sort_keys=True, ensure_ascii=False)
+            if key not in seen:
+                seen.add(key)
+                kept.append(r)
+        if kept:
+            d["rules"] = kept[:24]
+    # a crew is what the hold takes of the package's, and a crewed vehicle costs what that
+    # crew does besides: the package's price was for both
+    for d in defs:
+        room = d.get("transportCap", 0)
+        kept = []
+        for r in d.get("rules", []):
+            sp = r["do"].get("spawn") if isinstance(r["do"], dict) else None
+            if r.get("on") == "created" and sp and sp.get("into") == "hold":
+                crew = by_id[sp["unit"]]
+                weight = crew.get("cargoWeight", crew.get("pop", 1)) or 1
+                n = min(sp["count"], int(room // weight))
+                if n <= 0:
+                    continue
+                room -= n * weight
+                sp["count"] = n
+                d["cost"] = int(d["cost"] + crew["cost"] * n)
+            kept.append(r)
+        if "rules" in d:
+            d["rules"] = kept
+            if not kept:
+                del d["rules"]
 
 
 SCRIPT_PROJECTILES = ("ramOver", "yyyy", "碰撞", "旋转", "推动", "K")
@@ -1685,16 +1825,17 @@ def main():
         return
     defs = convert()
     write_sounds()
-    desc_en = ("Adolence, the City of Sin, ported from the Rusted Warfare mod with its authors' permission: "
-               "the city police and the troops that come to their aid, their cruisers, tanks and helicopters, "
-               "and the dead they are fighting, bred from a nest you can place yourself.")
-    desc_zh = "《Adolence-罪恶之都》经原作者授权移植：都市警力与前来增援的部队、他们的警车、坦克和直升机，以及他们要对付的死者——可以自己放置巢穴繁殖。"
+    desc_en = ("The city police and the troops that come to their aid, their cruisers, tanks and helicopters, "
+               "and the dead they are fighting: bred from nests you can place yourself, and rising again from the police they kill.")
+    desc_zh = "都市警力与前来增援的部队、他们的警车、坦克和直升机，以及他们要对付的死者——从你亲手放置的巢穴中繁殖，被它们杀死的警察也会尸变。"
     manifest = {
         "format": "steel-tide-mod",
         "v": 1,
         "id": MOD_ID,
         "name": ["Adolence: City of Sin", "Adolence·罪恶之都"],
-        "version": "1.0.0",
+        "version": "1.1.0",
+        # the first game with mod behaviour: the dead rising, the nests, the crews (`rules`)
+        "minGame": "0.8.7",
         "author": "自然常数也有人用? and the Adolence team; port by Steel Tide",
         "description": [desc_en, desc_zh],
         "homepage": "https://github.com/steel-tide/mods/tree/main/mods/adolence",
@@ -1707,7 +1848,9 @@ def main():
     old = {}
     if os.path.exists(os.path.join(HERE, "mod.json")):
         old = json.load(open(os.path.join(HERE, "mod.json"), encoding="utf-8"))
-        manifest["version"] = old.get("version", "1.0.0")
+        # bumped by hand in mod.json and kept; never below this script's own
+        if compare_versions(old.get("version", "0"), manifest["version"]) > 0:
+            manifest["version"] = old["version"]
         manifest["screenshots"] = old.get("screenshots", [])
     if not manifest["screenshots"]:
         # whatever pictures sit in screenshots/, in name order: drop them there and re-run

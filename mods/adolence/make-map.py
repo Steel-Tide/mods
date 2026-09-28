@@ -55,7 +55,7 @@ fill(32, 26, 46, 38, MUD)
 fill(32, 40, 60, 46, RUBBLE)
 # sand along the water
 fill(64, 2, 66, 46, SAND)
-# a pond behind the police yards, for the boats the naval yard would launch
+# a pond behind the police yards, for the coast guard base and the boats it launches
 fill(4, 27, 13, 37, SAND)
 fill(5, 28, 12, 36, WATER)
 fill(7, 30, 10, 34, DEEP)
@@ -111,6 +111,9 @@ b("solar", 0, 5, 14)
 b("solar", 0, 5, 18)
 b("supply-cache", 0, 8, 6)
 b("supply-cache", 0, 8, 42)
+# a naval yard stands on the water by a shore: in the pond, its dock open to the south
+b("coast-guard-base", 0, 7, 28)
+assert all(t[y][x] in (WATER, DEEP) for y in range(28, 31) for x in range(7, 10)) and t[27][8] == SAND
 for y in (13, 16, 19, 22, 27, 30, 33):
     b("mg-tower", 0, 27, y)
 for y in range(12, 36, 1):

@@ -6,11 +6,12 @@
     "Adolence: City of Sin",
     "Adolence·罪恶之都"
   ],
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "minGame": "0.8.7",
   "author": "自然常数也有人用? and the Adolence team; port by Steel Tide",
   "description": [
-    "Adolence, the City of Sin, ported from the Rusted Warfare mod with its authors' permission: the city police and the troops that come to their aid, their cruisers, tanks and helicopters, and the dead they are fighting, bred from a nest you can place yourself.",
-    "《Adolence-罪恶之都》经原作者授权移植：都市警力与前来增援的部队、他们的警车、坦克和直升机，以及他们要对付的死者——可以自己放置巢穴繁殖。"
+    "The city police and the troops that come to their aid, their cruisers, tanks and helicopters, and the dead they are fighting: bred from nests you can place yourself, and rising again from the police they kill.",
+    "都市警力与前来增援的部队、他们的警车、坦克和直升机，以及他们要对付的死者——从你亲手放置的巢穴中繁殖，被它们杀死的警察也会尸变。"
   ],
   "homepage": "https://github.com/steel-tide/mods/tree/main/mods/adolence",
   "license": "LicenseRef-Adolence",
@@ -317,6 +318,34 @@
       ]
     },
     {
+      "id": "adolence-coast-guard-base",
+      "name": [
+        "Coast Guard Base",
+        "海警基地"
+      ],
+      "desc": [
+        "Launches the scout boat, the hovercraft IFVs and the drone carrier. Stands on the water by a shore.",
+        "罪都海警调度中心，在此出动警用舰艇"
+      ],
+      "kind": "building",
+      "tier": 1,
+      "cost": 250,
+      "buildTime": 33.3,
+      "hp": 800,
+      "armor": "structure",
+      "vision": 4,
+      "fw": 3,
+      "fh": 3,
+      "power": -6,
+      "sprite": "u.adolence-coast-guard-base",
+      "produces": [
+        "adolence-scout-boat",
+        "adolence-light-ifv",
+        "adolence-heavy-ifv",
+        "adolence-drone-carrier"
+      ]
+    },
+    {
       "id": "adolence-solar",
       "name": [
         "Solar Array",
@@ -518,12 +547,53 @@
         "adolence-turned-anti-materiel",
         "adolence-road-rage",
         "adolence-acid-mass",
-        "adolence-gloater",
         "adolence-flying-husk",
         "adolence-gorilla",
         "adolence-no-longer-human",
         "adolence-sin-of-wrath",
         "adolence-sin-of-gluttony"
+      ],
+      "regen": 4.5,
+      "rules": [
+        {
+          "every": 35.0,
+          "do": [
+            {
+              "spawn": {
+                "unit": "adolence-brute",
+                "count": 3
+              }
+            },
+            {
+              "spawn": {
+                "unit": "adolence-zombie",
+                "count": 4
+              }
+            },
+            {
+              "spawn": {
+                "unit": "adolence-rager",
+                "count": 1
+              }
+            },
+            {
+              "spawn": {
+                "unit": "adolence-prisoner",
+                "count": 1
+              }
+            }
+          ]
+        },
+        {
+          "every": 60,
+          "do": {
+            "spawn": {
+              "unit": "adolence-gloater",
+              "count": 1,
+              "max": 2
+            }
+          }
+        }
       ]
     },
     {
@@ -587,6 +657,39 @@
         "adolence-precinct",
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -648,6 +751,39 @@
       "aiWeight": 2,
       "producedBy": [
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -711,6 +847,39 @@
         "adolence-precinct",
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -774,6 +943,39 @@
         "adolence-precinct",
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -837,6 +1039,39 @@
         "adolence-precinct",
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -900,6 +1135,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -962,6 +1230,39 @@
       "aiWeight": 2,
       "producedBy": [
         "adolence-precinct-2"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1025,6 +1326,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1087,6 +1421,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1149,6 +1516,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1211,6 +1611,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1270,6 +1703,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1332,6 +1798,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1394,6 +1893,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1475,6 +2007,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1537,6 +2102,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-turned-anti-materiel",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1602,6 +2200,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1664,6 +2295,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1727,6 +2391,39 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1791,6 +2488,39 @@
       "aiWeight": 2,
       "producedBy": [
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1855,6 +2585,39 @@
       "aiWeight": 2,
       "producedBy": [
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1922,6 +2685,39 @@
       "aiWeight": 1.5,
       "producedBy": [
         "adolence-outpost"
+      ],
+      "rules": [
+        {
+          "on": "destroyed",
+          "if": {
+            "killedBy": [
+              "adolence-acid-mass",
+              "adolence-bloater",
+              "adolence-brute",
+              "adolence-burster",
+              "adolence-flying-husk",
+              "adolence-gloater",
+              "adolence-gorilla",
+              "adolence-imploder",
+              "adolence-no-longer-human",
+              "adolence-prisoner",
+              "adolence-rager",
+              "adolence-road-rage",
+              "adolence-sin-of-gluttony",
+              "adolence-sin-of-wrath",
+              "adolence-turned-anti-materiel",
+              "adolence-turned-officer",
+              "adolence-zombie"
+            ]
+          },
+          "do": {
+            "spawn": {
+              "unit": "adolence-brute",
+              "count": 1,
+              "side": "killer"
+            }
+          }
+        }
       ]
     },
     {
@@ -1937,7 +2733,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 1,
-      "cost": 70,
+      "cost": 150,
       "buildTime": 10.0,
       "hp": 175,
       "pop": 1,
@@ -1978,6 +2774,18 @@
         "adolence-precinct-2",
         "adolence-garage",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-officer-pistol",
+              "count": 4,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -1993,7 +2801,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 1,
-      "cost": 70,
+      "cost": 130,
       "buildTime": 10.0,
       "hp": 158,
       "pop": 1,
@@ -2036,6 +2844,18 @@
         "adolence-precinct-2",
         "adolence-garage",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-officer-rifle",
+              "count": 4,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -2051,7 +2871,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 1,
-      "cost": 85,
+      "cost": 205,
       "buildTime": 10.0,
       "hp": 238,
       "pop": 1,
@@ -2094,6 +2914,28 @@
         "adolence-precinct-2",
         "adolence-garage",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-officer-rifle",
+              "count": 5,
+              "into": "hold"
+            }
+          }
+        },
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-armed-police-pistol",
+              "count": 3,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -2109,7 +2951,7 @@
       "kind": "unit",
       "domain": "amphibious",
       "tier": 1,
-      "cost": 85,
+      "cost": 130,
       "buildTime": 10.0,
       "hp": 252,
       "pop": 1,
@@ -2152,6 +2994,28 @@
         "adolence-precinct-2",
         "adolence-garage",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-officer-rifle",
+              "count": 2,
+              "into": "hold"
+            }
+          }
+        },
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-traffic-officer",
+              "count": 1,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -2167,7 +3031,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 1,
-      "cost": 115,
+      "cost": 250,
       "buildTime": 10.0,
       "hp": 455,
       "pop": 1,
@@ -2209,6 +3073,28 @@
         "adolence-precinct-2",
         "adolence-garage",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-swat-sea",
+              "count": 2,
+              "into": "hold"
+            }
+          }
+        },
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-armed-police-rifle",
+              "count": 3,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -2224,7 +3110,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 1,
-      "cost": 140,
+      "cost": 250,
       "buildTime": 10.0,
       "hp": 455,
       "pop": 1,
@@ -2265,6 +3151,28 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-garage"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-swat-sea",
+              "count": 2,
+              "into": "hold"
+            }
+          }
+        },
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-armed-police-rifle",
+              "count": 2,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -2280,7 +3188,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 1,
-      "cost": 245,
+      "cost": 455,
       "buildTime": 10.0,
       "hp": 980,
       "pop": 2,
@@ -2322,6 +3230,18 @@
         "adolence-precinct-2",
         "adolence-garage",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-swat-sea",
+              "count": 7,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -2399,7 +3319,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 1,
-      "cost": 75,
+      "cost": 90,
       "buildTime": 14.0,
       "hp": 210,
       "pop": 1,
@@ -2442,6 +3362,18 @@
         "adolence-precinct",
         "adolence-precinct-2",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-armed-police-pistol",
+              "count": 1,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -2457,7 +3389,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 1,
-      "cost": 100,
+      "cost": 145,
       "buildTime": 14.0,
       "hp": 245,
       "pop": 1,
@@ -2497,6 +3429,18 @@
       "aiWeight": 1.5,
       "producedBy": [
         "adolence-precinct-2"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-guard-rifleman",
+              "count": 1,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -2668,7 +3612,8 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-arsenal"
-      ]
+      ],
+      "regen": 4.0
     },
     {
       "id": "adolence-light-tank-mg",
@@ -2729,7 +3674,8 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-arsenal"
-      ]
+      ],
+      "regen": 4.0
     },
     {
       "id": "adolence-light-tank",
@@ -2783,7 +3729,8 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-arsenal"
-      ]
+      ],
+      "regen": 4.0
     },
     {
       "id": "adolence-light-tank-missile",
@@ -3010,7 +3957,8 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-arsenal"
-      ]
+      ],
+      "regen": 8.8
     },
     {
       "id": "adolence-scout-car",
@@ -3025,7 +3973,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 2,
-      "cost": 105,
+      "cost": 150,
       "buildTime": 14.0,
       "hp": 420,
       "pop": 1,
@@ -3066,6 +4014,18 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-guard-gunner",
+              "count": 1,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -3081,7 +4041,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 2,
-      "cost": 105,
+      "cost": 240,
       "buildTime": 14.0,
       "hp": 420,
       "pop": 1,
@@ -3122,6 +4082,28 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-guard-gunner",
+              "count": 1,
+              "into": "hold"
+            }
+          }
+        },
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-guard-rifleman",
+              "count": 2,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -3137,7 +4119,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 2,
-      "cost": 105,
+      "cost": 240,
       "buildTime": 14.0,
       "hp": 420,
       "pop": 1,
@@ -3178,6 +4160,28 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-guard-gunner",
+              "count": 1,
+              "into": "hold"
+            }
+          }
+        },
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-guard-rifleman",
+              "count": 2,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -3193,7 +4197,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 2,
-      "cost": 105,
+      "cost": 195,
       "buildTime": 6.0,
       "hp": 420,
       "pop": 1,
@@ -3234,6 +4238,18 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-military-police",
+              "count": 2,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -3249,7 +4265,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 2,
-      "cost": 175,
+      "cost": 310,
       "buildTime": 6.0,
       "hp": 350,
       "pop": 2,
@@ -3290,6 +4306,28 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-guard-rifleman",
+              "count": 2,
+              "into": "hold"
+            }
+          }
+        },
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-guard-gunner",
+              "count": 1,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -3305,7 +4343,7 @@
       "kind": "unit",
       "domain": "ground",
       "tier": 2,
-      "cost": 440,
+      "cost": 530,
       "buildTime": 14.0,
       "hp": 1750,
       "pop": 2,
@@ -3346,6 +4384,18 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-arsenal"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-guard-rifleman",
+              "count": 2,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -3825,7 +4875,7 @@
       "kind": "unit",
       "domain": "amphibious",
       "tier": 2,
-      "cost": 175,
+      "cost": 230,
       "buildTime": 6.0,
       "hp": 525,
       "pop": 2,
@@ -3882,8 +4932,19 @@
       "aiWeight": 1.5,
       "producedBy": [
         "adolence-arsenal",
-        "navyard2",
-        "navyard3"
+        "adolence-coast-guard-base"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-taskforce-rifleman",
+              "count": 1,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -3899,7 +4960,7 @@
       "kind": "unit",
       "domain": "amphibious",
       "tier": 2,
-      "cost": 220,
+      "cost": 660,
       "buildTime": 10.0,
       "hp": 875,
       "pop": 2,
@@ -3958,8 +5019,19 @@
       "aiWeight": 1.5,
       "producedBy": [
         "adolence-arsenal",
-        "navyard2",
-        "navyard3"
+        "adolence-coast-guard-base"
+      ],
+      "rules": [
+        {
+          "on": "created",
+          "do": {
+            "spawn": {
+              "unit": "adolence-taskforce-rifleman",
+              "count": 8,
+              "into": "hold"
+            }
+          }
+        }
       ]
     },
     {
@@ -4050,7 +5122,8 @@
       "producedBy": [
         "adolence-precinct-2",
         "adolence-arsenal"
-      ]
+      ],
+      "regen": 10.5
     },
     {
       "id": "adolence-police-heli",
@@ -4291,7 +5364,8 @@
       "aiWeight": 1.5,
       "producedBy": [
         "adolence-airfield"
-      ]
+      ],
+      "regen": 2.1
     },
     {
       "id": "adolence-transport-heli",
@@ -4496,7 +5570,10 @@
         "len": 23.4
       },
       "sprite": "u.adolence-scout-boat",
-      "aiWeight": 1.5
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-coast-guard-base"
+      ]
     },
     {
       "id": "adolence-drone-carrier",
@@ -4563,7 +5640,11 @@
         "len": 37.5
       },
       "sprite": "u.adolence-drone-carrier",
-      "aiWeight": 1.5
+      "aiWeight": 1.5,
+      "producedBy": [
+        "adolence-coast-guard-base"
+      ],
+      "regen": 6.3
     },
     {
       "id": "adolence-zombie",
@@ -4613,6 +5694,30 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -4663,6 +5768,30 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -4713,6 +5842,31 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "regen": 0.3,
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -4763,6 +5917,31 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "regen": 0.9,
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -4813,6 +5992,31 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "regen": 0.9,
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -4863,6 +6067,30 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -4913,6 +6141,31 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "regen": 0.4,
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -4979,6 +6232,30 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -5047,6 +6324,30 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -5097,6 +6398,31 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "regen": 2.1,
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -5151,6 +6477,31 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "regen": 0.9,
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -5198,8 +6549,31 @@
       },
       "sprite": "u.adolence-gloater",
       "aiWeight": 0,
-      "producedBy": [
-        "adolence-sloth-nest"
+      "producedBy": [],
+      "regen": 0.4,
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -5251,6 +6625,30 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -5303,6 +6701,31 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "regen": 3.5,
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -5354,6 +6777,31 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "regen": 17.5,
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -5405,6 +6853,31 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "regen": 5.2,
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     },
     {
@@ -5455,6 +6928,31 @@
       "aiWeight": 0,
       "producedBy": [
         "adolence-sloth-nest"
+      ],
+      "regen": 1.1,
+      "rules": [
+        {
+          "on": "kill",
+          "cooldown": 20,
+          "do": {
+            "buff": {
+              "damage": 1.4,
+              "reload": 0.7,
+              "for": 8
+            }
+          }
+        },
+        {
+          "every": 2,
+          "if": {
+            "not": {
+              "hurtWithin": 6
+            }
+          },
+          "do": {
+            "heal": 5.2
+          }
+        }
       ]
     }
   ],
@@ -5477,6 +6975,11 @@
     {
       "key": "u.adolence-helipad",
       "file": "sprites/u.adolence-helipad.png",
+      "frames": 1
+    },
+    {
+      "key": "u.adolence-coast-guard-base",
+      "file": "sprites/u.adolence-coast-guard-base.png",
       "frames": 1
     },
     {

@@ -7,18 +7,15 @@ release Q3.6.0 of the V3.0 line.
 
 The original is a scenario: a city's police against the SPK strain and the dead
 it makes, with three currencies, a day-night cycle, scripted supply drops and a
-faction picker. Steel Tide mods add units and buildings and nothing else, so
-what comes across is the roster and the art: the police, the troops that come
-to their aid, their vehicles, aircraft and boats, and the dead. The systems stay
-behind.
+faction picker. What comes across is the roster and the art: the police, the
+troops that come to their aid, their vehicles, aircraft and boats, and the
+dead. So does the part of the scripting the game's mod rules can carry (see
+The dead, below). The rest stays behind: the currencies, the supply drops,
+the faction picker, and the infantry's own orders.
 
 ## What is in it
 
-Fourteen buildings, all placed by the engineer (the original's coast guard
-base is left out: the game puts a naval yard on the shore by its id, so a
-mod's shipyard would launch its boats onto grass; the scout boat, the
-carrier and the two hovercraft it launched come from the vanilla naval yard
-instead):
+Fifteen buildings, all placed by the engineer:
 
 | building | line | what it does |
 | --- | --- | --- |
@@ -26,22 +23,50 @@ instead):
 | Police Outpost | infantry | every foot unit, from patrol officers to the task force; the Zhongzhou squad once an arsenal stands |
 | Police Garage → Police Arsenal | vehicles | cruisers and armoured cars; the arsenal adds the military vehicles, the black-steel tanks, the Abrams and the Stryker |
 | Police Helipad → Military Airfield | air | the police helicopter; then gunships, fighters, bomber and transport |
+| Coast Guard Base | sea | the scout boat, the two hovercraft IFVs and the drone carrier; it stands on the water by a shore |
 | Solar Array → T2 | power | +25, then +75 |
 | Supply Cache → II | metal | an extractor on a deposit, 1.4 then 3.0 a second |
 | MG Tower | defence | a machine gun on a street mount, fires at aircraft |
 | Barricade | defence | a 1×1 block of steel to funnel the horde |
 | Sin of Sloth | the dead | a nest on a deposit; it trains every zombie |
 
+The game judges a production building by what it turns out, so the coast
+guard base, with a boat on its list, is a naval yard like the game's own: the
+engineer lays it on the water with a shore beside it, and it launches onto
+the water.
+
 Eighty-one units: 22 kinds of infantry, 33 vehicles, 7 aircraft, 2 boats and
-17 of the dead. The dead were a spawned enemy in the original; here anyone can
-raise them from a nest, which is the only way a mod can put them on a map.
+17 of the dead. The dead were a spawned enemy in the original. Here anyone can
+raise them from a nest, and they breed on their own.
+
+## The dead
+
+The original's scripts that the game's mod rules can carry come across with it:
+
+- **The dead rise.** A police officer, a soldier or a guard killed by the dead
+  gets up as one of them, on the side that killed it: most as a Brute, the
+  task force's anti-materiel rifleman as a Turned Anti-Materiel. Killed by
+  anything else, they stay dead.
+- **The nests breed.** A Sin of Sloth brings up three Brutes, four Zombies, a
+  Rager and a Prisoner every 35 seconds, about a third of the original's
+  brood. Like every spawn, it stops at its side's population cap.
+- **The dead rage and mend.** One of the dead that makes a kill hits 40%
+  harder and 30% faster for eight seconds, then rests twenty. One left alone
+  for six seconds mends a little every two.
+- **Cars come crewed.** A police cruiser arrives with four officers aboard, an
+  armoured car with eight, a heavy escort with seven, a mortar or a heavy
+  machine gun with its gunner, and so on, as far as each hold goes. The price of
+  each vehicle includes its crew.
+
+The black-steel tanks, the drone carrier, the bomber and the bigger dead mend
+their hulls slowly, as they do in the original.
 
 ## The map
 
 The mod carries a map, *City of Sin* (`maps/city-of-sin.steel-tide-map`): the
 west bank of Adolon, a road grid with the police dug in along the middle
-avenue, a pond behind their yards, the dead already across the avenue and two
-nests breeding more in the rubble.
+avenue, their coast guard base in a pond behind the yards, the dead already
+across the avenue and two nests breeding more in the rubble.
 Seat one opens on the west and gets the police, seat two on the east and gets
 the dead. With the mod on, the map is a card in the Conquest setup and the
 lobby beside your own map; pick it and it plays exactly as laid. It is drawn by
@@ -104,12 +129,12 @@ Three of the vehicles swim, as they do in the original: the police amphibious
 car and the two hovercraft IFVs, the hulls the package lets into the water
 without drowning (its other cars drift in and sink five seconds later). They
 are `amphibious` here — driven ashore, afloat at the game's swimming pace, a
-ship to every gun while they swim — and the hovercraft leave the naval yard as
-well as the arsenal. Every vehicle also says what it rolls on: the Abrams
-family on treads, the cars, the trucks and the Stryker on tyres, so each cuts
-its own marks and is heard as its own engine; the infantry, the crewed pieces,
-the walkers and the hovercraft (`trail: "none"`) cut nothing and are not heard
-rolling.
+ship to every gun while they swim — and the hovercraft leave the coast guard
+base as well as the arsenal. Every vehicle also says what it rolls on: the
+Abrams family on treads, the cars, the trucks and the Stryker on tyres, so each
+cuts its own marks and is heard as its own engine; the infantry, the crewed
+pieces, the walkers and the hovercraft (`trail: "none"`) cut nothing and are
+not heard rolling.
 
 The firing sounds are the package's recordings, cut to dry mono one-shots
 under a second. The Abrams and the Stryker fire the 120 mm and 105 mm
