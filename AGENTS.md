@@ -576,6 +576,7 @@ Exactly one trigger. A `when` runs the moment its condition becomes true and not
 | `rank` | integer 1–3 |  |  | its veteran rank is at least this |
 | `onWater` | boolean |  |  | stands on water (true) or on land (false) |
 | `enemyWithin` | number 0.5–32 |  |  | an enemy its side can see is within this many tiles |
+| `near` | { units, kind, side, within, count } |  |  | others stand near it: at least `count` of these `units` or this `kind`, on this `side`, `within` so many tiles (see Near) |
 | `night` | boolean |  |  | it is night (true) or day (false) |
 | `carrying` | integer 1–50 |  |  | has at least this many units in its hold |
 | `killedBy` | id[] |  |  | on `destroyed`: what killed it was one of these defs (the dead rise only when the dead killed them) |
@@ -583,6 +584,18 @@ Exactly one trigger. A `when` runs the moment its condition becomes true and not
 | `not` | condition |  |  | a condition that must not hold |
 
 Every key given must hold; `any` and `not` say otherwise. A misspelt condition is an error, not a condition that always holds.
+
+### Near (`when.near`)
+
+| field | type | required | default | meaning |
+| --- | --- | --- | --- | --- |
+| `units` | id[] |  |  | these defs only: the game's or any mod's |
+| `kind` | unit \| building |  |  | only units, or only buildings |
+| `side` | friend \| enemy \| any |  | any | whose: its own side and its allies (`friend`), an enemy's (only what its side can see), or anyone's |
+| `within` | number 0.5–32 | yes |  | tiles from it to the other's edge |
+| `count` | integer 1–50 |  | 1 | at least this many |
+
+What stands near the unit, measured to the other's edge: a flyer that takes off only with something to hook onto (`{ "kind": "building", "within": 8 }`), troops that fight harder beside their commander (`{ "units": ["mymod-captain"], "side": "friend", "within": 10 }`), a wall that wakes when its master comes by. Name `units`, a `kind`, or both; an enemy is counted only when its side can see it.
 
 ### Effects (`do`)
 

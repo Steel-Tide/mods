@@ -250,6 +250,17 @@ const STRINGS = {
   "save.auto": ["Autosave", "自动存档", "자동 저장"],
   "save.quick": ["Quicksave", "快速存档", "빠른 저장"],
   "save.slot": ["Slot {0}", "存档位 {0}", "슬롯 {0}"],
+  // a save that cannot be played here (ui/loadgame.ts `playSave`), said on a plate rather than a blank screen
+  "save.loadFailed": ["The save could not be loaded", "存档无法读取", "저장을 불러올 수 없습니다"],
+  "save.needsMods": ["This save needs mods", "该存档需要模组", "이 저장에는 모드가 필요합니다"],
+  "save.needsMods.body": [
+    "It was played with these mods on. Install them, or switch them on, to load it.",
+    "该存档使用了以下模组。请安装或启用它们后再读取。",
+    "이 모드들을 켠 채로 플레이한 저장입니다. 불러오려면 설치하거나 켜 주세요."
+  ],
+  "save.needsMods.off": ["installed, switched off", "已安装，未启用", "설치됨, 꺼짐"],
+  "save.needsMods.missing": ["not installed", "未安装", "설치 안 됨"],
+  "save.openMods": ["Open Mods", "打开模组", "모드 열기"],
   // ------------------------------------------------------------- difficulty
   "diff.relaxed": ["Relaxed", "轻松", "여유"],
   "diff.standard": ["Standard", "标准", "표준"],
@@ -964,9 +975,9 @@ const STRINGS = {
   "m3.name": ["Sarsar Hunt", "猎杀萨尔萨尔", "사르사르 사냥"],
   "m3.date": ["18 January 1991 · 0300 · The western desert", "1991 年 1 月 18 日 · 0300 · 西部沙漠", "1991년 1월 18일 · 0300 · 서부 사막"],
   "m3.background": [
-    "On the second night of the air war Qarash answered with the one weapon that could reach past the front. Sarsar: a ballistic missile on a wheeled launcher, a ton of warhead, a range of six hundred kilometres. Seven fell on cities across the border that night. Over the next six weeks, eighty-eight.\n\nThey could not be aimed at anything smaller than a city, and that was the point. Every launch was a test of whether the Concord would hold together; every launch put a neighbour a night closer to entering the war and breaking it.\n\nFinding a launcher took an aircraft over it within minutes of the flash. The western desert had a thousand wadis to hide in. A third of the air war went into the hunt.",
-    "空战的第二个夜晚，卡拉什用唯一一种能够越过前线的武器做出了回答。萨尔萨尔：装在轮式发射车上的弹道导弹，一吨重的弹头，六百公里射程。那一夜有七枚落在边境另一侧的城市里。此后六周，八十八枚。\n\n它们瞄不准比一座城市更小的东西，而这正是用意所在。每一次发射都是对协约能否维系的考验；每一次发射都让某个邻国离参战、离让协约瓦解更近一夜。\n\n要找到一辆发射车，必须在火光亮起后几分钟内让一架飞机飞到它头顶。西部沙漠有一千条干河谷可以藏身。三分之一的空战投进了这场猎杀。",
-    "항공전 둘째 밤, 카라시는 전선 너머에 닿을 수 있는 유일한 무기로 응답했다. 사르사르. 차륜 발사대에 실린 탄도 미사일, 1톤짜리 탄두, 사거리 600킬로미터. 그날 밤 국경 너머 도시들에 일곱 발이 떨어졌다. 이후 여섯 주 동안 여든여덟 발.\n\n도시보다 작은 것은 겨눌 수 없었고, 바로 그것이 목적이었다. 발사 하나하나가 콩코드가 버틸 수 있는지에 대한 시험이었다. 발사 하나하나가 이웃 나라를 참전과 동맹의 파열에 하룻밤씩 더 가깝게 밀었다.\n\n발사대를 찾으려면 섬광 뒤 몇 분 안에 항공기가 그 위에 있어야 했다. 서부 사막에는 숨을 와디가 천 개 있었다. 항공전의 3분의 1이 그 사냥에 들어갔다."
+    "On the second night of the air war Qarash answered with the one weapon that could reach past the front. Sarsar: a ballistic missile on a wheeled launcher, a ton of warhead, a range of six hundred kilometres. Seven fell on cities across the border that night. Over the next six weeks, eighty-eight.\n\nThey could not be aimed at anything smaller than a city, and that was the point. Every launch was a test of whether the Concord would hold together; every launch put a neighbour a night closer to entering the war and breaking it.\n\nFinding a launcher took an aircraft over it within minutes of the flash. The western desert had a thousand wadis to hide in. A third of the air war went into the hunt.\n\nRound the ports and the capital stood batteries of interceptor missiles, and from the first night they fired at what came down. How many they stopped was argued over for years.",
+    "空战的第二个夜晚，卡拉什用唯一一种能够越过前线的武器做出了回答。萨尔萨尔：装在轮式发射车上的弹道导弹，一吨重的弹头，六百公里射程。那一夜有七枚落在边境另一侧的城市里。此后六周，八十八枚。\n\n它们瞄不准比一座城市更小的东西，而这正是用意所在。每一次发射都是对协约能否维系的考验；每一次发射都让某个邻国离参战、离让协约瓦解更近一夜。\n\n要找到一辆发射车，必须在火光亮起后几分钟内让一架飞机飞到它头顶。西部沙漠有一千条干河谷可以藏身。三分之一的空战投进了这场猎杀。\n\n港口和首都周围部署着一个个拦截导弹连，从第一夜起就向落下来的东西开火。它们究竟拦下了多少，人们争论了很多年。",
+    "항공전 둘째 밤, 카라시는 전선 너머에 닿을 수 있는 유일한 무기로 응답했다. 사르사르. 차륜 발사대에 실린 탄도 미사일, 1톤짜리 탄두, 사거리 600킬로미터. 그날 밤 국경 너머 도시들에 일곱 발이 떨어졌다. 이후 여섯 주 동안 여든여덟 발.\n\n도시보다 작은 것은 겨눌 수 없었고, 바로 그것이 목적이었다. 발사 하나하나가 콩코드가 버틸 수 있는지에 대한 시험이었다. 발사 하나하나가 이웃 나라를 참전과 동맹의 파열에 하룻밤씩 더 가깝게 밀었다.\n\n발사대를 찾으려면 섬광 뒤 몇 분 안에 항공기가 그 위에 있어야 했다. 서부 사막에는 숨을 와디가 천 개 있었다. 항공전의 3분의 1이 그 사냥에 들어갔다.\n\n항구와 수도 주위에는 요격 미사일 포대들이 서 있었고, 첫날 밤부터 떨어지는 것을 향해 쐈다. 그것들이 얼마나 막았는지는 그 뒤로 몇 해 동안 논쟁거리였다."
   ],
   "m3.brief": [
     "Command online. Six launchers are in the wadis west of you, and each one that fires gives itself away for a moment: watch the map for the flash and go. You have a light column and the fuel for one night; there is no economy here worth the name. The eighth launch to land is one too many. Find them first.",
@@ -988,9 +999,9 @@ const STRINGS = {
   "m5.name": ["Bayan Channel", "巴扬水道", "바얀 수로"],
   "m5.date": ["30 January 1991 · 0200 · The Bayan Channel", "1991 年 1 月 30 日 · 0200 · 巴扬水道", "1991년 1월 30일 · 0200 · 바얀 수로"],
   "m5.background": [
-    "Qarash had a navy of missile boats and minelayers, and one use for it: to run north up the Bayan Channel to a port out of reach, and to sow the Gulf behind it with mines.\n\nOn 29 January the Concord’s aircraft caught the first of them in the channel. Over four days they sank or beached every ship that tried the run. Qarash never had a navy again.\n\nThe mines were another matter. Twelve hundred were laid. In February two warships struck them within three hours of each other, and the landing the Concord had rehearsed on Bayan Island became the feint it was always meant to be. The Guard kept six divisions on the beaches waiting for it.",
-    "卡拉什有一支由导弹艇和布雷舰组成的海军，只有一个用途：沿巴扬水道向北突围，逃到一座够不着的港口，并在身后的海湾里布满水雷。\n\n1 月 29 日，协约的飞机在水道里逮住了第一批。四天之内，每一艘试图突围的船都被击沉或搁浅。卡拉什从此再没有海军。\n\n水雷则是另一回事。一共布了一千两百枚。二月，两艘军舰在三小时内先后触雷，协约在巴扬岛演练过的登陆，变成了它本来就该是的佯攻。近卫军把六个师留在海滩上等着它。",
-    "카라시에는 미사일정과 기뢰부설함으로 이루어진 해군이 있었고, 쓸모는 하나였다. 바얀 수로를 타고 북쪽으로, 손이 닿지 않는 항구까지 달아나고, 그 뒤의 만에 기뢰를 뿌리는 것.\n\n1월 29일, 콩코드 항공기가 수로에서 첫 배들을 잡았다. 나흘에 걸쳐 그들은 돌파를 시도한 모든 배를 가라앉히거나 좌초시켰다. 카라시에 해군은 다시 없었다.\n\n기뢰는 다른 문제였다. 1,200개가 깔렸다. 2월에 군함 두 척이 세 시간 간격으로 기뢰를 밟았고, 콩코드가 바얀섬에 연습해 둔 상륙은 처음부터 그렇게 되기로 되어 있던 기만이 되었다. 근위군은 그것을 기다리며 6개 사단을 해변에 붙들어 두었다."
+    "Qarash had a navy of missile boats and minelayers, and one use for it: to run north up the Bayan Channel to a port out of reach, and to sow the Gulf behind it with mines.\n\nOut in the Gulf stood the oil platforms, and Qarash had put men on them with guns against helicopters. On 18 January a frigate and her helicopters took them back one by one, and the first prisoners of the war came off their decks.\n\nOn 29 January the Concord’s aircraft caught the first of them in the channel. Over four days they sank or beached every ship that tried the run. Qarash never had a navy again.\n\nThe mines were another matter. Twelve hundred were laid. In February two warships struck them within three hours of each other, and the landing the Concord had rehearsed on Bayan Island, across the mudflats that ring it at low water, became the feint it was always meant to be. The Guard kept six divisions on the beaches waiting for it.",
+    "卡拉什有一支由导弹艇和布雷舰组成的海军，只有一个用途：沿巴扬水道向北突围，逃到一座够不着的港口，并在身后的海湾里布满水雷。\n\n海湾里矗立着一座座石油平台，卡拉什在上面放了人，架着对付直升机的枪炮。1 月 18 日，一艘护卫舰和她的直升机把它们一座一座夺了回来，这场战争的第一批俘虏就是从那些甲板上走下来的。\n\n1 月 29 日，协约的飞机在水道里逮住了第一批。四天之内，每一艘试图突围的船都被击沉或搁浅。卡拉什从此再没有海军。\n\n水雷则是另一回事。一共布了一千两百枚。二月，两艘军舰在三小时内先后触雷，协约在巴扬岛演练过的登陆，要越过退潮时环岛的泥滩，最终变成了它本来就该是的佯攻。近卫军把六个师留在海滩上等着它。",
+    "카라시에는 미사일정과 기뢰부설함으로 이루어진 해군이 있었고, 쓸모는 하나였다. 바얀 수로를 타고 북쪽으로, 손이 닿지 않는 항구까지 달아나고, 그 뒤의 만에 기뢰를 뿌리는 것.\n\n만 한가운데에는 석유 플랫폼들이 서 있었고, 카라시는 그 위에 헬기를 노리는 총포와 함께 사람을 올려 두었다. 1월 18일, 프리깃 한 척과 그 헬기들이 플랫폼을 하나씩 되찾았고, 이 전쟁의 첫 포로들이 그 갑판에서 내려왔다.\n\n1월 29일, 콩코드 항공기가 수로에서 첫 배들을 잡았다. 나흘에 걸쳐 그들은 돌파를 시도한 모든 배를 가라앉히거나 좌초시켰다. 카라시에 해군은 다시 없었다.\n\n기뢰는 다른 문제였다. 1,200개가 깔렸다. 2월에 군함 두 척이 세 시간 간격으로 기뢰를 밟았고, 콩코드가 썰물 때 섬을 두르는 갯벌 너머로 바얀섬에 연습해 둔 상륙은 처음부터 그렇게 되기로 되어 있던 기만이 되었다. 근위군은 그것을 기다리며 6개 사단을 해변에 붙들어 두었다."
   ],
   "m5.brief": [
     "Command online. Their fleet runs tonight, in groups, up the channel past Bayan Island to the port at its head. Build a naval yard and sink them in the open; any that reach the port hide under its guns and you go in after them. Then take the island. Its command post is what holds those six divisions on the beaches.",
@@ -1036,9 +1047,9 @@ const STRINGS = {
   "m9.name": ["The Hundred Hours", "一百小时", "백 시간"],
   "m9.date": ["27 February 1991 · 1800 · Sarab City", "1991 年 2 月 27 日 · 1800 · 萨拉布城", "1991년 2월 27일 · 1800 · 사라브 시"],
   "m9.background": [
-    "Qarash had seven months to make Sarab its nineteenth province, and it left the way it came. On the 25th the order came to withdraw. The garrison of Sarab City took every vehicle it could start and went north on the one road out, Highway 80, through the night, as the wells behind them were set alight: six hundred of them.\n\nAircraft found the road on the night of the 26th. What was left of the column was still there in the morning, thirty kilometres of it.\n\nOn the 27th the Arab contingents of the Concord entered Sarab City through the smoke. The last of the occupation command held out in the ministry district by the port. At 0800 the next morning a ceasefire took effect: one hundred hours after the ground war began.",
-    "卡拉什用七个月时间想把萨拉布变成它的第十九个省，最后却是怎么来的怎么走的。25 日，撤退的命令下达。萨拉布城的驻军开走了每一辆发得动的车，沿着唯一一条出城的路，80 号公路，连夜向北，身后的油井被点燃：六百口。\n\n26 日夜里，飞机找到了这条路。天亮时，纵队剩下的东西还在那里，绵延三十公里。\n\n27 日，协约的阿拉伯部队穿过浓烟进入萨拉布城。占领军指挥部的最后一批人守在港口边的部委区。第二天早晨 0800，停火生效：距地面战开始，整整一百小时。",
-    "카라시는 일곱 달 동안 사라브를 열아홉 번째 주로 만들려 했고, 온 길로 떠났다. 25일에 철수 명령이 내려왔다. 사라브 시의 수비대는 시동이 걸리는 차량이란 차량은 다 끌고, 밖으로 나가는 유일한 길인 80번 고속도로를 타고 밤새 북으로 갔다. 그 뒤로 유정에 불이 붙었다. 600곳.\n\n26일 밤, 항공기가 그 길을 찾았다. 아침에도 종대의 잔해는 그대로 거기 있었다. 30킬로미터에 걸쳐.\n\n27일, 콩코드의 아랍 부대가 연기를 뚫고 사라브 시로 들어갔다. 점령군 사령부의 마지막 인원은 항구 옆 정부 청사 구역에서 버텼다. 이튿날 아침 0800, 정전이 발효됐다. 지상전이 시작된 지 꼭 백 시간 뒤였다."
+    "Qarash had seven months to make Sarab its nineteenth province, and it left the way it came. On the 25th the order came to withdraw. The garrison of Sarab City took every vehicle it could start and went north on the one road out, Highway 80, through the night, as the wells behind them were set alight: six hundred of them.\n\nAircraft found the road on the night of the 26th, where it climbs the ridge north of the city. What was left of the column was still there in the morning, thirty kilometres of it.\n\nOn the 27th the Arab contingents of the Concord entered Sarab City through the smoke. The last of the occupation command held out in the ministry district by the port. At 0800 the next morning a ceasefire took effect: one hundred hours after the ground war began.",
+    "卡拉什用七个月时间想把萨拉布变成它的第十九个省，最后却是怎么来的怎么走的。25 日，撤退的命令下达。萨拉布城的驻军开走了每一辆发得动的车，沿着唯一一条出城的路，80 号公路，连夜向北，身后的油井被点燃：六百口。\n\n26 日夜里，飞机在公路爬上城北山岭的地方找到了它。天亮时，纵队剩下的东西还在那里，绵延三十公里。\n\n27 日，协约的阿拉伯部队穿过浓烟进入萨拉布城。占领军指挥部的最后一批人守在港口边的部委区。第二天早晨 0800，停火生效：距地面战开始，整整一百小时。",
+    "카라시는 일곱 달 동안 사라브를 열아홉 번째 주로 만들려 했고, 온 길로 떠났다. 25일에 철수 명령이 내려왔다. 사라브 시의 수비대는 시동이 걸리는 차량이란 차량은 다 끌고, 밖으로 나가는 유일한 길인 80번 고속도로를 타고 밤새 북으로 갔다. 그 뒤로 유정에 불이 붙었다. 600곳.\n\n26일 밤, 항공기가 도시 북쪽 능선을 오르는 곳에서 그 길을 찾았다. 아침에도 종대의 잔해는 그대로 거기 있었다. 30킬로미터에 걸쳐.\n\n27일, 콩코드의 아랍 부대가 연기를 뚫고 사라브 시로 들어갔다. 점령군 사령부의 마지막 인원은 항구 옆 정부 청사 구역에서 버텼다. 이튿날 아침 0800, 정전이 발효됐다. 지상전이 시작된 지 꼭 백 시간 뒤였다."
   ],
   "m9.brief": [
     "Command online. The city is under a sky of oil smoke and the wells are burning on every side. The occupation command is dug into the ministry district by the port, and what is left of the garrison is running north on Highway 80 while it can. Take the command. Whatever you can catch on the road is yours. The ceasefire is at 0800: be finished.",
@@ -1066,6 +1077,7 @@ const STRINGS = {
   "obj.destroyReserve": ["Destroy the reserve division’s headquarters", "摧毁预备师总部", "예비 사단 사령부 파괴"],
   "obj.destroyDivision": ["Destroy the Nasr Division", "歼灭纳斯尔师", "나스르 사단 격멸"],
   "obj.destroyCommand": ["Destroy the enemy command", "摧毁敌军指挥部", "적 지휘부 파괴"],
+  "obj.clearPlatforms": ["Clear the oil platforms ({0} of {1})", "清除石油平台（{0}/{1}）", "석유 플랫폼 소탕 ({0}/{1})"],
   "obj.cutHighway": ["Cut Highway 80: destroy {1} vehicles of the retreating column ({0} of {1})", "切断 80 号公路：摧毁撤退纵队的 {1} 辆车（{0}/{1}）", "80번 고속도로 차단: 퇴각 종대 차량 {1}대 파괴 ({0}/{1})"],
   // breakthrough, one line a side; both sides read both
   "obj.takeCheckpoints": ["Attackers: take every checkpoint in order ({0} of {1})", "进攻方：按顺序夺取全部检查点（{0}/{1}）", "공격측: 검문소를 차례로 모두 점령 ({0}/{1})"],
@@ -1307,10 +1319,12 @@ const STRINGS = {
   "alert.speed": ["Game speed set to ×{0}", "游戏速度设为 ×{0}", "게임 속도 ×{0}"],
   "alert.waveIncoming": ["Enemy attack wave incoming!", "敌军进攻波即将来袭！", "적 공격 파도 접근 중!"],
   // the campaign's own
-  "alert.launch": ["Sarsar launch: {0} of {1}", "萨尔萨尔发射：{0}/{1}", "사르사르 발사: {0}/{1}"],
+  "alert.launch": ["Sarsar launch", "萨尔萨尔发射", "사르사르 발사"],
+  "alert.launchDown": ["Sarsar shot down", "萨尔萨尔已被拦截", "사르사르 요격"],
   "alert.fleetRun": ["Enemy ships running the channel", "敌舰正在突入水道", "적함이 수로를 돌파 중"],
   "alert.columnOut": ["A column is leaving the city on Highway 80", "一支纵队正沿 80 号公路撤出城市", "종대 하나가 80번 고속도로로 도시를 빠져나갑니다"],
   "alert.reliefShips": ["Gunboats are on station offshore", "炮艇已在近海就位", "포함이 앞바다에 배치되었습니다"],
+  "alert.marines": ["The amphibious group is on station", "两栖战斗群已就位", "상륙 전단이 배치되었습니다"],
   "alert.reliefLanded": ["The relief column has landed on the beach", "援军已在海滩登陆", "구원 종대가 해변에 상륙했습니다"],
   // breakthrough
   "alert.whistle": ["The whistle: the assault begins", "哨响：进攻开始", "휘슬: 공세 시작"],
@@ -1616,6 +1630,8 @@ const STRINGS = {
   "mods.title": ["Mods", "模组", "모드"],
   "mods.pending": ["Changes take effect after this match.", "更改将在本场结束后生效。", "변경 사항은 이 대전이 끝난 뒤 적용됩니다."],
   "mods.installed": ["Installed", "已安装", "설치됨"],
+  "mods.none": ["No mods installed", "尚未安装模组", "설치된 모드 없음"],
+  "mods.drop": ["Drop a mod file or folder here", "将模组文件或文件夹拖放到这里", "모드 파일이나 폴더를 여기에 놓으세요"],
   "mods.by": ["by {0}", "作者：{0}", "제작: {0}"],
   "mods.source.registry": ["from the registry", "来自官方仓库", "레지스트리에서"],
   "mods.source.url": ["from {0}", "来自 {0}", "{0}에서"],
@@ -1625,7 +1641,7 @@ const STRINGS = {
   "mods.newerGame": ["Needs game {0} or newer", "需要游戏版本 {0} 或更新", "게임 {0} 이상 필요"],
   "mods.reload": ["Reload", "重新读取", "다시 읽기"],
   "mods.reloadTip": ["Read the mod again from where it came", "从来源重新读取模组", "모드를 원래 위치에서 다시 읽습니다"],
-  "mods.update": ["Update to {0}", "更新到 {0}", "{0}(으)로 업데이트"],
+  "mods.update": ["Update", "更新", "업데이트"],
   "mods.remove": ["Remove", "移除", "제거"],
   "mods.removeTitle": ["Remove mod", "移除模组", "모드 제거"],
   "mods.removeConfirm": [
@@ -1637,22 +1653,14 @@ const STRINGS = {
   "mods.registry.loading": ["Fetching the list…", "正在获取列表…", "목록 가져오는 중…"],
   "mods.registry.offline": ["The registry could not be reached.", "无法连接到模组仓库。", "레지스트리에 연결할 수 없습니다."],
   "mods.registry.empty": ["No mods published yet.", "尚无已发布的模组。", "아직 공개된 모드가 없습니다."],
-  "mods.registry.browse": ["Browse on the website", "在官网浏览", "웹사이트에서 둘러보기"],
   "mods.search": ["Search", "搜索", "검색"],
   "mods.searchHint": ["Name, author, unit…", "名称、作者、单位…", "이름, 제작자, 유닛…"],
   "mods.searchNone": ['Nothing matches "{0}".', "没有匹配“{0}”的模组。", '"{0}"에 맞는 모드가 없습니다.'],
   "mods.install": ["Install", "安装", "설치"],
-  "mods.installing": ["Installing…", "安装中…", "설치 중…"],
   "mods.installedMark": ["Installed", "已安装", "설치됨"],
   "mods.add": ["Add your own", "添加自制模组", "직접 만든 모드 추가"],
   "mods.add.file": ["Upload file", "上传文件", "파일 업로드"],
-  "mods.add.fileTip": ["A .steel-tide-mod file, or a zip of the mod folder", ".steel-tide-mod 文件，或模组文件夹的压缩包", ".steel-tide-mod 파일 또는 모드 폴더의 zip"],
   "mods.add.folder": ["Open folder", "打开文件夹", "폴더 열기"],
-  "mods.add.folderTip": [
-    "Pick the mod folder itself; Chrome keeps it open so Reload re-reads your edits",
-    "选择模组文件夹本身；Chrome 会记住它，修改后可点“重新读取”",
-    "모드 폴더 자체를 고르세요. Chrome은 폴더를 열어 두어서 다시 읽기로 수정 내용을 다시 읽습니다"
-  ],
   "mods.add.url": ["Add from URL", "从网址添加", "URL로 추가"],
   "mods.add.urlPrompt": [
     "The address of a mod folder (where mod.json is) or of a .steel-tide-mod file",
@@ -6107,6 +6115,7 @@ const COND_SPECS = [
   { name: "rank", type: "int", min: 1, max: 3, doc: ["its veteran rank is at least this", "老兵等级至少为此"] },
   { name: "onWater", type: "bool", doc: ["stands on water (true) or on land (false)", "位于水面（true）或陆地（false）"] },
   { name: "enemyWithin", type: "number", min: 0.5, max: 32, doc: ["an enemy its side can see is within this many tiles", "己方可见的敌人在此格数之内"] },
+  { name: "near", type: "near", doc: ["others stand near it: at least `count` of these `units` or this `kind`, on this `side`, `within` so many tiles (see Near)", "附近有其他单位：`within` 格之内至少有 `count` 个属于 `side` 一方的 `units` 或 `kind`（见“附近”）"] },
   { name: "night", type: "bool", doc: ["it is night (true) or day (false)", "是夜晚（true）或白天（false）"] },
   { name: "carrying", type: "int", min: 1, max: 50, doc: ["has at least this many units in its hold", "载有至少这么多单位"] },
   { name: "killedBy", type: "ids", doc: ["on `destroyed`: what killed it was one of these defs (the dead rise only when the dead killed them)", "用于 `destroyed`：击杀它的是这些定义之一（只有被丧尸杀死的才会尸变）"] },
@@ -6137,6 +6146,13 @@ const EFFECT_SPECS = [
   { name: "sound", type: "string", max: 64, doc: ["a sound played where it stands: a weapon sound, expl, explBig, upgrade, or one of this mod's `sounds`", "在其位置播放的声音：武器音效、expl、explBig、upgrade，或本模组的 `sounds`"] },
   { name: "die", type: "bool", doc: ["it is destroyed, as if killed by nobody (its own `destroyed` rules run)", "被摧毁，如同无人击杀（其 `destroyed` 规则会执行）"] },
   { name: "remove", type: "bool", doc: ["it is gone without a trace: no wreck, no loss, no `destroyed`", "无痕消失：没有残骸、不计损失、不触发 `destroyed`"] }
+];
+const NEAR_SPECS = [
+  { name: "units", type: "ids", doc: ["these defs only: the game's or any mod's", "仅限这些定义：原版或任何模组的"] },
+  { name: "kind", type: "enum", values: ["unit", "building"], doc: ["only units, or only buildings", "仅限单位，或仅限建筑"] },
+  { name: "side", type: "enum", values: ["friend", "enemy", "any"], def: "any", doc: ["whose: its own side and its allies (`friend`), an enemy's (only what its side can see), or anyone's", "归属：己方及盟友（`friend`）、敌方（仅限己方可见的），或任何一方"] },
+  { name: "within", type: "number", min: 0.5, max: 32, required: true, doc: ["tiles from it to the other's edge", "从它到对方边缘的格数"] },
+  { name: "count", type: "int", min: 1, max: 50, def: "1", doc: ["at least this many", "至少这么多个"] }
 ];
 const SPAWN_SPECS = [
   { name: "unit", type: "id", required: true, doc: ["the unit: one of the game's or this mod's", "生成的单位：原版或本模组的"] },
@@ -6247,6 +6263,10 @@ function readCond(raw, path, errors, ctx, depth = 0) {
       const c = readCond(v, p, errors, ctx, depth + 1);
       if (!c) return null;
       out.not = c;
+    } else if (row.name === "near") {
+      const n = readNear(v, p, errors, ctx);
+      if (!n) return null;
+      out.near = n;
     } else if (checkRow(row, v, p, errors, ctx)) {
       if (row.name === "killedBy") {
         const bad = v.find((id) => !ctx.find(id));
@@ -6257,6 +6277,40 @@ function readCond(raw, path, errors, ctx, depth = 0) {
       }
       out[row.name] = v;
     } else return null;
+  }
+  return out;
+}
+function readNear(raw, path, errors, ctx) {
+  if (!isObj(raw)) {
+    errors.push({ path, message: "must be { units, kind, side, within, count }" });
+    return null;
+  }
+  if (!checkKeys(raw, NEAR_SPECS, path, errors)) return null;
+  const out = {};
+  for (const row of NEAR_SPECS) {
+    const v = raw[row.name];
+    const p = `${path}.${row.name}`;
+    if (v === void 0) {
+      if (row.required) {
+        errors.push({ path: p, message: "is required" });
+        return null;
+      }
+      continue;
+    }
+    if (!checkRow(row, v, p, errors, ctx)) return null;
+    if (row.name === "units") {
+      const list = v;
+      if (list.length === 0) {
+        errors.push({ path: p, message: "names no def" });
+        return null;
+      }
+      const bad = list.find((id) => !ctx.find(id));
+      if (bad) {
+        errors.push({ path: p, message: `"${bad}" is not a def` });
+        return null;
+      }
+    }
+    out[row.name] = v;
   }
   return out;
 }
@@ -6919,6 +6973,7 @@ const FIELD_SPECS = {
   // a mod's behaviour, a weapon's look, a shield and a sheet's states (`game/ruleSpec.ts`)
   rule: RULE_SPECS,
   cond: COND_SPECS,
+  near: NEAR_SPECS,
   effect: EFFECT_SPECS,
   spawn: SPAWN_SPECS,
   button: BUTTON_SPECS,
@@ -7892,6 +7947,8 @@ function typeLabel(spec) {
       return "{ color, width, style, life }";
     case "range":
       return "[first, last] or [first, last, fps]";
+    case "near":
+      return "{ units, kind, side, within, count }";
     default:
       return "string";
   }
@@ -8174,6 +8231,12 @@ function behaviourSection(p) {
   p(markdownTable(fieldRows("cond")));
   p();
   p("Every key given must hold; `any` and `not` say otherwise. A misspelt condition is an error, not a condition that always holds.");
+  p();
+  p("### Near (`when.near`)");
+  p();
+  p(markdownTable(fieldRows("near")));
+  p();
+  p('What stands near the unit, measured to the other\'s edge: a flyer that takes off only with something to hook onto (`{ "kind": "building", "within": 8 }`), troops that fight harder beside their commander (`{ "units": ["mymod-captain"], "side": "friend", "within": 10 }`), a wall that wakes when its master comes by. Name `units`, a `kind`, or both; an enemy is counted only when its side can see it.');
   p();
   p("### Effects (`do`)");
   p();
