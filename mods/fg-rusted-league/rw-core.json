@@ -1,0 +1,1297 @@
+{
+ "AntiNukeLaucher": {
+  "air": 1,
+  "buildSpeed": 0.0007,
+  "class": "d/c",
+  "delay": 0.0,
+  "drawables": [
+   "antinuke_launcher_dead",
+   "antinuke_launcher",
+   "unit_icon_building_turrent"
+  ],
+  "hp": 2800.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 15000,
+  "radius": 24.0,
+  "range": 1000.0,
+  "shots": [
+   {
+    "dmg": 600.0,
+    "life": 99999.0,
+    "speed": 0.2
+   }
+  ],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "NukeLaucher": {
+  "air": 1,
+  "buildSpeed": 0.0001,
+  "class": "d/y",
+  "delay": 0.0,
+  "drawables": [
+   "nuke_launcher_dead",
+   "nuke_launcher",
+   "unit_icon_building"
+  ],
+  "hp": 1500.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 45000,
+  "radius": 40.0,
+  "range": 0.0,
+  "shots": [
+   {
+    "area": 5400.0,
+    "areaRadius": 250.0,
+    "dmg": 300.0,
+    "life": 99999.0,
+    "speed": 0.1
+   }
+  ],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "airFactory": {
+  "air": 1,
+  "buildSpeed": 0.001,
+  "class": "d/a",
+  "delay": 0.0,
+  "drawables": [
+   "air_factory",
+   "air_factory_t2",
+   "air_factory_dead"
+  ],
+  "hp": 1000.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 1000,
+  "radius": 30.0,
+  "range": 0.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "airShip": {
+  "air": 1,
+  "buildSpeed": 0.002,
+  "class": "b/a",
+  "delay": 40.0,
+  "drawables": [
+   "ship",
+   "ship_shadow",
+   "ship_dead",
+   "unit_icon_air"
+  ],
+  "hp": 250.0,
+  "land": 0,
+  "movement": "AIR",
+  "price": 600,
+  "radius": 11.0,
+  "range": 170.0,
+  "shots": [
+   {
+    "dmg": 30.0,
+    "life": 75.0,
+    "speed": 6.0
+   }
+  ],
+  "sight": 15,
+  "speed": 2.4,
+  "sub": 0,
+  "turn": 3.7
+ },
+ "amphibiousJet": {
+  "air": 0,
+  "buildSpeed": 0.001,
+  "class": "b/c",
+  "delay": 110.0,
+  "drawables": [
+   "amphibious_jet",
+   "amphibious_jet_shadow",
+   "amphibious_jet_dead",
+   "amphibious_jet_p1",
+   "amphibious_jet_p2",
+   "unit_icon_air"
+  ],
+  "hp": 530.0,
+  "land": 1,
+  "movement": "AIR",
+  "price": 1800,
+  "radius": 12.0,
+  "range": 170.0,
+  "shots": [
+   {
+    "dmg": 255.0,
+    "life": 10.0,
+    "speed": 4.0
+   }
+  ],
+  "sight": 15,
+  "speed": 1.4,
+  "sub": 1,
+  "turn": 3.8
+ },
+ "antiAirTurret": {
+  "air": 1,
+  "buildSpeed": 0.0008,
+  "class": "d/a/a",
+  "delay": 70.0,
+  "drawables": [
+   "anti_air_top",
+   "anti_air_top_l2",
+   "unit_icon_building_air_turrent",
+   "turret_base",
+   "turret_base_dead",
+   "turret_top",
+   "turret_top_l2",
+   "turret_top_l3",
+   "turret_top_artillery",
+   "turret_top_flame",
+   "unit_icon_building_turrent"
+  ],
+  "hp": 800.0,
+  "land": 0,
+  "movement": "NONE",
+  "price": 600,
+  "range": 320.0,
+  "shots": [
+   {
+    "dmg": 60.0,
+    "life": 250.0,
+    "speed": 0.5
+   }
+  ],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "antiAirTurretT2": {
+  "air": 1,
+  "buildSpeed": 0.0006,
+  "class": "d/a/a",
+  "delay": 70.0,
+  "drawables": [
+   "anti_air_top",
+   "anti_air_top_l2",
+   "unit_icon_building_air_turrent",
+   "turret_base",
+   "turret_base_dead",
+   "turret_top",
+   "turret_top_l2",
+   "turret_top_l3",
+   "turret_top_artillery",
+   "turret_top_flame",
+   "unit_icon_building_turrent"
+  ],
+  "hp": 800.0,
+  "land": 0,
+  "movement": "NONE",
+  "range": 320.0,
+  "shots": [
+   {
+    "dmg": 60.0,
+    "life": 250.0,
+    "speed": 0.5
+   }
+  ],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "artillery": {
+  "air": 0,
+  "buildSpeed": 0.0014,
+  "class": "e/a",
+  "delay": 240.0,
+  "drawables": [
+   "artillery2",
+   "artillery1_dead",
+   "unit_icon_land",
+   "unit_icon_land_exp"
+  ],
+  "hp": 140.0,
+  "land": 1,
+  "movement": "LAND",
+  "price": 900,
+  "radius": 18.0,
+  "range": 290.0,
+  "shots": [
+   {
+    "area": 80.0,
+    "areaRadius": 45.0,
+    "life": 150.0,
+    "speed": 4.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.9,
+  "sub": 0,
+  "turn": 1.7
+ },
+ "attackSubmarine": {
+  "air": 0,
+  "buildSpeed": 0.001,
+  "class": "f/e",
+  "delay": 170.0,
+  "drawables": [
+   "attack_submarine",
+   "attack_submarine_dead",
+   "unit_icon_water"
+  ],
+  "hp": 260.0,
+  "land": 1,
+  "movement": "WATER",
+  "price": 800,
+  "radius": 15.0,
+  "range": 250.0,
+  "shots": [
+   {
+    "dmg": 42.0,
+    "life": 250.0,
+    "speed": 1.3
+   }
+  ],
+  "sight": 15,
+  "speed": 0.8,
+  "sub": 1,
+  "turn": 1.2
+ },
+ "battleShip": {
+  "air": 0,
+  "buildSpeed": 0.001,
+  "class": "f/a",
+  "drawables": [
+   "battle_ship_t2",
+   "battle_ship_t2_dead",
+   "battle_ship_t2_turret",
+   "unit_icon_water"
+  ],
+  "hp": 1200.0,
+  "land": 1,
+  "movement": "WATER",
+  "price": 1500,
+  "radius": 20.0,
+  "range": 240.0,
+  "shots": [
+   {
+    "dmg": 65.0,
+    "life": 80.0,
+    "speed": 4.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.8,
+  "sub": 0,
+  "turn": 1.8
+ },
+ "builder": {
+  "air": 1,
+  "buildSpeed": 0.002,
+  "class": "e/b",
+  "delay": 100.0,
+  "drawables": [
+   "builder",
+   "builder_dead",
+   "builder_charge",
+   "builder_decharge",
+   "unit_icon_builder",
+   "unit_icon_land",
+   "unit_icon_land_exp"
+  ],
+  "hp": 170.0,
+  "land": 1,
+  "movement": "LAND",
+  "price": 500,
+  "radius": 10.0,
+  "range": 30.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.8,
+  "sub": 0,
+  "turn": 3.8
+ },
+ "builderShip": {
+  "air": 1,
+  "buildSpeed": 0.001,
+  "class": "f/b",
+  "drawables": [
+   "builder_ship",
+   "builder_ship_dead",
+   "builder_ship_turret",
+   "unit_icon_water"
+  ],
+  "hp": 500.0,
+  "land": 1,
+  "movement": "WATER",
+  "price": 500,
+  "radius": 13.0,
+  "range": 240.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.8,
+  "sub": 0,
+  "turn": 1.9
+ },
+ "commandCenter": {
+  "air": 1,
+  "buildSpeed": 0.0005,
+  "class": "d/g",
+  "delay": 70.0,
+  "drawables": [
+   "base",
+   "base_dead",
+   "base_back"
+  ],
+  "hp": 4000.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 3000,
+  "radius": 30.0,
+  "range": 280.0,
+  "shots": [
+   {
+    "dmg": 70.0,
+    "life": 180.0,
+    "speed": 2.0
+   }
+  ],
+  "sight": 20,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "crystalResource": {
+  "air": 1,
+  "buildSpeed": 0.001,
+  "class": "e",
+  "delay": 0.0,
+  "drawables": [
+   "crystal",
+   "unit_icon_building"
+  ],
+  "hp": 600.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 5000,
+  "radius": 11.0,
+  "range": 0.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "dropship": {
+  "air": 1,
+  "buildSpeed": 0.001,
+  "class": "b/f",
+  "delay": 40.0,
+  "drawables": [
+   "dropship",
+   "dropship_shadow",
+   "dropship_dead",
+   "unit_icon_air"
+  ],
+  "hp": 500.0,
+  "land": 1,
+  "movement": "AIR",
+  "price": 800,
+  "radius": 20.0,
+  "range": 140.0,
+  "shots": [
+   {
+    "dmg": 35.0,
+    "life": 80.0,
+    "speed": 4.0
+   }
+  ],
+  "sight": 15,
+  "speed": 2.3,
+  "sub": 0,
+  "turn": 1.4
+ },
+ "experimentalHoverTank": {
+  "air": 1,
+  "buildSpeed": 0.0002,
+  "class": "e/c",
+  "delay": 8.0,
+  "drawables": [
+   "experimental_hovertank",
+   "experimental_hovertank_dead",
+   "experimental_hovertank_turret",
+   "experimental_hovertank_shield",
+   "shield_mid",
+   "unit_icon_hover"
+  ],
+  "hp": 3500.0,
+  "land": 1,
+  "movement": "HOVER",
+  "price": 21000,
+  "radius": 30.0,
+  "range": 180.0,
+  "shots": [
+   {
+    "life": 21.0
+   },
+   {
+    "dmg": 380.0,
+    "life": 21.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.6,
+  "sub": 0,
+  "turn": 1.1
+ },
+ "experimentalLandFactory": {
+  "air": 1,
+  "buildSpeed": 0.00035,
+  "class": "d/h",
+  "delay": 0.0,
+  "drawables": [
+   "experimental_unit_factory_front",
+   "experimental_unit_factory_base",
+   "experimental_unit_factory_dead"
+  ],
+  "hp": 3200.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 11000,
+  "radius": 55.0,
+  "range": 0.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "experimentalTank": {
+  "air": 1,
+  "buildSpeed": 0.0002,
+  "class": "e/d",
+  "drawables": [
+   "experimental_tank",
+   "experimental_tank_dead",
+   "experimental_tank_turret",
+   "unit_icon_land",
+   "unit_icon_land_exp"
+  ],
+  "hp": 6000.0,
+  "land": 1,
+  "movement": "LAND",
+  "price": 14000,
+  "radius": 37.0,
+  "range": 310.0,
+  "shots": [
+   {
+    "area": 60.0,
+    "areaRadius": 45.0,
+    "dmg": 40.0,
+    "life": 120.0,
+    "speed": 5.0
+   },
+   {
+    "dmg": 60.0,
+    "life": 190.0,
+    "speed": 3.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.4,
+  "sub": 0,
+  "turn": 0.8
+ },
+ "extractor": {
+  "air": 1,
+  "buildSpeed": 0.001,
+  "class": "d/j",
+  "delay": 0.0,
+  "drawables": [
+   "extractor",
+   "extractor_t2",
+   "extractor_t3",
+   "extractor_dead",
+   "extractor_back"
+  ],
+  "hp": 800.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 700,
+  "radius": 18.0,
+  "range": 0.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "fabricator": {
+  "air": 1,
+  "buildSpeed": 0.0006,
+  "class": "d/m",
+  "delay": 0.0,
+  "drawables": [
+   "power",
+   "power_t2",
+   "power_t3",
+   "power_dead"
+  ],
+  "hp": 800.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 1500,
+  "radius": 25.0,
+  "range": 0.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "fogRevealer": {
+  "air": 1,
+  "buildSpeed": 0.0006,
+  "class": "ai",
+  "delay": 100.0,
+  "drawables": [],
+  "land": 1,
+  "movement": "AIR",
+  "price": 1000,
+  "range": 30.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 4.8
+ },
+ "gunBoat": {
+  "air": 0,
+  "buildSpeed": 0.005,
+  "class": "f/c",
+  "delay": 60.0,
+  "drawables": [
+   "gun_boat",
+   "gun_boat_dead",
+   "unit_icon_water"
+  ],
+  "hp": 170.0,
+  "land": 1,
+  "movement": "WATER",
+  "price": 300,
+  "radius": 12.0,
+  "range": 120.0,
+  "shots": [
+   {
+    "dmg": 12.0,
+    "life": 30.0,
+    "speed": 8.0
+   }
+  ],
+  "sight": 15,
+  "speed": 1.5,
+  "sub": 0,
+  "turn": 2.8
+ },
+ "gunShip": {
+  "air": 0,
+  "buildSpeed": 0.001,
+  "class": "b/i",
+  "delay": 40.0,
+  "drawables": [
+   "gunship",
+   "gunship_shadow",
+   "gunship_dead",
+   "unit_icon_air"
+  ],
+  "hp": 260.0,
+  "land": 1,
+  "movement": "AIR",
+  "price": 800,
+  "radius": 15.0,
+  "range": 140.0,
+  "shots": [
+   {
+    "dmg": 35.0,
+    "life": 80.0,
+    "speed": 4.0
+   }
+  ],
+  "sight": 15,
+  "speed": 1.4,
+  "sub": 0,
+  "turn": 4.0
+ },
+ "heavyHoverTank": {
+  "air": 1,
+  "buildSpeed": 0.001,
+  "class": "e/e",
+  "delay": 75.0,
+  "drawables": [
+   "heavy_hover_tank",
+   "heavy_hover_tank_dead",
+   "heavy_hover_tank_shadow",
+   "unit_icon_hover"
+  ],
+  "hp": 450.0,
+  "land": 1,
+  "movement": "HOVER",
+  "price": 1000,
+  "radius": 11.0,
+  "range": 160.0,
+  "shots": [
+   {
+    "dmg": 40.0,
+    "life": 95.0,
+    "speed": 1.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.7,
+  "sub": 0,
+  "turn": 20.0
+ },
+ "heavyTank": {
+  "air": 1,
+  "buildSpeed": 0.0011,
+  "class": "e/f",
+  "delay": 70.0,
+  "drawables": [
+   "heavy_tank",
+   "heavy_tank_dead",
+   "heavy_tank_turret",
+   "unit_icon_land",
+   "unit_icon_land_exp"
+  ],
+  "hp": 600.0,
+  "land": 1,
+  "movement": "LAND",
+  "price": 800,
+  "radius": 15.0,
+  "range": 160.0,
+  "shots": [
+   {
+    "dmg": 50.0,
+    "life": 60.0,
+    "speed": 4.0
+   },
+   {
+    "dmg": 50.0,
+    "life": 190.0,
+    "speed": 0.5
+   }
+  ],
+  "sight": 15,
+  "speed": 0.8,
+  "sub": 0,
+  "turn": 1.9
+ },
+ "helicopter": {
+  "air": 1,
+  "buildSpeed": 0.0012,
+  "class": "b/j",
+  "delay": 60.0,
+  "drawables": [
+   "helicopter",
+   "helicopter_blades",
+   "helicopter_shadow",
+   "helicopter_shadow_blades",
+   "helicopter_dead",
+   "unit_icon_air"
+  ],
+  "hp": 150.0,
+  "land": 1,
+  "movement": "AIR",
+  "price": 650,
+  "radius": 13.0,
+  "range": 130.0,
+  "shots": [
+   {
+    "dmg": 17.0,
+    "life": 30.0,
+    "speed": 8.0
+   }
+  ],
+  "sight": 15,
+  "speed": 2.2,
+  "sub": 0,
+  "turn": 6.0
+ },
+ "hoverTank": {
+  "air": 1,
+  "buildSpeed": 0.002,
+  "class": "e/g",
+  "delay": 90.0,
+  "drawables": [
+   "hover_tank",
+   "hover_tank_dead",
+   "hover_tank_shadow",
+   "unit_icon_hover"
+  ],
+  "hp": 150.0,
+  "land": 1,
+  "movement": "HOVER",
+  "price": 450,
+  "radius": 7.0,
+  "range": 140.0,
+  "shots": [
+   {
+    "dmg": 23.0,
+    "life": 85.0,
+    "speed": 2.0
+   }
+  ],
+  "sight": 15,
+  "speed": 1.0,
+  "sub": 0,
+  "turn": 180.0
+ },
+ "hovercraft": {
+  "air": 1,
+  "buildSpeed": 0.003,
+  "class": "e/i",
+  "delay": 100.0,
+  "drawables": [
+   "hovercraft",
+   "hovercraft_shadow",
+   "hovercraft_dead",
+   "unit_icon_hover"
+  ],
+  "hp": 450.0,
+  "land": 1,
+  "movement": "HOVER",
+  "price": 600,
+  "radius": 15.0,
+  "range": 30.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 1.2,
+  "sub": 0,
+  "turn": 1.8
+ },
+ "ladybug": {
+  "air": 0,
+  "buildSpeed": 0.004,
+  "class": "c/a",
+  "delay": 17.0,
+  "drawables": [
+   "ladybug",
+   "unit_icon_land",
+   "unit_icon_land_exp"
+  ],
+  "hp": 130.0,
+  "land": 1,
+  "movement": "LAND",
+  "price": 400,
+  "radius": 5.0,
+  "range": 43.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 1.7,
+  "sub": 0,
+  "turn": 5.5
+ },
+ "landFactory": {
+  "air": 1,
+  "buildSpeed": 0.001,
+  "class": "d/t",
+  "delay": 0.0,
+  "drawables": [
+   "land_factory_front",
+   "land_factory_front_t2",
+   "land_factory_back",
+   "land_factory_dead"
+  ],
+  "hp": 1200.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 700,
+  "radius": 30.0,
+  "range": 0.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "laserDefence": {
+  "air": 1,
+  "buildSpeed": 0.001,
+  "class": "d/w",
+  "delay": 0.0,
+  "drawables": [
+   "laser_defence_dead",
+   "laser_defence",
+   "laser_defence_t2",
+   "unit_icon_building_turrent"
+  ],
+  "hp": 500.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 1200,
+  "radius": 19.0,
+  "range": 210.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "laserTank": {
+  "air": 1,
+  "buildSpeed": 0.0013,
+  "class": "e/m",
+  "delay": 450.0,
+  "drawables": [
+   "laser_tank_base",
+   "laser_tank_dead",
+   "laser_tank_turrent",
+   "laser_tank_charge",
+   "unit_icon_land",
+   "unit_icon_land_exp"
+  ],
+  "hp": 300.0,
+  "land": 1,
+  "movement": "LAND",
+  "price": 1300,
+  "radius": 14.0,
+  "range": 190.0,
+  "shots": [
+   {
+    "dmg": 450.0,
+    "life": 8.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.7,
+  "sub": 0,
+  "turn": 1.5
+ },
+ "mammothTank": {
+  "air": 1,
+  "buildSpeed": 0.0009,
+  "class": "e/n",
+  "delay": 140.0,
+  "drawables": [
+   "mammoth_tank",
+   "mammoth_tank_dead",
+   "mammoth_tank_turret",
+   "lighting_charge",
+   "unit_icon_land",
+   "unit_icon_land_exp"
+  ],
+  "hp": 2900.0,
+  "land": 1,
+  "movement": "LAND",
+  "price": 3900,
+  "radius": 21.0,
+  "range": 210.0,
+  "shots": [
+   {
+    "dmg": 260.0,
+    "life": 20.0,
+    "speed": 4.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.5,
+  "sub": 0,
+  "turn": 1.0
+ },
+ "megaTank": {
+  "air": 1,
+  "buildSpeed": 0.0015,
+  "class": "e/o",
+  "delay": 70.0,
+  "drawables": [
+   "mega_tank",
+   "mega_tank_dead",
+   "mega_tank_turret",
+   "unit_icon_land",
+   "unit_icon_land_exp"
+  ],
+  "hp": 550.0,
+  "land": 1,
+  "movement": "LAND",
+  "price": 800,
+  "radius": 12.0,
+  "range": 140.0,
+  "shots": [
+   {
+    "dmg": 50.0,
+    "life": 60.0,
+    "speed": 3.0
+   },
+   {
+    "dmg": 40.0,
+    "life": 190.0,
+    "speed": 4.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.8,
+  "sub": 0,
+  "turn": 1.2
+ },
+ "missileShip": {
+  "air": 1,
+  "buildSpeed": 0.001,
+  "class": "f/d",
+  "delay": 170.0,
+  "drawables": [
+   "scout_ship",
+   "scout_ship_dead",
+   "unit_icon_water"
+  ],
+  "hp": 350.0,
+  "land": 1,
+  "movement": "WATER",
+  "price": 900,
+  "radius": 15.0,
+  "range": 200.0,
+  "shots": [
+   {
+    "dmg": 42.0,
+    "life": 220.0,
+    "speed": 1.9
+   }
+  ],
+  "sight": 15,
+  "speed": 1.2,
+  "sub": 1,
+  "turn": 1.9
+ },
+ "repairbay": {
+  "air": 1,
+  "buildSpeed": 0.001,
+  "class": "d/ab",
+  "delay": 0.0,
+  "drawables": [
+   "repair_bay",
+   "repair_bay_dead",
+   "unit_icon_building"
+  ],
+  "hp": 1000.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 1500,
+  "radius": 30.0,
+  "range": 230.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "seaFactory": {
+  "air": 1,
+  "buildSpeed": 0.0007,
+  "class": "d/ad",
+  "delay": 0.0,
+  "drawables": [
+   "sea_factory",
+   "sea_factory_t2",
+   "sea_factory_dead"
+  ],
+  "hp": 1000.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 1000,
+  "radius": 45.0,
+  "range": 0.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "spreadingFire": {
+  "buildSpeed": 0.0006,
+  "class": "aw",
+  "drawables": [
+   "fire"
+  ],
+  "hp": 100.0,
+  "movement": "NONE",
+  "price": 1000,
+  "radius": 20.0,
+  "shots": []
+ },
+ "supplyDepot": {
+  "air": 1,
+  "buildSpeed": 0.001,
+  "class": "d/af",
+  "delay": 0.0,
+  "drawables": [
+   "supply_depot",
+   "supply_depot_t2",
+   "supply_depot_dead"
+  ],
+  "hp": 800.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 1000,
+  "radius": 20.0,
+  "range": 0.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "tank": {
+  "air": 0,
+  "buildSpeed": 0.002,
+  "class": "e/p",
+  "delay": 75.0,
+  "drawables": [
+   "tank2",
+   "tank2_dead",
+   "tank2_turret",
+   "tank2_shadow",
+   "unit_icon_land",
+   "unit_icon_land_exp"
+  ],
+  "hp": 210.0,
+  "land": 1,
+  "movement": "LAND",
+  "price": 350,
+  "radius": 11.0,
+  "range": 130.0,
+  "shots": [
+   {
+    "dmg": 30.0,
+    "life": 60.0,
+    "speed": 3.0
+   }
+  ],
+  "sight": 15,
+  "speed": 1.0,
+  "sub": 0,
+  "turn": 4.1
+ },
+ "tankDestroyer": {
+  "air": 0,
+  "buildSpeed": 0.003,
+  "class": "e/q",
+  "delay": 70.0,
+  "drawables": [
+   "tank2",
+   "tank2_dead",
+   "tank2_turret",
+   "unit_icon_land",
+   "unit_icon_land_exp"
+  ],
+  "hp": 350.0,
+  "land": 1,
+  "movement": "LAND",
+  "price": 800,
+  "radius": 11.0,
+  "range": 150.0,
+  "shots": [
+   {
+    "dmg": 35.0,
+    "life": 60.0,
+    "speed": 3.0
+   }
+  ],
+  "sight": 15,
+  "speed": 1.0,
+  "sub": 0,
+  "turn": 1.9
+ },
+ "tree": {
+  "buildSpeed": 0.0025,
+  "class": "az",
+  "drawables": [
+   "palm_tree",
+   "trees",
+   "palm_leaves"
+  ],
+  "hp": 100.0,
+  "movement": "NONE",
+  "price": 0,
+  "radius": 3.0,
+  "shots": []
+ },
+ "turret": {
+  "air": 0,
+  "buildSpeed": 0.0006,
+  "class": "d/a/c",
+  "delay": 30.0,
+  "drawables": [
+   "turret_base",
+   "turret_base_dead",
+   "turret_top",
+   "turret_top_l2",
+   "turret_top_l3",
+   "turret_top_artillery",
+   "turret_top_flame",
+   "unit_icon_building_turrent"
+  ],
+  "hp": 700.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 500,
+  "radius": 16.0,
+  "range": 165.0,
+  "shots": [
+   {
+    "dmg": 41.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "turretT2": {
+  "air": 0,
+  "buildSpeed": 0.0006,
+  "class": "d/a/c",
+  "delay": 20.0,
+  "drawables": [
+   "turret_base",
+   "turret_base_dead",
+   "turret_top",
+   "turret_top_l2",
+   "turret_top_l3",
+   "turret_top_artillery",
+   "turret_top_flame",
+   "unit_icon_building_turrent"
+  ],
+  "hp": 700.0,
+  "land": 1,
+  "movement": "NONE",
+  "radius": 16.0,
+  "range": 185.0,
+  "shots": [
+   {
+    "dmg": 44.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "turretT3": {
+  "air": 0,
+  "buildSpeed": 0.0003,
+  "class": "d/a/c",
+  "delay": 13.0,
+  "drawables": [
+   "turret_base",
+   "turret_base_dead",
+   "turret_top",
+   "turret_top_l2",
+   "turret_top_l3",
+   "turret_top_artillery",
+   "turret_top_flame",
+   "unit_icon_building_turrent"
+  ],
+  "hp": 700.0,
+  "land": 1,
+  "movement": "NONE",
+  "radius": 16.0,
+  "range": 320.0,
+  "shots": [
+   {
+    "dmg": 40.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "turret_artillery": {
+  "air": 0,
+  "buildSpeed": 0.0006,
+  "class": "d/a/c",
+  "delay": 220.0,
+  "drawables": [
+   "turret_base",
+   "turret_base_dead",
+   "turret_top",
+   "turret_top_l2",
+   "turret_top_l3",
+   "turret_top_artillery",
+   "turret_top_flame",
+   "unit_icon_building_turrent"
+  ],
+  "hp": 700.0,
+  "land": 1,
+  "movement": "NONE",
+  "radius": 16.0,
+  "range": 350.0,
+  "shots": [
+   {
+    "dmg": 100.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "turret_flamethrower": {
+  "air": 0,
+  "buildSpeed": 0.0006,
+  "class": "d/a/c",
+  "delay": 5.0,
+  "drawables": [
+   "turret_base",
+   "turret_base_dead",
+   "turret_top",
+   "turret_top_l2",
+   "turret_top_l3",
+   "turret_top_artillery",
+   "turret_top_flame",
+   "unit_icon_building_turrent"
+  ],
+  "hp": 700.0,
+  "land": 1,
+  "movement": "NONE",
+  "radius": 16.0,
+  "range": 155.0,
+  "shots": [
+   {
+    "dmg": 4.0
+   }
+  ],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ },
+ "wall_v": {
+  "air": 1,
+  "buildSpeed": 0.003,
+  "class": "d/ah",
+  "delay": 0.0,
+  "drawables": [
+   "wall_v"
+  ],
+  "hp": 700.0,
+  "land": 1,
+  "movement": "NONE",
+  "price": 100,
+  "radius": 15.0,
+  "range": 0.0,
+  "shots": [],
+  "sight": 15,
+  "speed": 0.0,
+  "sub": 0,
+  "turn": 0.0
+ }
+}
