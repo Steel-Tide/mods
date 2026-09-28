@@ -130,7 +130,7 @@ const STRINGS = {
   "menu.singlePlayer": ["Single Player", "单人游戏", "싱글 플레이어"],
   "menu.multiplayer": ["Multiplayer", "多人游戏", "멀티플레이어"],
   "menu.load": ["Load Game", "载入存档", "게임 불러오기"],
-  "menu.mapEditor": ["Map Editor", "地图编辑器", "맵 에디터"],
+  "menu.mapEditor": ["Scenario Editor", "场景编辑器", "시나리오 에디터"],
   "menu.settings": ["Settings", "设置", "설정"],
   // the corner tile to the players: the QQ group under a Chinese interface, the Discord under the rest
   "menu.discord": ["Join the Discord", "加入 Discord", "Discord 참여"],
@@ -253,10 +253,12 @@ const STRINGS = {
   // ------------------------------------------------------------- difficulty
   "diff.relaxed": ["Relaxed", "轻松", "여유"],
   "diff.standard": ["Standard", "标准", "표준"],
+  "diff.seasoned": ["Seasoned", "老练", "숙련"],
   "diff.veteran": ["Veteran", "老兵", "베테랑"],
   "diff.relaxed.desc": ["A calm opponent that attacks rarely.", "进攻节奏缓慢的温和对手。", "좀처럼 공격하지 않는 차분한 상대입니다."],
   "diff.standard.desc": ["A balanced opponent for most players.", "适合多数玩家的均衡对手。", "대부분의 플레이어에게 맞는 균형 잡힌 상대입니다."],
-  "diff.veteran.desc": ["Aggressive, expands fast, counters your army.", "扩张迅速、针对性极强的凶猛对手。", "공격적이고, 빠르게 확장하며, 당신의 군대에 맞춰 대응합니다."],
+  "diff.seasoned.desc": ["Plays like the Veteran, but under the same fog of war as you.", "打法与老兵相同，但和你一样受战争迷雾限制。", "베테랑처럼 싸우지만, 당신과 같은 전장의 안개 속에서 싸웁니다."],
+  "diff.veteran.desc": ["Aggressive, expands fast, counters your army, and sees through the fog of war.", "扩张迅速、针对性极强的凶猛对手，能看穿战争迷雾。", "공격적이고, 빠르게 확장하며, 당신의 군대에 맞춰 대응하고, 전장의 안개를 꿰뚫어 봅니다."],
   // ------------------------------------------------------------- sandbox setup
   "setup.title": ["Conquest", "征服", "정복"],
   // ---- the mode, the strip above the lobby's maps: the open match, or the front line
@@ -300,6 +302,19 @@ const STRINGS = {
     "The War Lab: a doctrine for each side, the units and abilities it unlocks, and economy upgrades.",
     "战争实验室：每方选择一种学说，以及它解锁的单位、技能和经济升级。",
     "전쟁 연구소: 진영마다 교리를 고르고, 교리가 해금하는 유닛과 능력, 경제 향상을 연구합니다."
+  ],
+  "setup.reset": ["Reset to default", "恢复默认", "기본값으로 되돌리기"],
+  "settings.resetAll": ["Reset to default", "恢复默认", "기본값으로 되돌리기"],
+  "settings.resetAll.confirm": [
+    "Every setting goes back to its default, and every notice you chose not to be reminded of will show again. Your commander name and developer mode are kept.",
+    "所有设置都将恢复默认，你选择不再提醒的提示也会重新出现。指挥官名称和开发者模式会保留。",
+    "모든 설정이 기본값으로 돌아가고, 다시 알리지 않기로 한 안내도 다시 표시됩니다. 지휘관 이름과 개발자 모드는 유지됩니다."
+  ],
+  "setup.buildRadius": ["Build radius", "建造范围", "건설 반경"],
+  "setup.buildRadius.desc": [
+    "A side builds only within a ring round its Headquarters. Extractors and offshore rigs stand anywhere. Off: build anywhere.",
+    "各方只能在己方总部周围的范围内建造，采矿场和海上钻井平台不受限制。关闭后可在任意位置建造。",
+    "각 진영은 사령부 주변 반경 안에서만 건설할 수 있습니다. 금속 채굴장과 해상 시추 플랫폼은 어디에나 지을 수 있습니다. 끄면 어디에나 건설할 수 있습니다."
   ],
   // ---- weather. The name is a word, the sentence beneath it is the whole
   // rule: what it takes off sight, and what it takes off speed.
@@ -362,7 +377,7 @@ const STRINGS = {
   "setup.you": ["You", "你", "당신"],
   "setup.seat": ["Your faction. It decides which spawn you start from.", "你的阵营，决定你从哪个出生点开局。", "당신의 진영. 어느 시작 지점에서 출발할지 정합니다."],
   "setup.playHere": ["Play this faction too", "你也操作此阵营", "이 진영도 직접 조종"],
-  "setup.openSeat": ["Open faction {0} here", "在此开启阵营 {0}", "여기에 진영 {0} 열기"],
+  "setup.openSeat": ["Open a faction here", "在此开启一个阵营", "여기에 진영 열기"],
   "setup.addFaction": ["Add a faction", "添加阵营", "진영 추가"],
   "setup.staging": ["Staging ground: the attackers start here", "集结地：进攻方从这里出发", "집결지: 공격측이 여기서 시작합니다"],
   "setup.mapSize": ["Map size", "地图尺寸", "지도 크기"],
@@ -385,7 +400,7 @@ const STRINGS = {
   // a card for a map a mod carries (`maps` in its manifest): the mod's name leads the title
   "setup.modMapTip": ["A map this mod ships, played exactly as its author laid it out.", "模组自带的地图，按作者布置的原样游玩。", "모드에 포함된 지도. 제작자가 배치한 그대로 플레이합니다."],
   "setup.uploadMap": ["Upload map…", "上传地图…", "지도 업로드…"],
-  "setup.uploadMapTip": ["A map exported from the Map Editor (.steel-tide-map)", "从地图编辑器导出的地图（.steel-tide-map）", "맵 에디터에서 내보낸 지도(.steel-tide-map)"],
+  "setup.uploadMapTip": ["A map exported from the Scenario Editor (.steel-tide-map)", "从场景编辑器导出的地图（.steel-tide-map）", "시나리오 에디터에서 내보낸 지도(.steel-tide-map)"],
   "setup.dropMap": ["Drop the map file here", "把地图文件拖到这里", "지도 파일을 여기에 놓으세요"],
   "setup.deleteMap": ["Remove this map", "移除此地图", "이 지도 제거"],
   "setup.browseMaps": ["Community maps…", "社区地图…", "커뮤니티 지도…"],
@@ -457,7 +472,6 @@ const STRINGS = {
   // an AI seat named by its difficulty: {0} is Relaxed, Standard or Veteran
   "mp.aiPersona": ["AI ({0})", "AI（{0}）", "AI ({0})"],
   "mp.closed": ["Closed", "关闭", "닫힘"],
-  "mp.slot": ["Faction {0}", "阵营 {0}", "진영 {0}"],
   "mp.seatOpen": ["Open seat", "空位", "빈 자리"],
   "mp.spectator": ["Spectator", "观战者", "관전자"],
   "mp.spectators": ["Spectators", "观战者", "관전자"],
@@ -678,9 +692,9 @@ const STRINGS = {
   "mp.tooManyFactions": ["This map holds {0} factions; close the rest.", "此地图最多 {0} 个阵营，请关闭其余席位。", "이 지도는 진영 {0}개까지입니다. 나머지를 닫으세요."],
   "mp.needFaction": ["Open at least one faction to play.", "至少开放一个阵营才能开局。", "플레이하려면 진영을 하나 이상 여세요."],
   "mp.needPlayer": [
-    "Faction {0} has nobody in it; seat a player, or set it to AI or Closed.",
-    "阵营 {0} 无人就座。请安排玩家，或将其改为 AI 或关闭。",
-    "진영 {0}에 아무도 없습니다. 플레이어를 앉히거나 AI 또는 닫힘으로 바꾸세요."
+    "Nobody holds {0}; seat a player, or set it to AI or Closed.",
+    "{0}无人就座。请安排玩家，或将其改为 AI 或关闭。",
+    "{0} 진영에 아무도 없습니다. 플레이어를 앉히거나 AI 또는 닫힘으로 바꾸세요."
   ],
   "mp.needReady": ["Waiting for {0} to press Ready.", "等待 {0} 点击准备。", "{0}이(가) 준비를 누르기를 기다리는 중입니다."],
   // the Browse page's two sections: the games announced on the local network
@@ -809,9 +823,9 @@ const STRINGS = {
   ],
   "map.pripet": ["Pripet Marshes", "普里皮亚季沼泽", "프리퍄트 습지"],
   "map.pripet.style": [
-    "The bog on the Pripyat: causeways across marsh and pine islands, one bridge in the river town at the centre, and a ford upstream on each side for the flank.",
-    "普里皮亚季河畔的大沼泽：堤道穿过沼地与松林岛，中央河镇里只有一座桥，两侧上游各有一处浅滩可供迂回。",
-    "프리퍄트 강의 늪지대: 습지와 소나무 섬을 가로지르는 둑길, 한가운데 강변 마을의 유일한 다리, 그리고 양쪽 상류에 우회용 여울이 하나씩."
+    "The bog on the Pripyat: causeways across marsh and pine islands, one bridge in the river town at the centre, and a ford upstream on each side.",
+    "普里皮亚季河畔的大沼泽：堤道穿过沼地与松林岛，中央河镇里只有一座桥，两侧上游各有一处浅滩。",
+    "프리퍄트 강의 늪지대: 습지와 소나무 섬을 가로지르는 둑길, 한가운데 강변 마을의 다리 하나, 그리고 양쪽 상류의 여울 하나씩."
   ],
   "map.ladoga": ["Lake Ladoga", "拉多加湖", "라도가 호"],
   "map.ladoga.style": [
@@ -855,11 +869,11 @@ const STRINGS = {
     "河口之下三座丛林岛屿一字排开：西岛有港口与种植园，中岛是村庄，东岛有海滩与碉堡山脊，岛与岛之间是沼泽浅滩和一座桥。",
     "하구 아래 나란히 늘어선 정글 섬 셋: 서쪽 섬에는 항구와 농장, 가운데 섬에는 마을, 동쪽 섬에는 해변과 벙커 능선, 그 사이에 늪 여울과 다리 하나."
   ],
-  "map.saltboneReach": ["Saltbone Reach", "盐骨海域", "솔트본 리치"],
-  "map.saltboneReach.style": [
-    "Homelands on the rim of a drowned range, and most of the ore out in the water between them: thirty-odd islets, four islands with room for a base, and no bridge anywhere.",
-    "家园环列于沉没山脉的边缘，大部分矿藏散落在其间的海面上：三十余座礁屿、四座能容下一座基地的岛屿，全图不见一座桥。",
-    "가라앉은 산맥의 가장자리에 자리한 본거지들, 그리고 광석 대부분이 그 사이 바다에 있습니다. 서른 남짓한 암초 섬, 기지를 세울 자리가 있는 섬 넷, 다리는 어디에도 없습니다."
+  "map.santaBarbara": ["Santa Barbara Channel", "圣巴巴拉海峡", "샌타바버라 해협"],
+  "map.santaBarbara.style": [
+    "The Southern California Bight, where oil was first drilled from the sea: six islands and the mainland at Point Mugu, and most of the ore out on the fields at sea, the channel's platforms among them.",
+    "南加州湾，人类最早在海上钻采石油的地方：六座岛屿与穆古角所在的大陆，大部分矿藏都在海上矿区，海峡里的钻井平台也在其中。",
+    "인류가 처음으로 바다에서 석유를 시추한 남캘리포니아 만: 여섯 개의 섬과 포인트 무구가 있는 본토, 그리고 해협의 시추 플랫폼들이 있는 해상 광구에 놓인 광석 대부분."
   ],
   "map.pacificStorm": ["Pacific Storm", "太平洋风暴", "퍼시픽 스톰"],
   "map.pacificStorm.style": [
@@ -875,9 +889,9 @@ const STRINGS = {
   ],
   "map.wakeIsland": ["Wake Island", "威克岛", "웨이크섬"],
   "map.wakeIsland.style": [
-    "An atoll: a wishbone of sand round a lagoon that opens through a reef, Wake with the airstrip along its southern leg, Wilkes the thin arm off its end, Peale off its northern tip, and a causeway onto each.",
-    "一座环礁：一弯马蹄形沙洲环抱潟湖，礁盘开一道口，威克岛的跑道沿南臂延伸，威尔克斯是南臂尽头的细长小岛，皮尔岛在北臂顶端，各有一条堤道相连。",
-    "환초 하나: 산호초 틈으로 열린 석호를 두른 말굽 모양의 모래섬, 남쪽 팔을 따라 활주로가 놓인 웨이크, 그 끝의 가느다란 윌크스, 북쪽 끝의 필, 그리고 각각으로 이어지는 둑길."
+    "An atoll: Wake a V with the airstrip along its southern leg and Downtown on its arm, Wilkes and Peale each over a bridged channel, and a reef flat round the lagoon, open at the north-western end.",
+    "一座环礁：威克岛呈V形，跑道沿南臂延伸，市区在北臂上；威尔克斯岛和皮尔岛各隔一道水道，有桥相连；潟湖四周是浅滩礁坪，只在西北端敞开。",
+    "환초 하나: 남쪽 팔을 따라 활주로가 놓이고 팔 끝에 다운타운이 있는 V자 모양의 웨이크, 다리 놓인 수로 건너의 윌크스와 필, 그리고 북서쪽 끝만 열린 채 석호를 두른 산호초 여울."
   ],
   "map.coastRoad": ["Coast Road", "海岸公路", "해안 도로"],
   "map.coastRoad.style": [
@@ -922,9 +936,7 @@ const STRINGS = {
   // Each mission carries a name, a dateline, a background card (paragraphs
   // apart by a blank line, read in silence) and Command's orders (read by the
   // narrator: `briefing.mN` in core/voice.ts).
-  "campaign.background": ["Background", "背景", "배경"],
   "campaign.orders": ["Orders", "命令", "명령"],
-  "campaign.begin": ["Begin", "开始", "시작"],
   "m1.name": ["Desert Shield", "沙漠盾牌", "사막의 방패"],
   "m1.date": ["8 August 1990 · 0600 · Ras Hadar, the Kingdom", "1990 年 8 月 8 日 · 0600 · 拉斯哈达尔，王国", "1990년 8월 8일 · 0600 · 라스 하다르, 왕국"],
   "m1.background": [
@@ -1069,7 +1081,6 @@ const STRINGS = {
   "hud.eco.committed": ["Committed", "已承诺", "예약됨"],
   "hud.eco.available": ["Available", "可动用", "사용 가능"],
   "hud.eco.incomeTotal": ["Income", "收入", "수입"],
-  "hud.eco.noIncome": ["No extractors standing", "没有正在运转的采矿设施", "가동 중인 채굴장이 없습니다"],
   "hud.eco.brownout": [
     "Low power: mining and work at {0}%, units move at {1}%",
     "电力不足：开采与作业降至 {0}%，单位移速降至 {1}%",
@@ -1090,6 +1101,9 @@ const STRINGS = {
   "hud.speed": ["Speed ×{0}", "速度 ×{0}", "속도 ×{0}"],
   "hud.menu": ["Menu", "菜单", "메뉴"],
   "hud.objectives": ["Objectives", "任务目标", "목표"],
+  // the Guide panel under the objectives, for a mission that teaches (ui/guidePanel.ts)
+  "hud.guide": ["Guide", "指引", "안내"],
+  "hud.guideCount": ["{0} / {1}", "{0} / {1}", "{0} / {1}"],
   // the breakthrough strip
   "hud.bt.whistle": ["Whistle in", "哨响倒计时", "휘슬까지"],
   "hud.bt.clock": ["Clock", "倒计时", "시계"],
@@ -1105,6 +1119,7 @@ const STRINGS = {
   "hud.kills": ["Kills: {0}", "击杀：{0}", "격파: {0}"],
   "hud.rank": ["Rank {0}: {1}", "等级 {0}：{1}", "계급 {0}: {1}"],
   "hud.aggressiveTip": ["On the aggressive stance: it hunts the enemy on its own. Any order stands it down.", "处于主动出击状态：它会自行搜寻并攻击敌人。下达任意命令即可取消。", "적극 교전 상태: 스스로 적을 찾아 공격합니다. 아무 명령이나 내리면 해제됩니다."],
+  "hud.formationTip": ["In formation: it keeps its place among the others and marches at the slowest one's pace. A move order of its own takes it out.", "编队中：保持与其他单位的相对位置，以最慢单位的速度行进。单独给它下达移动命令即可使其离队。", "대형 유지 중: 다른 유닛과의 상대 위치를 지키며 가장 느린 유닛의 속도로 이동합니다. 이 유닛에만 이동 명령을 내리면 대형에서 빠집니다."],
   "hud.highGround": ["High ground", "高地", "고지"],
   "hud.highGroundTip": [
     "High ground: unseen from below, and shots from below do {0}% less. Aircraft and radar see it all the same.",
@@ -1127,6 +1142,11 @@ const STRINGS = {
   "hud.disabled": ["Disabled for {0} s", "瘫痪 {0} 秒", "{0}초 동안 무력화"],
   "hud.nukeFabricating": ["Fabricating warhead (click to cancel)", "正在制造核弹头（点击取消）", "핵탄두 제조 중 (클릭하면 취소)"],
   "hud.nukeEmpty": ["Empty warhead slot", "空核弹槽位", "빈 핵탄두 슬롯"],
+  "hud.nukeHeld": ["Paused (click to cancel)", "已暂停（点击取消）", "멈춤 (클릭하면 취소)"],
+  "hud.nukeAwayFromYard": ["Warhead work paused: bring it back to one of your naval yards and keep it on the surface there.", "弹头制造已暂停：把它开回己方造船厂附近，并在那里保持上浮。", "탄두 제조가 멈췄습니다. 아군 조선소 곁으로 돌려보내 부상한 채로 두세요."],
+  "hud.nukeAwayFromAirbase": ["Warhead work paused: bring it back over one of your airbases.", "弹头制造已暂停：把它飞回己方机场上空。", "탄두 제조가 멈췄습니다. 아군 비행장 위로 돌려보내세요."],
+  "hud.tooShallow": ["Too shallow to dive here: it stays on the surface until the water deepens.", "此处水太浅，无法下潜：驶入深水之前会一直浮在水面。", "여기는 너무 얕아 잠수할 수 없습니다. 깊은 물에 들어설 때까지 수면 위에 머뭅니다."],
+  "hud.nukeSubmerged": ["Warhead work paused: it loads only on the surface. Surface it ({0}).", "弹头制造已暂停：只能在水面上装填。让它上浮（{0}）。", "탄두 제조가 멈췄습니다. 수면 위에서만 장전합니다. 부상시키세요 ({0})."],
   "hud.watchHint": ["Select a faction's HQ to watch its economy", "选择某阵营的指挥中心以查看其经济", "진영의 사령부를 선택하면 그 경제를 볼 수 있습니다"],
   "hud.battleMap": ["Battle map", "战场地图", "전장 지도"],
   "hud.chat": ["Chat", "聊天", "채팅"],
@@ -1156,29 +1176,34 @@ const STRINGS = {
   "hud.work.researchMore": ["Researching {0}, {1} more queued", "正在研究{0}，还有 {1} 项排队", "{0} 연구 중, 대기 {1}개"],
   "hud.work.fabricate": ["Fabricating {0}", "正在制造{0}", "{0} 제조 중"],
   "hud.work.fabricateMore": ["Fabricating {0}, {1} more queued", "正在制造{0}，还有 {1} 枚排队", "{0} 제조 중, 대기 {1}개"],
+  "hud.work.fabricateHeld": ["{0} paused: it loads only at its base (see its card)", "{0}已暂停：只能在基地旁装填（详见单位卡片）", "{0} 멈춤: 기지 곁에서만 장전합니다 (유닛 카드 참고)"],
   // ------------------------------------------------------- quick selection
   "quick.title": ["Quick selection", "快速选择", "빠른 선택"],
+  // the four branches of the inner ring
+  "quick.unit": ["FORCES", "部队", "부대"],
+  "quick.factory": ["PRODUCTION", "生产建筑", "생산 건물"],
+  "quick.camera": ["CAMERA", "镜头", "카메라"],
+  "quick.support": ["SUPPORT", "支援", "지원"],
+  // forces: every armed unit, a branch of them, the armed units on screen
+  "quick.army": ["ARMY", "全军", "전군"],
   "quick.land": ["LAND", "陆军", "지상"],
   "quick.air": ["AIR", "空军", "공중"],
   "quick.sea": ["SEA", "海军", "해상"],
-  "quick.engineers": ["ENGINEERS", "工程车", "공병차"],
-  // the lines: every war factory, airbase or naval yard, at any level
+  "quick.inView": ["ON SCREEN", "屏幕内", "화면 안"],
+  // the lines: every war factory, airbase or naval yard, at any level, and the War Lab
   "quick.factories": ["FACTORIES", "战车工厂", "전차 공장"],
   "quick.airbases": ["AIRBASES", "空军基地", "공군 기지"],
   "quick.navyards": ["NAVAL YARDS", "造船厂", "조선소"],
-  // the three branches of the dial's first level
-  "quick.factory": ["PRODUCTION", "生产建筑", "생산 건물"],
-  "quick.unit": ["FORCES", "部队", "부대"],
-  "quick.ping": ["MARKS", "标记", "표식"],
-  // the marks themselves (`game/pins.ts`)
-  "quick.ping-attack": ["ATTACK HERE", "攻击此处", "이곳을 공격"],
-  "quick.ping-defend": ["DEFEND HERE", "防守此处", "이곳을 방어"],
-  "quick.ping-watch": ["WATCH OUT", "注意此处", "이곳을 주의"],
-  // a slice with nothing behind it: the hub's reason under the greyed name
-  "quick.none": ["None standing", "尚无此建筑", "건설된 것 없음"],
-  // what a branch slice does, and the way back out of an opened one
-  "quick.open": ["Move out to open", "向外展开", "바깥으로 펼치기"],
-  "quick.back": ["Centre to go back", "回中心返回", "중앙에서 뒤로"],
+  "quick.warlabs": ["WAR LAB", "战争实验室", "전쟁 연구소"],
+  // the camera: to the headquarters, to the last place under attack, to what is selected
+  "quick.hq": ["HQ", "总部", "사령부"],
+  "quick.alert": ["UNDER ATTACK", "遇袭处", "공격받는 곳"],
+  "quick.selection": ["SELECTION", "选中单位", "선택 대상"],
+  // support: every builder, the idle ones, every transport, every unit under half strength
+  "quick.engineers": ["ENGINEERS", "工程车", "공병차"],
+  "quick.idleEngineers": ["IDLE ENGINEERS", "空闲工程车", "대기 공병차"],
+  "quick.transports": ["TRANSPORTS", "运输单位", "수송 유닛"],
+  "quick.damaged": ["DAMAGED", "受损单位", "손상 유닛"],
   // ------------------------------------------------------------ map marks
   // what a mark is called where it is named in words rather than drawn:
   // the battle map's legend, the feed, a screen reader
@@ -1196,15 +1221,33 @@ const STRINGS = {
   "cmd.direct": ["Take control", "直接操控", "직접 조종"],
   "cmd.aggressive": ["Aggressive stance", "主动出击", "적극 교전"],
   "cmd.aggressiveOff": ["Stand down", "取消出击", "교전 해제"],
+  "cmd.formation": ["Formation", "编队", "대형"],
+  "cmd.formationOff": ["Break formation", "解散编队", "대형 해제"],
+  "cmd.surface": ["Surface", "上浮", "부상"],
+  "cmd.dive": ["Dive", "下潜", "잠수"],
   "cmd.ability": ["Use ability", "使用技能", "능력 사용"],
   "cmd.research": ["Research", "研究", "연구"],
   "cmd.build": ["Build", "建造", "건설"],
   "cmd.sell": ["Sell", "出售", "판매"],
   "cmd.upgrade": ["Upgrade", "升级", "업그레이드"],
+  // a mod's button on a unit's card (`game/modRules.ts`)
+  "cmd.morph": ["Become {0}", "变为{0}", "{0}(으)로 전환"],
+  "cmd.ruleWorking": ["{0}: {1}% — press again to stop", "{0}：{1}%——再按一次停止", "{0}: {1}% — 다시 누르면 중지"],
+  "rule.block.requires": ["Needs {0}", "需要{0}", "{0} 필요"],
+  "rule.block.busy": ["Busy", "忙碌中", "작업 중"],
+  "rule.block.metal": ["Not enough metal", "金属不足", "금속 부족"],
+  "rule.block.terrain": ["Cannot take that form here", "此处无法变形", "여기서는 전환할 수 없음"],
+  "rule.block.cargo": ["Unload first", "请先卸载", "먼저 하차하세요"],
+  "rule.block.limit": ["At the limit", "已达上限", "한도 도달"],
+  "rule.block.used": ["Used up", "已用尽", "모두 사용함"],
+  "rule.block.cooldown": ["Not ready yet", "尚未就绪", "아직 준비되지 않음"],
+  "rule.block.if": ["Not now", "现在不行", "지금은 불가"],
   "cmd.fabricateNuke": ["Fabricate warhead", "制造核弹头", "핵탄두 제조"],
   "cmd.launchNuke": ["Launch nuke", "发射核弹", "핵 발사"],
   "cmd.fabricateEmp": ["Fabricate EMP warhead", "制造电磁脉冲弹头", "EMP 탄두 제조"],
   "cmd.launchEmp": ["Launch EMP", "发射电磁脉冲弹", "EMP 발사"],
+  "cmd.fabricateNukeBomb": ["Fabricate nuclear bomb", "制造核航弹", "핵폭탄 제조"],
+  "cmd.dropNukeBomb": ["Drop nuclear bomb", "投放核航弹", "핵폭탄 투하"],
   "cmd.resume": ["Resume construction", "继续建造", "건설 재개"],
   "cmd.unload": ["Unload all", "全部卸载", "모두 하차"],
   "cmd.sellRefund": ["Sell (+{0})", "出售 (+{0})", "판매 (+{0})"],
@@ -1223,6 +1266,11 @@ const STRINGS = {
   "alert.constructionDone": ["{0} built", "{0} 建造完成", "{0} 건설 완료"],
   "alert.upgradeDone": ["Upgrade complete: {0}", "升级完成：{0}", "업그레이드 완료: {0}"],
   "alert.directMax": ["Direct control takes up to {0} units at a time", "直接操控一次最多 {0} 个单位", "직접 조종은 한 번에 최대 {0}개 유닛까지입니다"],
+  "alert.formationFew": ["A formation needs at least two units", "编队至少需要两个单位", "대형에는 유닛이 두 개 이상 필요합니다"],
+  "alert.formationMax": ["A formation takes up to {0} units", "一个编队最多 {0} 个单位", "대형은 최대 {0}개 유닛까지입니다"],
+  "alert.formationMixed": ["A formation is one kind: all land, all amphibious, all naval, all helicopters or all fixed-wing", "编队只能是同一类单位：全为陆地、两栖、海上、直升机或固定翼单位", "대형은 한 종류로만 이뤄집니다: 모두 지상, 수륙양용, 해상, 헬리콥터 또는 고정익기"],
+  "alert.formationCannot": ["Only units that move can form up", "只有能移动的单位才能组成编队", "움직일 수 있는 유닛만 대형을 이룰 수 있습니다"],
+  "alert.formationStall": ["The slowest of these flies below the others' stall speed: they cannot keep station on it", "其中最慢的一架飞得比其他飞机的失速速度还慢，它们无法与之保持编队", "가장 느린 기체가 다른 기체들의 실속 속도보다 느려서 대형을 유지할 수 없습니다"],
   "alert.sellConfirm": ["Press {0} again to sell {1} (+{2})", "再按一次 {0} 出售{1}（+{2}）", "{0}을(를) 한 번 더 누르면 {1}을(를) 판매 (+{2})"],
   "alert.sellConfirmMany": ["Press {0} again to sell {1} buildings (+{2})", "再按一次 {0} 出售 {1} 座建筑（+{2}）", "{0}을(를) 한 번 더 누르면 건물 {1}개를 판매 (+{2})"],
   // the touch bar's sell button asks the same way; {0} is the button's word
@@ -1234,11 +1282,25 @@ const STRINGS = {
   // the same launch told to the stands, who may know who fired: {0} is the faction
   "alert.nukeLaunchedBy": ["{0} launched a nuclear missile", "{0} 发射了核弹", "{0}이(가) 핵미사일을 발사했습니다"],
   "alert.nukeIntercepted": ["Nuclear warhead shot down", "核弹头已被击落", "핵탄두 격추됨"],
+  "alert.nukeBombAway": ["Nuclear bomb away", "核航弹已投放", "핵폭탄 투하"],
+  "alert.nukeBombBy": ["{0} dropped a nuclear bomb", "{0} 投放了核航弹", "{0}이(가) 핵폭탄을 투하했습니다"],
+  "alert.nukeBombSighted": ["Nuclear bomb on the ground in sight: destroy it or clear the area", "视野内发现落地的核航弹：摧毁它或撤离该区域", "시야에 핵폭탄 낙하: 파괴하거나 그 지역을 비우세요"],
+  "alert.nukeBombDestroyed": ["Nuclear bomb destroyed before it went off", "核航弹在起爆前被摧毁", "핵폭탄이 폭발 전에 파괴됨"],
   "alert.empReady": ["EMP warhead ready", "电磁脉冲弹头已就绪", "EMP 탄두 준비 완료"],
   "alert.empReadyBy": ["{0} has an EMP warhead ready", "{0} 的电磁脉冲弹头已就绪", "{0}의 EMP 탄두 준비 완료"],
   "alert.empLaunched": ["EMP launch detected", "检测到电磁脉冲弹发射", "EMP 발사 감지"],
   "alert.empLaunchedBy": ["{0} launched an EMP missile", "{0} 发射了电磁脉冲弹", "{0}이(가) EMP 미사일을 발사했습니다"],
   "alert.promoted": ["{0} promoted to {1}", "{0} 晋升为{1}", "{0}이(가) {1}(으)로 진급"],
+  // the kill feed (`Hud.pushKill`): {0} what died, {1} what did it, {2} how many
+  "kill.lost": ["{0} lost to {1}", "{0} 被{1}摧毁", "{1}에게 {0} 손실"],
+  "kill.lostMany": ["{0} ×{2} lost to {1}", "{0} ×{2} 被{1}摧毁", "{1}에게 {0} ×{2} 손실"],
+  "kill.got": ["{1} destroyed {0}", "{1} 摧毁了{0}", "{1}: {0} 격파"],
+  "kill.gotMany": ["{1} destroyed {0} ×{2}", "{1} 摧毁了{0} ×{2}", "{1}: {0} ×{2} 격파"],
+  // nothing known to have done it: {0} what died, {1} how many
+  "kill.lostBlind": ["{0} lost", "{0} 被摧毁", "{0} 손실"],
+  "kill.lostBlindMany": ["{0} ×{1} lost", "{0} ×{1} 被摧毁", "{0} ×{1} 손실"],
+  "kill.gotBlind": ["{0} destroyed", "{0} 已被摧毁", "{0} 격파"],
+  "kill.gotBlindMany": ["{0} ×{1} destroyed", "{0} ×{1} 已被摧毁", "{0} ×{1} 격파"],
   "alert.respawned": ["{0} has been given a new headquarters", "{0} 获得了新的总部", "{0}이(가) 새 사령부를 받았습니다"],
   "alert.handover": ["{0} is now under AI command", "{0} 已交由 AI 指挥", "{0}이(가) 이제 AI 지휘를 받습니다"],
   "alert.kicked": ["{0} was removed by the host", "{0} 已被房主移出", "{0}이(가) 호스트에 의해 내보내졌습니다"],
@@ -1287,8 +1349,8 @@ const STRINGS = {
   "pause.title": ["Paused", "暂停", "일시 정지"],
   "pause.resume": ["Resume", "继续", "계속"],
   "pause.save": ["Save game", "保存游戏", "게임 저장"],
+  "pause.load": ["Load game", "载入游戏", "게임 불러오기"],
   "pause.settings": ["Settings", "设置", "설정"],
-  "pause.guide": ["Beginner guide", "新手指南", "초보자 안내"],
   "pause.restart": ["Restart", "重新开始", "다시 시작"],
   "pause.quit": ["Quit to menu", "退出到主菜单", "메뉴로 나가기"],
   "pause.restartConfirm": ["Restart this game? Unsaved progress is lost.", "重新开始？未保存的进度将丢失。", "이 게임을 다시 시작할까요? 저장하지 않은 진행은 사라집니다."],
@@ -1460,7 +1522,7 @@ const STRINGS = {
   "ach.foul-weather.name": ["Foul Weather", "恶劣天候", "악천후"],
   "ach.foul-weather.desc": ["Win a match fought under rain or snow.", "在雨或雪的天气下赢得对局。", "비나 눈 아래에서 치른 대전에서 승리하세요."],
   "ach.admiral.name": ["Admiral", "海军上将", "제독"],
-  "ach.admiral.desc": ["Win on Saltbone Reach.", "在盐骨海域取胜。", "솔트본 리치에서 승리하세요."],
+  "ach.admiral.desc": ["Win on the Santa Barbara Channel.", "在圣巴巴拉海峡取胜。", "샌타바버라 해협에서 승리하세요."],
   "ach.second-strike.name": ["Second Strike", "二次打击", "2차 타격"],
   "ach.second-strike.desc": ["Launch ten nuclear warheads.", "累计发射十枚核弹头。", "핵탄두 열 발을 발사하세요."],
   "ach.interception.name": ["Interception", "拦截", "요격"],
@@ -1497,6 +1559,7 @@ const STRINGS = {
   "settings.windowMode.fullscreen": ["Fullscreen", "全屏", "전체 화면"],
   "settings.edgeScroll": ["Edge scrolling", "屏幕边缘滚动", "가장자리 스크롤"],
   "settings.healthBars": ["Always show health bars", "始终显示血条", "체력 바 항상 표시"],
+  "settings.killFeed": ["Name the killer in the activity feed", "在动态栏中显示击毁者", "활동 피드에 격파한 유닛 표시"],
   "settings.showFps": ["Show FPS", "显示帧率", "FPS 표시"],
   "settings.uiScale": ["UI scale", "界面缩放", "UI 크기"],
   "settings.section.graphics": ["Graphics", "画面", "그래픽"],
@@ -1649,6 +1712,99 @@ const STRINGS = {
   ],
   "guide.learnMore": ["Learn more on the website", "在官网了解更多", "웹사이트에서 더 알아보기"],
   "guide.learnMore.sub": ["The full guide: the economy, the counter web, the tech tree.", "完整指南：经济与电力、克制关系、科技树。", "전체 안내서: 경제, 상성 관계, 기술 트리."],
+  // ------------------------------------------------ the first mission's lesson (campaign/tutorial.ts)
+  // `tut.<step>` is the step's title and `.body` its line; `.body.touch` is
+  // the line for a finger where the gesture differs. In a body {0} is the
+  // press that selects (a tap, or the mouse button the settings make the
+  // selecting one) and {1} the attack-move key.
+  "tut.tap": ["tap", "手指", "탭"],
+  "tut.engineer": ["Select an engineer", "选中一辆工程车", "공병차 선택"],
+  "tut.engineer.body": [
+    "Engineers are the only units that can build. Select one with a {0}.",
+    "只有工程车能建造。用{0}点一下，把一辆选中。",
+    "건설할 수 있는 유닛은 공병차뿐입니다. {0}으로 하나를 선택하세요."
+  ],
+  "tut.extractor": ["Build an extractor", "建造采矿场", "채굴장 건설"],
+  "tut.extractor.body": [
+    "Metal is your main resource, and extractors mine it. Pick the Metal Extractor from the build menu, then place it on the marked deposit.",
+    "金属是你的主要资源，由采矿场开采。在建造菜单里选择采矿场，再把它放在标出的矿点上。",
+    "금속은 주 자원이고, 채굴장이 이를 캡니다. 건설 메뉴에서 금속 채굴장을 고른 뒤 표시된 광맥 위에 놓으세요."
+  ],
+  "tut.power": ["Build a power plant", "建造发电厂", "발전소 건설"],
+  "tut.power.body": [
+    "Every building draws power, and the headquarters alone cannot carry a war factory. Short of power, everything slows down. Put a Power Plant beside your base.",
+    "每座建筑都要耗电，光靠总部带不动一座战车工厂。电力不足时，一切都会变慢。在基地旁建一座发电厂。",
+    "모든 건물은 전력을 씁니다. 사령부 혼자서는 전차 공장을 감당하지 못하고, 전력이 모자라면 모든 것이 느려집니다. 기지 옆에 발전소를 지으세요."
+  ],
+  "tut.extractor2": ["Claim a second deposit", "占领第二个矿点", "두 번째 광맥 확보"],
+  "tut.extractor2.body": [
+    "More extractors, more metal. Put another one on the next deposit.",
+    "采矿场越多，金属就越多。在下一个矿点上再建一座。",
+    "채굴장이 많을수록 금속도 많습니다. 다음 광맥에 하나 더 지으세요."
+  ],
+  "tut.factory": ["Build a war factory", "建造战车工厂", "전차 공장 건설"],
+  "tut.factory.body": [
+    "The war factory turns metal into tanks. Build one near your headquarters.",
+    "战车工厂把金属变成坦克。在总部附近建一座。",
+    "전차 공장은 금속을 전차로 바꿉니다. 사령부 근처에 하나 지으세요."
+  ],
+  "tut.selectFactory": ["Select the war factory", "选中战车工厂", "전차 공장 선택"],
+  "tut.selectFactory.body": [
+    "Once it is finished, select it with a {0}. A building’s menu shows what it makes.",
+    "建成后，用{0}点一下将它选中。建筑的菜单会列出它能生产的东西。",
+    "완성되면 {0}으로 선택하세요. 건물의 메뉴에 그 건물이 만드는 것이 나옵니다."
+  ],
+  "tut.train": ["Train a Wolf", "生产一辆野狼", "울프 생산"],
+  "tut.train.body": [
+    "Pick the Wolf Light Tank to put one in the queue. It drives out on its own when it is done.",
+    "选择野狼轻型坦克，把它排进生产队列。造好后它会自己开出来。",
+    "울프 경전차를 골라 대기열에 넣으세요. 완성되면 스스로 나옵니다."
+  ],
+  "tut.army": ["Build a column: {0} of {1}", "组建纵队：{0}/{1}", "종대 편성: {0}/{1}"],
+  "tut.army.body": [
+    "One tank is a target; six are a column. Queue more: a click with Shift held queues five at once.",
+    "一辆坦克只是靶子，六辆才成纵队。继续排产：按住 Shift 点击，一次排五辆。",
+    "전차 한 대는 표적일 뿐이고, 여섯 대면 종대입니다. 더 넣으세요. Shift를 누른 채 클릭하면 한 번에 다섯 대가 들어갑니다."
+  ],
+  "tut.army.body.touch": [
+    "One tank is a target; six are a column. Keep tapping the tile to queue more.",
+    "一辆坦克只是靶子，六辆才成纵队。继续轻触图标，排进更多。",
+    "전차 한 대는 표적일 뿐이고, 여섯 대면 종대입니다. 타일을 계속 탭해 더 넣으세요."
+  ],
+  "tut.selectArmy": ["Select your column", "选中你的纵队", "종대 선택"],
+  "tut.selectArmy.body": [
+    "Drag a box around your tanks to pick them all up at once.",
+    "按住鼠标拖出一个框，把坦克一次全部框选。",
+    "전차들을 드래그 상자로 감싸 한꺼번에 선택하세요."
+  ],
+  "tut.selectArmy.body.touch": [
+    "Plant two fingers either side of your tanks and hold them still; when one lifts, everything between them is selected.",
+    "两根手指按在坦克两侧并保持不动；抬起其中一根时，两指之间的单位都会被选中。",
+    "두 손가락을 전차들 양옆에 대고 가만히 누르세요. 한 손가락을 떼면 그 사이의 유닛이 모두 선택됩니다."
+  ],
+  "tut.attack": ["Attack the border post", "进攻边境哨所", "국경 초소 공격"],
+  "tut.attack.body": [
+    "Press {1} or the lit order button, then click near the marked border post. On an attack-move the column fights whatever it meets on the way.",
+    "按 {1} 或点亮的指令按钮，再点击标出的边境哨所附近。攻击移动时，纵队会与途中遇到的一切交战。",
+    "{1} 키나 빛나는 명령 버튼을 누른 뒤 표시된 국경 초소 근처를 클릭하세요. 공격 이동 중인 종대는 가는 길에 만나는 모든 것과 싸웁니다."
+  ],
+  "tut.attack.body.touch": [
+    "Hold a finger on the ground near the marked border post: the column attack-moves there, fighting whatever it meets on the way.",
+    "在标出的边境哨所附近长按地面：纵队会攻击移动过去，与途中遇到的一切交战。",
+    "표시된 국경 초소 근처 땅을 길게 누르세요. 종대가 그곳으로 공격 이동하며 가는 길에 만나는 모든 것과 싸웁니다."
+  ],
+  "tut.destroy": ["Clear the border post", "清除边境哨所", "국경 초소 소탕"],
+  "tut.destroy.body": [
+    "Destroy every building and vehicle at the post. Tanks lost on the way can be replaced at the war factory.",
+    "摧毁哨所的每一座建筑和每一辆车。路上损失的坦克可以在战车工厂补充。",
+    "초소의 모든 건물과 차량을 파괴하세요. 가는 길에 잃은 전차는 전차 공장에서 보충할 수 있습니다."
+  ],
+  "tut.complete": ["Lesson complete", "教学完成", "교육 완료"],
+  "tut.complete.body": [
+    "Metal, power, a factory and a column: every battle after this one is built the same way, only bigger.",
+    "金属、电力、工厂、纵队：之后的每一场仗都是这样打起来的，只是规模更大。",
+    "금속, 전력, 공장, 종대. 앞으로의 모든 전투는 이렇게 쌓아 올립니다. 규모만 더 클 뿐입니다."
+  ],
   "settings.devMode": ["Developer mode", "开发者模式", "개발자 모드"],
   "settings.grid": ["Always show grid", "始终显示网格", "항상 격자 표시"],
   "settings.placeGrid": ["Show grid when building", "建造时显示网格", "건설 시 격자 표시"],
@@ -1711,6 +1867,13 @@ const STRINGS = {
     "为腾出空间已删除最旧的 {0} 段录像。请到 开发者工具 → 回放 导出想保留的。",
     "공간을 위해 가장 오래된 녹화 {0}개를 삭제했습니다. 남길 것은 개발자 도구 → 리플레이에서 내보내세요."
   ],
+  "rec.started": [
+    "Recording this match from here. The replay goes to Developer Tools → Replays.",
+    "从此刻起录制本局。回放保存在 开发者工具 → 回放。",
+    "지금부터 이 경기를 녹화합니다. 리플레이는 개발자 도구 → 리플레이에 저장됩니다."
+  ],
+  "rec.already": ["This match is already being recorded.", "本局已在录制中。", "이 경기는 이미 녹화 중입니다."],
+  "rec.hostOnly": ["Only the host can record this match.", "只有房主可以录制本局。", "호스트만 이 경기를 녹화할 수 있습니다."],
   "rec.notKept": [
     "The recording could not be stored: this device refused the space. It is kept only until the game closes: export it under Developer Tools → Replays.",
     "录像无法保存：本设备拒绝分配空间。它只保留到游戏关闭：请到 开发者工具 → 回放 导出。",
@@ -1767,7 +1930,6 @@ const STRINGS = {
   "settings.keys.group.direct": ["Direct control", "直接操控", "직접 조종"],
   "settings.keys.group.camera": ["Camera and view", "视角", "카메라와 시점"],
   "settings.keys.group.game": ["Game", "游戏", "게임"],
-  "settings.keys.reset": ["Reset to default", "恢复默认", "기본값으로"],
   "settings.keys.press": ["Press a key…", "请按键…", "키를 누르세요…"],
   "settings.keys.pressPad": ["Press a button…", "请按手柄键…", "버튼을 누르세요…"],
   "settings.keys.clear": ["Clear", "清除", "지우기"],
@@ -1795,10 +1957,13 @@ const STRINGS = {
   "bind.sell": ["Sell the building (twice)", "出售建筑（按两次）", "건물 판매(두 번)"],
   "bind.launch": ["Launch warhead", "发射核弹", "핵탄두 발사"],
   "bind.selfDestruct": ["Self-destruct", "自毁", "자폭"],
-  "bind.quickSelect": ["Quick select (hold)", "快速选择（按住）", "빠른 선택(누르고 있기)"],
+  "bind.quickSelect": ["Mark (tap) · quick select (hold)", "标记（轻按）· 快速选择（按住）", "표식(짧게) · 빠른 선택(누르고 있기)"],
+  "bind.buildPrev": ["Previous building (while placing)", "上一个建筑（放置时）", "이전 건물(배치 중)"],
+  "bind.buildNext": ["Next building (while placing)", "下一个建筑（放置时）", "다음 건물(배치 중)"],
   "bind.direct": ["Take control of the selection", "直接操控所选单位", "선택 유닛 직접 조종"],
   "bind.aggressive": ["Aggressive stance for the selection", "所选单位转入主动出击", "선택 유닛 적극 교전"],
-  "bind.ability": ["Use the selection's ability", "所选单位使用技能", "선택 유닛 능력 사용"],
+  "bind.formation": ["Formation for the selection, or break it", "所选单位组成编队，或解散编队", "선택 유닛 대형 편성 또는 해제"],
+  "bind.ability": ["Use the selection's ability; surface or dive a submarine", "所选单位使用技能；潜艇上浮或下潜", "선택 유닛 능력 사용; 잠수함 부상 또는 잠수"],
   "bind.steerUp": ["Steer up", "向上驾驶", "위로 조종"],
   "bind.steerDown": ["Steer down", "向下驾驶", "아래로 조종"],
   "bind.steerLeft": ["Steer left", "向左驾驶", "왼쪽으로 조종"],
@@ -1820,6 +1985,7 @@ const STRINGS = {
   "bind.speedUp": ["Faster", "加速", "빠르게"],
   "bind.quickSave": ["Quick save", "快速保存", "빠른 저장"],
   "bind.quickLoad": ["Quick load", "快速读取", "빠른 불러오기"],
+  "bind.record": ["Record this match from now", "从此刻起录制本局", "지금부터 이 경기 녹화"],
   "bind.help": ["Beginner guide", "新手指南", "초보자 안내"],
   "bind.scoreboard": ["Player list (hold)", "玩家列表（按住）", "플레이어 목록(누르고 있기)"],
   "bind.chat": ["Chat", "聊天", "채팅"],
@@ -1831,7 +1997,7 @@ const STRINGS = {
   "bind.pad.attackMove": ["Attack-move", "攻击移动", "공격 이동"],
   "bind.pad.modifier": ["Modifier (hold: queue, add)", "修饰键（按住：排队、加选）", "보조 키(누르고 있기: 대기열, 추가 선택)"],
   "bind.pad.wheel": ["Command wheel (hold)", "指令轮盘（按住）", "명령 휠(누르고 있기)"],
-  "bind.pad.quickSelect": ["Quick select (hold)", "快速选择（按住）", "빠른 선택(누르고 있기)"],
+  "bind.pad.quickSelect": ["Mark (tap) · quick select (hold)", "标记（轻按）· 快速选择（按住）", "표식(짧게) · 빠른 선택(누르고 있기)"],
   "bind.pad.focus": ["Camera to the selection", "视角跳转到所选", "선택 유닛으로 카메라"],
   "bind.pad.map": ["Battle map", "战场地图", "전장 지도"],
   "bind.pad.menu": ["Pause menu", "暂停菜单", "일시 정지 메뉴"],
@@ -1843,7 +2009,7 @@ const STRINGS = {
   "pad.hint.select": ["Select", "选择", "선택"],
   "pad.hint.boxSelect": ["Hold: box-select", "按住：框选", "누르고 있기: 범위 선택"],
   "pad.hint.boxRelease": ["Release to select", "松开完成选择", "놓으면 선택"],
-  "pad.hint.quickSelect": ["Quick select", "快速选择", "빠른 선택"],
+  "pad.hint.quickSelect": ["Mark · hold: quick select", "标记 · 按住：快速选择", "표식 · 누르고 있기: 빠른 선택"],
   "pad.hint.groups": ["Groups", "编队", "부대"],
   "pad.hint.map": ["Battle map", "战场地图", "전장 지도"],
   "pad.hint.menu": ["Menu", "菜单", "메뉴"],
@@ -1881,6 +2047,7 @@ const STRINGS = {
   // the mouse and keyboard's hint bar (ui/actionHints.ts); the rest of its words are the pad's
   "hint.selectAny": ["Select building or unit", "选择建筑或单位", "건물 또는 유닛 선택"],
   "hint.pan": ["Pan", "移动视角", "화면 이동"],
+  "hint.nextBuilding": ["Next building", "下一个建筑", "다음 건물"],
   "hint.wheel": ["mouse wheel", "鼠标滚轮", "마우스 휠"],
   "hint.turnOff": ["Turn off hints", "关闭操作提示", "조작 안내 끄기"],
   "hint.offToast": ["Action hints off. {0} › {1} turns them back on.", "操作提示已关闭，可在“{0} › {1}”中重新开启。", "조작 안내를 껐습니다. {0} › {1}에서 다시 켤 수 있습니다."],
@@ -1931,17 +2098,17 @@ const STRINGS = {
   "touch.hintAttackMove": ["Tap where to attack-move", "点击攻击移动目的地", "공격 이동할 곳을 탭"],
   "touch.hintNuke": ["Tap the map to choose the nuclear target", "点击地图选择核打击目标", "지도를 탭해 핵 표적을 고르세요"],
   "touch.hintEmp": ["Tap the map to choose the EMP target", "点击地图选择电磁脉冲打击目标", "지도를 탭해 EMP 표적을 고르세요"],
+  "touch.hintBomb": ["Tap the map where the bomber drops the nuclear bomb", "点击地图选择轰炸机投放核航弹的位置", "지도를 탭해 폭격기가 핵폭탄을 떨굴 곳을 고르세요"],
   // ------------------------------------------------------------- about (the settings' last page) / help
   "about.title": ["About", "关于", "정보"],
-  "about.website": ["Official website", "官方网站", "공식 웹사이트"],
-  "about.libs": ["Open source", "开源组件", "오픈 소스"],
-  "about.libsIntro": [
-    "The engine has no runtime dependencies; these build it and dress it.",
-    "引擎没有运行时依赖，以下是构建与界面所用的开源组件。",
-    "엔진에는 런타임 의존성이 없습니다. 이것들이 엔진을 빌드하고 꾸밉니다."
-  ],
-  "about.author": ["About the author", "关于作者", "제작자 소개"],
-  "about.authorBody": ["Steel Tide is made by {0}.", "《钢铁浪潮》由 {0} 制作。", "스틸 타이드는 {0}이 만들었습니다."],
+  // the About page's doors (`ui/about.ts`): the website's home, its wiki and its agent page
+  "about.website": ["Website", "官网", "웹사이트"],
+  "about.wiki": ["Wiki", "百科", "위키"],
+  "about.agent": ["AI Agent", "AI Agent", "AI 에이전트"],
+  // the card's trailing button and the legal line under the doors, named as the website names its pages
+  "about.changelog": ["Changelog", "更新日志", "변경 사항"],
+  "about.privacy": ["Privacy Policy", "隐私政策", "개인정보 처리방침"],
+  "about.terms": ["Terms of Service", "服务条款", "이용 약관"],
   // the credits roll (`ui/credits.ts`): the About page's way in, and the lines
   // round the list itself, which is `CREDITS` at the foot of this file
   "credits.open": ["Credits", "制作人员名单", "크레디트"],
@@ -2035,9 +2202,9 @@ const STRINGS = {
   "ability.barrage.desc": ["Reloads twice as fast for 8 s.", "8 秒内装填速度翻倍。", "8초 동안 두 배로 빨리 재장전합니다."],
   "ability.countermeasures.name": ["Countermeasures + ERA", "主动防护+反应装甲", "능동 방어+반응 장갑"],
   "ability.countermeasures.desc": [
-    "For 10 s the launchers shoot down the first 3 missiles or rockets fired at the hull, and the reactive armour takes 40% off every shell. Fights on the move.",
-    "10 秒内，发射器击落射向车体的前 3 枚导弹或火箭弹，反应装甲使每发炮弹的伤害降低 40%。可边走边打。",
-    "10초 동안 발사기가 차체를 향해 날아오는 미사일이나 로켓을 3발까지 격추하고, 반응 장갑이 포탄 피해를 40% 줄입니다. 이동 중에도 싸웁니다."
+    "For 10 s the launchers shoot down the first 3 missiles or rockets fired at the hull, and the reactive armour takes 40% off every shell. Fights on the move; a green beacon flashes on the turret while it is on.",
+    "10 秒内，发射器击落射向车体的前 3 枚导弹或火箭弹，反应装甲使每发炮弹的伤害降低 40%。可边走边打；生效时炮塔上闪烁绿色信标灯。",
+    "10초 동안 발사기가 차체를 향해 날아오는 미사일이나 로켓을 3발까지 격추하고, 반응 장갑이 포탄 피해를 40% 줄입니다. 이동 중에도 싸우며, 작동 중에는 포탑에서 녹색 표시등이 깜박입니다."
   ],
   "ability.intercepts": ["Countermeasures: {0} of {1} left", "主动防护：剩余 {0}/{1}", "능동 방어: {1}발 중 {0}발 남음"],
   "ability.damageControl.name": ["Damage Control", "损管", "손상 통제"],
@@ -2067,7 +2234,6 @@ const STRINGS = {
   "stat.metalRate": ["+{0} metal/s", "+{0} 金属/秒", "+{0} 금속/초"],
   "stat.strongVs": ["Strong vs", "克制", "강함"],
   "stat.weakVs": ["Weak vs", "被克制", "약함"],
-  "stat.cargo": ["Transport capacity: {0}", "运载量：{0}", "수송 용량: {0}"],
   "stat.underwater": ["Submerged; only sonar reveals it", "潜航，仅声呐可发现", "잠항. 소나로만 드러납니다"],
   "stat.sonar": ["Sonar: reveals submarines", "声呐：可发现潜艇", "소나: 잠수함을 드러냅니다"],
   "stat.stealth": [
@@ -2183,47 +2349,35 @@ const STRINGS = {
   ],
   // ------------------------------------------------------------- units: amphibious
   "unit.gator.name": ["Gator Amphibious Combat Vehicle", "鳄鱼两栖战车", "게이터 상륙 전투차"],
-  "unit.gator.desc": [
-    "An armoured car that swims: it lands itself, no craft and no beach needed. A ship to torpedoes while afloat, a vehicle once ashore. Slow in the water.",
-    "会游泳的装甲车：自行登陆，无需登陆艇也无需滩头。在水上会被鱼雷当作舰船，上岸后又是地面载具。水中速度慢。",
-    "헤엄치는 장갑차: 상륙정도 해변도 없이 스스로 상륙합니다. 물 위에서는 어뢰에 함선으로 잡히고, 뭍에 오르면 차량입니다. 물속에서는 느립니다."
-  ],
+  "unit.gator.desc": ["An armoured car that swims, and lands itself.", "会游泳的装甲车，能自行登陆。", "헤엄치는 장갑차. 스스로 상륙합니다."],
   // ------------------------------------------------------------- units: the doctrines' own
   "unit.hornet.name": ["Hornet Suicide Drone", "黄蜂自杀式无人机", "호넷 자폭 드론"],
   "unit.hornet.desc": [
-    "A quadcopter with an anti-tank charge under it. It never attacks on its own: order it at a vehicle, a ship, a building or a spot, and it flies there and explodes. It flies low, so machine guns and autocannons shoot at it as well as anti-air. Six per faction at most. Lightning doctrine.",
-    "挂着反坦克战斗部的四旋翼无人机。它从不自行攻击：命令它攻击车辆、舰船、建筑或地面某处，它就飞过去引爆。它飞得很低，除防空火力外，机枪和机炮也能向它射击。每个阵营最多六架。闪电学说。",
-    "대전차 탄두를 매단 쿼드콥터. 스스로는 절대 공격하지 않습니다. 차량, 함선, 건물이나 지점을 공격하라고 명령하면 날아가 폭발합니다. 낮게 날기 때문에 대공 화기뿐 아니라 기관총과 기관포도 쏠 수 있습니다. 진영당 최대 여섯 대. 번개 교리."
+    "A quadcopter with an anti-tank charge under it: sent at a target, it flies there and explodes.",
+    "挂着反坦克战斗部的四旋翼无人机：派它攻击目标，它就飞过去引爆。",
+    "대전차 탄두를 매단 쿼드콥터: 표적으로 보내면 날아가 폭발합니다."
   ],
   "unit.hercules.name": ["Hercules Recovery Vehicle", "大力神装甲抢修车", "허큘리스 구난 전차"],
-  "unit.hercules.desc": [
-    "An armoured recovery tank: mends the vehicles and ships around it as a Repair Tower does, and pays the same. No gun. Born with Emergency Repair. Anvil doctrine.",
-    "装甲抢修车：像维修塔一样维修周围的车辆与舰船，费用也相同。没有武器。自带紧急抢修技能。铁砧学说。",
-    "장갑 구난 전차: 수리탑처럼 주위의 차량과 함선을 수리하고, 비용도 같습니다. 무기는 없습니다. 긴급 수리 능력을 타고납니다. 모루 교리."
-  ],
+  "unit.hercules.desc": ["An armoured recovery tank that mends the vehicles and ships around it. No gun.", "装甲抢修车，维修周围的车辆与舰船。没有武器。", "주위의 차량과 함선을 수리하는 장갑 구난 전차. 무기는 없습니다."],
   "unit.scorpion.name": ["Scorpion Ballistic Missile Launcher", "蝎子弹道导弹发射车", "스콜피온 탄도 미사일 발사차"],
-  "unit.scorpion.desc": [
-    "Two heavy ballistic missiles every 30 s, thrown 18 tiles. Blind without a spotter, and point defence shoots its missiles down. Hammer doctrine.",
-    "每 30 秒发射两枚重型弹道导弹，射程 18 格。没有侦察就是瞎子，拦截塔能击落它的导弹。重锤学说。",
-    "30초마다 무거운 탄도 미사일 두 발을 18칸 너머로 던집니다. 관측 없이는 눈먼 채이고, 요격 방어가 미사일을 떨어뜨립니다. 망치 교리."
-  ],
+  "unit.scorpion.desc": ["Heavy ballistic missiles, thrown far beyond its own sight.", "重型弹道导弹，射程远超自身视野。", "자기 시야 훨씬 너머로 던지는 무거운 탄도 미사일."],
   // ------------------------------------------------------------- units: sea
   "unit.gunboat.name": ["Gunboat", "炮艇", "포함"],
-  "unit.gunboat.desc": ["Fast patrol boat with an autocannon. Cheap naval eyes.", "装备机炮的高速巡逻艇，海上的廉价耳目。", "기관포를 단 빠른 초계정. 값싼 바다의 눈입니다."],
+  "unit.gunboat.desc": ["Fast patrol boat with an autocannon that also fires at aircraft. Cheap naval eyes.", "装备机炮的高速巡逻艇，也能对空射击，海上的廉价耳目。", "대공 사격도 되는 기관포를 단 빠른 초계정. 값싼 바다의 눈입니다."],
   "unit.mboat.name": ["Missile Boat", "导弹艇", "미사일정"],
   "unit.mboat.desc": ["Anti-ship missiles on a small hull. Punches far above its weight.", "小艇扛重锤，反舰导弹一击致命。", "작은 선체에 대함 미사일. 체급을 훌쩍 넘는 한 방입니다."],
   "unit.frigate.name": ["Aegis Frigate", "神盾护卫舰", "이지스 호위함"],
   "unit.frigate.desc": ["Fleet air-defense screen with rapid SAMs and a deck gun.", "舰队防空屏障，快速防空导弹加舰炮。", "속사 대공 미사일과 함포를 갖춘 함대 방공 방패입니다."],
   "unit.destroyer.name": ["Orca Destroyer", "虎鲸驱逐舰", "오르카 구축함"],
-  "unit.destroyer.desc": ["Naval gun, sonar and anti-submarine torpedoes: the submarine hunter.", "舰炮、声呐加反潜鱼雷：潜艇猎手。", "함포와 소나, 그리고 대잠 어뢰. 잠수함 사냥꾼입니다."],
+  "unit.destroyer.desc": ["Dual-purpose naval gun, sonar and anti-submarine torpedoes: the submarine hunter.", "高平两用舰炮、声呐加反潜鱼雷：潜艇猎手。", "양용 함포와 소나, 그리고 대잠 어뢰. 잠수함 사냥꾼입니다."],
   "unit.sub.name": ["Barracuda Submarine", "梭鱼潜艇", "바라쿠다 잠수함"],
   "unit.sub.desc": [
-    "Submerged torpedo ambusher, invisible except to sonar. With a Nuclear Reactor standing it can arm one warhead of its own and launch it from under the water.",
-    "潜航鱼雷伏击者，除声呐外无人可见。拥有核反应堆后，可自行装备一枚核弹头并从水下发射。",
-    "잠항 어뢰 매복자. 소나 말고는 볼 수 없습니다. 원자로가 서 있으면 핵탄두 하나를 직접 갖춰 물속에서 발사할 수 있습니다."
+    "Submerged torpedo ambusher, invisible except to sonar.",
+    "潜航鱼雷伏击者，除声呐外无人可见。",
+    "잠항 어뢰 매복자. 소나 말고는 볼 수 없습니다."
   ],
   "unit.btlship.name": ["Sovereign Battleship", "君王战列舰", "소버린 전함"],
-  "unit.btlship.desc": ["Triple heavy guns bombard land and sea from extreme range.", "三联重炮超远程轰击海陆目标。", "3연장 중포가 극한의 사거리에서 육지와 바다를 포격합니다."],
+  "unit.btlship.desc": ["Triple heavy guns bombard land and sea from extreme range; secondaries keep helicopters off.", "三联重炮超远程轰击海陆目标，防空副炮驱离直升机。", "3연장 중포가 극한의 사거리에서 육지와 바다를 포격하고, 대공 부포가 헬기를 쫓아냅니다."],
   "unit.seatrans.name": ["Landing Craft", "登陆艇", "상륙정"],
   "unit.seatrans.desc": ["Ferries units across water.", "渡海运输单位。", "유닛을 싣고 물을 건넙니다."],
   "unit.engboat.name": ["Engineer Boat", "工程船", "공병정"],
@@ -2234,12 +2388,12 @@ const STRINGS = {
   ],
   "unit.kraken.name": ["Kraken Cruise-Missile Submarine", "海妖巡航导弹潜艇", "크라켄 순항 미사일 잠수함"],
   "unit.kraken.desc": [
-    "Fires cruise missiles at the land from under the water, far beyond its own sight. Nothing for ships.",
-    "从水下向陆地发射巡航导弹，射程远超自身视野。无法攻击舰船。",
-    "물속에서 지상으로 순항 미사일을 쏩니다. 자기 시야보다 훨씬 멀리요. 함선은 노릴 수 없습니다."
+    "Fires cruise missiles at the land from under the water, far beyond its own sight. Nothing for ships. It can arm a nuclear warhead of its own.",
+    "从水下向陆地发射巡航导弹，射程远超自身视野。无法攻击舰船。可自行装备一枚核弹头。",
+    "물속에서 지상으로 순항 미사일을 쏩니다. 자기 시야보다 훨씬 멀리요. 함선은 노릴 수 없습니다. 핵탄두 하나를 직접 갖출 수 있습니다."
   ],
   "unit.moray.name": ["Moray Infiltration Submarine", "海鳗渗透潜艇", "모레이 침투 잠수함"],
-  "unit.moray.desc": ["A submerged transport: unarmed, and invisible except to sonar.", "潜航运输艇：无武装，除声呐外无人可见。", "잠항 수송함: 비무장이고, 소나 말고는 볼 수 없습니다."],
+  "unit.moray.desc": ["A submerged transport: unarmed, and hidden under the water.", "潜航运输艇：无武装，藏身水下。", "잠항 수송함: 비무장이고, 물속에 숨어 있습니다."],
   // ------------------------------------------------------------- units: air
   "unit.drone.name": ["Scout Drone", "侦察无人机", "정찰 드론"],
   "unit.drone.desc": ["Unarmed, expendable, sees everything.", "无武装、可消耗，但看得见一切。", "비무장, 소모품, 모든 것을 봅니다."],
@@ -2265,9 +2419,9 @@ const STRINGS = {
   "unit.gunship.desc": ["Circling heavy gunship raining sustained cannon fire.", "盘旋重型炮艇机，倾泻持续炮火。", "선회하며 기관포 사격을 끊임없이 퍼붓는 대형 건십입니다."],
   "unit.wraith.name": ["Wraith Stealth Bomber", "幽魂隐形轰炸机", "레이스 스텔스 폭격기"],
   "unit.wraith.desc": [
-    "Two heavy bombs on a hull no radar sees until it is nearly overhead.",
-    "两枚重型炸弹，机身在逼近头顶之前不会出现在任何雷达上。",
-    "중폭탄 두 발. 거의 머리 위에 올 때까지 어떤 레이더에도 잡히지 않는 기체입니다."
+    "Two heavy bombs on a hull no radar sees until it is nearly overhead. It can carry a nuclear bomb.",
+    "两枚重型炸弹，机身在逼近头顶之前不会出现在任何雷达上。可携带一枚核航弹。",
+    "중폭탄 두 발. 거의 머리 위에 올 때까지 어떤 레이더에도 잡히지 않는 기체입니다. 핵폭탄 한 발을 실을 수 있습니다."
   ],
   "unit.cormorant.name": ["Cormorant ASW Helicopter", "鸬鹚反潜直升机", "코모란트 대잠 헬기"],
   "unit.cormorant.desc": [
@@ -2288,6 +2442,12 @@ const STRINGS = {
   "unit.extractor2.desc": ["Twin drills double the yield of the same deposit.", "双钻头并进，同一矿脉双倍产出。", "쌍 드릴이 같은 광맥의 산출을 두 배로 늘립니다."],
   "unit.extractor3.name": ["Deep-Core Extractor", "深层采矿场", "심층 채굴장"],
   "unit.extractor3.desc": ["A deep-core bore yields far more metal from the same deposit.", "深层钻机从同一矿脉中开采出远超以往的金属。", "심층 시추가 같은 광맥에서 훨씬 많은 금속을 냅니다."],
+  "unit.platform.name": ["Offshore Rig", "海上钻井平台", "해상 시추 플랫폼"],
+  "unit.platform.desc": ["Mines metal from a deposit at sea, on its own legs in the water.", "立于水中的桩腿之上，开采海上矿脉中的金属。", "물속에 세운 다리 위에서 해상 광맥의 금속을 캡니다."],
+  "unit.platform2.name": ["Advanced Offshore Rig", "高级钻井平台", "고급 시추 플랫폼"],
+  "unit.platform2.desc": ["Twin derricks double the yield of the same field at sea.", "双井架并进，同一海上矿脉双倍产出。", "쌍 데릭이 같은 해상 광맥의 산출을 두 배로 늘립니다."],
+  "unit.platform3.name": ["Deepwater Rig", "深水钻井平台", "심해 시추 플랫폼"],
+  "unit.platform3.desc": ["A deepwater drilling complex yields far more metal from the same field at sea.", "深水钻探综合平台从同一海上矿脉中开采出远超以往的金属。", "심해 시추 단지가 같은 해상 광맥에서 훨씬 많은 금속을 냅니다."],
   "unit.power.name": ["Power Plant", "发电厂", "발전소"],
   "unit.power.desc": ["Generates power. Low power slows production and defenses.", "产生电力。电力不足会拖慢生产与防御。", "전력을 만듭니다. 전력이 부족하면 생산과 방어가 느려집니다."],
   "unit.power2.name": ["Advanced Power Plant", "高级发电厂", "고급 발전소"],
@@ -2327,11 +2487,7 @@ const STRINGS = {
   "unit.aaturret.name": ["AA Turret", "防空炮塔", "대공 포탑"],
   "unit.aaturret.desc": ["Flak battery. Air-only.", "高射炮组，仅对空。", "대공포 진지. 공중 전용입니다."],
   "unit.samsite.name": ["SAM Site", "防空导弹阵地", "대공 미사일 진지"],
-  "unit.samsite.desc": [
-    "Long-range missiles that own the local airspace, and they will fire on a nuclear warhead.",
-    "远程防空导弹，掌控周边空域，也会向核弹头开火。",
-    "주변 공역을 장악하는 장거리 미사일. 핵탄두에도 불을 뿜습니다."
-  ],
+  "unit.samsite.desc": ["Long-range missiles that own the local airspace, and that will fire on a nuclear warhead.", "远程防空导弹，掌控周边空域，也会向核弹头开火。", "주변 공역을 장악하는 장거리 미사일. 핵탄두에도 불을 뿜습니다."],
   "unit.interceptor.name": ["Missile Interrupter", "导弹拦截塔", "미사일 요격탑"],
   "unit.interceptor.desc": [
     "Point defence: shoots down incoming rockets and guided missiles. Nothing for shells, warheads or the ground.",
@@ -2345,11 +2501,7 @@ const STRINGS = {
     "더 긴 사거리, 더 깊은 탄창, 더 두꺼운 벽을 가진 요격 방어입니다."
   ],
   "unit.sandbag.name": ["Sandbags", "沙袋", "모래주머니"],
-  "unit.sandbag.desc": [
-    "A tile of wall, cheap and quick. Lay it across a chokepoint: a column has to go round it or shoot through it, and your turrets get the time either costs. Tiles laid side by side join into one line.",
-    "一格廉价而快速的工事。横放在隘口上：敌军纵队只能绕行或将它打穿，而无论哪种都在为你的炮塔争取时间。相邻的沙袋会连成一道防线。",
-    "값싸고 빠른 한 타일짜리 벽. 길목을 가로질러 쌓으면 적 종대는 돌아가거나 뚫어야 하고, 그 시간은 아군 포탑의 것입니다. 나란히 놓은 타일은 한 줄로 이어집니다."
-  ],
+  "unit.sandbag.desc": ["A tile of wall, cheap and quick. Tiles laid side by side join into one line.", "一格廉价而快速的工事。相邻的沙袋会连成一道防线。", "값싸고 빠른 한 타일짜리 벽. 나란히 놓은 타일은 한 줄로 이어집니다."],
   "unit.repairtower.name": ["Repair Tower", "维修塔", "수리탑"],
   "unit.repairtower.desc": [
     "Mends damaged allies in range, worst hit first. Repairs cost metal.",
@@ -2358,9 +2510,9 @@ const STRINGS = {
   ],
   "unit.warlab.name": ["War Lab", "战争实验室", "전쟁 연구소"],
   "unit.warlab.desc": [
-    "Researches the tech tree: the doctrine you fight by, the units and abilities it unlocks, and economy upgrades. One per faction; what it learns is kept if it falls.",
-    "研究科技树：你的作战学说、它解锁的单位与技能，以及经济升级。每个阵营限一座；被摧毁后已研究的成果仍然保留。",
-    "기술 트리를 연구합니다: 싸울 교리와 그 교리가 해금하는 유닛과 능력, 그리고 경제 향상. 진영마다 하나만 지을 수 있고, 무너져도 연구한 것은 남습니다."
+    "Researches the tech tree: the doctrine you fight by, the units and abilities it unlocks, and economy upgrades.",
+    "研究科技树：你的作战学说、它解锁的单位与技能，以及经济升级。",
+    "기술 트리를 연구합니다: 싸울 교리와 그 교리가 해금하는 유닛과 능력, 그리고 경제 향상."
   ],
   "unit.radar.name": ["Radar Station", "雷达站", "레이더 기지"],
   "unit.radar.desc": [
@@ -2386,11 +2538,17 @@ const STRINGS = {
     "飞行中的核弹头：没有武器、不接受指令，直线飞向目标点。",
     "비행 중인 탄두: 무기도 명령도 없이 보내진 지점으로 직선 비행합니다."
   ],
+  "unit.nukebomb.name": ["Nuclear Bomb", "核航弹", "핵폭탄"],
+  "unit.nukebomb.desc": [
+    "The Wraith's free-fall nuclear bomb: it lies where it lands for a while before it goes off.",
+    "幽魂的自由落体核航弹：落地后要静置片刻才会起爆。",
+    "레이스의 자유 낙하 핵폭탄: 떨어진 자리에 잠시 놓여 있다가 터집니다."
+  ],
   "unit.emp.name": ["EMP Warhead", "电磁脉冲弹头", "EMP 탄두"],
   "unit.emp.desc": [
-    "The same missile with a pulse in it: where it comes down, every vehicle, ship and building within seven tiles is dead for twelve seconds. Aircraft are above it. Half the price of a nuclear warhead, and the radar alone unlocks it.",
-    "同一枚导弹换上脉冲弹头：落点七格内的所有车辆、舰船与建筑瘫痪十二秒。飞行器不受影响。造价仅核弹头的一半，只需雷达即可解锁。",
-    "같은 미사일에 펄스를 실은 것: 떨어진 곳 7타일 안의 모든 차량, 함선, 건물이 12초 동안 멈춥니다. 항공기는 그 위에 있습니다. 핵탄두의 절반 가격이며 레이더만으로 해금됩니다."
+    "A missile with an electromagnetic pulse in place of the warhead: the vehicles, ships and buildings where it comes down go dead for a while. Aircraft are above it.",
+    "装着电磁脉冲的导弹：落点周围的车辆、舰船与建筑会瘫痪一阵。飞行器不受影响。",
+    "탄두 대신 전자기 펄스를 실은 미사일: 떨어진 곳의 차량, 함선, 건물이 한동안 멈춥니다. 항공기는 그 위에 있습니다."
   ],
   // ------------------------------------------------------------- terrain
   // the map's props (`game/decor.ts`), named on the editor's palette
@@ -2427,7 +2585,7 @@ const STRINGS = {
   "community.searchHint": ["Name, author, description…", "名称、作者、简介…", "이름, 제작자, 설명…"],
   "community.loading": ["Fetching the list…", "正在获取列表…", "목록 가져오는 중…"],
   "community.offline": ["The map registry could not be reached.", "无法连接到地图仓库。", "지도 레지스트리에 연결할 수 없습니다."],
-  "community.empty": ["No maps published yet. Yours could be the first: Publish from the Map Editor.", "尚无已发布的地图。你的可以是第一张：在地图编辑器中发布。", "아직 공개된 지도가 없습니다. 맵 에디터에서 공개하면 첫 지도가 됩니다."],
+  "community.empty": ["No maps published yet. Yours could be the first: Publish from the Scenario Editor.", "尚无已发布的地图。你的可以是第一张：在场景编辑器中发布。", "아직 공개된 지도가 없습니다. 시나리오 에디터에서 공개하면 첫 지도가 됩니다."],
   "community.none": ['Nothing matches "{0}".', "没有匹配“{0}”的地图。", '"{0}"에 맞는 지도가 없습니다.'],
   "community.page": ["{0} / {1}", "{0} / {1}", "{0} / {1}"],
   "community.prev": ["Previous page", "上一页", "이전 페이지"],
@@ -2437,8 +2595,8 @@ const STRINGS = {
   "community.taking": ["Fetching {0}…", "正在获取 {0}…", "{0} 가져오는 중…"],
   "community.takeFailed": ["Could not fetch that map: {0}", "无法获取该地图：{0}", "지도를 가져올 수 없습니다: {0}"],
   "community.publish": ["Publish your map", "发布你的地图", "내 지도 공개하기"],
-  // ------------------------------------------------------------- map editor
-  "editor.title": ["Map Editor", "地图编辑器", "맵 에디터"],
+  // -------------------------------------------------------- scenario editor
+  "editor.title": ["Scenario Editor", "场景编辑器", "시나리오 에디터"],
   // the map's own pane (name, size, grid, the readout) as a plate, on a screen too small for its column
   "editor.settings": ["Map settings", "地图设置", "지도 설정"],
   "editor.terrain": ["Terrain", "地形", "지형"],
@@ -2710,14 +2868,20 @@ const ARMOR_MATRIX = {
   autocannon: { light: 1.5, medium: 1, heavy: 0.5, structure: 0.5, ship: 0.7 },
   // tank guns: built for armored duels, over-penetrate soft targets
   cannon: { light: 0.6, medium: 1.3, heavy: 1, structure: 0.8, ship: 0.9 },
-  // shaped-charge guided missiles: heavy armor only, wasted on light vehicles
-  at: { light: 0.4, medium: 1.1, heavy: 1.8, structure: 0.7, ship: 1 },
+  // shaped-charge guided missiles: heavy armor only, wasted on light vehicles,
+  // and a hull is holed rather than broken — 0.75 since 2026-09-27 (it was
+  // 1.0, and the Cobra sank whole fleets that could not shoot back): what
+  // sinks a ship is the anti-ship missile and the torpedo
+  at: { light: 0.4, medium: 1.1, heavy: 1.8, structure: 0.7, ship: 0.75 },
   // high explosive: blast shreds soft targets and buildings, heavy plate shrugs
   he: { light: 1.2, medium: 1, heavy: 0.75, structure: 1.6, ship: 1 },
   // unguided rocket pods: vehicles of any weight, poor against bunkers
   rocket: { light: 1.4, medium: 1.4, heavy: 0.9, structure: 0.7, ship: 0.9 },
-  // naval guns: general-purpose bombardment of shore and ship
-  navgun: { light: 1, medium: 1, heavy: 0.75, structure: 0.75, ship: 1 },
+  // naval guns: general-purpose bombardment of shore and ship, and
+  // dual-purpose — they fire on aircraft too, at a little over half (the
+  // frigate's and the destroyer's since 2026-09-27: a fleet with nothing but
+  // the Aegis's missiles to answer the sky was the air force's for free)
+  navgun: { light: 1, medium: 1, heavy: 0.75, structure: 0.75, ship: 1, air: 0.6 },
   ashm: { ship: 1.6 },
   torpedo: { ship: 1.3, sub: 1.2 },
   aa: { air: 1 }
@@ -2771,7 +2935,7 @@ const DEFS = {
     radius: 8,
     weapons: [],
     body: { r: 8, len: 12 },
-    builds: ["extractor", "power", "factory", "airbase", "navyard", "mgturret", "cannonturret", "aaturret", "interceptor", "repairtower", "sandbag", "warlab", "radar", "reactor", "nukesilo", "hq"],
+    builds: ["extractor", "platform", "power", "factory", "airbase", "navyard", "mgturret", "cannonturret", "aaturret", "interceptor", "repairtower", "sandbag", "warlab", "radar", "reactor", "nukesilo", "hq"],
     buildRate: 30,
     trail: "tread",
     sprite: "u.engineer"
@@ -3601,6 +3765,9 @@ const DEFS = {
     radius: 9,
     body: { r: 6, len: 20 },
     weapons: [w({
+      // the 30 mm reaches aircraft too, at a quarter (since 2026-09-27): the
+      // first yard's one answer to the sky, enough to see off a helicopter
+      // with a few boats and never a Flak Track's worth per metal
       id: "autocannon",
       cls: "autocannon",
       dmg: 16,
@@ -3608,8 +3775,8 @@ const DEFS = {
       range: 4.2,
       projectile: "bullet",
       speed: 520,
-      targets: ["ground", "ship"],
-      mult: { ship: 0.8 },
+      targets: ["ground", "ship", "air"],
+      mult: { ship: 0.8, air: 0.25 },
       turret: true,
       muzzleOffset: 10.4,
       sound: "autocannon"
@@ -3674,6 +3841,7 @@ const DEFS = {
     body: { r: 21, len: 67.5 },
     weapons: [
       w({
+        // dual-purpose, like every naval gun (`ARMOR_MATRIX.navgun`)
         id: "navgun",
         cls: "navgun",
         dmg: 40,
@@ -3681,17 +3849,20 @@ const DEFS = {
         range: 5.5,
         projectile: "shell",
         speed: 420,
-        targets: ["ground", "ship"],
+        targets: ["ground", "ship", "air"],
         turret: true,
         muzzleOffset: 23.625,
         splash: 10,
         sound: "cannon"
       }),
       w({
-        // vertical-launch cells amidships: the missile is aimed on launch
-        // rather than by the hull (`turret`, no ring of its own — it fires
-        // as the gun's ring bears), since a ship never swings on the spot
-        // to point its bow at an aircraft (`standingTurn` in game/move.ts)
+        // vertical-launch cells amidships: the missile is aimed once it is
+        // out (`vertical`), never by the hull or the gun's ring, since a ship
+        // never swings on the spot to point its bow at an aircraft. The cells
+        // keep a target of their own (`hasAirMount` in combat.ts) and fire at
+        // it while the gun is on a boat and while the ship is under way: they
+        // used to wait on the gun's one target, and three patrol boats in
+        // front of five helicopters sank three frigates that way
         id: "navsam",
         cls: "aa",
         dmg: 80,
@@ -3701,7 +3872,7 @@ const DEFS = {
         speed: 430,
         targets: ["air"],
         homing: true,
-        turret: true,
+        vertical: true,
         sound: "missile"
       })
     ],
@@ -3731,14 +3902,18 @@ const DEFS = {
     body: { r: 24, len: 63 },
     weapons: [
       w({
+        // dual-purpose, like every naval gun (`ARMOR_MATRIX.navgun`)
+        // 7 tiles, past the headquarters' gun (2026-09-27): the level-two
+        // fleet's answer to a coast, so a navy threatens a shore before the
+        // Sovereign. At 7.5 it outranged a howitzer battery three tiles inland
         id: "navgun",
         cls: "navgun",
         dmg: 70,
         reload: 1.8,
-        range: 6.2,
+        range: 7,
         projectile: "shell",
         speed: 420,
-        targets: ["ground", "ship"],
+        targets: ["ground", "ship", "air"],
         mult: { medium: 1.1, heavy: 0.8, structure: 0.8 },
         turret: true,
         muzzleOffset: 33.75,
@@ -3766,9 +3941,9 @@ const DEFS = {
     turretMounts: [{ x: 0, y: -5 }]
   },
   /**
-   * The Barracuda is the second launcher: with a radar and a reactor standing
-   * it fabricates one warhead of its own, at the silo's price and pace, and
-   * fires it from wherever it is lying — the strike nobody can see coming.
+   * The Barracuda hunts ships and nothing else. It carried a warhead of its
+   * own until 2026-09-27; that went to the Kraken, the boat built to strike
+   * the land.
    */
   sub: {
     id: "sub",
@@ -3789,9 +3964,6 @@ const DEFS = {
     radius: 12,
     underwater: true,
     body: { r: 7, len: 38 },
-    nukeCapacity: 1,
-    nukeCost: 2500,
-    nukeTime: 180,
     weapons: [w({
       id: "torpedo",
       cls: "torpedo",
@@ -3821,6 +3993,13 @@ const DEFS = {
    * reload went 5 → 7 s afterwards, on its own: a salvo every seven seconds
    * is the pace of a ship that levels a base rather than one that fights a
    * fleet, and at 5 it was doing both.
+   *
+   * The secondaries are its answer to the sky (since 2026-09-27): four
+   * Cobras used to sink it without a loss and two Albatrosses likewise.
+   * A battery of their own (`hasAirMount` in combat.ts), so they fire while
+   * the main guns are on the shore and never pull the turrets round; 6.5
+   * tiles, past a helicopter's missiles and short of the Albatross's, whose
+   * answer is still the Aegis riding with it.
    */
   btlship: {
     id: "btlship",
@@ -3868,6 +4047,17 @@ const DEFS = {
       burstDelay: 0.25,
       spread: 40,
       sound: "arty"
+    }), w({
+      id: "secondaries",
+      cls: "aa",
+      dmg: 20,
+      reload: 0.5,
+      range: 6.5,
+      projectile: "flak",
+      speed: 460,
+      targets: ["air"],
+      turret: true,
+      sound: "flak"
     })],
     trail: "wake",
     sprite: "u.btlship",
@@ -3911,8 +4101,9 @@ const DEFS = {
   /**
    * The engineer that works from the water. It builds and mends the same
    * things an engineer does, but only what stands within its arms of the
-   * sea — which on a naval map is the ore: two thirds of Saltbone Reach's
-   * deposits are on islets no engineer can drive to. Its `reach` is longer
+   * sea — which on a naval map is the ore: the fields out in open water,
+   * which nothing else can reach (the offshore rig), and the deposits on
+   * islets no engineer can drive to. Its `reach` is longer
    * than the engineer's, because the hull stops at the shoreline and the
    * site stands on the beach beyond it; long enough for one tile of beach
    * between the two, not for a deposit inland. Unarmed, and a builder for
@@ -3936,7 +4127,7 @@ const DEFS = {
     radius: 9,
     weapons: [],
     body: { r: 6, len: 18 },
-    builds: ["extractor", "power", "factory", "airbase", "navyard", "mgturret", "cannonturret", "aaturret", "interceptor", "repairtower", "sandbag", "warlab", "radar", "reactor", "nukesilo", "hq"],
+    builds: ["extractor", "platform", "power", "factory", "airbase", "navyard", "mgturret", "cannonturret", "aaturret", "interceptor", "repairtower", "sandbag", "warlab", "radar", "reactor", "nukesilo", "hq"],
     buildRate: 30,
     reach: 64,
     trail: "wake",
@@ -3945,10 +4136,18 @@ const DEFS = {
   /**
    * Level 3 of the naval yard. The Kraken shells the shore from under the
    * water — two cruise missiles every six seconds at ground targets only, no
-   * torpedo, nothing to fight a ship with. Vision 6 against range 13: it
+   * torpedo, nothing to fight a ship with. They go up out of the six tubes
+   * amidships and turn onto their bearing once out (`vertical`), so the boat
+   * fires at any bearing without coming round. Vision 6 against range 13: it
    * shoots at what the team can see, or force-fires at a point the player
    * remembers. Every missile is `interceptable`, so an Interrupter over the
    * target blanks it the way it blanks a Tempest (kraken.test.ts).
+   *
+   * It is the second launcher (2026-09-27, the Barracuda's before): one
+   * warhead of its own at the silo's price and pace, fired from wherever it
+   * lies — but fabricated only alongside one of its own naval yards
+   * (`armsAtBase`), so arming it is a trip home and the strike is the trip
+   * out (nuke.test.ts).
    *
    * Priced as the naval Tempest with a stealth premium since 2026-09-17
    * (1500 · 60 s · pop 4 · range 12 before): sold beside the Sovereign at 88%
@@ -3975,6 +4174,10 @@ const DEFS = {
     underwater: true,
     requires: ["radar"],
     body: { r: 11, len: 44 },
+    nukeCapacity: 1,
+    nukeCost: 2500,
+    nukeTime: 180,
+    armsAtBase: 4,
     weapons: [w({
       id: "cruise",
       cls: "he",
@@ -3987,6 +4190,7 @@ const DEFS = {
       targets: ["ground"],
       homing: true,
       interceptable: true,
+      vertical: true,
       splash: 43,
       burst: 2,
       burstDelay: 0.6,
@@ -3997,9 +4201,10 @@ const DEFS = {
   /**
    * A transport that nobody without sonar can see: a hold of 4 — one
    * Mammoth, two Vipers, four engineers. The beach is the only door: boarding
-   * is walking to it, and a ship unloads only onto the tile beside its hull,
-   * so it has to nose right up to a shore. Unarmed, and its cargo dies with
-   * it (moray.test.ts).
+   * is walking to it, and it unloads only onto ground near its hull, so it
+   * has to come in close to a shore. Its hatch is on the surface: for as
+   * long as its hold is working it is up, a ship anyone can see and shoot
+   * (`surfacesForCargo`). Unarmed, and its cargo dies with it (moray.test.ts).
    */
   moray: {
     id: "moray",
@@ -4021,8 +4226,9 @@ const DEFS = {
     underwater: true,
     transportCap: 4,
     requires: ["radar"],
-    // the landing craft's give at the beach, for the same reason
-    cargoReach: 1.1,
+    // more give than the landing craft's 1.1 (2026-09-27): a squad boards
+    // from further up the beach, and the hold sets it down a tile further out
+    cargoReach: 1.5,
     body: { r: 8, len: 33 },
     weapons: [],
     sprite: "u.moray"
@@ -4225,7 +4431,8 @@ const DEFS = {
       sound: "bomb"
     })],
     sprite: "u.bomber",
-    decals: [{ sprite: "dec.incendiary", layer: "hull", y: -3, when: "ability" }]
+    // the canisters on the wing just aft of the inner engine pods
+    decals: [{ sprite: "dec.incendiary", layer: "hull", y: -1, when: "ability" }]
   },
   theli: {
     id: "theli",
@@ -4316,6 +4523,11 @@ const DEFS = {
    * never joins in and whatever stands at the target gets its shots late.
    * The counters are the cheap ones — flak and gatlings beside the things
    * worth keeping — and a Falcon patrol over them (wraith.test.ts).
+   *
+   * It also carries one nuclear gravity bomb (2026-09-27, `nukebomb`),
+   * fabricated only while it circles one of its own airbases
+   * (`armsAtBase`), and delivered the way a bomber delivers one: flown over
+   * the point and let go, to lie there on its fuse (nuke-bomb.test.ts).
    */
   wraith: {
     id: "wraith",
@@ -4337,6 +4549,10 @@ const DEFS = {
     altitude: 16,
     stealth: 4,
     requires: ["radar"],
+    // one nuclear gravity bomb (`nukebomb`), fabricated over its own airbases
+    nukeCapacity: 1,
+    armsAtBase: 4,
+    magazine: ["nukebomb"],
     weapons: [w({
       id: "heavybombs",
       cls: "he",
@@ -4402,8 +4618,8 @@ const DEFS = {
     sprite: "u.cormorant"
   },
   /**
-   * The nuclear warhead in flight. Not built at any factory: a silo or an
-   * armed submarine launches one, and from then on it is an aircraft with no
+   * The nuclear warhead in flight. Not built at any factory: a silo or a
+   * Kraken launches one, and from then on it is an aircraft with no
    * gun and no orders, flying a straight line at the point it was sent to
    * (`Game.tickWarhead`). Two things may shoot it down: a *veteran* — a unit
    * of rank 2 or better whose weapons reach the sky (`canEngage` in
@@ -4441,7 +4657,7 @@ const DEFS = {
     decals: WARHEAD_MOTOR
   },
   /**
-   * The other thing a silo or a Barracuda may put in the shaft: an
+   * The other thing a silo or a Kraken may put in the shaft: an
    * electromagnetic pulse where the nuclear warhead has a blast. Same
    * missile, same flight, same hit points against the same anti-air — and
    * where it comes down every circuit within `emp.radius` tiles is dead for
@@ -4478,6 +4694,39 @@ const DEFS = {
     emp: { radius: 7, seconds: 12 },
     sprite: "u.emp",
     decals: WARHEAD_MOTOR
+  },
+  /**
+   * The Wraith's nuclear bomb (2026-09-27): a free-fall weapon, not a missile
+   * (`laydown`). The bomber carries it to the point and lets it go
+   * (`nukeDrop`); it comes down under a parachute and lies there for its
+   * fuse — the laydown delay a B61 has so the aircraft can get clear —
+   * before it goes off. A tactical yield, about a sixth of the missile's by
+   * the cube root that sizes a blast: half its rings (3 and 4 tiles against
+   * 6 and 8) and two thirds of its punch at the point. Lying there it is a
+   * heavy thing on the ground any gun may shoot apart, which it survives
+   * for a few seconds of a tank's fire, and shot apart it does not go off.
+   * Priced under half the missile's, being so much less of it.
+   */
+  nukebomb: {
+    id: "nukebomb",
+    kind: "unit",
+    aliases: ["b61", "nuclearbomb", "gravitybomb"],
+    domain: "ground",
+    tier: 3,
+    warhead: true,
+    cost: 1200,
+    buildTime: 120,
+    pop: 0,
+    hp: 800,
+    armor: "heavy",
+    speed: 0,
+    turnRate: 0,
+    vision: 0,
+    radius: 8,
+    weapons: [],
+    requires: ["radar", "reactor", "nuclearProgram"],
+    laydown: { fuse: 10, dmg: 2e3, inner: 4, outer: 5 },
+    sprite: "u.nukebomb"
   },
   // ============================================================ BUILDINGS
   /**
@@ -4614,6 +4863,108 @@ const DEFS = {
     needsDeposit: true,
     power: -15,
     sprite: "u.extractor3"
+  },
+  /**
+   * The offshore rig: the extractor's line on its own legs over an ore field
+   * at sea (`offshore`), laid from the water by the engineer boat — no
+   * engineer stands on open sea and no aircraft sets one down there — and
+   * worth exactly what the extractor at the same level
+   * is: the same price, hit points, yield, draw and upgrades, so the only
+   * question a field at sea asks is who holds the water round it. That is
+   * the point of it (2026-09-27): with the ore on the islands a Pelican
+   * could fly an engineer to, a side could skip the navy and win in the air;
+   * a field in open water is mined by a fleet or not at all. An engineer
+   * builds one too, where it can walk out to the field over a frozen sea
+   * (`isRigTile`: the legs go down through the ice as through the water), and
+   * never from a beach, since the maps keep three tiles of sea round every
+   * field and its arms reach two. No turret stands on the water, so what
+   * guards a rig is the ships anchored over it, which
+   * since the same day shoot back at aircraft. The real thing is the Gulf's
+   * and the Santa Barbara Channel's: platforms fought over by navies —
+   * Nimble Archer and Praying Mantis in 1987 and 1988, the Ellwood field
+   * shelled from a submarine in 1942. Exempt from the headquarters' ground
+   * as an extractor is (`needsDeposit`); a naval gun, a missile or a bomb
+   * reaches it, a torpedo does not (it is a building, `targetCat` ground).
+   */
+  platform: {
+    id: "platform",
+    kind: "building",
+    domain: "none",
+    tier: 1,
+    cost: 120,
+    buildTime: 10,
+    pop: 0,
+    hp: 600,
+    armor: "structure",
+    speed: 0,
+    turnRate: 0,
+    vision: 5,
+    radius: 30,
+    fw: 2,
+    fh: 2,
+    weapons: [],
+    metalRate: 1.4,
+    needsDeposit: true,
+    offshore: true,
+    power: -4,
+    upgradesTo: "platform2",
+    upgradeCost: 190,
+    upgradeTime: 16,
+    sprite: "u.platform",
+    sound: "bld-extractor"
+  },
+  platform2: {
+    id: "platform2",
+    kind: "building",
+    domain: "none",
+    tier: 2,
+    upgradeOnly: true,
+    cost: 310,
+    buildTime: 26,
+    pop: 0,
+    hp: 950,
+    armor: "structure",
+    speed: 0,
+    turnRate: 0,
+    vision: 5,
+    radius: 30,
+    fw: 2,
+    fh: 2,
+    weapons: [],
+    metalRate: 3,
+    needsDeposit: true,
+    offshore: true,
+    power: -8,
+    upgradesTo: "platform3",
+    upgradeCost: 500,
+    upgradeTime: 30,
+    sprite: "u.platform2",
+    sound: "bld-extractor2"
+  },
+  platform3: {
+    id: "platform3",
+    kind: "building",
+    domain: "none",
+    tier: 3,
+    upgradeOnly: true,
+    cost: 810,
+    buildTime: 56,
+    pop: 0,
+    hp: 1700,
+    armor: "structure",
+    speed: 0,
+    turnRate: 0,
+    vision: 6,
+    radius: 30,
+    fw: 2,
+    fh: 2,
+    weapons: [],
+    metalRate: 8,
+    needsDeposit: true,
+    offshore: true,
+    power: -15,
+    sprite: "u.platform3",
+    sound: "bld-extractor3"
   },
   /**
    * The plant line is 20 / 50 / 150: each level a shade dearer per unit of
@@ -5693,6 +6044,598 @@ function parseCustomMap(json, opts = {}) {
     }
   };
 }
+const RULE_EVENTS = ["created", "destroyed", "fired", "damaged", "kill", "morphed"];
+const MAX_DEF_RULES = 24;
+const MAX_RULE_EFFECTS = 8;
+const MAX_DEF_BUTTONS = 8;
+const RULE_SOUNDS = ["expl", "explBig", "upgrade"];
+const VANILLA_FX = [
+  "fx.expl.s",
+  "fx.expl.m",
+  "fx.expl.l",
+  "fx.spark",
+  "fx.flak",
+  "fx.smoke",
+  "fx.splash",
+  "fx.splash.l",
+  "fx.muzzle",
+  "fx.repair",
+  "fx.emp",
+  "fx.nuke"
+];
+const RULE_SPECS = [
+  { name: "on", type: "enum", values: RULE_EVENTS, doc: [
+    "runs when this happens to it: made (`created`, and when a map stands it), killed (`destroyed`, where it fell), a shot fired (`fired`), hurt (`damaged`), a kill made (`kill`), or a change of form finished (`morphed`)",
+    "在发生这些事时执行：被造出（`created`，地图上预置的也算）、被摧毁（`destroyed`，在倒下的地方）、开火（`fired`）、受伤（`damaged`）、击杀（`kill`）、变形完成（`morphed`）"
+  ] },
+  { name: "when", type: "cond", doc: [
+    "runs when this condition becomes true, and again only after it has been false (see Conditions)",
+    "当此条件变为成立时执行；须先变回不成立才会再次触发（见“条件”）"
+  ] },
+  { name: "every", type: "number", min: 0.25, max: 3600, doc: [
+    "runs every so many seconds of its life",
+    "在存活期间每隔若干秒执行一次"
+  ] },
+  { name: "button", type: "button", doc: [
+    "a button on its card the player presses (see Buttons)",
+    "卡片上由玩家按下的按钮（见“按钮”）"
+  ] },
+  { name: "if", type: "cond", doc: [
+    "also checked when triggered: the rule runs only if this holds too; on a button, the button is greyed while it does not",
+    "触发时同时检查：仅当它也成立时才执行；用于按钮时，不成立则按钮置灰"
+  ] },
+  { name: "chance", type: "number", min: 0, max: 1, def: "1", doc: ["the odds it runs when triggered", "触发时执行的概率"] },
+  { name: "cooldown", type: "number", min: 0, max: 3600, doc: ["seconds before it may run again", "再次执行前的冷却秒数"] },
+  { name: "max", type: "int", min: 1, max: 1e3, doc: ["times it may run on one unit, ever", "同一单位上最多执行的次数"] },
+  { name: "do", type: "effects", required: true, doc: [
+    `what it does: an effect or a list of up to ${MAX_RULE_EFFECTS}, in order (see Effects)`,
+    `执行的效果：一个效果或最多 ${MAX_RULE_EFFECTS} 个效果的列表，依次执行（见“效果”）`
+  ] }
+];
+const COND_SPECS = [
+  { name: "moving", type: "bool", doc: ["is driving, flying or swimming (true) or standing (false)", "正在移动（true）或静止（false）"] },
+  { name: "still", type: "number", min: 0, max: 3600, doc: ["has not moved for at least this many seconds", "已静止至少这么多秒"] },
+  { name: "firedWithin", type: "number", min: 0, max: 3600, doc: ["fired within the last so many seconds", "最近这么多秒内开过火"] },
+  { name: "quiet", type: "number", min: 0, max: 3600, doc: ["has not fired for at least this many seconds", "已至少这么多秒没有开火"] },
+  { name: "hurtWithin", type: "number", min: 0, max: 3600, doc: ["was hurt within the last so many seconds", "最近这么多秒内受过伤"] },
+  { name: "hpBelow", type: "number", min: 0, max: 1, doc: ["health below this share of its whole", "生命低于总量的此比例"] },
+  { name: "hpAbove", type: "number", min: 0, max: 1, doc: ["health above this share of its whole", "生命高于总量的此比例"] },
+  { name: "age", type: "number", min: 0, max: 36e3, doc: ["seconds since it was made, or last changed form", "自被造出或上次变形以来的秒数"] },
+  { name: "flag", type: "string", max: 32, doc: ["a flag a rule has set on it is up", "规则设置的某个标记为开"] },
+  { name: "noFlag", type: "string", max: 32, doc: ["that flag is down", "该标记为关"] },
+  { name: "kills", type: "int", min: 0, max: 1e4, doc: ["it has made at least this many kills", "击杀数至少为此"] },
+  { name: "rank", type: "int", min: 1, max: 3, doc: ["its veteran rank is at least this", "老兵等级至少为此"] },
+  { name: "onWater", type: "bool", doc: ["stands on water (true) or on land (false)", "位于水面（true）或陆地（false）"] },
+  { name: "enemyWithin", type: "number", min: 0.5, max: 32, doc: ["an enemy its side can see is within this many tiles", "己方可见的敌人在此格数之内"] },
+  { name: "night", type: "bool", doc: ["it is night (true) or day (false)", "是夜晚（true）或白天（false）"] },
+  { name: "carrying", type: "int", min: 1, max: 50, doc: ["has at least this many units in its hold", "载有至少这么多单位"] },
+  { name: "killedBy", type: "ids", doc: ["on `destroyed`: what killed it was one of these defs (the dead rise only when the dead killed them)", "用于 `destroyed`：击杀它的是这些定义之一（只有被丧尸杀死的才会尸变）"] },
+  { name: "any", type: "cond", doc: ["a list of conditions, one of which must hold", "条件列表，其中任一成立即可"] },
+  { name: "not", type: "cond", doc: ["a condition that must not hold", "必须不成立的条件"] }
+];
+const EFFECT_SPECS = [
+  { name: "morph", type: "id", doc: [
+    "become another def of this mod, in place: the same unit (its selection, its kills and rank, the orders the new form can carry out), its health keeping its share of the whole. A building only takes the form of a building of the same footprint",
+    "原地变为本模组的另一个定义：仍是同一个单位（选中状态、击杀与等级、新形态能执行的命令都保留），生命值按比例保留。建筑只能变为占地相同的建筑"
+  ] },
+  { name: "spawn", type: "spawn", doc: ["units put down beside it, or into its hold (see Spawn)", "在其旁边或其载舱内生成单位（见“生成”）"] },
+  { name: "heal", type: "number", min: -1e6, max: 1e6, doc: ["hit points given back; negative takes them, never the last one", "回复的生命值；负数为扣除，但不会致死"] },
+  { name: "healPct", type: "number", min: -1, max: 1, doc: ["a share of its whole health given back", "按总生命比例回复"] },
+  { name: "metal", type: "number", min: -99999, max: 99999, doc: ["metal to its side; negative takes it, never below nothing", "给予己方的金属；负数为扣除，最低为零"] },
+  { name: "flag", type: "string", max: 32, doc: ["raise a flag on it, for a condition to read", "设置一个标记，供条件读取"] },
+  { name: "unflag", type: "string", max: 32, doc: ["lower that flag", "清除该标记"] },
+  { name: "buff", type: "buff", doc: [
+    "multipliers held for `for` seconds: `speed`, the `damage` it deals, its `reload` time, and the harm it is `taken`; a new buff replaces the one it has",
+    "持续 `for` 秒的倍率：`speed` 速度、`damage` 造成伤害、`reload` 装填时间、`taken` 承受伤害；新的增益会替换旧的"
+  ] },
+  { name: "explode", type: "explode", doc: [
+    "a blast round it: `dmg` at the centre falling to half at the edge of `radius` (world px), through the armour row of `cls` (default he); its own side is spared unless `friendlyFire`",
+    "以自身为中心爆炸：中心伤害 `dmg`，在 `radius`（世界像素）边缘降为一半，按 `cls`（默认 he）的装甲倍率计算；除非 `friendlyFire`，否则不伤己方"
+  ] },
+  { name: "fx", type: "string", max: 48, doc: [`an effect played where it stands: one of this mod's \`fx.<name>\` sheets, or ${VANILLA_FX.join(", ")}`, `在其位置播放的特效：本模组的 \`fx.<名字>\` 精灵图，或 ${VANILLA_FX.join("、")}`] },
+  { name: "fxScale", type: "number", min: 0.05, max: 8, def: "1", doc: ["the effect drawn at this multiple", "特效的缩放倍数"] },
+  { name: "sound", type: "string", max: 64, doc: ["a sound played where it stands: a weapon sound, expl, explBig, upgrade, or one of this mod's `sounds`", "在其位置播放的声音：武器音效、expl、explBig、upgrade，或本模组的 `sounds`"] },
+  { name: "die", type: "bool", doc: ["it is destroyed, as if killed by nobody (its own `destroyed` rules run)", "被摧毁，如同无人击杀（其 `destroyed` 规则会执行）"] },
+  { name: "remove", type: "bool", doc: ["it is gone without a trace: no wreck, no loss, no `destroyed`", "无痕消失：没有残骸、不计损失、不触发 `destroyed`"] }
+];
+const SPAWN_SPECS = [
+  { name: "unit", type: "id", required: true, doc: ["the unit: one of the game's or this mod's", "生成的单位：原版或本模组的"] },
+  { name: "count", type: "int", min: 1, max: 16, def: "1", doc: ["how many", "数量"] },
+  { name: "side", type: "enum", values: ["own", "killer"], def: "own", doc: ["whose they are: its own side's, or (on `destroyed`) the side that killed it", "归属：己方，或（在 `destroyed` 中）击杀者一方"] },
+  { name: "into", type: "enum", values: ["hold"], doc: ["straight into its own hold, as far as the room goes, instead of beside it", "直接放进自身载舱（以剩余空间为限），而不是放在旁边"] },
+  { name: "max", type: "int", min: 1, max: 64, doc: ["at most this many of the units this rule has spawned alive at once", "此规则生成的单位同时存活的上限"] }
+];
+const BUTTON_SPECS = [
+  { name: "name", type: "text", def: "the form it makes", doc: ["the button's label", "按钮名称"] },
+  { name: "desc", type: "text", doc: ["its tooltip line", "提示中的描述"] },
+  { name: "cost", type: "number", min: 0, max: 99999, def: "0", doc: ["metal, paid as the work is done", "金属，随工作进度支付"] },
+  { name: "time", type: "number", min: 0, max: 3600, def: "0", doc: ["seconds of work at full power; 0 is at once", "满电力下的工作秒数；0 为立即"] },
+  { name: "requires", type: "ids", doc: ["buildings that must stand, or tech nodes researched, for it to be pressed (and to go on)", "按下（及持续进行）所需存在的建筑或已研究的科技"] },
+  { name: "ai", type: "bool", doc: ["a computer side presses it too, when it can spare the metal", "电脑一方在有余钱时也会按下它"] }
+];
+const LOOK_SPECS = [
+  { name: "sprite", type: "string", max: 48, doc: ["the round: one of this mod's `prj.<name>` sheets — its frames play as it flies, or, baked `rotated`, it is turned to its heading", "弹药图像：本模组的 `prj.<名字>` 精灵图——飞行时播放其帧；若为 `rotated`，则朝向飞行方向"] },
+  { name: "scale", type: "number", min: 0.1, max: 8, def: "1", doc: ["the round and its flash drawn at this multiple", "弹药与枪口焰的缩放倍数"] },
+  { name: "beam", type: "beam", doc: [
+    "the round is light: `{ color, width, style, life }` — a line from the muzzle to where it strikes, `laser` straight or `lightning` jagged, held `life` seconds; it strikes at once",
+    "弹药是光束：`{ color, width, style, life }`——从枪口到命中点的一条线，`laser` 为直线，`lightning` 为闪电折线，持续 `life` 秒；即时命中"
+  ] },
+  { name: "muzzle", type: "string", max: 48, def: "the class's flash", doc: ["the muzzle flash: one of this mod's `fx.<name>` sheets, or `none`", "枪口焰：本模组的 `fx.<名字>` 精灵图，或 `none`"] },
+  { name: "impact", type: "string", max: 48, def: "the class's burst", doc: [`the burst where it lands: an \`fx.<name>\` sheet of this mod, one of ${VANILLA_FX.join(", ")}, or \`none\``, `命中处的爆炸：本模组的 \`fx.<名字>\` 精灵图、${VANILLA_FX.join("、")} 之一，或 \`none\``] },
+  { name: "impactScale", type: "number", min: 0.1, max: 8, def: "1", doc: ["the burst drawn at this multiple", "爆炸的缩放倍数"] },
+  { name: "impactLife", type: "number", min: 0.05, max: 5, def: "0.5", doc: ["seconds the burst plays over", "爆炸播放的秒数"] },
+  { name: "trail", type: "enum", values: ["smoke", "none"], def: "smoke", doc: ["a rocket's or a missile's smoke trail, or none", "火箭或导弹的尾烟，或无"] }
+];
+const SHIELD_SPECS = [
+  { name: "hp", type: "number", min: 1, max: 1e6, required: true, doc: ["what it takes before the hull does", "在船体受损前可吸收的伤害"] },
+  { name: "regen", type: "number", min: 0, max: 1e5, def: "0", doc: ["recharged a second", "每秒恢复量"] },
+  { name: "delay", type: "number", min: 0, max: 600, def: "3", doc: ["seconds unhurt before it starts to recharge", "未受伤多少秒后开始恢复"] }
+];
+const ANIM_SPECS = [
+  { name: "moving", type: "range", doc: ["`[first, last]` frames played while it moves, or `[first, last, fps]`", "移动时播放的帧 `[起, 止]`，或 `[起, 止, fps]`"] },
+  { name: "idle", type: "range", def: "frame 0", doc: ["the frames while it stands", "静止时播放的帧"] },
+  { name: "firing", type: "range", doc: ["the frames within a reload of its last shot; before moving and idle", "上次开火后一次装填时间内播放的帧；优先于移动与静止"] }
+];
+const isObj = (v) => !!v && typeof v === "object" && !Array.isArray(v);
+const num = (v) => typeof v === "number" && Number.isFinite(v);
+function checkRow(row, v, path, errors, ctx) {
+  const bad = (message) => {
+    errors.push({ path, message });
+    return false;
+  };
+  const lo = row.min ?? -Infinity, hi = row.max ?? Infinity;
+  switch (row.type) {
+    case "number":
+      return num(v) && v >= lo && v <= hi || bad(`must be a number between ${lo} and ${hi}`);
+    case "int":
+      return Number.isInteger(v) && v >= lo && v <= hi || bad(`must be a whole number between ${lo} and ${hi}`);
+    case "bool":
+      return typeof v === "boolean" || bad("must be true or false");
+    case "enum":
+      return typeof v === "string" && row.values.includes(v) || bad(`must be one of ${row.values.join(", ")}`);
+    case "string":
+      return typeof v === "string" && v.length > 0 && v.length <= (row.max ?? 64) || bad(`must be a string of at most ${row.max ?? 64} characters`);
+    case "id":
+      return typeof v === "string" && ctx.idRe.test(v) || bad("must be an id");
+    case "ids":
+      return Array.isArray(v) && v.length <= 64 && v.every((x) => typeof x === "string" && ctx.idRe.test(x)) || bad("must be a list of up to 64 ids");
+    case "text":
+      return ctx.isText(v) || bad("must be text: a string, [en, zh, ko] or { en, zh, ko }");
+    default:
+      return true;
+  }
+}
+function checkKeys(raw, rows, path, errors) {
+  const known = new Set(rows.map((r) => r.name));
+  let ok = true;
+  for (const k of Object.keys(raw)) {
+    if (!known.has(k)) {
+      errors.push({ path: `${path}.${k}`, message: `"${k}" is not a word it knows (${[...known].join(", ")})` });
+      ok = false;
+    }
+  }
+  return ok;
+}
+function readCond(raw, path, errors, ctx, depth = 0) {
+  if (!isObj(raw)) {
+    errors.push({ path, message: "must be an object of conditions" });
+    return null;
+  }
+  if (depth > 3) {
+    errors.push({ path, message: "conditions nest at most three deep" });
+    return null;
+  }
+  if (!checkKeys(raw, COND_SPECS, path, errors)) return null;
+  if (Object.keys(raw).length === 0) {
+    errors.push({ path, message: "names no condition" });
+    return null;
+  }
+  const out = {};
+  for (const row of COND_SPECS) {
+    const v = raw[row.name];
+    if (v === void 0) continue;
+    const p = `${path}.${row.name}`;
+    if (row.name === "any") {
+      if (!Array.isArray(v) || v.length === 0 || v.length > 8) {
+        errors.push({ path: p, message: "must be a list of one to eight conditions" });
+        return null;
+      }
+      const list = v.map((c, i) => readCond(c, `${p}[${i}]`, errors, ctx, depth + 1));
+      if (list.some((c) => !c)) return null;
+      out.any = list;
+    } else if (row.name === "not") {
+      const c = readCond(v, p, errors, ctx, depth + 1);
+      if (!c) return null;
+      out.not = c;
+    } else if (checkRow(row, v, p, errors, ctx)) {
+      if (row.name === "killedBy") {
+        const bad = v.find((id) => !ctx.find(id));
+        if (bad) {
+          errors.push({ path: p, message: `"${bad}" is not a def` });
+          return null;
+        }
+      }
+      out[row.name] = v;
+    } else return null;
+  }
+  return out;
+}
+function readEffect(raw, path, errors, ctx, rule) {
+  if (!isObj(raw)) {
+    errors.push({ path, message: "must be an object" });
+    return null;
+  }
+  if (!checkKeys(raw, EFFECT_SPECS, path, errors)) return null;
+  if (Object.keys(raw).length === 0) {
+    errors.push({ path, message: "does nothing" });
+    return null;
+  }
+  const out = {};
+  const me = ctx.def;
+  for (const row of EFFECT_SPECS) {
+    const v = raw[row.name];
+    if (v === void 0) continue;
+    const p = `${path}.${row.name}`;
+    switch (row.name) {
+      case "morph": {
+        if (!checkRow(row, v, p, errors, ctx)) return null;
+        const to = ctx.find(v);
+        if (!to || !ctx.ownDef(v)) {
+          errors.push({ path: p, message: `"${String(v)}" is not a def of this mod: a unit takes only its own mod's forms` });
+          return null;
+        }
+        if (to.id === me.id) {
+          errors.push({ path: p, message: "a def cannot turn into itself" });
+          return null;
+        }
+        if (to.kind !== me.kind) {
+          errors.push({ path: p, message: `a ${me.kind} cannot turn into a ${to.kind}` });
+          return null;
+        }
+        if (me.kind === "building" && ((to.fw ?? 2) !== (me.fw ?? 2) || (to.fh ?? 2) !== (me.fh ?? 2))) {
+          errors.push({ path: p, message: "a building turns only into one of the same footprint" });
+          return null;
+        }
+        out.morph = to.id;
+        break;
+      }
+      case "spawn": {
+        if (!isObj(v)) {
+          errors.push({ path: p, message: "must be { unit, count, side, into, max }" });
+          return null;
+        }
+        if (!checkKeys(v, SPAWN_SPECS, p, errors)) return null;
+        const sp = {};
+        for (const r of SPAWN_SPECS) {
+          const x = v[r.name];
+          if (x === void 0) {
+            if (r.required) {
+              errors.push({ path: `${p}.${r.name}`, message: "is required" });
+              return null;
+            }
+            continue;
+          }
+          if (!checkRow(r, x, `${p}.${r.name}`, errors, ctx)) return null;
+          sp[r.name] = x;
+        }
+        const u = ctx.find(sp.unit);
+        if (!u || u.kind !== "unit" || u.warhead) {
+          errors.push({ path: `${p}.unit`, message: `"${String(sp.unit)}" is not a unit it can spawn` });
+          return null;
+        }
+        if (sp.into === "hold" && !me.transportCap) {
+          errors.push({ path: `${p}.into`, message: "it has no hold (`transportCap`)" });
+          return null;
+        }
+        if (sp.side === "killer" && rule.on !== "destroyed") {
+          errors.push({ path: `${p}.side`, message: "only a `destroyed` rule knows who killed it" });
+          return null;
+        }
+        out.spawn = sp;
+        break;
+      }
+      case "buff": {
+        if (!isObj(v)) {
+          errors.push({ path: p, message: "must be { speed, damage, reload, taken, for }" });
+          return null;
+        }
+        const b = {};
+        for (const [k, x] of Object.entries(v)) {
+          if (k === "for") {
+            if (!num(x) || x < 0.1 || x > 600) {
+              errors.push({ path: `${p}.for`, message: "must be seconds between 0.1 and 600" });
+              return null;
+            }
+          } else if (["speed", "damage", "reload", "taken"].includes(k)) {
+            if (!num(x) || x < 0.05 || x > 20) {
+              errors.push({ path: `${p}.${k}`, message: "must be a multiplier between 0.05 and 20" });
+              return null;
+            }
+          } else {
+            errors.push({ path: `${p}.${k}`, message: "is not speed, damage, reload, taken or for" });
+            return null;
+          }
+          b[k] = x;
+        }
+        if (b.for === void 0) {
+          errors.push({ path: `${p}.for`, message: "is required" });
+          return null;
+        }
+        if (Object.keys(b).length < 2) {
+          errors.push({ path: p, message: "names no multiplier" });
+          return null;
+        }
+        out.buff = b;
+        break;
+      }
+      case "explode": {
+        if (!isObj(v)) {
+          errors.push({ path: p, message: "must be { dmg, radius, cls, friendlyFire }" });
+          return null;
+        }
+        const dmg = v.dmg, radius = v.radius, cls = v.cls ?? "he";
+        for (const k of Object.keys(v)) {
+          if (!["dmg", "radius", "cls", "friendlyFire"].includes(k)) {
+            errors.push({ path: `${p}.${k}`, message: "is not dmg, radius, cls or friendlyFire" });
+            return null;
+          }
+        }
+        if (!num(dmg) || dmg < 0 || dmg > 1e5) {
+          errors.push({ path: `${p}.dmg`, message: "must be a number between 0 and 100000" });
+          return null;
+        }
+        if (!num(radius) || radius < 1 || radius > 500) {
+          errors.push({ path: `${p}.radius`, message: "must be world px between 1 and 500" });
+          return null;
+        }
+        if (typeof cls !== "string" || !ctx.weaponClasses.includes(cls)) {
+          errors.push({ path: `${p}.cls`, message: `must be one of ${ctx.weaponClasses.join(", ")}` });
+          return null;
+        }
+        if (v.friendlyFire !== void 0 && typeof v.friendlyFire !== "boolean") {
+          errors.push({ path: `${p}.friendlyFire`, message: "must be true or false" });
+          return null;
+        }
+        out.explode = { dmg, radius, cls, ...v.friendlyFire ? { friendlyFire: true } : {} };
+        break;
+      }
+      case "fx": {
+        if (!checkRow(row, v, p, errors, ctx)) return null;
+        if (!fxKnown(v, ctx)) {
+          errors.push({ path: p, message: `"${String(v)}" is neither an fx.<name> sheet of this mod nor one of ${VANILLA_FX.join(", ")}` });
+          return null;
+        }
+        out.fx = v;
+        break;
+      }
+      case "sound": {
+        if (!checkRow(row, v, p, errors, ctx)) return null;
+        const s = v;
+        if (!ctx.weaponSounds.includes(s) && !RULE_SOUNDS.includes(s) && !ctx.sounds.has(s)) {
+          errors.push({ path: p, message: `"${s}" is not a sound the game has or this mod brings` });
+          return null;
+        }
+        out.sound = s;
+        break;
+      }
+      case "die":
+      case "remove":
+        if (v !== true) {
+          errors.push({ path: p, message: "must be true" });
+          return null;
+        }
+        out[row.name] = true;
+        break;
+      default:
+        if (!checkRow(row, v, p, errors, ctx)) return null;
+        out[row.name] = v;
+    }
+  }
+  return out;
+}
+function fxKnown(key, ctx) {
+  return key.startsWith("fx.") && ctx.sheets.has(key) || VANILLA_FX.includes(key);
+}
+function readRules(raw, path, ctx, into) {
+  const out = [];
+  const strings = {};
+  const errors = [];
+  const done = () => {
+    into.push(...errors);
+    return { rules: errors.length ? [] : out, strings };
+  };
+  if (!Array.isArray(raw)) {
+    errors.push({ path, message: "must be a list of rules" });
+    return done();
+  }
+  if (raw.length > MAX_DEF_RULES) {
+    errors.push({ path, message: `at most ${MAX_DEF_RULES} rules` });
+    return done();
+  }
+  let buttons = 0;
+  raw.forEach((r, i) => {
+    const rp = `${path}[${i}]`;
+    if (!isObj(r)) {
+      errors.push({ path: rp, message: "must be an object" });
+      return;
+    }
+    if (!checkKeys(r, RULE_SPECS, rp, errors)) return;
+    const triggers = ["on", "when", "every", "button"].filter((k) => r[k] !== void 0);
+    if (triggers.length !== 1) {
+      errors.push({ path: rp, message: "needs exactly one trigger: on, when, every or button" });
+      return;
+    }
+    const rule = {};
+    const before = errors.length;
+    if (r.on !== void 0 && checkRow(RULE_SPECS[0], r.on, `${rp}.on`, errors, ctx)) rule.on = r.on;
+    if (r.when !== void 0) rule.when = readCond(r.when, `${rp}.when`, errors, ctx) ?? void 0;
+    if (r.every !== void 0 && checkRow(RULE_SPECS[2], r.every, `${rp}.every`, errors, ctx)) rule.every = r.every;
+    if (r.button !== void 0) {
+      const b = readButton(r.button, `${rp}.button`, errors, ctx);
+      if (b) {
+        rule.button = b.button;
+        if (b.name !== void 0) strings[`rule.${ctx.def.id}.${i}.name`] = b.name;
+        if (b.desc !== void 0) strings[`rule.${ctx.def.id}.${i}.desc`] = b.desc;
+        buttons++;
+      }
+    }
+    if (r.if !== void 0) rule.if = readCond(r.if, `${rp}.if`, errors, ctx) ?? void 0;
+    for (const k of ["chance", "cooldown", "max"]) {
+      const row = RULE_SPECS.find((x) => x.name === k);
+      if (r[k] !== void 0 && checkRow(row, r[k], `${rp}.${k}`, errors, ctx)) rule[k] = r[k];
+    }
+    const list = r.do === void 0 ? void 0 : Array.isArray(r.do) ? r.do : [r.do];
+    if (!list) {
+      errors.push({ path: `${rp}.do`, message: "is required" });
+      return;
+    }
+    if (list.length === 0 || list.length > MAX_RULE_EFFECTS) {
+      errors.push({ path: `${rp}.do`, message: `must be one to ${MAX_RULE_EFFECTS} effects` });
+      return;
+    }
+    const effects = list.map((x, k) => readEffect(x, Array.isArray(r.do) ? `${rp}.do[${k}]` : `${rp}.do`, errors, ctx, rule));
+    if (effects.some((x) => !x) || errors.length > before) return;
+    rule.do = effects;
+    if (rule.button && !rule.do.some((x) => x.morph) && strings[`rule.${ctx.def.id}.${i}.name`] === void 0) {
+      errors.push({ path: `${rp}.button.name`, message: "a button that changes no form needs a name" });
+      return;
+    }
+    out[i] = rule;
+  });
+  if (buttons > MAX_DEF_BUTTONS) errors.push({ path, message: `at most ${MAX_DEF_BUTTONS} buttons` });
+  return done();
+}
+function readButton(raw, path, errors, ctx) {
+  if (!isObj(raw)) {
+    errors.push({ path, message: "must be an object" });
+    return null;
+  }
+  if (!checkKeys(raw, BUTTON_SPECS, path, errors)) return null;
+  const b = { cost: 0, time: 0 };
+  for (const row of BUTTON_SPECS) {
+    const v = raw[row.name];
+    if (v === void 0) continue;
+    if (!checkRow(row, v, `${path}.${row.name}`, errors, ctx)) return null;
+    if (row.name === "cost" || row.name === "time") b[row.name] = v;
+    if (row.name === "ai") b.ai = v;
+    if (row.name === "requires") {
+      const reqs = [];
+      for (const id of v) {
+        if (ctx.isTech(id)) {
+          reqs.push(id);
+          continue;
+        }
+        const d = ctx.find(id);
+        if (!d || d.kind !== "building") {
+          errors.push({ path: `${path}.requires`, message: `"${id}" is neither a building nor a tech node` });
+          return null;
+        }
+        reqs.push(id);
+      }
+      if (reqs.length) b.requires = reqs;
+    }
+  }
+  return { button: b, name: raw.name, desc: raw.desc };
+}
+function readLook(raw, path, ctx, errors) {
+  if (!isObj(raw)) {
+    errors.push({ path, message: "must be an object" });
+    return null;
+  }
+  if (!checkKeys(raw, LOOK_SPECS, path, errors)) return null;
+  const out = {};
+  for (const row of LOOK_SPECS) {
+    const v = raw[row.name];
+    if (v === void 0) continue;
+    const p = `${path}.${row.name}`;
+    if (row.name === "beam") {
+      if (!isObj(v)) {
+        errors.push({ path: p, message: "must be { color, width, style, life }" });
+        return null;
+      }
+      const color = v.color ?? "#9cf", width = v.width ?? 2, style = v.style ?? "laser", life = v.life ?? 0.15;
+      if (typeof color !== "string" || !/^#[0-9a-fA-F]{3,8}$/.test(color)) {
+        errors.push({ path: `${p}.color`, message: "must be a colour, #rgb or #rrggbb" });
+        return null;
+      }
+      if (!num(width) || width < 0.5 || width > 16) {
+        errors.push({ path: `${p}.width`, message: "must be world px between 0.5 and 16" });
+        return null;
+      }
+      if (style !== "laser" && style !== "lightning") {
+        errors.push({ path: `${p}.style`, message: "must be laser or lightning" });
+        return null;
+      }
+      if (!num(life) || life < 0.03 || life > 3) {
+        errors.push({ path: `${p}.life`, message: "must be seconds between 0.03 and 3" });
+        return null;
+      }
+      out.beam = { color, width, style, life };
+      continue;
+    }
+    if (!checkRow(row, v, p, errors, ctx)) return null;
+    if (row.name === "sprite") {
+      if (!v.startsWith("prj.") || !ctx.sheets.has(v)) {
+        errors.push({ path: p, message: `"${String(v)}" is not a prj.<name> sheet of this mod` });
+        return null;
+      }
+    }
+    if ((row.name === "muzzle" || row.name === "impact") && v !== "none" && !fxKnown(v, ctx)) {
+      errors.push({ path: p, message: `"${String(v)}" is neither an fx.<name> sheet of this mod, a game effect, nor none` });
+      return null;
+    }
+    out[row.name] = v;
+  }
+  return out;
+}
+function readShield(raw, path, ctx, errors) {
+  if (!isObj(raw)) {
+    errors.push({ path, message: "must be { hp, regen, delay }" });
+    return null;
+  }
+  if (!checkKeys(raw, SHIELD_SPECS, path, errors)) return null;
+  for (const row of SHIELD_SPECS) {
+    const v = raw[row.name];
+    if (v === void 0) {
+      if (row.required) {
+        errors.push({ path: `${path}.${row.name}`, message: "is required" });
+        return null;
+      }
+      continue;
+    }
+    if (!checkRow(row, v, `${path}.${row.name}`, errors, ctx)) return null;
+  }
+  return { hp: raw.hp, regen: raw.regen ?? 0, delay: raw.delay ?? 3 };
+}
+function readAnims(raw, frames, path, errors) {
+  if (!isObj(raw)) {
+    errors.push({ path, message: "must be { moving, idle, firing }" });
+    return null;
+  }
+  const out = {};
+  for (const [k, v] of Object.entries(raw)) {
+    const p = `${path}.${k}`;
+    if (!ANIM_SPECS.some((r) => r.name === k)) {
+      errors.push({ path: p, message: "is not moving, idle or firing" });
+      return null;
+    }
+    if (!Array.isArray(v) || v.length !== 2 && v.length !== 3 || !v.every(num)) {
+      errors.push({ path: p, message: "must be [first, last] or [first, last, fps]" });
+      return null;
+    }
+    const [a, b, fps] = v;
+    if (!Number.isInteger(a) || !Number.isInteger(b) || a < 0 || b < a || b >= frames) {
+      errors.push({ path: p, message: `must name frames between 0 and ${frames - 1}, first before last` });
+      return null;
+    }
+    if (fps !== void 0 && (fps < 0 || fps > 60)) {
+      errors.push({ path: p, message: "fps must be between 0 and 60" });
+      return null;
+    }
+    out[k] = v;
+  }
+  return out;
+}
 const ABILITIES = {
   /** the governor off and the throttle to the stop — the Recon Buggy, born with it */
   sprint: { id: "sprint", cooldown: 20, duration: 4, speedMul: 1.6, sound: "abSprint" },
@@ -5718,6 +6661,7 @@ const ABILITIES = {
     takenFrom: ["shell"],
     intercepts: 3,
     interceptReach: 1.5,
+    beacon: true,
     requires: ["activeProtection"],
     sound: "abCountermeasures"
   },
@@ -5783,7 +6727,7 @@ const SOUND_KEY_RE = /^[a-z0-9][a-z0-9-]{1,59}$/;
 const MAX_MANIFEST_BYTES = 1024 * 1024;
 const MAX_MOD_FILES_BYTES = 24 * 1024 * 1024;
 const ID_RE = /^[a-z0-9][a-z0-9_-]{1,39}$/;
-const ATLAS_KEY_RE = /^(u|tur|dec)\.[a-z0-9][a-z0-9_-]{1,39}$/;
+const ATLAS_KEY_RE = /^(u|tur|dec|prj|fx)\.[a-z0-9][a-z0-9_-]{1,39}$/;
 const FILE_RE = /^(?!\/)(?!.*\.\.)[A-Za-z0-9_./-]{1,120}$/;
 const IMAGE_FILE_RE = /\.(png|jpe?g|webp)$/i;
 const MAP_FILE_RE = /\.(steel-tide-map|json)$/i;
@@ -5815,7 +6759,7 @@ const MANIFEST_SPECS = [
   { name: "sprites", type: "sprites", doc: ["the sheets the defs draw with (see below)", "各定义使用的精灵图（见下）"] },
   { name: "sounds", type: "sounds", doc: ["the recordings the weapons fire with (see below)", "武器开火时播放的录音（见下）"] },
   { name: "screenshots", type: "images", doc: [`pictures of the mod in play, relative to mod.json (\`screenshots/1.png\`): 4:3, at least ${MIN_SCREENSHOT_WIDTH} px wide, under ${MAX_SCREENSHOT_BYTES / 1048576} MB each, up to ${MAX_MOD_SCREENSHOTS}. The registry asks for at least one and shows them on the mod's page`, `模组游玩截图，路径相对 mod.json（\`screenshots/1.png\`）：4:3，宽至少 ${MIN_SCREENSHOT_WIDTH} 像素，每张不超过 ${MAX_SCREENSHOT_BYTES / 1048576} MB，最多 ${MAX_MOD_SCREENSHOTS} 张。仓库要求至少一张，并展示在模组页面上`] },
-  { name: "maps", type: "maps", doc: [`maps the mod carries, relative to mod.json (\`maps/city.steel-tide-map\`): files exported from the Map Editor, up to ${MAX_MOD_MAPS}, each under ${MAX_MOD_MAP_BYTES / 1024} KB. A map may stand the mod's own units; the setup screens offer it beside the player's own map while the mod is on`, `模组自带的地图，路径相对 mod.json（\`maps/city.steel-tide-map\`）：地图编辑器导出的文件，最多 ${MAX_MOD_MAPS} 张，每张不超过 ${MAX_MOD_MAP_BYTES / 1024} KB。地图上可以预置本模组的单位；模组开启时，设置界面会把它列在自定义地图旁`] },
+  { name: "maps", type: "maps", doc: [`maps the mod carries, relative to mod.json (\`maps/city.steel-tide-map\`): files exported from the Scenario Editor, up to ${MAX_MOD_MAPS}, each under ${MAX_MOD_MAP_BYTES / 1024} KB. A map may stand the mod's own units; the setup screens offer it beside the player's own map while the mod is on`, `模组自带的地图，路径相对 mod.json（\`maps/city.steel-tide-map\`）：场景编辑器导出的文件，最多 ${MAX_MOD_MAPS} 张，每张不超过 ${MAX_MOD_MAP_BYTES / 1024} KB。地图上可以预置本模组的单位；模组开启时，设置界面会把它列在自定义地图旁`] },
   { name: "files", type: "files", doc: ["single-file form only: the sheets, sounds and maps, embedded as data URLs by path", "仅单文件形式：按路径内嵌的图片、音频与地图（data URL）"] }
 ];
 const DEF_SPECS = [
@@ -5839,15 +6783,16 @@ const DEF_SPECS = [
   { name: "weapons", type: "weapons", def: "[]", doc: ["the weapons (see below); an empty list is unarmed", "武器列表（见下）；空列表即无武装"] },
   { name: "fw", type: "int", only: "building", min: 1, max: 8, def: "2", doc: ["footprint width, tiles", "占地宽度（格）"] },
   { name: "fh", type: "int", only: "building", min: 1, max: 8, def: "2", doc: ["footprint height, tiles", "占地高度（格）"] },
-  { name: "producedBy", type: "ids", only: "unit", def: "the line for its domain, from its tier up", doc: ["the buildings whose production list it joins (vanilla or this mod's)", "加入哪些建筑的生产列表（原版或本模组的）"] },
-  { name: "produces", type: "ids", only: "building", doc: ["a factory: the units it builds", "工厂：可生产的单位"] },
+  { name: "producedBy", type: "ids", only: "unit", def: "the line for its domain, from its tier up", doc: ["the buildings whose production list it joins (vanilla or this mod's), or units of this mod that train it (a carrier)", "加入哪些建筑的生产列表（原版或本模组的），或由本模组的哪些单位生产（航母）"] },
+  { name: "produces", type: "ids", doc: ["a factory: the units it builds. On a unit, a carrier or a mothership that trains them itself: each is launched beside it, wherever it has got to", "工厂：可生产的单位。写在单位上，就是自己生产它们的航母或母舰：造好的单位在它当前的位置旁出现"] },
   { name: "builtBy", type: "ids", only: "building", def: '["engineer"]', doc: ["the builder units that may place it", "可建造它的工程单位"] },
   { name: "builds", type: "ids", only: "unit", doc: ["a builder unit: the buildings it can construct", "工程单位：可建造的建筑"] },
   { name: "buildRate", type: "number", only: "unit", min: 0, max: 1e4, doc: ["a builder unit: hp of work per second", "工程单位：每秒建造量"] },
   { name: "reach", type: "number", only: "unit", min: 0, max: 256, doc: ["a builder unit: how far past a target's radius it works from, world px (the engineer's 46 when unset; the engineer boat's 64)", "工程单位：超出目标半径多远即可施工（世界像素；默认工程车的 46，工程船为 64）"] },
   { name: "power", type: "number", min: -1e4, max: 1e4, def: "−pop for a unit, 0 for a building", doc: ["positive produces, negative draws; every unit draws its population", "正为发电，负为耗电；单位默认耗电等于其人口"] },
-  { name: "metalRate", type: "number", only: "building", min: 0, max: 1e3, doc: ["metal per second (an extractor)", "每秒金属（采矿场）"] },
+  { name: "metalRate", type: "number", min: 0, max: 1e3, doc: ["metal per second: an extractor, or a unit that earns (a supply ship)", "每秒金属：采矿场，或能赚钱的单位（补给舰）"] },
   { name: "needsDeposit", type: "bool", only: "building", doc: ["must stand on a deposit", "必须建在矿点上"] },
+  { name: "offshore", type: "bool", only: "building", doc: ["stands in open water on its own legs: every footprint tile sea, no shore needed; with needsDeposit, an ore field at sea, which only a builder on the water (the engineer boat) can reach", "立于开阔海面：占地全为海水，无需岸边；配合 needsDeposit 即为海上矿点，只有水上的建造者（工程船）够得到"] },
   { name: "wall", type: "bool", only: "building", doc: ["a wall: one tile that joins its neighbours of the same def (its sheet is sixteen frames, one per set of neighbours: north 1, east 2, south 4, west 8), the last thing a gun shoots at, untouched by a pulse, and it falls without a charge", "墙：单格建筑，与相邻的同种建筑连成一体（精灵图为 16 帧，按相邻方向的掩码取帧：北 1、东 2、南 4、西 8），是火炮最后才会射击的目标，不受电磁脉冲影响，倒塌时没有爆炸"] },
   { name: "repairRange", type: "number", only: "building", min: 0, max: 64, doc: ["a repair aura, tiles", "维修光环范围（格）"] },
   { name: "repairRate", type: "number", only: "building", min: 0, max: 1e4, doc: ["hp per second per target", "每目标每秒维修量"] },
@@ -5859,6 +6804,7 @@ const DEF_SPECS = [
   { name: "nukeCapacity", type: "int", min: 0, max: 10, doc: ["a launcher: warheads it holds", "发射器：可储存的弹头数"] },
   { name: "nukeCost", type: "number", min: 0, max: 99999, doc: ["a launcher: metal per warhead", "发射器：每枚弹头的金属"] },
   { name: "nukeTime", type: "number", min: 0, max: 3600, doc: ["a launcher: seconds per warhead", "发射器：每枚弹头的秒数"] },
+  { name: "armsAtBase", type: "number", only: "unit", min: 0, max: 64, doc: ["a launcher: fabricates its warheads only within this many tiles of one of its own bases of its kind (a naval yard for a hull, an airbase for an aircraft; and, an `underwater` one, only on the surface), and holds the work otherwise (the Kraken's and the Wraith's 4)", "发射器：只在距己方同类基地（舰船为造船厂，飞机为机场）此格数内制造弹头（`underwater` 的还须浮出水面），否则暂停（海妖与幽魂为 4）"] },
   { name: "hatch", type: "number", min: 0, max: 30, doc: ["a launcher: seconds its doors take to open before the warhead leaves, and to close after; none fires on the spot", "发射器：发射前舱门打开所需秒数，发射后关闭亦然；不填则即刻发射"] },
   { name: "antiWarhead", type: "bool", doc: ["its anti-air may fire on a nuclear warhead without a veteran's rank", "其防空武器无需老兵等级即可攻击核弹头"] },
   { name: "interceptRange", type: "number", min: 0, max: 64, doc: ["point defence: reach in tiles", "拦截：范围（格）"] },
@@ -5866,7 +6812,7 @@ const DEF_SPECS = [
   { name: "interceptReload", type: "number", min: 0.05, max: 600, doc: ["point defence: seconds per round replaced", "拦截：每发补充秒数"] },
   { name: "interceptMuzzleOffset", type: "number", min: 0, max: 200, doc: ["point defence: launcher length, world px", "拦截：发射器长度（世界像素）"] },
   { name: "transportCap", type: "int", only: "unit", min: 1, max: 50, doc: ["a transport: hold, in cargo weight", "运输载具：载重"] },
-  { name: "cargoReach", type: "number", only: "unit", min: 0.5, max: 4, def: "1", doc: ["a transport: how far its load and unload distances stretch, as a multiple of the default (the landing craft's and the Moray's 1.1)", "运输载具：装卸距离相对默认值的倍率（登陆艇与海鳗为 1.1）"] },
+  { name: "cargoReach", type: "number", only: "unit", min: 0.5, max: 4, def: "1", doc: ["a transport: how far its load and unload distances stretch, as a multiple of the default (the landing craft's 1.1, the Moray's 1.5); on a ship it widens the ground its ramp reaches too", "运输载具：装卸距离相对默认值的倍率（登陆艇 1.1，海鳗 1.5）；舰船的卸载落点范围也随之扩大"] },
   { name: "landsForCargo", type: "bool", only: "unit", doc: ["a cargo plane that touches down to load", "装卸时降落的运输机"] },
   { name: "cargoWeight", type: "number", only: "unit", min: 0, max: 50, def: "pop", doc: ["how much of a hold it takes", "占用的载重"] },
   { name: "underwater", type: "bool", only: "unit", doc: ["a submarine: seen only by sonar", "潜艇：仅声呐可见"] },
@@ -5888,7 +6834,11 @@ const DEF_SPECS = [
   { name: "decals", type: "decals", def: "the base's, when its art is kept", doc: [`pictures laid on the hull and the turret besides their own sheets (see below), up to ${MAX_DEF_DECALS}`, `除车体与炮塔本身之外贴在其上的图像（见下），最多 ${MAX_DEF_DECALS} 个`] },
   { name: "ability", type: "enum", values: ABILITY_IDS, only: "unit", def: "the base's", doc: ["its one active ability, a vanilla one by id (`sprint`, `smoke`, `countermeasures`…): the same click, clock and unlock as on the game's own units", "唯一的主动技能，按 id 取原版技能（`sprint`、`smoke`、`countermeasures`…）：点击、计时与解锁条件与原版单位相同"] },
   { name: "aliases", type: "strings", doc: ["other names the console's `give` accepts", "控制台 `give` 接受的别名"] },
-  { name: "aiWeight", type: "number", only: "unit", min: 0, max: 10, def: "0", doc: ["how readily the AI builds it: a Bison is 3, a scout car 1; 0 never", "AI 生产它的倾向：野牛是 3，侦察车 1；0 为从不"] }
+  { name: "aiWeight", type: "number", only: "unit", min: 0, max: 10, def: "0", doc: ["how readily the AI builds it: a Bison is 3, a scout car 1; 0 never", "AI 生产它的倾向：野牛是 3，侦察车 1；0 为从不"] },
+  { name: "rules", type: "rules", doc: [`its behaviour: rules that turn it into another form, spawn, heal, pay, buff or blow up, on an event, a condition, a clock or a button (see Behaviour), up to ${MAX_DEF_RULES}; never inherited through \`extends\``, `行为：在事件、条件、定时或按钮触发时让它变形、生成单位、回血、给钱、增益或爆炸的规则（见“行为”），最多 ${MAX_DEF_RULES} 条；不会通过 \`extends\` 继承`] },
+  { name: "shield", type: "shield", doc: ["an energy shield, `{ hp, regen, delay }`: it takes harm before the hull does, and recharges `regen` a second once unhurt for `delay` seconds", "能量护盾 `{ hp, regen, delay }`：先于船体承受伤害，未受伤 `delay` 秒后每秒恢复 `regen`"] },
+  { name: "regen", type: "number", min: 0, max: 1e4, doc: ["hit points a second it mends itself by", "每秒自我修复的生命值"] },
+  { name: "untargetable", type: "bool", doc: ["nothing on the other side may pick it as a target or be ordered to attack it; a blast still reaches it (a disguise, a decoy)", "敌方无法将其选为目标或下令攻击它；爆炸仍能伤到它（伪装、诱饵）"] }
 ];
 const WEAPON_SPECS = [
   { name: "id", type: "string", max: 32, def: "w1, w2…", doc: ["a name for the weapon", "武器名"] },
@@ -5908,6 +6858,7 @@ const WEAPON_SPECS = [
   { name: "interceptable", type: "bool", doc: ["point defence may shoot it down", "可被拦截"] },
   { name: "arc", type: "bool", doc: ["a ballistic arc (artillery)", "抛物线弹道（火炮）"] },
   { name: "turret", type: "bool", def: "true when the def has a turretSprite", doc: ["fired from the rotating part", "由旋转部件发射"] },
+  { name: "vertical", type: "bool", doc: ["launched straight up out of the hull, like a submarine's missile tubes: it fires at any bearing and the hull never turns for it; `muzzleOffset` then runs along the keel to the tubes", "从艇体垂直发射，如潜艇的导弹发射筒：任何方向都能开火，艇体无需转向；此时 `muzzleOffset` 沿艇身纵轴量到发射筒"] },
   { name: "muzzleOffset", type: "number", min: 0, max: 200, doc: ["pivot to muzzle, world px; a unit's art is drawn 1.5625×, so measure on the sheet and multiply", "枢轴到炮口距离（世界像素）；单位美术按 1.5625 倍绘制，量图后需乘以该倍数"] },
   { name: "bores", type: "int", min: 1, max: 8, def: "1", doc: ["barrels, fired one after another", "炮管数，逐根轮流开火"] },
   { name: "boreSpacing", type: "number", min: 0, max: 60, doc: ["gap between adjacent barrels, world px", "相邻炮管间距（世界像素）"] },
@@ -5916,7 +6867,8 @@ const WEAPON_SPECS = [
   { name: "fan", type: "number", min: 0, max: 1.5, doc: ["a `flame` jet: the half-angle it is sprayed across, radians", "`flame` 喷流：喷射张角的一半（弧度）"] },
   { name: "burn", type: "number", min: 0, max: 1e3, doc: ["a `flame` jet: damage a second the fire it leaves does, to both sides", "`flame` 喷流：残留火焰每秒伤害，敌我通吃"] },
   { name: "burnLife", type: "number", min: 0, max: 120, doc: ["a `flame` jet: seconds that fire keeps burning", "`flame` 喷流：火焰持续秒数"] },
-  { name: "sound", type: "string", max: 64, def: "by class", doc: [`the firing sound: ${WEAPON_SOUNDS.join(", ")}, or the key of one of this mod's \`sounds\``, `开火音效：${WEAPON_SOUNDS.join("、")}，或本模组 \`sounds\` 中的一个键`] }
+  { name: "sound", type: "string", max: 64, def: "by class", doc: [`the firing sound: ${WEAPON_SOUNDS.join(", ")}, or the key of one of this mod's \`sounds\``, `开火音效：${WEAPON_SOUNDS.join("、")}，或本模组 \`sounds\` 中的一个键`] },
+  { name: "look", type: "look", doc: ["how it looks, in place of its class: its own round, flash, burst where it lands, or a beam (see Weapon looks)", "外观，替代其类别默认的样子：自己的弹药、枪口焰、命中爆炸，或光束（见“武器外观”）"] }
 ];
 const DECAL_SPECS = [
   { name: "sprite", type: "string", max: 48, required: true, doc: ["the sheet drawn: one of this mod's `dec.<name>` sheets, or any body or turret key", "所绘精灵图：本模组的 `dec.<名字>` 精灵图，或任一车体/炮塔键"] },
@@ -5935,7 +6887,7 @@ const SOUND_SPECS = [
   { name: "file", type: "string", max: 120, required: true, doc: ["the recording, relative to mod.json. An MP3 plays everywhere; WAV works, OGG not on Safari. Dry, close, under a second", "录音路径，相对 mod.json。MP3 处处可播；WAV 可用，OGG 在 Safari 上不行。干声、近距、一秒以内"] }
 ];
 const SPRITE_SPECS = [
-  { name: "key", type: "string", max: 48, required: true, doc: ["`u.<id>` for a body, `tur.<id>` for a rotating part, `dec.<name>` for a decal; never a vanilla key", "主体用 `u.<id>`，旋转部件用 `tur.<id>`，贴花用 `dec.<名字>`；不可与原版键重名"] },
+  { name: "key", type: "string", max: 48, required: true, doc: ["`u.<id>` for a body, `tur.<id>` for a rotating part, `dec.<name>` for a decal, `prj.<name>` for a round and `fx.<name>` for an effect a weapon's look or a rule plays; never a vanilla key", "主体用 `u.<id>`，旋转部件用 `tur.<id>`，贴花用 `dec.<名字>`，弹药用 `prj.<名字>`，武器外观或规则播放的特效用 `fx.<名字>`；不可与原版键重名"] },
   { name: "file", type: "string", max: 120, required: true, doc: ["the image, relative to mod.json (PNG, WebP or JPEG)", "图片路径，相对 mod.json（PNG、WebP 或 JPEG）"] },
   { name: "frames", type: "int", min: 1, max: 64, def: "1", doc: ["animation frames, left to right in one strip", "动画帧数，横向排列"] },
   { name: "fw", type: "number", min: 4, max: 512, def: "the footprint (a building) or the image", doc: ["in-game frame width, whole world px", "游戏内帧宽（世界像素，整数）"] },
@@ -5954,9 +6906,26 @@ const SPRITE_SPECS = [
   { name: "freezeStatic", type: "bool", doc: ["median-freeze pixels that barely change", "冻结几乎不变的像素"] },
   { name: "stripBg", type: "bool", doc: ["force background removal on or off", "强制开启/关闭背景去除"] },
   { name: "bgMinLuma", type: "number", min: 0, max: 255, doc: ["lightest colour still taken as background", "仍视为背景的最亮颜色"] },
-  { name: "artifactCleanup", type: "bool", doc: ["sweep specks left by background removal", "清理背景去除后的杂点"] }
+  { name: "artifactCleanup", type: "bool", doc: ["sweep specks left by background removal", "清理背景去除后的杂点"] },
+  { name: "anims", type: "anims", doc: ["a unit body's frames by what it is doing, `{ moving, idle, firing }`, each `[first, last]` or `[first, last, fps]`: a tank that is a tree when it stands, a walker whose legs move only when it does (see Animation states)", "单位主体按状态播放的帧 `{ moving, idle, firing }`，每项为 `[起, 止]` 或 `[起, 止, fps]`：静止时变成树的坦克、只在移动时迈腿的步行机（见“动画状态”）"] }
 ];
-const FIELD_SPECS = { manifest: MANIFEST_SPECS, def: DEF_SPECS, weapon: WEAPON_SPECS, decal: DECAL_SPECS, sprite: SPRITE_SPECS, sound: SOUND_SPECS };
+const FIELD_SPECS = {
+  manifest: MANIFEST_SPECS,
+  def: DEF_SPECS,
+  weapon: WEAPON_SPECS,
+  decal: DECAL_SPECS,
+  sprite: SPRITE_SPECS,
+  sound: SOUND_SPECS,
+  // a mod's behaviour, a weapon's look, a shield and a sheet's states (`game/ruleSpec.ts`)
+  rule: RULE_SPECS,
+  cond: COND_SPECS,
+  effect: EFFECT_SPECS,
+  spawn: SPAWN_SPECS,
+  button: BUTTON_SPECS,
+  look: LOOK_SPECS,
+  shield: SHIELD_SPECS,
+  anims: ANIM_SPECS
+};
 function cloneTable(table) {
   return structuredClone(table);
 }
@@ -6142,6 +7111,16 @@ function checkField(spec, value, path, issues) {
       return Array.isArray(value) || bad("must be a list");
     case "files":
       return isPlainObject(value) || bad("must be an object of path → data URL");
+    // read word for word once the mod's defs and sheets are known (`game/ruleSpec.ts`)
+    case "rules":
+      return Array.isArray(value) || bad("must be a list of rules");
+    case "shield":
+    case "look":
+    case "anims":
+      return isPlainObject(value) || bad("must be an object");
+    // a rule's own words never stand in a table this checks: `game/ruleSpec.ts` reads them
+    default:
+      return true;
   }
 }
 function checkObject(raw, specs, path, issues, warnings, opts = {}) {
@@ -6229,7 +7208,7 @@ function resolveMod(mod, table = VANILLA) {
     const clean = checkObject(raw, SPRITE_SPECS, path, errors, warnings);
     if (typeof clean.key !== "string" || typeof clean.file !== "string") return;
     if (!ATLAS_KEY_RE.test(clean.key)) {
-      errors.push({ path: `${path}.key`, message: "must be u.<id>, tur.<id> or dec.<name>" });
+      errors.push({ path: `${path}.key`, message: "must be u.<id>, tur.<id>, dec.<name>, prj.<name> or fx.<name>" });
       return;
     }
     if (VANILLA_SPRITE_KEYS.has(clean.key) || tableSprites.has(clean.key) && !sheetKeys.has(clean.key) && !mod.defs.some((d) => d && (d.sprite === clean.key || d.turretSprite === clean.key || `u.${d.id}` === clean.key || `tur.${d.id}` === clean.key))) {
@@ -6248,6 +7227,11 @@ function resolveMod(mod, table = VANILLA) {
     for (const side of ["fw", "fh"]) {
       const v = clean[side];
       if (typeof v === "number" && !Number.isInteger(v)) warnings.push({ path: `${path}.${side}`, message: `${v} is not a whole number of pixels; the game bakes it as ${Math.round(v)}` });
+    }
+    if (clean.anims !== void 0) {
+      const anims = readAnims(clean.anims, clean.frames ?? 1, `${path}.anims`, errors);
+      if (!anims) return;
+      clean.anims = anims;
     }
     sheetKeys.add(clean.key);
     cleanSprites.push({ ...clean, frames: clean.frames ?? 1 });
@@ -6330,6 +7314,22 @@ function resolveMod(mod, table = VANILLA) {
     if (own.kind === void 0) own.kind = kind;
     const def = buildDef(own, kind, base, mod.id, soundKeys, path, errors, warnings);
     if (!def) return;
+    const lookCtx = ruleContext(def, table, built, sheetKeys, soundKeys);
+    def.weapons.forEach((wp, k) => {
+      if (!wp.look || !own.weapons?.[k]?.look) return;
+      const look = readLook(wp.look, `${path}.weapons[${k}].look`, lookCtx, errors);
+      if (!look) {
+        delete wp.look;
+        return;
+      }
+      wp.look = look;
+      if (look.beam) wp.speed = 5e3;
+    });
+    if (own.shield !== void 0) {
+      const shield = readShield(own.shield, `${path}.shield`, lookCtx, errors);
+      if (shield) def.shield = shield;
+      else delete def.shield;
+    }
     const ownSheet = sheetKeys.has(`u.${id}`);
     const bodyKey = own.sprite ?? (ownSheet ? `u.${id}` : base?.sprite ?? `u.${id}`);
     if (!sheetKeys.has(bodyKey) && !tableSprites.has(bodyKey)) {
@@ -6382,6 +7382,7 @@ function resolveMod(mod, table = VANILLA) {
     strings[`unit.${id}.desc`] = modText(own.desc, "");
   });
   const find = (id) => table[id] ?? built.get(id);
+  const forms = /* @__PURE__ */ new Set();
   mod.defs.forEach((raw, i) => {
     if (!isPlainObject(raw) || typeof raw.id !== "string") return;
     const def = built.get(raw.id);
@@ -6401,6 +7402,32 @@ function resolveMod(mod, table = VANILLA) {
       }
       return out;
     };
+    const lines = (list) => {
+      if (!Array.isArray(list)) return [];
+      const out = [];
+      for (const ref of list) {
+        const other = find(ref);
+        if (!other) errors.push({ path: `${path}.producedBy`, message: `"${ref}" is not a def` });
+        else if (other.kind === "unit" && !built.has(ref)) errors.push({ path: `${path}.producedBy`, message: `"${ref}" is a unit of the game's own; only a building, or a unit of this mod, can train others` });
+        else if (other.kind === "unit" && other.warhead) errors.push({ path: `${path}.producedBy`, message: `"${ref}" cannot train anything` });
+        else out.push(ref);
+      }
+      return out;
+    };
+    delete def.rules;
+    if (own.rules !== void 0) {
+      const read = readRules(own.rules, `${path}.rules`, ruleContext(def, table, built, sheetKeys, soundKeys), errors);
+      if (read.rules.length) {
+        def.rules = read.rules;
+        for (const r of read.rules) {
+          for (const x of r.do) {
+            if (x.morph) forms.add(x.morph);
+            if (x.spawn) forms.add(x.spawn.unit);
+          }
+        }
+      }
+      for (const [k, v] of Object.entries(read.strings)) strings[k] = modText(v, "");
+    }
     const nodes = (def.requires ?? []).filter((r) => isTechId(r));
     def.requires = [...ids((def.requires ?? []).filter((r) => !isTechId(r)), "requires", "building"), ...nodes];
     if (def.requires.length === 0) delete def.requires;
@@ -6436,7 +7463,8 @@ function resolveMod(mod, table = VANILLA) {
       }
     } else {
       if (def.builds) def.builds = ids(def.builds, "builds", "building");
-      const producers = own.producedBy !== void 0 ? ids(own.producedBy, "producedBy", "building") : base ? Object.values({ ...table, ...Object.fromEntries(built) }).filter((d) => d.produces?.includes(base.id)).map((d) => d.id) : defaultProducers(def.domain, def.tier).filter((b) => !!find(b));
+      if (def.produces) def.produces = ids(def.produces, "produces", "unit");
+      const producers = own.producedBy !== void 0 ? lines(own.producedBy) : base ? Object.values({ ...table, ...Object.fromEntries(built) }).filter((d) => d.produces?.includes(base.id)).map((d) => d.id) : defaultProducers(def.domain, def.tier).filter((b) => !!find(b));
       for (const b of producers) {
         const line = find(b);
         if (!line.produces && line.id !== def.id) {
@@ -6449,7 +7477,28 @@ function resolveMod(mod, table = VANILLA) {
       }
     }
   });
+  const quiet = warnings.filter((w2) => {
+    const m = /^defs\[(\d+)\]\.producedBy$/.exec(w2.path);
+    const d = m ? mod.defs[Number(m[1])] : void 0;
+    return !(m && w2.message === "nothing produces it" && isPlainObject(d) && forms.has(d.id));
+  });
+  warnings.length = 0;
+  warnings.push(...quiet);
   return { ok: errors.length === 0, mod, defs, patches, strings, placeholders, errors, warnings };
+}
+function ruleContext(def, table, built, sheets, sounds) {
+  return {
+    def,
+    find: (id) => table[id] ?? built.get(id),
+    ownDef: (id) => built.has(id),
+    isTech: isTechId,
+    sheets,
+    sounds,
+    weaponSounds: WEAPON_SOUNDS,
+    weaponClasses: WEAPON_CLASSES,
+    isText,
+    idRe: ID_RE
+  };
 }
 function buildDef(own, kind, base, modId, soundKeys, path, errors, warnings) {
   const inherited = base ? structuredClone(base) : {};
@@ -6466,6 +7515,7 @@ function buildDef(own, kind, base, modId, soundKeys, path, errors, warnings) {
   delete inherited.aiWeight;
   delete inherited.lab;
   delete inherited.unique;
+  delete inherited.rules;
   if (base && base.kind !== kind) {
     errors.push({ path: `${path}.kind`, message: `a ${kind} cannot extend a ${base.kind}` });
     return null;
@@ -6550,7 +7600,7 @@ function buildDef(own, kind, base, modId, soundKeys, path, errors, warnings) {
   return def;
 }
 function stripModOnly(own) {
-  const { name: _n, desc: _d, extends: _e, weapons: _w, producedBy: _p, builtBy: _b, upgradeOf: _u, sprite: _s, turretSprite: _t, decals: _dc, ...rest } = own;
+  const { name: _n, desc: _d, extends: _e, weapons: _w, producedBy: _p, builtBy: _b, upgradeOf: _u, sprite: _s, turretSprite: _t, decals: _dc, rules: _r, ...rest } = own;
   return rest;
 }
 let active = [];
@@ -6818,6 +7868,30 @@ function typeLabel(spec) {
       return "sheet[]";
     case "files":
       return "{ path: dataURL }";
+    case "rules":
+      return "rule[]";
+    case "shield":
+      return "{ hp, regen, delay }";
+    case "look":
+      return "look";
+    case "anims":
+      return "{ moving, idle, firing }";
+    case "cond":
+      return "condition";
+    case "effects":
+      return "effect | effect[]";
+    case "button":
+      return "button";
+    case "spawn":
+      return "{ unit, count, side, into, max }";
+    case "buff":
+      return "{ speed, damage, reload, taken, for }";
+    case "explode":
+      return "{ dmg, radius, cls, friendlyFire }";
+    case "beam":
+      return "{ color, width, style, life }";
+    case "range":
+      return "[first, last] or [first, last, fps]";
     default:
       return "string";
   }
@@ -6946,7 +8020,7 @@ function agentPrompt() {
   p("# Making a Steel Tide mod: a brief for a coding agent");
   p();
   p("You are helping make a mod for Steel Tide (https://steelti.de), a browser real-time strategy game.");
-  p("A mod adds units, buildings and upgrade levels. It cannot change the game's rules, its interface, or an existing unit or building: it only adds, and everything it adds is switched off with it.");
+  p("A mod adds units, buildings and upgrade levels, and gives them behaviour of their own — forms they turn into, units they spawn, buttons on their cards, weapons that look like nothing in the game (see Behaviour). It cannot change the game's rules, its interface, or an existing unit or building: it only adds, and everything it adds is switched off with it.");
   p("Read this whole brief once, then work from the tables. When in doubt, prefer the smallest mod that plays.");
   p();
   p("## What a mod is");
@@ -6958,7 +8032,7 @@ function agentPrompt() {
   p("  mod.json          the manifest: the mod's identity, its defs, and the sheets they draw with");
   p("  sprites/*.png     optional art (a def without any is drawn as a plain placeholder)");
   p("  screenshots/*.png the mod in play, 4:3 (the registry asks for at least one; see Publish)");
-  p("  maps/*.steel-tide-map  optional maps from the Map Editor, offered in the setup screens while the mod is on (see Maps)");
+  p("  maps/*.steel-tide-map  optional maps from the Scenario Editor, offered in the setup screens while the mod is on (see Maps)");
   p("  README.md         optional");
   p("```");
   p();
@@ -7024,9 +8098,11 @@ function agentPrompt() {
   p();
   p("A weapon fires with the game's sound for its class unless its `sound` names one of these keys. A recording is a dry, close-miked one-shot under a second with no reverb tail; the engine attenuates and pans it by distance, and forty overlapping echoes turn to mud. Mono MP3 is the safe format.");
   p();
+  behaviourSection(p);
+  p();
   p("## Maps");
   p();
-  p(`A mod may carry maps: files the game's Map Editor exports (\`${CUSTOM_MAP_EXT}\`), named under \`maps\` in mod.json, up to ${MAX_MOD_MAPS} of them and each under ${MAX_MOD_MAP_BYTES / 1024} KB. While the mod is on, the Conquest setup and the lobby offer them as cards beside the player's own map; choosing one plays it exactly as painted. A map may stand the mod's own units and buildings before the whistle: with the mod on, they are in the editor's forces palette, and the map reads on any game that has the mod (the registry checks it against the mod's own defs, not the vanilla roster). A scene laid this way — a base built up, a horde at the gate — is how a mod shows what it is without a word.`);
+  p(`A mod may carry maps: files the game's Scenario Editor exports (\`${CUSTOM_MAP_EXT}\`), named under \`maps\` in mod.json, up to ${MAX_MOD_MAPS} of them and each under ${MAX_MOD_MAP_BYTES / 1024} KB. While the mod is on, the Conquest setup and the lobby offer them as cards beside the player's own map; choosing one plays it exactly as painted. A map may stand the mod's own units and buildings before the whistle: with the mod on, they are in the editor's forces palette, and the map reads on any game that has the mod (the registry checks it against the mod's own defs, not the vanilla roster). A scene laid this way — a base built up, a horde at the gate — is how a mod shows what it is without a word.`);
   p();
   p("## Units of measure");
   p();
@@ -7069,6 +8145,106 @@ function agentPrompt() {
   p("- Keep it honest: a unit needs a counter. The armour matrix is how the game makes one; give a new weapon a class it belongs to rather than an override on every cell.");
   p("- A mod is published under the licence its manifest names (default CC-BY-4.0). Only ship art you have the right to.");
   return lines.join("\n") + "\n";
+}
+function behaviourSection(p) {
+  p("## Behaviour");
+  p();
+  p(`A def may carry \`rules\`: things that happen to it — it turns into another of the mod's defs, spawns units, heals, pays, takes a buff, blows up — when something happens to it (\`on\`), when a condition comes true (\`when\`), on a clock (\`every\`), or when the player presses a button on its card (\`button\`). The words are a closed vocabulary, each one checked when the mod loads, so a rule can only do what the game already knows how to do safely; there is no scripting. Up to ${MAX_DEF_RULES} rules a def. Rules are never inherited through \`extends\`, and the game's own units have none.`);
+  p();
+  p("A tank that is a tree while it stands, and a tank again when it moves or fires — two defs, each turning into the other:");
+  p();
+  p("```json");
+  p(JSON.stringify(exampleMirage(), null, 2));
+  p("```");
+  p();
+  p("A hero that ranks itself up from its card — the same unit, a new form, paid as the work is done:");
+  p();
+  p("```json");
+  p(JSON.stringify(exampleHero(), null, 2));
+  p("```");
+  p();
+  p("### A rule (`defs[].rules[]`)");
+  p();
+  p(markdownTable(fieldRows("rule")));
+  p();
+  p("Exactly one trigger. A `when` runs the moment its condition becomes true and not again until it has been false; one held back by its `if` or its `cooldown` tries again while the condition still holds. An `every` counts from the unit's making or its last change of form. Conditions are looked at ten times a second; events are answered on the tick they happen. A rule's `do` runs in order and stops at a change of form: what came after belonged to the old one.");
+  p();
+  p("### Conditions (`when`, `if`)");
+  p();
+  p(markdownTable(fieldRows("cond")));
+  p();
+  p("Every key given must hold; `any` and `not` say otherwise. A misspelt condition is an error, not a condition that always holds.");
+  p();
+  p("### Effects (`do`)");
+  p();
+  p(markdownTable(fieldRows("effect")));
+  p();
+  p("### A spawn (`do.spawn`)");
+  p();
+  p(markdownTable(fieldRows("spawn")));
+  p();
+  p('A spawn never takes a side past its population cap or a def past its `limit`: it puts down what fits and no more. Spawned units are ordinary units of their side, standing where they were put down; a spawned unit\'s own `created` rules run too. `side: "killer"` on a `destroyed` rule is the dead rising for whoever killed them.');
+  p();
+  p("### A button (`rule.button`)");
+  p();
+  p(markdownTable(fieldRows("button")));
+  p();
+  p("The button is a tile on the unit's card, pressed on every selected unit of that def free to take it. It starts on the production rule — three quarters of the price in hand — and is paid as the work is done; while it runs the tile wears its progress, and pressing it again stops it and gives back what it had cost. It waits while what it `requires` is down. A button whose `do` changes the unit's form is labelled with the form unless it has a `name`; any other button needs one.");
+  p();
+  p("### A change of form (`do.morph`)");
+  p();
+  p('The unit becomes another def of the same mod in place: the same unit, its side, where it stands and faces, its kills and veteran rank, its flags, the selection and the groups it is in; its health keeps its share of the whole, its guns carry on from where they were in their reload, and it keeps whatever orders the new form can carry out — a move, an attack. A unit turns only into a unit, and a building only into a building of the same footprint. The change is refused, and nothing happens, while the unit is being carried, while its hold holds more than the new form can, while its line or its magazine has work the new form cannot take over, or where the new form cannot stand (a boat on dry land). A form that nothing builds says `"producedBy": []`; the loader expects that of a form and says nothing.');
+  p();
+  p("### A weapon's look (`weapons[].look`)");
+  p();
+  p(markdownTable(fieldRows("look")));
+  p();
+  p("A look is only what is seen: the round hits as the weapon's numbers say. A beam is the exception by its nature — the round goes at once, so it lands where the beam is drawn. A round's sheet (`prj.<name>`) is small art facing up with `rotated: true`, or a strip of `frames` played as it flies; an effect's sheet (`fx.<name>`) is a strip played once, not rotated.");
+  p();
+  p("### A shield (`shield`)");
+  p();
+  p(markdownTable(fieldRows("shield")));
+  p();
+  p("The shield takes harm before the hull, its bar drawn over the health bar, and shimmers round the hull when struck. `regen` on the def (not the shield) is the hull mending itself.");
+  p();
+  p("### Animation states (`sprites[].anims`)");
+  p();
+  p(markdownTable(fieldRows("anims")));
+  p();
+  p("On a unit's body sheet, the frames played by what it is doing instead of one loop: the `firing` range within a reload of its last shot, else the `moving` range while it moves, else `idle`. A sheet without `anims` rolls its frames while the unit moves and rests on the first, as treads do.");
+}
+function exampleMirage() {
+  return [
+    {
+      id: "mymod-mirage",
+      name: ["Mirage Tank", "幻影坦克"],
+      extends: "mbt",
+      sprite: "u.mymod-mirage",
+      rules: [{ when: { still: 1, quiet: 0.8 }, do: { morph: "mymod-mirage-tree" } }]
+    },
+    {
+      id: "mymod-mirage-tree",
+      name: ["Mirage Tank", "幻影坦克"],
+      extends: "mymod-mirage",
+      producedBy: [],
+      untargetable: true,
+      stealth: 3,
+      rules: [{ when: { moving: true }, do: { morph: "mymod-mirage" } }, { on: "fired", do: { morph: "mymod-mirage" } }]
+    }
+  ];
+}
+function exampleHero() {
+  return {
+    id: "mymod-hero",
+    name: ["Hero Tank", "英雄坦克"],
+    extends: "mbt",
+    limit: 3,
+    rules: [
+      { button: { cost: 600, time: 20, ai: true }, do: { morph: "mymod-hero-gunner" } },
+      { button: { cost: 900, time: 30, requires: ["radar"] }, do: { morph: "mymod-hero-sniper" } },
+      { every: 1, if: { hurtWithin: 0.5, hpBelow: 0.3 }, cooldown: 30, do: [{ buff: { taken: 0.5, for: 5 } }, { fx: "fx.repair" }] }
+    ]
+  };
 }
 function agentPromptFor(dir) {
   return `${agentPrompt()}

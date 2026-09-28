@@ -1,7 +1,7 @@
 # Making a Steel Tide mod: a brief for a coding agent
 
 You are helping make a mod for Steel Tide (https://steelti.de), a browser real-time strategy game.
-A mod adds units, buildings and upgrade levels. It cannot change the game's rules, its interface, or an existing unit or building: it only adds, and everything it adds is switched off with it.
+A mod adds units, buildings and upgrade levels, and gives them behaviour of their own — forms they turn into, units they spawn, buttons on their cards, weapons that look like nothing in the game (see Behaviour). It cannot change the game's rules, its interface, or an existing unit or building: it only adds, and everything it adds is switched off with it.
 Read this whole brief once, then work from the tables. When in doubt, prefer the smallest mod that plays.
 
 ## What a mod is
@@ -13,7 +13,7 @@ my-mod/
   mod.json          the manifest: the mod's identity, its defs, and the sheets they draw with
   sprites/*.png     optional art (a def without any is drawn as a plain placeholder)
   screenshots/*.png the mod in play, 4:3 (the registry asks for at least one; see Publish)
-  maps/*.steel-tide-map  optional maps from the Map Editor, offered in the setup screens while the mod is on (see Maps)
+  maps/*.steel-tide-map  optional maps from the Scenario Editor, offered in the setup screens while the mod is on (see Maps)
   README.md         optional
 ```
 
@@ -237,7 +237,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `sprites` | sheet[] |  |  | the sheets the defs draw with (see below) |
 | `sounds` | string |  |  | the recordings the weapons fire with (see below) |
 | `screenshots` | path[] |  |  | pictures of the mod in play, relative to mod.json (`screenshots/1.png`): 4:3, at least 640 px wide, under 2 MB each, up to 8. The registry asks for at least one and shows them on the mod's page |
-| `maps` | string |  |  | maps the mod carries, relative to mod.json (`maps/city.steel-tide-map`): files exported from the Map Editor, up to 8, each under 512 KB. A map may stand the mod's own units; the setup screens offer it beside the player's own map while the mod is on |
+| `maps` | string |  |  | maps the mod carries, relative to mod.json (`maps/city.steel-tide-map`): files exported from the Scenario Editor, up to 8, each under 512 KB. A map may stand the mod's own units; the setup screens offer it beside the player's own map while the mod is on |
 | `files` | { path: dataURL } |  |  | single-file form only: the sheets, sounds and maps, embedded as data URLs by path |
 
 `name`, `description` and every `desc`/`name` on a def are *text*: a string (used for every language), `["English", "中文", "한국어"]` in that order, or `{ "en": "…", "zh": "…", "ko": "…" }`. Only English is required; a language left out reads as English.
@@ -266,15 +266,16 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `weapons` | weapon[] |  | [] | the weapons (see below); an empty list is unarmed |
 | `fw` | integer 1–8 | buildings only | 2 | footprint width, tiles |
 | `fh` | integer 1–8 | buildings only | 2 | footprint height, tiles |
-| `producedBy` | id[] | units only | the line for its domain, from its tier up | the buildings whose production list it joins (vanilla or this mod's) |
-| `produces` | id[] | buildings only |  | a factory: the units it builds |
+| `producedBy` | id[] | units only | the line for its domain, from its tier up | the buildings whose production list it joins (vanilla or this mod's), or units of this mod that train it (a carrier) |
+| `produces` | id[] |  |  | a factory: the units it builds. On a unit, a carrier or a mothership that trains them itself: each is launched beside it, wherever it has got to |
 | `builtBy` | id[] | buildings only | ["engineer"] | the builder units that may place it |
 | `builds` | id[] | units only |  | a builder unit: the buildings it can construct |
 | `buildRate` | number 0–10000 | units only |  | a builder unit: hp of work per second |
 | `reach` | number 0–256 | units only |  | a builder unit: how far past a target's radius it works from, world px (the engineer's 46 when unset; the engineer boat's 64) |
 | `power` | number -10000–10000 |  | −pop for a unit, 0 for a building | positive produces, negative draws; every unit draws its population |
-| `metalRate` | number 0–1000 | buildings only |  | metal per second (an extractor) |
+| `metalRate` | number 0–1000 |  |  | metal per second: an extractor, or a unit that earns (a supply ship) |
 | `needsDeposit` | boolean | buildings only |  | must stand on a deposit |
+| `offshore` | boolean | buildings only |  | stands in open water on its own legs: every footprint tile sea, no shore needed; with needsDeposit, an ore field at sea, which only a builder on the water (the engineer boat) can reach |
 | `wall` | boolean | buildings only |  | a wall: one tile that joins its neighbours of the same def (its sheet is sixteen frames, one per set of neighbours: north 1, east 2, south 4, west 8), the last thing a gun shoots at, untouched by a pulse, and it falls without a charge |
 | `repairRange` | number 0–64 | buildings only |  | a repair aura, tiles |
 | `repairRate` | number 0–10000 | buildings only |  | hp per second per target |
@@ -286,6 +287,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `nukeCapacity` | integer 0–10 |  |  | a launcher: warheads it holds |
 | `nukeCost` | number 0–99999 |  |  | a launcher: metal per warhead |
 | `nukeTime` | number 0–3600 |  |  | a launcher: seconds per warhead |
+| `armsAtBase` | number 0–64 | units only |  | a launcher: fabricates its warheads only within this many tiles of one of its own bases of its kind (a naval yard for a hull, an airbase for an aircraft; and, an `underwater` one, only on the surface), and holds the work otherwise (the Kraken's and the Wraith's 4) |
 | `hatch` | number 0–30 |  |  | a launcher: seconds its doors take to open before the warhead leaves, and to close after; none fires on the spot |
 | `antiWarhead` | boolean |  |  | its anti-air may fire on a nuclear warhead without a veteran's rank |
 | `interceptRange` | number 0–64 |  |  | point defence: reach in tiles |
@@ -293,7 +295,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `interceptReload` | number 0.05–600 |  |  | point defence: seconds per round replaced |
 | `interceptMuzzleOffset` | number 0–200 |  |  | point defence: launcher length, world px |
 | `transportCap` | integer 1–50 | units only |  | a transport: hold, in cargo weight |
-| `cargoReach` | number 0.5–4 | units only | 1 | a transport: how far its load and unload distances stretch, as a multiple of the default (the landing craft's and the Moray's 1.1) |
+| `cargoReach` | number 0.5–4 | units only | 1 | a transport: how far its load and unload distances stretch, as a multiple of the default (the landing craft's 1.1, the Moray's 1.5); on a ship it widens the ground its ramp reaches too |
 | `landsForCargo` | boolean | units only |  | a cargo plane that touches down to load |
 | `cargoWeight` | number 0–50 | units only | pop | how much of a hold it takes |
 | `underwater` | boolean | units only |  | a submarine: seen only by sonar |
@@ -316,6 +318,10 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `ability` | sprint \| afterburner \| smoke \| incendiary \| barrage \| countermeasures \| damageControl \| emergencyRepair | units only | the base's | its one active ability, a vanilla one by id (`sprint`, `smoke`, `countermeasures`…): the same click, clock and unlock as on the game's own units |
 | `aliases` | string[] |  |  | other names the console's `give` accepts |
 | `aiWeight` | number 0–10 | units only | 0 | how readily the AI builds it: a Bison is 3, a scout car 1; 0 never |
+| `rules` | rule[] |  |  | its behaviour: rules that turn it into another form, spawn, heal, pay, buff or blow up, on an event, a condition, a clock or a button (see Behaviour), up to 24; never inherited through `extends` |
+| `shield` | { hp, regen, delay } |  |  | an energy shield, `{ hp, regen, delay }`: it takes harm before the hull does, and recharges `regen` a second once unhurt for `delay` seconds |
+| `regen` | number 0–10000 |  |  | hit points a second it mends itself by |
+| `untargetable` | boolean |  |  | nothing on the other side may pick it as a target or be ordered to attack it; a blast still reaches it (a disguise, a decoy) |
 
 Defaults when `extends` is absent: a unit is `domain: "ground"`, `tier: 1`, `pop: 1`, `speed: 60`, `turnRate: 3.5`, `vision: 8`, `radius: 9`, no `body` (units part on the circle of `radius`), armour by domain (ground and amphibious `medium`, ship `ship`, air `air`), a tread trail on land (`trail: "none"` for a unit on foot, which is then not heard rolling either) and a wake at sea; a building is `fw: 2, fh: 2`, `armor: "structure"`, `power: 0`, `pop: 0`. `buildTime` defaults to cost ÷ 14 seconds.
 Where a unit is built when `producedBy` is absent: its domain's line from its tier up (ground: T1 → factory+factory2+factory3, T2 → factory2+factory3, T3 → factory3; ship: T1 → navyard+navyard2+navyard3, T2 → navyard2+navyard3, T3 → navyard3; air: T1 → airbase+airbase2+airbase3, T2 → airbase2+airbase3, T3 → airbase3; amphibious: T1 → factory+navyard+factory2+navyard2+factory3+navyard3, T2 → factory2+navyard2+factory3+navyard3, T3 → factory3+navyard3).
@@ -342,6 +348,7 @@ An `upgradeOf` def becomes upgrade-only (never placed directly): the named build
 | `interceptable` | boolean |  |  | point defence may shoot it down |
 | `arc` | boolean |  |  | a ballistic arc (artillery) |
 | `turret` | boolean |  | true when the def has a turretSprite | fired from the rotating part |
+| `vertical` | boolean |  |  | launched straight up out of the hull, like a submarine's missile tubes: it fires at any bearing and the hull never turns for it; `muzzleOffset` then runs along the keel to the tubes |
 | `muzzleOffset` | number 0–200 |  |  | pivot to muzzle, world px; a unit's art is drawn 1.5625×, so measure on the sheet and multiply |
 | `bores` | integer 1–8 |  | 1 | barrels, fired one after another |
 | `boreSpacing` | number 0–60 |  |  | gap between adjacent barrels, world px |
@@ -351,6 +358,7 @@ An `upgradeOf` def becomes upgrade-only (never placed directly): the named build
 | `burn` | number 0–1000 |  |  | a `flame` jet: damage a second the fire it leaves does, to both sides |
 | `burnLife` | number 0–120 |  |  | a `flame` jet: seconds that fire keeps burning |
 | `sound` | string |  | by class | the firing sound: mg, autocannon, cannon, missile, flak, arty, rocket, torpedo, bomb, flame, or the key of one of this mod's `sounds` |
+| `look` | look |  |  | how it looks, in place of its class: its own round, flash, burst where it lands, or a beam (see Weapon looks) |
 
 The damage a weapon does is `dmg × the armour matrix cell for (cls, target armour)`, with `mult` overriding single cells. The matrix:
 
@@ -358,10 +366,10 @@ The damage a weapon does is `dmg × the armour matrix cell for (cls, target armo
 mg          light ×1.5  medium ×0.8  heavy ×0.4  structure ×0.35  ship ×0.5  air ×0.7
 autocannon  light ×1.5  medium ×1  heavy ×0.5  structure ×0.5  ship ×0.7
 cannon      light ×0.6  medium ×1.3  heavy ×1  structure ×0.8  ship ×0.9
-at          light ×0.4  medium ×1.1  heavy ×1.8  structure ×0.7  ship ×1
+at          light ×0.4  medium ×1.1  heavy ×1.8  structure ×0.7  ship ×0.75
 he          light ×1.2  medium ×1  heavy ×0.75  structure ×1.6  ship ×1
 rocket      light ×1.4  medium ×1.4  heavy ×0.9  structure ×0.7  ship ×0.9
-navgun      light ×1  medium ×1  heavy ×0.75  structure ×0.75  ship ×1
+navgun      light ×1  medium ×1  heavy ×0.75  structure ×0.75  ship ×1  air ×0.6
 ashm        ship ×1.6
 torpedo     ship ×1.3  sub ×1.2
 aa          air ×1
@@ -388,7 +396,7 @@ A decal is a picture laid on a def besides its body and its turret — a hatch, 
 
 | field | type | required | default | meaning |
 | --- | --- | --- | --- | --- |
-| `key` | string | yes |  | `u.<id>` for a body, `tur.<id>` for a rotating part, `dec.<name>` for a decal; never a vanilla key |
+| `key` | string | yes |  | `u.<id>` for a body, `tur.<id>` for a rotating part, `dec.<name>` for a decal, `prj.<name>` for a round and `fx.<name>` for an effect a weapon's look or a rule plays; never a vanilla key |
 | `file` | string | yes |  | the image, relative to mod.json (PNG, WebP or JPEG) |
 | `frames` | integer 1–64 |  | 1 | animation frames, left to right in one strip |
 | `fw` | number 4–512 |  | the footprint (a building) or the image | in-game frame width, whole world px |
@@ -408,6 +416,7 @@ A decal is a picture laid on a def besides its body and its turret — a hatch, 
 | `stripBg` | boolean |  |  | force background removal on or off |
 | `bgMinLuma` | number 0–255 |  |  | lightest colour still taken as background |
 | `artifactCleanup` | boolean |  |  | sweep specks left by background removal |
+| `anims` | { moving, idle, firing } |  |  | a unit body's frames by what it is doing, `{ moving, idle, firing }`, each `[first, last]` or `[first, last, fps]`: a tank that is a tree when it stands, a walker whose legs move only when it does (see Animation states) |
 
 ### A sound (`sounds[]`)
 
@@ -418,9 +427,249 @@ A decal is a picture laid on a def besides its body and its turret — a hatch, 
 
 A weapon fires with the game's sound for its class unless its `sound` names one of these keys. A recording is a dry, close-miked one-shot under a second with no reverb tail; the engine attenuates and pans it by distance, and forty overlapping echoes turn to mud. Mono MP3 is the safe format.
 
+## Behaviour
+
+A def may carry `rules`: things that happen to it — it turns into another of the mod's defs, spawns units, heals, pays, takes a buff, blows up — when something happens to it (`on`), when a condition comes true (`when`), on a clock (`every`), or when the player presses a button on its card (`button`). The words are a closed vocabulary, each one checked when the mod loads, so a rule can only do what the game already knows how to do safely; there is no scripting. Up to 24 rules a def. Rules are never inherited through `extends`, and the game's own units have none.
+
+A tank that is a tree while it stands, and a tank again when it moves or fires — two defs, each turning into the other:
+
+```json
+[
+  {
+    "id": "mymod-mirage",
+    "name": [
+      "Mirage Tank",
+      "幻影坦克"
+    ],
+    "extends": "mbt",
+    "sprite": "u.mymod-mirage",
+    "rules": [
+      {
+        "when": {
+          "still": 1,
+          "quiet": 0.8
+        },
+        "do": {
+          "morph": "mymod-mirage-tree"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mymod-mirage-tree",
+    "name": [
+      "Mirage Tank",
+      "幻影坦克"
+    ],
+    "extends": "mymod-mirage",
+    "producedBy": [],
+    "untargetable": true,
+    "stealth": 3,
+    "rules": [
+      {
+        "when": {
+          "moving": true
+        },
+        "do": {
+          "morph": "mymod-mirage"
+        }
+      },
+      {
+        "on": "fired",
+        "do": {
+          "morph": "mymod-mirage"
+        }
+      }
+    ]
+  }
+]
+```
+
+A hero that ranks itself up from its card — the same unit, a new form, paid as the work is done:
+
+```json
+{
+  "id": "mymod-hero",
+  "name": [
+    "Hero Tank",
+    "英雄坦克"
+  ],
+  "extends": "mbt",
+  "limit": 3,
+  "rules": [
+    {
+      "button": {
+        "cost": 600,
+        "time": 20,
+        "ai": true
+      },
+      "do": {
+        "morph": "mymod-hero-gunner"
+      }
+    },
+    {
+      "button": {
+        "cost": 900,
+        "time": 30,
+        "requires": [
+          "radar"
+        ]
+      },
+      "do": {
+        "morph": "mymod-hero-sniper"
+      }
+    },
+    {
+      "every": 1,
+      "if": {
+        "hurtWithin": 0.5,
+        "hpBelow": 0.3
+      },
+      "cooldown": 30,
+      "do": [
+        {
+          "buff": {
+            "taken": 0.5,
+            "for": 5
+          }
+        },
+        {
+          "fx": "fx.repair"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### A rule (`defs[].rules[]`)
+
+| field | type | required | default | meaning |
+| --- | --- | --- | --- | --- |
+| `on` | created \| destroyed \| fired \| damaged \| kill \| morphed |  |  | runs when this happens to it: made (`created`, and when a map stands it), killed (`destroyed`, where it fell), a shot fired (`fired`), hurt (`damaged`), a kill made (`kill`), or a change of form finished (`morphed`) |
+| `when` | condition |  |  | runs when this condition becomes true, and again only after it has been false (see Conditions) |
+| `every` | number 0.25–3600 |  |  | runs every so many seconds of its life |
+| `button` | button |  |  | a button on its card the player presses (see Buttons) |
+| `if` | condition |  |  | also checked when triggered: the rule runs only if this holds too; on a button, the button is greyed while it does not |
+| `chance` | number 0–1 |  | 1 | the odds it runs when triggered |
+| `cooldown` | number 0–3600 |  |  | seconds before it may run again |
+| `max` | integer 1–1000 |  |  | times it may run on one unit, ever |
+| `do` | effect \| effect[] | yes |  | what it does: an effect or a list of up to 8, in order (see Effects) |
+
+Exactly one trigger. A `when` runs the moment its condition becomes true and not again until it has been false; one held back by its `if` or its `cooldown` tries again while the condition still holds. An `every` counts from the unit's making or its last change of form. Conditions are looked at ten times a second; events are answered on the tick they happen. A rule's `do` runs in order and stops at a change of form: what came after belonged to the old one.
+
+### Conditions (`when`, `if`)
+
+| field | type | required | default | meaning |
+| --- | --- | --- | --- | --- |
+| `moving` | boolean |  |  | is driving, flying or swimming (true) or standing (false) |
+| `still` | number 0–3600 |  |  | has not moved for at least this many seconds |
+| `firedWithin` | number 0–3600 |  |  | fired within the last so many seconds |
+| `quiet` | number 0–3600 |  |  | has not fired for at least this many seconds |
+| `hurtWithin` | number 0–3600 |  |  | was hurt within the last so many seconds |
+| `hpBelow` | number 0–1 |  |  | health below this share of its whole |
+| `hpAbove` | number 0–1 |  |  | health above this share of its whole |
+| `age` | number 0–36000 |  |  | seconds since it was made, or last changed form |
+| `flag` | string |  |  | a flag a rule has set on it is up |
+| `noFlag` | string |  |  | that flag is down |
+| `kills` | integer 0–10000 |  |  | it has made at least this many kills |
+| `rank` | integer 1–3 |  |  | its veteran rank is at least this |
+| `onWater` | boolean |  |  | stands on water (true) or on land (false) |
+| `enemyWithin` | number 0.5–32 |  |  | an enemy its side can see is within this many tiles |
+| `night` | boolean |  |  | it is night (true) or day (false) |
+| `carrying` | integer 1–50 |  |  | has at least this many units in its hold |
+| `killedBy` | id[] |  |  | on `destroyed`: what killed it was one of these defs (the dead rise only when the dead killed them) |
+| `any` | condition |  |  | a list of conditions, one of which must hold |
+| `not` | condition |  |  | a condition that must not hold |
+
+Every key given must hold; `any` and `not` say otherwise. A misspelt condition is an error, not a condition that always holds.
+
+### Effects (`do`)
+
+| field | type | required | default | meaning |
+| --- | --- | --- | --- | --- |
+| `morph` | id |  |  | become another def of this mod, in place: the same unit (its selection, its kills and rank, the orders the new form can carry out), its health keeping its share of the whole. A building only takes the form of a building of the same footprint |
+| `spawn` | { unit, count, side, into, max } |  |  | units put down beside it, or into its hold (see Spawn) |
+| `heal` | number -1000000–1000000 |  |  | hit points given back; negative takes them, never the last one |
+| `healPct` | number -1–1 |  |  | a share of its whole health given back |
+| `metal` | number -99999–99999 |  |  | metal to its side; negative takes it, never below nothing |
+| `flag` | string |  |  | raise a flag on it, for a condition to read |
+| `unflag` | string |  |  | lower that flag |
+| `buff` | { speed, damage, reload, taken, for } |  |  | multipliers held for `for` seconds: `speed`, the `damage` it deals, its `reload` time, and the harm it is `taken`; a new buff replaces the one it has |
+| `explode` | { dmg, radius, cls, friendlyFire } |  |  | a blast round it: `dmg` at the centre falling to half at the edge of `radius` (world px), through the armour row of `cls` (default he); its own side is spared unless `friendlyFire` |
+| `fx` | string |  |  | an effect played where it stands: one of this mod's `fx.<name>` sheets, or fx.expl.s, fx.expl.m, fx.expl.l, fx.spark, fx.flak, fx.smoke, fx.splash, fx.splash.l, fx.muzzle, fx.repair, fx.emp, fx.nuke |
+| `fxScale` | number 0.05–8 |  | 1 | the effect drawn at this multiple |
+| `sound` | string |  |  | a sound played where it stands: a weapon sound, expl, explBig, upgrade, or one of this mod's `sounds` |
+| `die` | boolean |  |  | it is destroyed, as if killed by nobody (its own `destroyed` rules run) |
+| `remove` | boolean |  |  | it is gone without a trace: no wreck, no loss, no `destroyed` |
+
+### A spawn (`do.spawn`)
+
+| field | type | required | default | meaning |
+| --- | --- | --- | --- | --- |
+| `unit` | id | yes |  | the unit: one of the game's or this mod's |
+| `count` | integer 1–16 |  | 1 | how many |
+| `side` | own \| killer |  | own | whose they are: its own side's, or (on `destroyed`) the side that killed it |
+| `into` | hold |  |  | straight into its own hold, as far as the room goes, instead of beside it |
+| `max` | integer 1–64 |  |  | at most this many of the units this rule has spawned alive at once |
+
+A spawn never takes a side past its population cap or a def past its `limit`: it puts down what fits and no more. Spawned units are ordinary units of their side, standing where they were put down; a spawned unit's own `created` rules run too. `side: "killer"` on a `destroyed` rule is the dead rising for whoever killed them.
+
+### A button (`rule.button`)
+
+| field | type | required | default | meaning |
+| --- | --- | --- | --- | --- |
+| `name` | text |  | the form it makes | the button's label |
+| `desc` | text |  |  | its tooltip line |
+| `cost` | number 0–99999 |  | 0 | metal, paid as the work is done |
+| `time` | number 0–3600 |  | 0 | seconds of work at full power; 0 is at once |
+| `requires` | id[] |  |  | buildings that must stand, or tech nodes researched, for it to be pressed (and to go on) |
+| `ai` | boolean |  |  | a computer side presses it too, when it can spare the metal |
+
+The button is a tile on the unit's card, pressed on every selected unit of that def free to take it. It starts on the production rule — three quarters of the price in hand — and is paid as the work is done; while it runs the tile wears its progress, and pressing it again stops it and gives back what it had cost. It waits while what it `requires` is down. A button whose `do` changes the unit's form is labelled with the form unless it has a `name`; any other button needs one.
+
+### A change of form (`do.morph`)
+
+The unit becomes another def of the same mod in place: the same unit, its side, where it stands and faces, its kills and veteran rank, its flags, the selection and the groups it is in; its health keeps its share of the whole, its guns carry on from where they were in their reload, and it keeps whatever orders the new form can carry out — a move, an attack. A unit turns only into a unit, and a building only into a building of the same footprint. The change is refused, and nothing happens, while the unit is being carried, while its hold holds more than the new form can, while its line or its magazine has work the new form cannot take over, or where the new form cannot stand (a boat on dry land). A form that nothing builds says `"producedBy": []`; the loader expects that of a form and says nothing.
+
+### A weapon's look (`weapons[].look`)
+
+| field | type | required | default | meaning |
+| --- | --- | --- | --- | --- |
+| `sprite` | string |  |  | the round: one of this mod's `prj.<name>` sheets — its frames play as it flies, or, baked `rotated`, it is turned to its heading |
+| `scale` | number 0.1–8 |  | 1 | the round and its flash drawn at this multiple |
+| `beam` | { color, width, style, life } |  |  | the round is light: `{ color, width, style, life }` — a line from the muzzle to where it strikes, `laser` straight or `lightning` jagged, held `life` seconds; it strikes at once |
+| `muzzle` | string |  | the class's flash | the muzzle flash: one of this mod's `fx.<name>` sheets, or `none` |
+| `impact` | string |  | the class's burst | the burst where it lands: an `fx.<name>` sheet of this mod, one of fx.expl.s, fx.expl.m, fx.expl.l, fx.spark, fx.flak, fx.smoke, fx.splash, fx.splash.l, fx.muzzle, fx.repair, fx.emp, fx.nuke, or `none` |
+| `impactScale` | number 0.1–8 |  | 1 | the burst drawn at this multiple |
+| `impactLife` | number 0.05–5 |  | 0.5 | seconds the burst plays over |
+| `trail` | smoke \| none |  | smoke | a rocket's or a missile's smoke trail, or none |
+
+A look is only what is seen: the round hits as the weapon's numbers say. A beam is the exception by its nature — the round goes at once, so it lands where the beam is drawn. A round's sheet (`prj.<name>`) is small art facing up with `rotated: true`, or a strip of `frames` played as it flies; an effect's sheet (`fx.<name>`) is a strip played once, not rotated.
+
+### A shield (`shield`)
+
+| field | type | required | default | meaning |
+| --- | --- | --- | --- | --- |
+| `hp` | number 1–1000000 | yes |  | what it takes before the hull does |
+| `regen` | number 0–100000 |  | 0 | recharged a second |
+| `delay` | number 0–600 |  | 3 | seconds unhurt before it starts to recharge |
+
+The shield takes harm before the hull, its bar drawn over the health bar, and shimmers round the hull when struck. `regen` on the def (not the shield) is the hull mending itself.
+
+### Animation states (`sprites[].anims`)
+
+| field | type | required | default | meaning |
+| --- | --- | --- | --- | --- |
+| `moving` | [first, last] or [first, last, fps] |  |  | `[first, last]` frames played while it moves, or `[first, last, fps]` |
+| `idle` | [first, last] or [first, last, fps] |  | frame 0 | the frames while it stands |
+| `firing` | [first, last] or [first, last, fps] |  |  | the frames within a reload of its last shot; before moving and idle |
+
+On a unit's body sheet, the frames played by what it is doing instead of one loop: the `firing` range within a reload of its last shot, else the `moving` range while it moves, else `idle`. A sheet without `anims` rolls its frames while the unit moves and rests on the first, as treads do.
+
 ## Maps
 
-A mod may carry maps: files the game's Map Editor exports (`.steel-tide-map`), named under `maps` in mod.json, up to 8 of them and each under 512 KB. While the mod is on, the Conquest setup and the lobby offer them as cards beside the player's own map; choosing one plays it exactly as painted. A map may stand the mod's own units and buildings before the whistle: with the mod on, they are in the editor's forces palette, and the map reads on any game that has the mod (the registry checks it against the mod's own defs, not the vanilla roster). A scene laid this way — a base built up, a horde at the gate — is how a mod shows what it is without a word.
+A mod may carry maps: files the game's Scenario Editor exports (`.steel-tide-map`), named under `maps` in mod.json, up to 8 of them and each under 512 KB. While the mod is on, the Conquest setup and the lobby offer them as cards beside the player's own map; choosing one plays it exactly as painted. A map may stand the mod's own units and buildings before the whistle: with the mod on, they are in the editor's forces palette, and the map reads on any game that has the mod (the registry checks it against the mod's own defs, not the vanilla roster). A scene laid this way — a base built up, a horde at the gate — is how a mod shows what it is without a word.
 
 ## Units of measure
 
@@ -445,7 +694,7 @@ A mod may carry maps: files the game's Map Editor exports (`.steel-tide-map`), n
 - ships: gunboat (T1, 130), mboat (T1, 280), frigate (T2, 600), destroyer (T2, 700), sub (T2, 480), btlship (T3, 1700), seatrans (T1, 220), engboat (T1, 200), kraken (T3, 1000), moray (T3, 700)
 - amphibious units: gator (T2, 240)
 - aircraft: hornet (T2, 120), drone (T1, 40), fighter (T2, 380), heli (T1, 340), jet (T2, 400), mjet (T2, 520), bomber (T2, 1000), theli (T1, 280), c47 (T2, 650), gunship (T3, 1600), wraith (T3, 1400), cormorant (T3, 700)
-- buildings: hq (T1, 2500), extractor (T1, 120), extractor2 (T2, 310, upgrade level), extractor3 (T3, 810, upgrade level), power (T1, 140), power2 (T2, 400, upgrade level), power3 (T3, 1100, upgrade level), factory (T1, 320), factory2 (T2, 740, upgrade level), factory3 (T3, 1640, upgrade level), airbase (T1, 350), airbase2 (T2, 830, upgrade level), airbase3 (T3, 1780, upgrade level), navyard (T1, 380), navyard2 (T2, 800, upgrade level), navyard3 (T3, 1750, upgrade level), mgturret (T1, 130), gatling (T2, 390, upgrade level), cannonturret (T1, 320), cannonturret2 (T2, 740, upgrade level), aaturret (T1, 240), samsite (T2, 560, upgrade level), interceptor (T2, 450), interceptor2 (T3, 1100, upgrade level), sandbag (T1, 40), repairtower (T1, 360), radar (T2, 400), warlab (T1, 500), reactor (T3, 1400), nukesilo (T3, 1800)
+- buildings: hq (T1, 2500), extractor (T1, 120), extractor2 (T2, 310, upgrade level), extractor3 (T3, 810, upgrade level), platform (T1, 120), platform2 (T2, 310, upgrade level), platform3 (T3, 810, upgrade level), power (T1, 140), power2 (T2, 400, upgrade level), power3 (T3, 1100, upgrade level), factory (T1, 320), factory2 (T2, 740, upgrade level), factory3 (T3, 1640, upgrade level), airbase (T1, 350), airbase2 (T2, 830, upgrade level), airbase3 (T3, 1780, upgrade level), navyard (T1, 380), navyard2 (T2, 800, upgrade level), navyard3 (T3, 1750, upgrade level), mgturret (T1, 130), gatling (T2, 390, upgrade level), cannonturret (T1, 320), cannonturret2 (T2, 740, upgrade level), aaturret (T1, 240), samsite (T2, 560, upgrade level), interceptor (T2, 450), interceptor2 (T3, 1100, upgrade level), sandbag (T1, 40), repairtower (T1, 360), radar (T2, 400), warlab (T1, 500), reactor (T3, 1400), nukesilo (T3, 1800)
 
 ## Test
 
