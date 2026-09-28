@@ -1717,10 +1717,10 @@ def main():
             dump(n)
         return
     defs = convert()
-    desc_en = ("FG Rusted League, ported from its Rusted Warfare build with its author's permission: the whole army redrawn "
-               "in black and acid green — Grizzly and Prism tanks, Kirov airships, Patriot batteries — and its GF plugin's "
-               "carriers, dreadnoughts, sky fortresses, a Mirage tank that hides as a tree and a hero tank that ranks itself up.")
-    desc_zh = "《FG铁锈联盟》经作者空中之主授权移植：整套重绘的军队——灰熊、光棱坦克、基洛夫空艇、爱国者导弹——以及 GF 插件的航母、无畏战舰、空中堡垒、会变成树的幻影坦克和能自己升级的英雄坦克。"
+    desc_en = ("The whole army redrawn in black and acid green — Grizzly and Prism tanks, Kirov airships, Patriot batteries — "
+               "and the GF plugin's carriers, dreadnoughts, sky fortresses, a Mirage tank that hides as a tree and a hero tank "
+               "that ranks itself up.")
+    desc_zh = "整套重绘的军队——灰熊、光棱坦克、基洛夫空艇、爱国者导弹——以及 GF 插件的航母、无畏战舰、空中堡垒、会变成树的幻影坦克和能自己升级的英雄坦克。"
     manifest = {
         "format": "steel-tide-mod",
         "v": 1,
