@@ -6769,6 +6769,7 @@ function modCountUrl(id) {
 const MAX_MOD_DEFS = 200;
 const MAX_MOD_SPRITES = 160;
 const MAX_DEF_DECALS = 12;
+const MAX_DEF_MOUNTS = 8;
 const MAX_MOD_SOUNDS = 60;
 const MAX_MOD_SCREENSHOTS = 8;
 const MAX_MOD_MAPS = 8;
@@ -6885,6 +6886,7 @@ const DEF_SPECS = [
   { name: "shadow", type: "bool", def: "true", doc: ["the shadow the game casts for it: a unit's hull and turret silhouettes, a step to the south-east on the ground, further off in the air; a building's gun's, on its roof; `false` when the art brings its own, or none is wanted (a submarine casts none)", "游戏为它投下的影子：单位是车体与炮塔的剪影，在地面上向东南偏一步，在空中则更远；建筑是其炮塔投在屋顶上的影子；图像自带阴影或不需要时设为 `false`（潜艇不投影）"] },
   { name: "sprite", type: "string", max: 48, def: "this mod's u.<id> sheet, else the base's art", doc: ["the body's atlas key: one of this mod's sheets, or a vanilla key to borrow its art", "主体图像键：本模组的精灵图，或借用原版的键"] },
   { name: "turretSprite", type: "string", max: 48, def: "this mod's tur.<id> sheet, else the base's (when its art is kept)", doc: ["the rotating part's key, if any", "旋转部件的图像键（若有）"] },
+  { name: "turretMounts", type: "mounts", def: "one, where the body sheet's `mount` puts it (else the pivot); the base's, when its art is kept", doc: [`the rings its turret stands on and fires from, up to ${MAX_DEF_MOUNTS}: a hull with several guns names one each (a battleship's A, B and X), every one drawn with the one \`turretSprite\` and trained on the one target, as far round as its own arc goes (see below)`, `炮塔所在并由此开火的炮塔环，最多 ${MAX_DEF_MOUNTS} 个：有多门炮的车体每门各写一个（战列舰的 A、B、X 炮塔），每个都用同一个 \`turretSprite\` 绘制，并在各自射界之内瞄准同一个目标（见下）`] },
   { name: "decals", type: "decals", def: "the base's, when its art is kept", doc: [`pictures laid on the hull and the turret besides their own sheets (see below), up to ${MAX_DEF_DECALS}`, `除车体与炮塔本身之外贴在其上的图像（见下），最多 ${MAX_DEF_DECALS} 个`] },
   { name: "ability", type: "enum", values: ABILITY_IDS, only: "unit", def: "the base's", doc: ["its one active ability, a vanilla one by id (`sprint`, `smoke`, `countermeasures`…): the same click, clock and unlock as on the game's own units", "唯一的主动技能，按 id 取原版技能（`sprint`、`smoke`、`countermeasures`…）：点击、计时与解锁条件与原版单位相同"] },
   { name: "aliases", type: "strings", doc: ["other names the console's `give` accepts", "控制台 `give` 接受的别名"] },
@@ -6936,6 +6938,12 @@ const DECAL_SPECS = [
   { name: "alpha", type: "number", min: 0, max: 1, def: "1", doc: ["opacity", "不透明度"] },
   { name: "when", type: "enum", values: DECAL_WHENS, def: "always", doc: ["shown only while the unit moves or stands (`moving`, `still`), within a reload of its last shot (`firing`), under half health (`damaged`), while its ability runs or is armed (`ability`), or after dusk (`night`: laid over the dark like a lamp, and the game's own headlights stay off a unit that has one)", "仅在移动/静止（`moving`/`still`）、上次开火后一次装填时间内（`firing`）、生命低于一半（`damaged`）、技能生效或待发时（`ability`）或天黑后（`night`：像灯一样亮于夜色之上，且游戏不再为该单位画自己的车灯）时显示"] }
 ];
+const MOUNT_SPECS = [
+  { name: "x", type: "number", min: -256, max: 256, def: "0", doc: ["where the ring is on the body's up-facing art: px right of its pivot, in the body sheet's own px at its `fw`×`fh` size (the game scales it with the unit)", "炮塔环在主体朝上图像上的位置：枢轴右侧的像素，按主体精灵图 `fw`×`fh` 尺寸计（游戏随单位一并缩放）"] },
+  { name: "y", type: "number", min: -256, max: 256, def: "0", doc: ["px down from the pivot, toward the tail", "枢轴下方（车尾方向）的像素"] },
+  { name: "rest", type: "number", min: -360, max: 360, def: "0", doc: ["the bearing it trains about, degrees clockwise from the bow: 0 forward, 90 to the right, 180 aft", "转动所围绕的朝向，自车头顺时针计的角度：0 向前、90 向右、180 向后"] },
+  { name: "arc", type: "number", min: 0, max: 180, def: "180", doc: ["how far either side of `rest` it turns, degrees; 180 is all round. A ring that cannot bear on the target waits at the end of its arc, and the rings that can take the shots", "在 `rest` 两侧各能转动的角度；180 即全向。无法指向目标的炮塔停在射界尽头，由能指向目标的炮塔开火"] }
+];
 const SOUND_SPECS = [
   { name: "key", type: "string", max: 60, required: true, doc: ["`<mod id>-<name>`, lower case; what a weapon's `sound` names", "`<模组 id>-<名字>`，小写；武器 `sound` 引用的键"] },
   { name: "file", type: "string", max: 120, required: true, doc: ["the recording, relative to mod.json. An MP3 plays everywhere; WAV works, OGG not on Safari. Dry, close, under a second", "录音路径，相对 mod.json。MP3 处处可播；WAV 可用，OGG 在 Safari 上不行。干声、近距、一秒以内"] }
@@ -6968,6 +6976,7 @@ const FIELD_SPECS = {
   def: DEF_SPECS,
   weapon: WEAPON_SPECS,
   decal: DECAL_SPECS,
+  mount: MOUNT_SPECS,
   sprite: SPRITE_SPECS,
   sound: SOUND_SPECS,
   // a mod's behaviour, a weapon's look, a shield and a sheet's states (`game/ruleSpec.ts`)
@@ -7159,6 +7168,8 @@ function checkField(spec, value, path, issues) {
       return Array.isArray(value) && value.length === 4 && value.every((n) => typeof n === "number" && n >= 0 && n <= 1) || bad("must be [x0, y0, x1, y1] fractions between 0 and 1");
     case "decals":
       return Array.isArray(value) && value.length <= MAX_DEF_DECALS || bad(`must be a list of up to ${MAX_DEF_DECALS} decals`);
+    case "mounts":
+      return Array.isArray(value) && value.length >= 1 && value.length <= MAX_DEF_MOUNTS || bad(`must be a list of one to ${MAX_DEF_MOUNTS} mounts`);
     case "weapons":
     case "defs":
     case "sprites":
@@ -7403,6 +7414,23 @@ function resolveMod(mod, table = VANILLA) {
       } else def.turretSprite = turretKey;
     } else delete def.turretSprite;
     for (const wp of def.weapons) if (wp.turret === void 0) wp.turret = !!def.turretSprite;
+    if (own.turretMounts !== void 0) {
+      const rings = [];
+      own.turretMounts.forEach((rawMount, k) => {
+        const mpath = `${path}.turretMounts[${k}]`;
+        if (!isPlainObject(rawMount)) {
+          errors.push({ path: mpath, message: "must be an object" });
+          return;
+        }
+        const m = checkObject(rawMount, MOUNT_SPECS, mpath, errors, warnings);
+        const ring = { x: m.x ?? 0, y: m.y ?? 0 };
+        if (m.rest) ring.rest = m.rest * Math.PI / 180;
+        if (m.arc !== void 0 && m.arc < 180) ring.arc = m.arc * Math.PI / 180;
+        rings.push(ring);
+      });
+      if (rings.length > 0) def.turretMounts = rings;
+      else delete def.turretMounts;
+    } else if (own.sprite !== void 0 || ownSheet) delete def.turretMounts;
     const rawDecals = own.decals ?? (own.sprite !== void 0 || ownSheet ? void 0 : base?.decals);
     delete def.decals;
     if (rawDecals) {
@@ -7655,7 +7683,7 @@ function buildDef(own, kind, base, modId, soundKeys, path, errors, warnings) {
   return def;
 }
 function stripModOnly(own) {
-  const { name: _n, desc: _d, extends: _e, weapons: _w, producedBy: _p, builtBy: _b, upgradeOf: _u, sprite: _s, turretSprite: _t, decals: _dc, rules: _r, ...rest } = own;
+  const { name: _n, desc: _d, extends: _e, weapons: _w, producedBy: _p, builtBy: _b, upgradeOf: _u, sprite: _s, turretSprite: _t, turretMounts: _tm, decals: _dc, rules: _r, ...rest } = own;
   return rest;
 }
 let active = [];
@@ -7917,6 +7945,8 @@ function typeLabel(spec) {
       return "weapon[]";
     case "decals":
       return "decal[]";
+    case "mounts":
+      return "mount[]";
     case "defs":
       return "def[]";
     case "sprites":
@@ -8145,6 +8175,12 @@ function agentPrompt() {
   p();
   p(`A decal is a picture laid on a def besides its body and its turret — a hatch, a crew figure, an outline, a lamp — fixed to the hull or the turret (\`on\`) and turned with it. Up to ${MAX_DEF_DECALS} on a def, drawn in the order listed within a layer. \`x\`/\`y\` are a point on that part's up-facing art: right and down (toward the tail) of its pivot, in the px of the sheet at its \`fw\`×\`fh\` size; the game scales them with the unit. The sheet is one of the mod's own under a \`dec.<name>\` key (see Art), or a body or turret key it borrows. A \`night\` decal is a lamp: laid over the dark rather than dimmed by it, so a headlight or a lit window reads as light, and a unit that carries one gets none of the game's own headlights. Paint a beam soft — a wide, faint falloff, not a hard-edged triangle — or it reads as glass.`);
   p();
+  p("### A turret mount (`defs[].turretMounts[]`)");
+  p();
+  p(markdownTable(fieldRows("mount")));
+  p();
+  p(`A hull with more than one gun — a battleship's turrets fore and aft, a tank with a turret at each corner — names a ring for each, up to ${MAX_DEF_MOUNTS}: the def's one \`turretSprite\` is drawn on every ring, and every ring is trained on the one target the unit is aiming at, as far round as its own \`arc\` of its \`rest\` bearing goes, so a gun the superstructure blocks waits at its stop while the others fire. A burst walks the rings that bear (the first shot from the first of them, the next from the next), and \`muzzleOffset\` is measured from the ring a shot leaves, so give a weapon of several guns a \`burst\` of that many. \`x\`/\`y\` are a point on the body's up-facing art, as a decal's are. A def with none has one ring, where its body sheet's \`mount\` puts it.`);
+  p();
   p("### A sheet (`sprites[]`)");
   p();
   p(markdownTable(fieldRows("sprite")));
@@ -8174,6 +8210,7 @@ function agentPrompt() {
   p('- Hulls, turrets and everything that turns: draw ONE image facing UP and set `"rotated": true`; the game bakes the 24 headings. `fw`/`fh` are the in-game size of that up-facing image in world px (a tank hull is about 24×24; the image itself may be any resolution, 2–4× is best). `pivotX`/`pivotY` put the pivot on the turret ring (default centre).');
   p("- Buildings: one strip of frames, not rotated, drawn with a slight top-down southern tilt. The footprint is the bottom `fw×32` by `fh×32` px of the frame; anything above overhangs the terrain behind (towers, masts). Width, height and anchor are sized from the def's footprint automatically.");
   p('- A building with a gun that turns is two sheets like a hull and turret: the body with an empty ring and `"mount": [fx, fy]` saying where the ring sits as fractions of the frame, and a `tur.<id>` sheet for the gun; its weapons carry `"turret": true`.');
+  p("- Several guns of one kind on one hull are one `tur.<id>` sheet and a `turretMounts` ring for each, not guns painted on the body: a painted gun never turns.");
   p("- A decal's sheet (`dec.<name>`) is drawn like a turret's: one up-facing image, or a strip of `frames` at `fps` for something that moves (a spinning barrel, a blinking light), sized by `fw`/`fh` and drawn about its centre. Static detail belongs in the body's own sheet; a decal is for what the body cannot hold — a part that turns with the turret, a hatch the barrel sweeps over, a light that comes on at night, a barrel that spins while it fires.");
   p("- Faction colour: paint team-coloured parts in pure magenta (highlight #FF66FF, base #FF00FF, shadow #990099) and use magenta nowhere else; the game recolours it per player.");
   p("- Style: crisp pixel art, hard edges, no anti-aliasing, a muted military palette (DawnBringer-32), dark #222034 outlines. Generated sheets are cleaned automatically (background removal, frame registration), but a transparent background is best.");
@@ -8328,6 +8365,7 @@ export {
   FIELD_SPECS,
   ID_RE,
   MAX_DEF_DECALS,
+  MAX_DEF_MOUNTS,
   MAX_HELLO_MODS,
   MAX_MANIFEST_BYTES,
   MAX_MOD_DEFS,

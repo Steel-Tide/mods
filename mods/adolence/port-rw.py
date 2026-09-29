@@ -827,6 +827,38 @@ def soften_lamp(im, up=4):
     return out, up
 
 
+def scale_key(v, default=1.0):
+    """a scale as written: missing is the default, and 0 is 0 (a part the package hides so)"""
+    n = num(v)
+    return default if n is None else n
+
+
+def body_scale(ini, d):
+    """the body's scale as Rusted Warfare draws it: `imageScale`, times `scaleImagesTo` px over a
+    frame's width when that is set"""
+    gfx, core = ini.get("graphics", {}), ini.get("core", {})
+    k = 1.0
+    sit = num(gfx.get("scaleImagesTo"))
+    p = resolve(gfx.get("image") or "", d)
+    if sit and sit > 0 and p:
+        fw = Image.open(p).width // max(1, int(num(gfx.get("total_frames")) or 1))
+        k = sit * scale_key(core.get("globalScale")) / max(1, fw)
+    return k * scale_key(gfx.get("imageScale"))
+
+
+def turret_scale(ini, d):
+    """every turret of a unit is drawn at one scale: `scaleTurretImagesTo` px over the width of the
+    unit's `image_turret` (not the turret's own picture), else 1 (not the body's `imageScale`),
+    times `turretImageScale`"""
+    gfx, core = ini.get("graphics", {}), ini.get("core", {})
+    k = 1.0
+    stit = num(gfx.get("scaleTurretImagesTo"))
+    p = resolve(gfx.get("image_turret") or "", d)
+    if stit and stit > 0 and p:
+        k = stit * scale_key(core.get("globalScale")) / max(1, Image.open(p).width)
+    return k * scale_key(gfx.get("turretImageScale"))
+
+
 def prep(im, scale=1.0, sx=1.0, sy=1.0, alpha=1.0, angle=0.0, frame0=1):
     """an image as the package draws it: the first frame of a strip, scaled, turned (degrees clockwise), faded"""
     im = clean_alpha(im)
@@ -876,8 +908,7 @@ def unit_picture(ini, d, by_name, depth=0):
     the still parts in draw order as (image, x, y) about the unit's origin (RW px, y forward), and the
     decals the game is to draw itself (shadow-layer ones go under the hull; the rest are conditional)"""
     gfx = ini.get("graphics", {})
-    scale = num(gfx.get("imageScale")) or 1.0
-    tscale = num(gfx.get("turretImageScale")) or scale
+    scale, tscale = body_scale(ini, d), turret_scale(ini, d)
     secs, abs_pos = turret_positions(ini)
     stills, dyn = [], []
     decs = decal_list(ini, d)
@@ -902,14 +933,17 @@ def unit_picture(ini, d, by_name, depth=0):
     # the turrets as declared (the last on top), what rides over everything
     stills += statics("beforebody")
     body = resolve(gfx.get("image", ""), d)
-    if body and os.path.basename(body).lower() not in ("blank.png", "空.png"):
+    if body and os.path.basename(body).lower() not in ("blank.png", "空.png") and scale > 0:
         stills.append((prep(Image.open(body), scale), 0, 0))
     stills += statics("afterbody")
+    # a turret without a picture of its own is drawn with the unit's `image_turret`, as the
+    # original does (the TUSK's and the M1A1's commander M2 and loader M249)
+    shared = resolve(gfx.get("image_turret") or "", d)
     for s, kv in secs.items():
-        img = kv.get("image")
-        if not img or boolish(kv.get("invisible")):
+        if boolish(kv.get("invisible")) or tscale <= 0:
             continue
-        hit = resolve(img, d)
+        img = kv.get("image")
+        hit = resolve(img, d) if img else shared
         if not hit:
             continue
         x, y = abs_pos(s)
@@ -1270,17 +1304,13 @@ def convert():
         if image and os.path.basename(image).lower() == "blank.png":
             image = None
         frames = int(max(1, round(num(gfx.get("total_frames")) or 1)))
-        scale = num(gfx.get("imageScale")) or 1.0
-        sit = num(gfx.get("scaleImagesTo"))
-        tur_scale = num(gfx.get("turretImageScale")) or scale
+        # RW px a picture px is drawn at, as the package sets it for the body and for its turrets
+        scale, tur_scale = body_scale(ini, d), turret_scale(ini, d)
         body_sheet = None
         art_k = 1.0
         hull_px = None
         if image:
             im = clean_alpha(Image.open(image))
-            if sit and sit > 1 and not is_building:
-                scale = sit / (im.width // frames)  # `scaleImagesTo`: the drawn width in px
-                sit = None
             # rotors and wings the original draws as spinning arms, and guns mounted on the
             # hull that turn on their own: laid on the body, still
             body_parts, body_root, hull_secs, hull_parts, _, hull_on_root = turret_parts(ini, d, ov)
@@ -1341,8 +1371,6 @@ def convert():
                 body_sheet = add_sheet(f"u.{did}", im, 1, False)
             else:
                 pw = im.width // frames
-                if sit and sit > 1:
-                    scale = sit / pw
                 fw, fh, f = sheet_size(pw, im.height, scale, infantry)
                 art_k = f / (ART * scale * (INFANTRY_ART if infantry else 1.0))
                 hull_px = (pw, im.height)
@@ -1373,7 +1401,6 @@ def convert():
             tp = by_name.get(ov["turret_from"])
             if tp:
                 tsrc, tdir = load_unit(tp), os.path.dirname(tp)
-                tur_scale = num(tsrc.get("graphics", {}).get("turretImageScale")) or num(tsrc.get("graphics", {}).get("imageScale")) or scale
         if (not is_building or ov.get("tower")) and not ov.get("no_turret"):
             cv, tur_dyn, tur_names = None, [], []
             if ov.get("turret_from") and tsrc is not ini:

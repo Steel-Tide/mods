@@ -6,7 +6,7 @@
     "Adolence: City of Sin",
     "Adolence·罪恶之都"
   ],
-  "version": "1.1.0",
+  "version": "1.1.1",
   "minGame": "0.8.7",
   "author": "自然常数也有人用? and the Adolence team; port by Steel Tide",
   "description": [
@@ -7634,7 +7634,7 @@
       "file": "sprites/tur.adolence-m1a1-clickbait.png",
       "frames": 1,
       "rotated": true,
-      "fw": 22,
+      "fw": 26,
       "fh": 60
     },
     {

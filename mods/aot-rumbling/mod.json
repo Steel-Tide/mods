@@ -6,9 +6,9 @@
     "Attack on Titan: The Rumbling",
     "进击の巨人『地鸣』"
   ],
-  "version": "0.1.0",
+  "version": "0.1.1",
   "minGame": "0.8.7",
-  "author": "辣条QWQ and 白日梦 (original by Mirka); port by Steel Tide",
+  "author": "辣条QWQ (original by Mirka); port by Steel Tide",
   "description": [
     "The Walls and the Survey Corps on their gear, Marley's army, air fleet and Warriors, the Middle-East Allied Forces, and the Titans: shifters who take their Titan forms, Eldians who become mindless ones, and the Rumbling.",
     "城墙与驾驶立体机动装置的调查兵团，马莱的陆军、空军与战士，中东联合军，以及巨人：能变身的九大巨人继承者、化为无垢巨人的艾尔迪亚人，还有地鸣。"
@@ -325,7 +325,7 @@
           "spread": 18,
           "sound": "aot-rumbling-shot-cannon",
           "turret": true,
-          "muzzleOffset": 120.0
+          "muzzleOffset": 43.3
         }
       ],
       "turretSprite": "tur.aot-rumbling-wall-cannon",
@@ -927,7 +927,7 @@
           "boreSpacing": 3.2,
           "sound": "aot-rumbling-gunfire",
           "turret": true,
-          "muzzleOffset": 39.7
+          "muzzleOffset": 29.2
         }
       ],
       "turretSprite": "tur.aot-rumbling-aa-mg",
@@ -975,7 +975,7 @@
           "splash": 28,
           "sound": "aot-rumbling-cannon",
           "turret": true,
-          "muzzleOffset": 77.3
+          "muzzleOffset": 66.4
         }
       ],
       "turretSprite": "tur.aot-rumbling-aa-gun"
@@ -5723,10 +5723,10 @@
       "armor": "light",
       "vision": 9,
       "sprite": "u.aot-rumbling-anti-titan-gun",
-      "radius": 26,
+      "radius": 27,
       "body": {
-        "r": 24.2,
-        "len": 23.4
+        "r": 21.1,
+        "len": 31.2
       },
       "speed": 14,
       "turnRate": 0.5,
@@ -5753,7 +5753,7 @@
             "heavy": 1.4
           },
           "turret": true,
-          "muzzleOffset": 57.0
+          "muzzleOffset": 47.3
         }
       ],
       "turretSprite": "tur.aot-rumbling-anti-titan-gun",
@@ -5785,10 +5785,10 @@
       "armor": "heavy",
       "vision": 15,
       "sprite": "u.aot-rumbling-super-heavy-tank",
-      "radius": 31,
+      "radius": 32,
       "body": {
-        "r": 33.6,
-        "len": 109.4
+        "r": 24.2,
+        "len": 87.5
       },
       "speed": 16,
       "turnRate": 0.5,
@@ -5813,7 +5813,7 @@
           "burstDelay": 0.12,
           "sound": "aot-rumbling-gunfire",
           "turret": true,
-          "muzzleOffset": 16.1
+          "muzzleOffset": 10.6
         },
         {
           "id": "w3",
@@ -5834,7 +5834,7 @@
             "sprite": "prj.aot-rumbling-super-heavy-tank-w3"
           },
           "turret": true,
-          "muzzleOffset": 16.1
+          "muzzleOffset": 10.6
         },
         {
           "id": "w7",
@@ -5852,7 +5852,7 @@
           "boreSpacing": 44.8,
           "sound": "aot-rumbling-gun",
           "turret": true,
-          "muzzleOffset": 16.1
+          "muzzleOffset": 10.6
         },
         {
           "id": "w2",
@@ -5869,7 +5869,7 @@
           "splash": 32,
           "sound": "cannon",
           "turret": true,
-          "muzzleOffset": 16.1
+          "muzzleOffset": 10.6
         },
         {
           "id": "w4",
@@ -5889,7 +5889,7 @@
           "spread": 28,
           "sound": "aot-rumbling-shot-cannon",
           "turret": true,
-          "muzzleOffset": 16.1
+          "muzzleOffset": 10.6
         },
         {
           "id": "w0",
@@ -5906,7 +5906,7 @@
           "bores": 2,
           "boreSpacing": 52.0,
           "turret": true,
-          "muzzleOffset": 16.1
+          "muzzleOffset": 10.6
         },
         {
           "id": "w1-7",
@@ -5927,7 +5927,7 @@
           "spread": 12,
           "sound": "aot-rumbling-shot-colossal",
           "turret": false,
-          "muzzleOffset": 79.5
+          "muzzleOffset": 61.2
         }
       ],
       "turretSprite": "tur.aot-rumbling-super-heavy-tank",
@@ -6090,8 +6090,8 @@
       "sprite": "u.aot-rumbling-combat-airship",
       "radius": 13,
       "body": {
-        "r": 26.6,
-        "len": 67.2
+        "r": 19.5,
+        "len": 81.2
       },
       "speed": 34,
       "turnRate": 0.5,
@@ -6166,8 +6166,8 @@
       "sprite": "u.aot-rumbling-strategic-airship",
       "radius": 17,
       "body": {
-        "r": 26.6,
-        "len": 101.6
+        "r": 20.3,
+        "len": 114.1
       },
       "speed": 34,
       "turnRate": 0.5,
@@ -6322,7 +6322,7 @@
           "burstDelay": 0.12,
           "sound": "aot-rumbling-gunfire",
           "turret": true,
-          "muzzleOffset": 21.1
+          "muzzleOffset": 14.9
         },
         {
           "id": "w1",
@@ -6343,7 +6343,7 @@
           "spread": 30,
           "sound": "aot-rumbling-shot-cannon",
           "turret": true,
-          "muzzleOffset": 21.1
+          "muzzleOffset": 14.9
         },
         {
           "id": "w3",
@@ -6362,7 +6362,7 @@
           "burstDelay": 0.12,
           "sound": "missile",
           "turret": true,
-          "muzzleOffset": 21.1
+          "muzzleOffset": 14.9
         },
         {
           "id": "w2",
@@ -6378,7 +6378,7 @@
           "burst": 2,
           "burstDelay": 0.12,
           "turret": true,
-          "muzzleOffset": 21.1
+          "muzzleOffset": 14.9
         }
       ],
       "turretSprite": "tur.aot-rumbling-frigate",
@@ -6410,8 +6410,8 @@
       "sprite": "u.aot-rumbling-ironclad",
       "radius": 21,
       "body": {
-        "r": 21.1,
-        "len": 125.0
+        "r": 19.5,
+        "len": 128.1
       },
       "speed": 20,
       "turnRate": 0.5,
@@ -6434,7 +6434,7 @@
           "burstDelay": 0.12,
           "sound": "aot-rumbling-gunfire",
           "turret": true,
-          "muzzleOffset": 20.1
+          "muzzleOffset": 16.8
         },
         {
           "id": "w1",
@@ -6455,7 +6455,7 @@
           "spread": 35,
           "sound": "aot-rumbling-shot-colossal",
           "turret": true,
-          "muzzleOffset": 20.1
+          "muzzleOffset": 16.8
         },
         {
           "id": "w2",
@@ -6472,7 +6472,7 @@
           "burstDelay": 0.12,
           "sound": "missile",
           "turret": true,
-          "muzzleOffset": 20.1
+          "muzzleOffset": 16.8
         }
       ],
       "turretSprite": "tur.aot-rumbling-ironclad",
@@ -6505,7 +6505,7 @@
       "radius": 23,
       "body": {
         "r": 18.0,
-        "len": 173.4
+        "len": 167.2
       },
       "speed": 20,
       "turnRate": 0.5,
@@ -6526,7 +6526,7 @@
           "burstDelay": 0.12,
           "sound": "missile",
           "turret": false,
-          "muzzleOffset": 94.2
+          "muzzleOffset": 91.4
         },
         {
           "id": "w0-2",
@@ -6546,7 +6546,7 @@
           "burst": 2,
           "burstDelay": 0.15,
           "turret": false,
-          "muzzleOffset": 94.2
+          "muzzleOffset": 91.4
         },
         {
           "id": "w1-3",
@@ -6569,7 +6569,7 @@
           "burst": 2,
           "burstDelay": 0.15,
           "turret": false,
-          "muzzleOffset": 94.2
+          "muzzleOffset": 91.4
         },
         {
           "id": "w1-4",
@@ -6590,7 +6590,7 @@
           "burst": 2,
           "burstDelay": 0.15,
           "turret": false,
-          "muzzleOffset": 94.2
+          "muzzleOffset": 91.4
         }
       ],
       "aiWeight": 1.5,
@@ -8053,7 +8053,7 @@
           "speed": 1350,
           "sound": "aot-rumbling-gunfire",
           "turret": true,
-          "muzzleOffset": 42.4
+          "muzzleOffset": 20.7
         }
       ],
       "turretSprite": "tur.aot-rumbling-me-hmg",
@@ -8333,7 +8333,7 @@
             "heavy": 1.4
           },
           "turret": true,
-          "muzzleOffset": 32.1
+          "muzzleOffset": 18.0
         }
       ],
       "turretSprite": "tur.aot-rumbling-me-at-gun",
@@ -8364,8 +8364,8 @@
       "sprite": "u.aot-rumbling-me-howitzer",
       "radius": 31,
       "body": {
-        "r": 16.4,
-        "len": 35.9
+        "r": 20.3,
+        "len": 28.1
       },
       "speed": 14,
       "turnRate": 0.52,
@@ -8391,7 +8391,7 @@
           "spread": 42,
           "sound": "aot-rumbling-shot-cannon",
           "turret": true,
-          "muzzleOffset": 59.4
+          "muzzleOffset": 35.2
         }
       ],
       "turretSprite": "tur.aot-rumbling-me-howitzer",
@@ -9124,9 +9124,9 @@
       "armor": "heavy",
       "vision": 16,
       "sprite": "u.aot-rumbling-armored-titan",
-      "radius": 25,
+      "radius": 26,
       "body": {
-        "r": 25.1,
+        "r": 25.5,
         "len": 0
       },
       "speed": 70,
@@ -9139,7 +9139,7 @@
           "cls": "he",
           "dmg": 90.2,
           "reload": 2.25,
-          "range": 1.0,
+          "range": 1.1,
           "targets": [
             "ground",
             "ship",
@@ -9152,7 +9152,7 @@
             "heavy": 1.0
           },
           "turret": false,
-          "muzzleOffset": 27.5
+          "muzzleOffset": 27.8
         }
       ],
       "aiWeight": 0,
@@ -9239,9 +9239,9 @@
       "armor": "medium",
       "vision": 9,
       "sprite": "u.aot-rumbling-armored-titan-shed",
-      "radius": 25,
+      "radius": 26,
       "body": {
-        "r": 25.1,
+        "r": 25.5,
         "len": 0
       },
       "speed": 90,
@@ -9254,7 +9254,7 @@
           "cls": "he",
           "dmg": 68.2,
           "reload": 1.42,
-          "range": 1.0,
+          "range": 1.1,
           "targets": [
             "ground",
             "ship",
@@ -9267,7 +9267,7 @@
             "heavy": 1.0
           },
           "turret": false,
-          "muzzleOffset": 27.5
+          "muzzleOffset": 27.8
         }
       ],
       "aiWeight": 0,
@@ -9467,7 +9467,7 @@
       "sprite": "u.aot-rumbling-jaw-titan",
       "radius": 22,
       "body": {
-        "r": 21.7,
+        "r": 21.5,
         "len": 0
       },
       "speed": 135,
@@ -9493,7 +9493,7 @@
             "heavy": 1.0
           },
           "turret": false,
-          "muzzleOffset": 24.1
+          "muzzleOffset": 23.8
         }
       ],
       "aiWeight": 0,
@@ -10378,9 +10378,9 @@
       "armor": "heavy",
       "vision": 15,
       "sprite": "u.aot-rumbling-leaping-abnormal",
-      "radius": 28,
+      "radius": 26,
       "body": {
-        "r": 28.1,
+        "r": 26.2,
         "len": 0
       },
       "speed": 95,
@@ -10406,7 +10406,7 @@
           },
           "sound": "aot-rumbling-bite",
           "turret": false,
-          "muzzleOffset": 23.1
+          "muzzleOffset": 21.6
         }
       ],
       "aiWeight": 0,
@@ -10444,7 +10444,7 @@
       "sprite": "u.aot-rumbling-crawling-abnormal",
       "radius": 29,
       "body": {
-        "r": 29.1,
+        "r": 28.8,
         "len": 0
       },
       "speed": 108,
@@ -10468,7 +10468,7 @@
             "heavy": 1.0
           },
           "turret": false,
-          "muzzleOffset": 26.2
+          "muzzleOffset": 25.9
         }
       ],
       "aiWeight": 0,
@@ -10657,7 +10657,7 @@
           },
           "sound": "aot-rumbling-hit-colossal",
           "turret": false,
-          "muzzleOffset": 15.9
+          "muzzleOffset": 19.4
         }
       ],
       "aiWeight": 0,
@@ -11362,8 +11362,8 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 119,
-      "fh": 245
+      "fw": 64,
+      "fh": 92
     },
     {
       "key": "u.aot-rumbling-wall",
@@ -11907,8 +11907,8 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 51,
-      "fh": 85
+      "fw": 36,
+      "fh": 64
     },
     {
       "key": "u.aot-rumbling-aa-gun",
@@ -11928,8 +11928,8 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 48,
-      "fh": 159
+      "fw": 39,
+      "fh": 138
     },
     {
       "key": "u.aot-rumbling-repair-station",
@@ -12173,8 +12173,8 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 31,
-      "fh": 46
+      "fw": 27,
+      "fh": 47
     },
     {
       "key": "tur.aot-rumbling-anti-titan-gun",
@@ -12183,8 +12183,8 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 18,
-      "fh": 75
+      "fw": 11,
+      "fh": 63
     },
     {
       "key": "u.aot-rumbling-super-heavy-tank",
@@ -12193,11 +12193,11 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 43,
-      "fh": 113,
+      "fw": 31,
+      "fh": 87,
       "mount": [
-        0.253,
-        0.628
+        0.143,
+        0.672
       ]
     },
     {
@@ -12217,8 +12217,8 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 13,
-      "fh": 22
+      "fw": 7,
+      "fh": 15
     },
     {
       "key": "u.aot-rumbling-fighter",
@@ -12280,10 +12280,10 @@
       "artifactCleanup": false,
       "stabilize": false,
       "rotated": true,
-      "fw": 34,
+      "fw": 25,
       "fh": 77,
       "mount": [
-        0.726,
+        0.808,
         0.5
       ]
     },
@@ -12294,7 +12294,7 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 18,
+      "fw": 10,
       "fh": 4
     },
     {
@@ -12305,10 +12305,10 @@
       "artifactCleanup": false,
       "stabilize": false,
       "rotated": true,
-      "fw": 34,
+      "fw": 26,
       "fh": 99,
       "mount": [
-        0.75,
+        0.827,
         0.469
       ]
     },
@@ -12319,7 +12319,7 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 17,
+      "fw": 9,
       "fh": 4
     },
     {
@@ -12353,8 +12353,8 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 10,
-      "fh": 28
+      "fw": 7,
+      "fh": 20
     },
     {
       "key": "u.aot-rumbling-ironclad",
@@ -12363,7 +12363,7 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 27,
+      "fw": 25,
       "fh": 107,
       "mount": [
         0.5,
@@ -12377,8 +12377,8 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 9,
-      "fh": 27
+      "fw": 8,
+      "fh": 23
     },
     {
       "key": "u.aot-rumbling-battleship",
@@ -12388,7 +12388,7 @@
       "artifactCleanup": false,
       "rotated": true,
       "fw": 23,
-      "fh": 134
+      "fh": 130
     },
     {
       "key": "u.aot-rumbling-gabi",
@@ -12651,7 +12651,7 @@
       "artifactCleanup": false,
       "mount": [
         0.522,
-        0.41
+        0.551
       ]
     },
     {
@@ -12772,8 +12772,8 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 20,
-      "fh": 57
+      "fw": 11,
+      "fh": 29
     },
     {
       "key": "u.aot-rumbling-me-mortar",
@@ -12847,8 +12847,8 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 8,
-      "fh": 44
+      "fw": 6,
+      "fh": 25
     },
     {
       "key": "u.aot-rumbling-me-howitzer",
@@ -12857,7 +12857,7 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 21,
+      "fw": 26,
       "fh": 44
     },
     {
@@ -12867,8 +12867,8 @@
       "stripBg": false,
       "artifactCleanup": false,
       "rotated": true,
-      "fw": 10,
-      "fh": 78
+      "fw": 6,
+      "fh": 47
     },
     {
       "key": "u.aot-rumbling-attack-titan",
@@ -13012,7 +13012,7 @@
         ]
       },
       "rotated": true,
-      "fw": 117,
+      "fw": 125,
       "fh": 89
     },
     {
@@ -13039,7 +13039,7 @@
         ]
       },
       "rotated": true,
-      "fw": 117,
+      "fw": 128,
       "fh": 84
     },
     {
@@ -13066,8 +13066,8 @@
         ]
       },
       "rotated": true,
-      "fw": 68,
-      "fh": 88
+      "fw": 69,
+      "fh": 89
     },
     {
       "key": "u.aot-rumbling-armored-titan-shed",
@@ -13093,8 +13093,8 @@
         ]
       },
       "rotated": true,
-      "fw": 68,
-      "fh": 88
+      "fw": 69,
+      "fh": 89
     },
     {
       "key": "u.aot-rumbling-female-titan",
@@ -13148,7 +13148,7 @@
       },
       "rotated": true,
       "fw": 53,
-      "fh": 77
+      "fh": 76
     },
     {
       "key": "u.aot-rumbling-bird-titan",
@@ -13449,8 +13449,8 @@
         ]
       },
       "rotated": true,
-      "fw": 55,
-      "fh": 74
+      "fw": 51,
+      "fh": 69
     },
     {
       "key": "u.aot-rumbling-crawling-abnormal",
@@ -13476,8 +13476,8 @@
         ]
       },
       "rotated": true,
-      "fw": 70,
-      "fh": 84
+      "fw": 69,
+      "fh": 83
     },
     {
       "key": "u.aot-rumbling-running-abnormal",
@@ -13552,8 +13552,8 @@
         ]
       },
       "rotated": true,
-      "fw": 117,
-      "fh": 51
+      "fw": 118,
+      "fh": 62
     },
     {
       "key": "fx.aot-rumbling-shift",

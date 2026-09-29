@@ -6,8 +6,8 @@
     "FG Rusted League",
     "FG 铁锈联盟"
   ],
-  "version": "0.1.0",
-  "minGame": "0.8.7",
+  "version": "0.1.1",
+  "minGame": "0.8.8",
   "author": "空中之主 (art by 有人, 基卡 and SS元首); port by Steel Tide",
   "description": [
     "The whole army redrawn in black and acid green — Grizzly and Prism tanks, Kirov airships, Patriot batteries — and the GF plugin's carriers, dreadnoughts, sky fortresses, a Mirage tank that hides as a tree and a hero tank that ranks itself up.",
@@ -1906,14 +1906,24 @@
           "speed": 384,
           "burst": 2,
           "burstDelay": 0.12,
-          "muzzleOffset": 11.5,
+          "muzzleOffset": 18.7,
           "turret": true
+        }
+      ],
+      "turretMounts": [
+        {
+          "x": 0.0,
+          "y": -7.8
+        },
+        {
+          "x": 0.0,
+          "y": 6.7
         }
       ],
       "sprite": "u.fg-rusted-league-battleship",
       "body": {
         "r": 10.9,
-        "len": 40.6
+        "len": 37.5
       },
       "turretSprite": "tur.fg-rusted-league-battleship",
       "aiWeight": 1.0,
@@ -2394,7 +2404,7 @@
           "splash": 35,
           "burst": 4,
           "burstDelay": 0.12,
-          "muzzleOffset": 31.1,
+          "muzzleOffset": 15.6,
           "turret": true
         },
         {
@@ -2413,6 +2423,24 @@
           "burstDelay": 0.12,
           "muzzleOffset": 15.6,
           "turret": true
+        }
+      ],
+      "turretMounts": [
+        {
+          "x": -7.0,
+          "y": -10.0
+        },
+        {
+          "x": 7.0,
+          "y": -10.0
+        },
+        {
+          "x": -7.0,
+          "y": 7.0
+        },
+        {
+          "x": 7.0,
+          "y": 7.0
         }
       ],
       "sprite": "u.fg-rusted-league-experimental-tank",
@@ -2746,7 +2774,7 @@
           "homing": true,
           "burst": 2,
           "burstDelay": 0.12,
-          "muzzleOffset": 11.2,
+          "muzzleOffset": 2,
           "turret": true
         },
         {
@@ -2764,14 +2792,24 @@
           "splash": 38,
           "burst": 2,
           "burstDelay": 0.12,
-          "muzzleOffset": 31.2,
+          "muzzleOffset": 13.9,
           "turret": true
+        }
+      ],
+      "turretMounts": [
+        {
+          "x": 0.0,
+          "y": -11.2
+        },
+        {
+          "x": 0.0,
+          "y": 0.0
         }
       ],
       "sprite": "u.fg-rusted-league-general-battleship",
       "body": {
-        "r": 20.3,
-        "len": 39.1
+        "r": 19.5,
+        "len": 40.6
       },
       "turretSprite": "tur.fg-rusted-league-general-battleship",
       "aiWeight": 1.0,
@@ -3024,14 +3062,28 @@
           "look": {
             "sprite": "prj.fg-rusted-league-v3-launcher-w1"
           },
-          "muzzleOffset": 19.7,
+          "muzzleOffset": 2,
           "turret": true
+        }
+      ],
+      "turretMounts": [
+        {
+          "x": 0.0,
+          "y": 5.5
+        },
+        {
+          "x": -5.6,
+          "y": 5.5
+        },
+        {
+          "x": 5.6,
+          "y": 5.5
         }
       ],
       "sprite": "u.fg-rusted-league-v3-launcher",
       "body": {
-        "r": 18.8,
-        "len": 23.4
+        "r": 10.9,
+        "len": 35.9
       },
       "turretSprite": "tur.fg-rusted-league-v3-launcher",
       "aiWeight": 1.0,
@@ -5525,7 +5577,7 @@
           ],
           "projectile": "torpedo",
           "speed": 1500,
-          "muzzleOffset": 9.9,
+          "muzzleOffset": 12.3,
           "turret": true
         },
         {
@@ -5543,7 +5595,7 @@
           "splash": 46,
           "burst": 2,
           "burstDelay": 0.12,
-          "muzzleOffset": 47.8,
+          "muzzleOffset": 12.3,
           "turret": true
         },
         {
@@ -5561,7 +5613,7 @@
           "splash": 46,
           "burst": 3,
           "burstDelay": 0.12,
-          "muzzleOffset": 27.6,
+          "muzzleOffset": 12.3,
           "turret": true
         },
         {
@@ -5577,16 +5629,50 @@
           "projectile": "shell",
           "speed": 384,
           "splash": 46,
-          "bores": 2,
-          "boreSpacing": 23.1,
-          "muzzleOffset": 3.1,
+          "burst": 2,
+          "burstDelay": 0.12,
+          "muzzleOffset": 12.3,
           "turret": true
+        }
+      ],
+      "turretMounts": [
+        {
+          "x": 0.0,
+          "y": -22.9
+        },
+        {
+          "x": 0.0,
+          "y": 22.9
+        },
+        {
+          "x": -3.9,
+          "y": -9.9
+        },
+        {
+          "x": 3.9,
+          "y": -9.9
+        },
+        {
+          "x": -3.5,
+          "y": 5.9
+        },
+        {
+          "x": 3.5,
+          "y": 5.9
+        },
+        {
+          "x": 0.0,
+          "y": -11.8
+        },
+        {
+          "x": 0.0,
+          "y": 15.8
         }
       ],
       "sprite": "u.fg-rusted-league-judgment",
       "body": {
-        "r": 11.7,
-        "len": 81.2
+        "r": 10.9,
+        "len": 82.8
       },
       "turretSprite": "tur.fg-rusted-league-judgment",
       "aiWeight": 1.0,
@@ -5640,14 +5726,32 @@
           "speed": 672,
           "burst": 4,
           "burstDelay": 0.12,
-          "muzzleOffset": 21.8,
+          "muzzleOffset": 12.5,
           "turret": true
         }
       ],
       "regen": 29.6,
+      "turretMounts": [
+        {
+          "x": -7.6,
+          "y": -6.0
+        },
+        {
+          "x": 7.2,
+          "y": -6.0
+        },
+        {
+          "x": -7.6,
+          "y": 6.0
+        },
+        {
+          "x": 7.2,
+          "y": 6.0
+        }
+      ],
       "sprite": "u.fg-rusted-league-battle-carrier",
       "body": {
-        "r": 31.2,
+        "r": 30.5,
         "len": 39.1
       },
       "turretSprite": "tur.fg-rusted-league-battle-carrier",
@@ -5701,8 +5805,8 @@
           "projectile": "missile",
           "speed": 520,
           "homing": true,
-          "turret": false,
-          "muzzleOffset": 30
+          "muzzleOffset": 19.1,
+          "turret": true
         },
         {
           "id": "strike",
@@ -5718,8 +5822,8 @@
           ],
           "projectile": "rocket",
           "speed": 420,
-          "turret": false,
-          "muzzleOffset": 30
+          "muzzleOffset": 19.1,
+          "turret": true
         }
       ],
       "shield": {
@@ -5727,11 +5831,30 @@
         "regen": 17.9,
         "delay": 2
       },
+      "turretMounts": [
+        {
+          "x": 14.2,
+          "y": -18.8
+        },
+        {
+          "x": -14.2,
+          "y": -18.8
+        },
+        {
+          "x": 14.2,
+          "y": -9.4
+        },
+        {
+          "x": -14.2,
+          "y": -9.4
+        }
+      ],
       "sprite": "u.fg-rusted-league-aircraft-carrier",
       "body": {
         "r": 13.3,
         "len": 46.9
       },
+      "turretSprite": "tur.fg-rusted-league-aircraft-carrier",
       "aiWeight": 1.0,
       "producedBy": [
         "fg-rusted-league-naval-base-2"
@@ -7736,19 +7859,15 @@
       "frames": 1,
       "rotated": true,
       "fw": 14,
-      "fh": 40,
-      "mount": [
-        0.5,
-        0.658
-      ]
+      "fh": 38
     },
     {
       "key": "tur.fg-rusted-league-battleship",
       "file": "sprites/tur.fg-rusted-league-battleship.png",
       "frames": 1,
       "rotated": true,
-      "fw": 6,
-      "fh": 15,
+      "fw": 7,
+      "fh": 16,
       "pivotY": 0.828
     },
     {
@@ -7848,11 +7967,7 @@
       },
       "rotated": true,
       "fw": 31,
-      "fh": 43,
-      "mount": [
-        0.274,
-        0.267
-      ]
+      "fh": 43
     },
     {
       "key": "tur.fg-rusted-league-experimental-tank",
@@ -7909,7 +8024,7 @@
       "file": "sprites/u.fg-rusted-league-general-battleship.png",
       "frames": 1,
       "rotated": true,
-      "fw": 26,
+      "fw": 25,
       "fh": 51
     },
     {
@@ -7986,12 +8101,8 @@
       "file": "sprites/u.fg-rusted-league-v3-launcher.png",
       "frames": 1,
       "rotated": true,
-      "fw": 24,
-      "fh": 39,
-      "mount": [
-        0.5,
-        0.639
-      ]
+      "fw": 14,
+      "fh": 37
     },
     {
       "key": "tur.fg-rusted-league-v3-launcher",
@@ -7999,7 +8110,7 @@
       "frames": 1,
       "rotated": true,
       "fw": 8,
-      "fh": 26,
+      "fh": 27,
       "pivotX": 0.533,
       "pivotY": 0.531
     },
@@ -8662,19 +8773,15 @@
       "file": "sprites/u.fg-rusted-league-judgment.png",
       "frames": 1,
       "rotated": true,
-      "fw": 15,
-      "fh": 67,
-      "mount": [
-        0.25,
-        0.587
-      ]
+      "fw": 14,
+      "fh": 67
     },
     {
       "key": "tur.fg-rusted-league-judgment",
       "file": "sprites/tur.fg-rusted-league-judgment.png",
       "frames": 1,
       "rotated": true,
-      "fw": 5,
+      "fw": 6,
       "fh": 10,
       "pivotY": 0.72
     },
@@ -8683,12 +8790,8 @@
       "file": "sprites/u.fg-rusted-league-battle-carrier.png",
       "frames": 1,
       "rotated": true,
-      "fw": 40,
-      "fh": 65,
-      "mount": [
-        0.684,
-        0.407
-      ]
+      "fw": 39,
+      "fh": 64
     },
     {
       "key": "tur.fg-rusted-league-battle-carrier",
@@ -8718,6 +8821,16 @@
       "rotated": true,
       "fw": 17,
       "fh": 47
+    },
+    {
+      "key": "tur.fg-rusted-league-aircraft-carrier",
+      "file": "sprites/tur.fg-rusted-league-aircraft-carrier.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 10,
+      "fh": 7,
+      "pivotX": 0.524,
+      "pivotY": 0.333
     },
     {
       "key": "u.fg-rusted-league-hero-1",

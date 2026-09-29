@@ -52,7 +52,7 @@ RES = os.path.join(SKY, "res", "drawable")
 STOCK = os.path.join(REPO, "rusted-warfare")
 TRANS = os.path.join(SKY, "assets", "translations", "Strings_zh_cn.properties")
 MOD_ID = "fg-rusted-league"
-MIN_GAME = "0.8.7"  # the first game with mod behaviour (`rules`, looks, shields, `prj.`/`fx.` sheets)
+MIN_GAME = "0.8.8"  # the first game that reads a mod's `turretMounts` (0.8.7 brought mod behaviour, looks, shields)
 DRY = "--dry" in sys.argv
 NO_MEDIA = "--no-media" in sys.argv
 OUT = os.path.abspath(sys.argv[sys.argv.index("--out") + 1]) if "--out" in sys.argv else HERE
@@ -696,8 +696,10 @@ ROSTER = [
      dict(kind=U, tier=3)),
     ("航空母舰", "aircraft-carrier", "Aircraft Carrier", "A flying carrier: its interceptors swarm what comes near.",
      dict(kind=U, tier=3, zh_name="航空母舰", weapons=[
-         dict(id="interceptors", cls="aa", dmg=60, reload=2.4, range=9, burst=4, burstDelay=0.2, targets=["air"], projectile="missile", speed=520, homing=True, turret=False, muzzleOffset=30),
-         dict(id="strike", cls="he", dmg=90, reload=3, range=8, burst=3, burstDelay=0.2, targets=["ground", "ship"], projectile="rocket", speed=420, turret=False, muzzleOffset=30)])),
+         # the four interceptors on its deck are turrets that turn (`turret_rings`); the missiles
+         # are its own air defence, fired from the hull whatever the turrets are on
+         dict(id="interceptors", cls="aa", dmg=60, reload=2.4, range=9, burst=4, burstDelay=0.2, targets=["air"], projectile="missile", speed=520, homing=True),
+         dict(id="strike", cls="he", dmg=90, reload=3, range=8, burst=3, burstDelay=0.2, targets=["ground", "ship"], projectile="rocket", speed=420)])),
     ("蛟龙", "jiaolong", "Jiaolong", "A sea dragon of a warship.",
      dict(kind=U, tier=3, zh_name="蛟龙")),
 ]
@@ -909,6 +911,38 @@ def rw_color(v, fallback):
     return fallback
 
 
+def scale_key(v, default=1.0):
+    """a scale as written: missing is the default, and 0 is 0 (a part the package hides so)"""
+    n = num(v)
+    return default if n is None else n
+
+
+def body_scale(ini, d):
+    """the body's scale as Rusted Warfare draws it: `imageScale`, times `scaleImagesTo` px over a
+    frame's width when that is set"""
+    gfx, core = ini.get("graphics", {}), ini.get("core", {})
+    k = 1.0
+    sit = num(gfx.get("scaleImagesTo"))
+    p = resolve(gfx.get("image"), d)
+    if sit and sit > 0 and p:
+        fw = Image.open(p).width // max(1, int(num(gfx.get("total_frames")) or 1))
+        k = sit * scale_key(core.get("globalScale")) / max(1, fw)
+    return k * scale_key(gfx.get("imageScale"))
+
+
+def turret_scale(ini, d):
+    """every turret of a unit is drawn at one scale: `scaleTurretImagesTo` px over the width of the
+    unit's `image_turret` (not the turret's own picture), else 1 (not the body's `imageScale`),
+    times `turretImageScale`"""
+    gfx, core = ini.get("graphics", {}), ini.get("core", {})
+    k = 1.0
+    stit = num(gfx.get("scaleTurretImagesTo"))
+    p = resolve(gfx.get("image_turret"), d)
+    if stit and stit > 0 and p:
+        k = stit * scale_key(core.get("globalScale")) / max(1, Image.open(p).width)
+    return k * scale_key(gfx.get("turretImageScale"))
+
+
 def prep(im, scale=1.0, angle=0.0, frame0=1):
     im = clean_alpha(im)
     if frame0 > 1:
@@ -1023,6 +1057,62 @@ def turret_parts(ini, from_dir):
     return parts, root_pos, hull_parts
 
 
+MAX_RINGS = 8  # the game's `MAX_DEF_MOUNTS`
+
+
+def turret_rings(ini, from_dir, who):
+    """where a hull's guns stand when it has several alike: every turret that turns on its own
+    (attached to none) and shows a picture, at its place about the unit's origin (RW px, y
+    forward). Rusted Warfare turns each of them; the game draws the def's one turret on a ring
+    for each (`turretMounts`), so they must be one picture with the same fittings riding on it.
+    None for a hull with one gun, or with guns of different kinds (those stay painted on)."""
+    secs = {s: kv for s, kv in ini.items() if s.startswith("turret_")}
+    default_img = ini.get("graphics", {}).get("image_turret")
+
+    def picture(kv):
+        img = kv.get("image") or default_img
+        if boolish(kv.get("invisible")) or not img or img.upper() == "NONE":
+            return None
+        hit = resolve(img, from_dir)
+        # a blank marker (the gunships' 1×2 px turrets) is a gun the package does not draw
+        return hit if hit and Image.open(hit).convert("RGBA").getbbox() else None
+
+    def parent(s):
+        p = (secs[s].get("attachedTo") or "").strip()
+        return "turret_" + p if p and "turret_" + p in secs else None
+
+    def place(s, depth=0):
+        x, y = num(secs[s].get("x")) or 0, num(secs[s].get("y")) or 0
+        p = parent(s)
+        if p and depth < 6:
+            px, py = place(p, depth + 1)
+            return px + x, py + y
+        return x, y
+
+    def base(s, depth=0):
+        p = parent(s)
+        return base(p, depth + 1) if p and depth < 8 else s
+
+    roots = [s for s, kv in secs.items() if not kv.get("attachedTo") and picture(kv)]
+    if len(roots) < 2:
+        return None
+
+    def rig(r):
+        rx, ry = place(r)
+        return tuple(sorted((os.path.basename(picture(kv)), round(place(s)[0] - rx, 1), round(place(s)[1] - ry, 1))
+                            for s, kv in secs.items() if base(s) == r and picture(kv)))
+    if len({rig(r) for r in roots}) > 1:
+        note(who, "turrets of different kinds; all but the main one stay painted on the hull")
+        return None
+    rings = []
+    for r in roots:
+        if place(r) not in rings:
+            rings.append(place(r))
+    if len(rings) > MAX_RINGS:
+        note(who, f"{len(rings)} turrets; the first {MAX_RINGS} turn")
+    return rings[:MAX_RINGS] if len(rings) > 1 else None
+
+
 # ------------------------------------------------------------ conversion
 SCRIPT_PROJECTILES = ()
 
@@ -1067,7 +1157,9 @@ def projectile_look(p, d, who, wid):
     return {"sprite": key}
 
 
-def convert_weapons(ini, d, domain, ov, who):
+def convert_weapons(ini, d, domain, ov, who, rings=False):
+    """`rings`: the hull's guns are drawn on rings of their own (`turret_rings`), so a weapon of
+    several turrets is a burst the game walks round them, each shot from its own ring"""
     atk = ini.get("attack", {})
     secs = {s: kv for s, kv in ini.items() if s.startswith("turret_")}
     range_px = num(atk.get("maxAttackRange")) or 130
@@ -1212,7 +1304,7 @@ def convert_weapons(ini, d, domain, ov, who):
         n = len(turrets)
         if n > 1 and not flame:
             xs = sorted(t[2][0] for t in turrets)
-            if n == 2 and abs(xs[0] + xs[1]) < 1 and abs(xs[1] - xs[0]) > 1:
+            if n == 2 and abs(xs[0] + xs[1]) < 1 and abs(xs[1] - xs[0]) > 1 and not rings:
                 w["bores"] = 2
                 w["boreSpacing"] = round(min(60, (xs[1] - xs[0]) * ART * DISPLAY), 1)
             else:
@@ -1224,7 +1316,9 @@ def convert_weapons(ini, d, domain, ov, who):
         if pellets > 1:
             w["spread"] = max(w.get("spread", 0), 10)
             w["projectile"] = "bullet"
-        w["_reach"] = turrets[0][2][1] + (num(kv.get("size")) or turret_size or 0)
+        barrel = num(kv.get("size")) or turret_size or 0
+        # a gun on a ring of its own is measured from that ring, not from the hull's centre
+        w["_reach"] = barrel if rings else turrets[0][2][1] + barrel
         if flame:
             w["sound"] = "flame"
         # how it looks: a laser or a Tesla arc is a beam; a round with a picture of the mod's own flies as it
@@ -1389,12 +1483,16 @@ def convert():
                 df["upgradeCost"] = ov.get("upgradeCost", max(50, cost // 2))
                 df["upgradeTime"] = ov.get("upgradeTime", 30)
 
+        # several guns alike that turn on their own: the def's one turret drawn on a ring for each
+        hull_guns = "weapons" in ov and all(w.get("turret") is False for w in ov["weapons"])
+        rings = None if is_building or ov.get("no_turret") or hull_guns else turret_rings(ini, d, did)
+
         # ---- weapons
         weapons = []
         if "weapons" in ov:
             weapons = [dict(w) for w in ov["weapons"]]
         elif ov.get("armed", True) and boolish(atk.get("canAttack"), False):
-            weapons = convert_weapons(ini, d, domain, ov, did)
+            weapons = convert_weapons(ini, d, domain, ov, did, rings=bool(rings))
         # one fire hose, however many nozzles the original gives it
         flames = [w for w in weapons if w.get("projectile") == "flame"]
         if len(flames) > 1:
@@ -1411,6 +1509,8 @@ def convert():
                         w["projectile"] = "shell" if w["cls"] == "cannon" else "bullet"
         if weapons:
             df["weapons"] = weapons[:8]
+        else:
+            rings = None  # no turret is drawn for an unarmed hull: its guns stay painted on
         if ov.get("requires"):
             df["requires"] = [f"{MOD_ID}-{r}" for r in ov["requires"]]
 
@@ -1443,10 +1543,8 @@ def convert():
         # ---- art
         image = resolve(gfx.get("image", ""), d)
         frames = int(max(1, round(num(gfx.get("total_frames")) or 1)))
-        scale = num(gfx.get("imageScale")) or 1.0
-        sit = num(gfx.get("scaleImagesTo"))
-        tur_scale = num(gfx.get("turretImageScale")) or scale
-        stit = num(gfx.get("scaleTurretImagesTo"))
+        # RW px a picture px is drawn at, as the package sets it for the body and for its turrets
+        scale, tur_scale = body_scale(ini, d), turret_scale(ini, d)
         art_k = 1.0
         hull_px = None
         bld_fit = None  # a building's px per image px: its frame is stretched to the footprint
@@ -1457,9 +1555,6 @@ def convert():
             pw = im.width // frames
             if frames > 1 and im.width % frames:
                 im = im.crop((0, 0, pw * frames, im.height))
-            # `scaleImagesTo` is the width the package draws the whole frame at
-            if sit and sit > 1 and not is_building:
-                scale = sit / pw
             if ov.get("hovers") and frames > 1:
                 im, frames = still_hull(im, frames), 1
             im = clean_alpha(im)
@@ -1496,8 +1591,9 @@ def convert():
                 fw, fh, f = sheet_size(pw, im.height, scale)
                 art_k = f / (ART * scale)
                 hull_px = (pw, im.height)
-                # guns bolted to the hull that turn on their own: laid on the body, still
-                if frames == 1 and hull_parts:
+                # guns bolted to the hull that turn on their own: laid on the body, still, unless
+                # they are guns alike, which turn on rings of their own
+                if frames == 1 and hull_parts and not rings:
                     items = [(prep(im), 0, 0)]
                     for _, hp_, pos in hull_parts:
                         part = open_art(hp_, did)
@@ -1507,7 +1603,10 @@ def convert():
                     fw, fh, f = sheet_size(im.width, im.height, scale)
                     art_k = f / (ART * scale)
                 mount = None
-                if (parts or ov.get("turret")) and (abs(root_pos[0]) > 0.5 or abs(root_pos[1]) > 0.5):
+                if rings:
+                    # the rings, in the hull sheet's px from its centre (y toward the tail)
+                    df["turretMounts"] = [{"x": round(x / scale * fw / pw, 1), "y": round(-y / scale * fh / im.height, 1)} for x, y in rings]
+                elif (parts or ov.get("turret")) and (abs(root_pos[0]) > 0.5 or abs(root_pos[1]) > 0.5):
                     mount = (0.5 + root_pos[0] / scale / pw, 0.5 - root_pos[1] / scale / im.height)
                 df["sprite"] = add_sheet(f"u.{did}", im, frames, True, fw, fh, mount=mount,
                                          anims=anims_of(gfx, frames) if frames > 1 else None)
@@ -1517,13 +1616,8 @@ def convert():
             note(did, "no body image of the mod's own; placeholder")
 
         # ---- turret
-        hull_guns = "weapons" in ov and all(w.get("turret") is False for w in ov["weapons"])
         if (not is_building or ov.get("tower")) and not ov.get("no_turret") and not hull_guns and ("weapons" in df or ov.get("tower")):
             parts, root_pos, _ = turret_parts(ini, d)
-            if stit and parts:
-                first = open_art(parts[0][1], did)
-                if first is not None:
-                    tur_scale = stit / first.width
             items, names = [], []
             for _, pth, pos in parts:
                 pim = open_art(pth, did)
@@ -1726,7 +1820,7 @@ def main():
         "v": 1,
         "id": MOD_ID,
         "name": ["FG Rusted League", "FG 铁锈联盟"],
-        "version": "0.1.0",
+        "version": "0.1.1",
         "minGame": MIN_GAME,
         "author": "空中之主 (art by 有人, 基卡 and SS元首); port by Steel Tide",
         "description": [desc_en, desc_zh],

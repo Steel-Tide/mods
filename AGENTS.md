@@ -314,6 +314,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `shadow` | boolean |  | true | the shadow the game casts for it: a unit's hull and turret silhouettes, a step to the south-east on the ground, further off in the air; a building's gun's, on its roof; `false` when the art brings its own, or none is wanted (a submarine casts none) |
 | `sprite` | string |  | this mod's u.<id> sheet, else the base's art | the body's atlas key: one of this mod's sheets, or a vanilla key to borrow its art |
 | `turretSprite` | string |  | this mod's tur.<id> sheet, else the base's (when its art is kept) | the rotating part's key, if any |
+| `turretMounts` | mount[] |  | one, where the body sheet's `mount` puts it (else the pivot); the base's, when its art is kept | the rings its turret stands on and fires from, up to 8: a hull with several guns names one each (a battleship's A, B and X), every one drawn with the one `turretSprite` and trained on the one target, as far round as its own arc goes (see below) |
 | `decals` | decal[] |  | the base's, when its art is kept | pictures laid on the hull and the turret besides their own sheets (see below), up to 12 |
 | `ability` | sprint \| afterburner \| smoke \| incendiary \| barrage \| countermeasures \| damageControl \| emergencyRepair | units only | the base's | its one active ability, a vanilla one by id (`sprint`, `smoke`, `countermeasures`…): the same click, clock and unlock as on the game's own units |
 | `aliases` | string[] |  |  | other names the console's `give` accepts |
@@ -391,6 +392,17 @@ aa          air ×1
 | `when` | always \| moving \| still \| firing \| damaged \| night \| ability |  | always | shown only while the unit moves or stands (`moving`, `still`), within a reload of its last shot (`firing`), under half health (`damaged`), while its ability runs or is armed (`ability`), or after dusk (`night`: laid over the dark like a lamp, and the game's own headlights stay off a unit that has one) |
 
 A decal is a picture laid on a def besides its body and its turret — a hatch, a crew figure, an outline, a lamp — fixed to the hull or the turret (`on`) and turned with it. Up to 12 on a def, drawn in the order listed within a layer. `x`/`y` are a point on that part's up-facing art: right and down (toward the tail) of its pivot, in the px of the sheet at its `fw`×`fh` size; the game scales them with the unit. The sheet is one of the mod's own under a `dec.<name>` key (see Art), or a body or turret key it borrows. A `night` decal is a lamp: laid over the dark rather than dimmed by it, so a headlight or a lit window reads as light, and a unit that carries one gets none of the game's own headlights. Paint a beam soft — a wide, faint falloff, not a hard-edged triangle — or it reads as glass.
+
+### A turret mount (`defs[].turretMounts[]`)
+
+| field | type | required | default | meaning |
+| --- | --- | --- | --- | --- |
+| `x` | number -256–256 |  | 0 | where the ring is on the body's up-facing art: px right of its pivot, in the body sheet's own px at its `fw`×`fh` size (the game scales it with the unit) |
+| `y` | number -256–256 |  | 0 | px down from the pivot, toward the tail |
+| `rest` | number -360–360 |  | 0 | the bearing it trains about, degrees clockwise from the bow: 0 forward, 90 to the right, 180 aft |
+| `arc` | number 0–180 |  | 180 | how far either side of `rest` it turns, degrees; 180 is all round. A ring that cannot bear on the target waits at the end of its arc, and the rings that can take the shots |
+
+A hull with more than one gun — a battleship's turrets fore and aft, a tank with a turret at each corner — names a ring for each, up to 8: the def's one `turretSprite` is drawn on every ring, and every ring is trained on the one target the unit is aiming at, as far round as its own `arc` of its `rest` bearing goes, so a gun the superstructure blocks waits at its stop while the others fire. A burst walks the rings that bear (the first shot from the first of them, the next from the next), and `muzzleOffset` is measured from the ring a shot leaves, so give a weapon of several guns a `burst` of that many. `x`/`y` are a point on the body's up-facing art, as a decal's are. A def with none has one ring, where its body sheet's `mount` puts it.
 
 ### A sheet (`sprites[]`)
 
@@ -697,6 +709,7 @@ A mod may carry maps: files the game's Scenario Editor exports (`.steel-tide-map
 - Hulls, turrets and everything that turns: draw ONE image facing UP and set `"rotated": true`; the game bakes the 24 headings. `fw`/`fh` are the in-game size of that up-facing image in world px (a tank hull is about 24×24; the image itself may be any resolution, 2–4× is best). `pivotX`/`pivotY` put the pivot on the turret ring (default centre).
 - Buildings: one strip of frames, not rotated, drawn with a slight top-down southern tilt. The footprint is the bottom `fw×32` by `fh×32` px of the frame; anything above overhangs the terrain behind (towers, masts). Width, height and anchor are sized from the def's footprint automatically.
 - A building with a gun that turns is two sheets like a hull and turret: the body with an empty ring and `"mount": [fx, fy]` saying where the ring sits as fractions of the frame, and a `tur.<id>` sheet for the gun; its weapons carry `"turret": true`.
+- Several guns of one kind on one hull are one `tur.<id>` sheet and a `turretMounts` ring for each, not guns painted on the body: a painted gun never turns.
 - A decal's sheet (`dec.<name>`) is drawn like a turret's: one up-facing image, or a strip of `frames` at `fps` for something that moves (a spinning barrel, a blinking light), sized by `fw`/`fh` and drawn about its centre. Static detail belongs in the body's own sheet; a decal is for what the body cannot hold — a part that turns with the turret, a hatch the barrel sweeps over, a light that comes on at night, a barrel that spins while it fires.
 - Faction colour: paint team-coloured parts in pure magenta (highlight #FF66FF, base #FF00FF, shadow #990099) and use magenta nowhere else; the game recolours it per player.
 - Style: crisp pixel art, hard edges, no anti-aliasing, a muted military palette (DawnBringer-32), dark #222034 outlines. Generated sheets are cleaned automatically (background removal, frame registration), but a transparent background is best.

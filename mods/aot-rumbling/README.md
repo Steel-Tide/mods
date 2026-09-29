@@ -1,7 +1,7 @@
 # Attack on Titan: The Rumbling (进击の巨人『地鸣』)
 
-A port of *进击の巨人『地鸣』* 1.443, a Rusted Warfare mod by 辣条QWQ and 白日梦,
-first made by Mirka. Three sides and the Titans: Paradis behind its Walls with
+A port of *进击の巨人『地鸣』* 1.443, a Rusted Warfare mod by 辣条QWQ, first
+made by Mirka. Three sides and the Titans: Paradis behind its Walls with
 the Survey Corps on their omni-directional mobility gear, Marley with its army,
 air fleet, airships and navy and the Warriors who inherit the Nine Titans, and
 the Middle-East Allied Forces.
@@ -110,11 +110,20 @@ converter from the original's numbers.
 ## The art
 
 A Titan in the original is not a picture but a body of parts — torso,
-shoulders, arms, head — posed by keyframed animations. The converter draws
-each Titan from its parts at those keyframes: standing, eight frames of its
-walk and six of its strike, so the Titans stride and swing in the game.
-Soldiers keep their own strips: walking, standing, and the frames of a cut.
-Buildings are drawn with what the original lays on them.
+shoulders, arms, legs and feet, head — posed by keyframed animations. The
+converter draws each Titan from its parts at those keyframes: standing, eight
+frames of its walk and six of its strike, so the Titans stride and swing in the
+game. Soldiers keep their own strips: walking, standing, and the frames of a
+cut.
+
+Every part is drawn at the scale and in the order Rusted Warfare draws it:
+limbs at the body's scale, heads and guns at the turrets' (`scaleTurretImagesTo`
+against the unit's `image_turret`), decals on their layers — the Jaw Titan's
+head, the banners on Marley's administration, the training fields under the
+camps, the howitzer's crew — and attached units on theirs, so the stable's yard
+lies under it and its fences over it. A decal the original shows only on a
+condition (a fire, a shield, a health bar, a selection) is left out. The Wall is
+the package's current one (`新城墙`), not the older sections it still carries.
 
 Pictures in the package that are stills from the anime (the portraits, the
 icon) are not used.

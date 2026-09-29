@@ -39,7 +39,7 @@ import shutil
 import subprocess
 import sys
 
-from PIL import Image
+from PIL import Image, ImageStat
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
@@ -453,9 +453,9 @@ ROSTER = [
     ("固定炮", "wall-cannon", "Wall Cannon", "A fixed cannon of the kind the Garrison mans on the Walls: long reach, and extra harm to Titans.",
      dict(weapons_from="固定炮可控", kind=B, fw=2, fh=2, power=-2, tower=True, requires=["academy"])),
     ("城墙横", "wall", "Wall Section", "Fifty metres of stone around the island, built of Colossal Titans. When the Founder comes near, it crumbles and they march.",
-     dict(kind=B, zh_name="城墙", fw=4, fh=2, cost=180, hp=6000, image="进击的巨人MOD/wall/wall.png")),
-    ("城墙横", "wall-v", "Wall Section (north–south)", "The Wall running north to south. When the Founder comes near, it crumbles and they march.",
-     dict(kind=B, zh_name="城墙（竖）", fw=1, fh=4, cost=180, hp=6000, image="进击的巨人MOD/wall/wall_left.png")),
+     dict(kind=B, zh_name="城墙", fw=4, fh=2, cost=180, hp=6000)),
+    ("城墙竖", "wall-v", "Wall Section (north–south)", "The Wall running north to south. When the Founder comes near, it crumbles and they march.",
+     dict(kind=B, zh_name="城墙（竖）", fw=1, fh=4, cost=180, hp=6000)),
     ("城门关", "gate", "Wall Gate", "A gate in the Wall, and the bravest place to hold. The Founder wakes the Titans in it too.",
      dict(kind=B, zh_name="城门", fw=5, fh=2, cost=400, hp=9000)),
     ("驻扎_landed", "garrison", "Garrison Soldier", "The Garrison Regiment: builds the island's works, and is no match for a Titan.",
@@ -975,18 +975,181 @@ def anims_of(gfx, frames):
     return out or None
 
 
-def turret_scale(gfx, im):
-    """how big the package draws a turret's picture (`scaleTurretImagesTo`): a width in px, or,
-    as this package also writes it, a multiple; unset, the body's scale"""
+# Rusted Warfare composes a unit as it draws it: legs and arms (`[leg_N]`, `[arm_N]`) under the
+# body or over it, the turrets on top, decals (`[decal_N]`) on the layer each names, attached units
+# on theirs. The order and the scales below are the game's own (read from 1.15p9's classes).
+DRAW_LAYERS = {"wreaks": 0, "underwater": 1, "bottom": 2, "ground": 3, "ground2": 4, "experimentals": 5, "air": 6, "top": 7}
+DECAL_LAYERS = ("shadow", "beforeBody", "afterBody", "onTop", "beforeUI")
+
+
+def expr_num(v):
+    """a number the package may write as a sum (`60.0/30`), or with a unit's memory in it, read as
+    it stands when the unit is new (every memory at 0)"""
+    if v is None:
+        return None
+    s = str(v).strip()
+    try:
+        return float(s)
+    except ValueError:
+        pass
+    s = re.sub(r"memory\.[\w一-鿿]+", "0", s)
+    if not re.fullmatch(r"[\d.+\-*/() ,]*(?:(?:int|min|max)\([\d.+\-*/() ,]*\)[\d.+\-*/() ,]*)*", s):
+        return None
+    try:
+        return float(eval(s, {"__builtins__": {}}, {"int": int, "min": min, "max": max}))
+    except Exception:
+        return None
+
+
+def scale_key(v, default=1.0):
+    """a scale as written: missing is the default, and 0 is 0 (a part the package hides so)"""
+    n = expr_num(v)
+    return default if n is None else n
+
+
+def body_scale(ini, d):
+    """the body's scale, which its legs and arms share: `imageScale`, times `scaleImagesTo` px over
+    a frame's width when that is set"""
+    gfx, core = ini.get("graphics", {}), ini.get("core", {})
+    k = 1.0
+    sit = num(gfx.get("scaleImagesTo"))
+    p = resolve(gfx.get("image"), d)
+    if sit and sit > 0 and p:
+        fw = Image.open(p).width / max(1, int(num(gfx.get("total_frames")) or 1))
+        k = sit * scale_key(core.get("globalScale")) / max(1.0, fw)
+    return k * scale_key(gfx.get("imageScale"))
+
+
+def turret_scale(ini, d):
+    """every turret of a unit is drawn at one scale: `scaleTurretImagesTo` px over the width of the
+    unit's `image_turret` (not the turret's own picture), else 1, times `turretImageScale`"""
+    gfx, core = ini.get("graphics", {}), ini.get("core", {})
+    k = 1.0
     stit = num(gfx.get("scaleTurretImagesTo"))
-    if stit is not None:
-        if stit <= 0:
-            return 0.0
-        if stit >= 8:
-            return stit / max(1, im.width)
-        return stit if stit < 1 else 1.0
-    tis = num(gfx.get("turretImageScale"))
-    return tis if tis else (num(gfx.get("imageScale")) or 1.0)
+    p = resolve(gfx.get("image_turret"), d)
+    if stit and stit > 0 and p:
+        k = stit * scale_key(core.get("globalScale")) / max(1, Image.open(p).width)
+    return k * scale_key(gfx.get("turretImageScale"))
+
+
+def looks_like_shadow(path, im):
+    """a picture laid under a unit as its shadow: named so (阴, shadow), or dark and grey (or
+    see-through) all over; a small dark figure in a red coat is a crewman, not a shadow"""
+    name = os.path.basename(path or "").lower()
+    if "阴" in name or "shadow" in name:
+        return True
+    alpha = im.getchannel("A")
+    mask = alpha.point(lambda v: 255 if v > 24 else 0)
+    if not mask.getbbox():
+        return True
+    r, g, b = ImageStat.Stat(im.convert("RGB"), mask=mask).mean
+    a = ImageStat.Stat(alpha, mask=mask).mean[0]
+    return 0.299 * r + 0.587 * g + 0.114 * b < 40 and (max(r, g, b) - min(r, g, b) < 18 or a < 180)
+
+
+def fade(im, alpha):
+    im = im.copy()
+    im.putalpha(im.getchannel("A").point(lambda v: int(v * alpha)))
+    return im
+
+
+def decal_items(ini, d):
+    """the decals a unit always wears, by layer, as (image, x, y): RW px about its origin, x right
+    and y forward like a turret's. A decal a condition shows (`isVisible`: a fire, a shield, a
+    health bar), a selection shows, or only the preview shows is the package's play, not its look."""
+    out = {k: [] for k in DECAL_LAYERS}
+    secs, pos = turret_tree(ini)
+    for s, kv in ini.items():
+        if not s.startswith("decal_"):
+            continue
+        if any(kv.get(k) for k in ("isVisible", "drawLineTo", "basePositionFromLeg", "imageStack")):
+            continue
+        if any(boolish(kv.get(k)) for k in ("onlyWhenSelectedByOwnPlayer", "onlyWhenSelectedByEnemyPlayer", "onlyInPreview",
+                                             "onlyWhenSelectedByAllyNotOwnPlayer", "onlyWhenSelectedByAnyPlayer")):
+            continue
+        layer = (kv.get("layer") or "afterBody").strip()
+        if layer not in out:
+            continue
+        path = resolve(kv.get("image"), d)
+        im = open_art(path)
+        if im is None or looks_like_shadow(path, im):
+            continue
+        n = int(num(kv.get("total_frames")) or 1)
+        if (num(kv.get("frame_width")) or 0) > 0:
+            n = max(1, int(im.width // num(kv.get("frame_width"))))
+        i = int(clamp(expr_num(kv.get("frame")) or 0, 0, n - 1))
+        if n > 1:
+            im = im.crop((i * im.width // n, 0, (i + 1) * im.width // n, im.height))
+        k = scale_key(kv.get("imageScale"))
+        if k <= 0:
+            continue
+        pic = prep(im, k, num(kv.get("dirOffset")) or 0)
+        a = expr_num(kv.get("alpha"))
+        if a is not None and a < 1:
+            pic = fade(pic, a)
+        x = (expr_num(kv.get("xOffsetRelative")) or 0) + (expr_num(kv.get("xOffsetAbsolute")) or 0)
+        y = (expr_num(kv.get("yOffsetRelative")) or 0) - (expr_num(kv.get("yOffsetAbsolute")) or 0)
+        base = (kv.get("basePositionFromTurret") or "").strip()
+        if base and "turret_" + base in secs:
+            bx, by_ = pos("turret_" + base)
+            x, y = x + bx, y + by_
+        out[layer].append((pic, x, y))
+    return out
+
+
+def limbs(ini, prefix):
+    """the `[leg_N]` or `[arm_N]` sections, each with the one it copies (`copyFrom: M`) beneath it"""
+    out = []
+    for s, kv in ini.items():
+        if not s.startswith(prefix):
+            continue
+        merged, src, seen = dict(kv), (kv.get("copyFrom") or "").strip(), set()
+        while src and src not in seen and (prefix + src) in ini:
+            seen.add(src)
+            base = ini[prefix + src]
+            for k, v in base.items():
+                merged.setdefault(k, v)
+            src = (base.get("copyFrom") or "").strip()
+        out.append((s, merged))
+    return out
+
+
+def limb_items(ini, d, sc, anim_at=None):
+    """legs and arms as they stand, at the body's scale: (under all units, under the body, over the
+    body). Each is its end (a foot, a hand) at (x, y), and its length (`image_leg`, `image_middle`)
+    as the game draws it: centred on that end and turned to point at where the limb joins the body
+    (`attach_x`, `attach_y`), cut to no more than that distance either side of its middle."""
+    ground, under, over = [], [], []
+    for prefix in ("leg_", "arm_"):
+        for s, kv in limbs(ini, prefix):
+            if boolish(kv.get("hidden")):
+                continue
+            kx = ky = kd = 0.0
+            if anim_at:
+                kx, ky, kd = anim_at(prefix[:-1] + s[len(prefix):])
+            x, y = (num(kv.get("x")) or 0) + kx, (num(kv.get("y")) or 0) + ky
+            items = []
+            end_ref = kv.get("image_end") or kv.get("image_foot")
+            end = open_art(resolve(end_ref, d)) if end_ref else None
+            if end is not None and sc > 0:
+                ang = (num(kv.get("drawDirOffset")) or 0) + (num(kv.get("endDirOffset")) or 0) + kd
+                items.append((prep(end, sc, ang), x, y))
+            mid_ref = kv.get("image_middle") or kv.get("image_leg")
+            mid = open_art(resolve(mid_ref, d)) if mid_ref else None
+            ax, ay = num(kv.get("attach_x")), num(kv.get("attach_y"))
+            if mid is not None and sc > 0 and ax is not None and ay is not None and math.hypot(ax - x, ay - y) > 2:
+                half = mid.height / 2
+                reach = min(math.hypot(ax - x, ay - y), half)
+                seg = mid.crop((0, int(half - reach), mid.width, int(math.ceil(half + reach))))
+                piece = (prep(seg, sc, math.degrees(math.atan2(ax - x, ay - y))), x, y)
+                items = items + [piece] if not boolish(kv.get("draw_foot_on_top")) else [piece] + items
+            if boolish(kv.get("drawUnderAllUnits")):
+                # under all units: a limb laid on the ground, unless it is only the unit's shadow
+                items = [it for it in items if not looks_like_shadow(end_ref, it[0])]
+                ground += items
+            else:
+                (over if boolish(kv.get("drawOverBody")) else under).extend(items)
+    return ground, under, over
 
 
 def turret_tree(ini):
@@ -1026,39 +1189,31 @@ def visible_turrets(ini, d):
     return out
 
 
+def body_offset(gfx):
+    """where the body's picture sits on the unit (`image_offsetX/Y`, screen px): RW px, y forward"""
+    return num(gfx.get("image_offsetX")) or 0, -(num(gfx.get("image_offsetY")) or 0)
+
+
 def body_parts(ini, d, anim_at=None, turrets=True):
-    """a unit drawn from its parts: the arms under the body, the body, the arms over it, the
-    turrets on top (RW px about the origin, y forward, each (image, x, y)). `anim_at` is a
-    function from an arm's name to its keyframed offset (x, y, turn) at the moment drawn."""
+    """a unit drawn from its parts in the game's order (RW px about the origin, y forward, each
+    (image, x, y)): its shadow-layer decals, the limbs laid under all units, the decals before
+    the body, the limbs under it, the body, the limbs over it, the decals after it, the turrets,
+    and the decals on top. `anim_at` is a function from a limb's name (`arm3`, `leg1`) to its
+    keyframed offset (x, y, turn) at the moment drawn."""
     gfx = ini.get("graphics", {})
-    sc = num(gfx.get("imageScale")) or 1.0
-    under, over = [], []
-    for s, kv in ini.items():
-        if not s.startswith("arm_"):
-            continue
-        if boolish(kv.get("hidden")) or boolish(kv.get("drawUnderAllUnits")):
-            continue
-        im = open_art(resolve(kv.get("image_end"), d))
-        if im is None:
-            continue
-        kx = ky = kd = 0.0
-        if anim_at:
-            kx, ky, kd = anim_at("arm" + s[4:])
-        ang = (num(kv.get("drawDirOffset")) or 0) + (num(kv.get("endDirOffset")) or 0) + kd
-        item = (prep(im, sc, ang), (num(kv.get("x")) or 0) + kx, (num(kv.get("y")) or 0) + ky)
-        (over if boolish(kv.get("drawOverBody")) else under).append(item)
+    sc = body_scale(ini, d)
+    ground, under, over = limb_items(ini, d, sc, anim_at)
+    dec = decal_items(ini, d)
+    items = dec["shadow"] + ground + dec["beforeBody"] + under
     body = open_art(resolve(gfx.get("image"), d))
-    items = list(under)
-    if body is not None:
+    if body is not None and sc > 0:
         fr = int(num(gfx.get("total_frames")) or 1)
-        items.append((prep(body, sc, frame0=fr), 0, 0))
-    items += over
-    for s, im, (x, y), idle in (visible_turrets(ini, d) if turrets else []):
-        k = turret_scale(gfx, im)
-        if k <= 0:
-            continue
+        items.append((prep(body, sc, frame0=fr), *body_offset(gfx)))
+    items += over + dec["afterBody"]
+    k = turret_scale(ini, d)
+    for s, im, (x, y), idle in (visible_turrets(ini, d) if turrets and k > 0 else []):
         items.append((prep(im, k, idle), x, y))
-    return items
+    return items + dec["onTop"] + dec["beforeUI"]
 
 
 def keyframes(anim, part):
@@ -1378,7 +1533,7 @@ def convert_weapons(ini, d, domain, ov, who, radius_tiles, titan=False):
 
 def attachments(ini, by_name):
     """the units the package bolts on (`[attachment_*]`): a ship's guns, a truck's hook, a
-    stable's fences, as (their ini, their folder, x, y), RW px, y forward"""
+    stable's fences, as (their ini, their folder, x, y, name, the attachment's own keys), RW px, y forward"""
     out = []
     for s, kv in ini.items():
         if not s.startswith("attachment_"):
@@ -1389,19 +1544,32 @@ def attachments(ini, by_name):
         p = by_name.get(name)
         if not p:
             continue
-        out.append((load_unit(p), os.path.dirname(p), num(kv.get("x")) or 0, num(kv.get("y")) or 0, name))
+        out.append((load_unit(p), os.path.dirname(p), num(kv.get("x")) or 0, num(kv.get("y")) or 0, name, kv))
     return out
 
 
+def draw_layer(ini):
+    return DRAW_LAYERS.get((ini.get("graphics", {}).get("drawLayer") or "").strip())
+
+
 def attached_items(ini, by_name, depth=0):
-    """what the attached units draw as they stand, laid where they ride (RW px, y forward)"""
-    items = []
-    for a_ini, a_d, ax, ay, _ in attachments(ini, by_name):
-        for im, x, y in body_parts(a_ini, a_d):
-            items.append((im, x + ax, y + ay))
+    """what the attached units draw as they stand, laid where they ride (RW px, y forward), as
+    (under the unit, over it): one the attachment puts at the bottom (`setDrawLayerOnBottom`), or
+    that names a lower draw layer than the unit's own (a stable's yard, `wreaks` under `ground2`)
+    and is not put on top (`setDrawLayerOnTop`), is drawn before the unit; the rest after it"""
+    under, over = [], []
+    mine = draw_layer(ini)
+    mine = DRAW_LAYERS["ground"] if mine is None else mine
+    for a_ini, a_d, ax, ay, _, a_kv in attachments(ini, by_name):
+        theirs = draw_layer(a_ini)
+        below = boolish(a_kv.get("setDrawLayerOnBottom")) or (
+            not boolish(a_kv.get("setDrawLayerOnTop")) and theirs is not None and theirs < mine)
+        pics = body_parts(a_ini, a_d)
         if depth < 1:
-            items += [(im, x + ax, y + ay) for im, x, y in attached_items(a_ini, by_name, depth + 1)]
-    return items
+            u, o = attached_items(a_ini, by_name, depth + 1)
+            pics = u + pics + o
+        (under if below else over).extend((im, x + ax, y + ay) for im, x, y in pics)
+    return under, over
 
 
 # ------------------------------------------------------------ conversion
@@ -1451,7 +1619,7 @@ def unit_art(did, ini, d, ov, by_name, art):
     """a unit's sheet: frames (RW px about its centre, y forward, still at their own scale),
     their states, and the world px a RW px is drawn at. Returns (key, fw, fh, k, anims, frames)"""
     gfx = ini.get("graphics", {})
-    sc = num(gfx.get("imageScale")) or 1.0
+    sc = body_scale(ini, d)
     n = int(max(1, round(num(gfx.get("total_frames")) or 1)))
     anims = None
     if art == "titan":
@@ -1459,7 +1627,9 @@ def unit_art(did, ini, d, ov, by_name, art):
     else:
         im = open_art(resolve(gfx.get("image"), d))
         if im is None:
-            frames = [lay(body_parts(ini, d) + attached_items(ini, by_name))] if (body_parts(ini, d) or attached_items(ini, by_name)) else []
+            below, above = attached_items(ini, by_name)
+            parts = below + body_parts(ini, d) + above
+            frames = [lay(parts)] if parts else []
             if not frames or not frames[0].getbbox():
                 return None
             n = 1
@@ -1478,7 +1648,7 @@ def unit_art(did, ini, d, ov, by_name, art):
                         s_im = open_art(resolve(s_g.get("image"), os.path.dirname(shoot)))
                         if s_im is not None:
                             s_n = int(max(1, round(num(s_g.get("total_frames")) or 1)))
-                            extra = prep(s_im, num(s_g.get("imageScale")) or 1.0, frame0=s_n)
+                            extra = prep(s_im, body_scale(s_ini, os.path.dirname(shoot)), frame0=s_n)
                     if n > 1 or extra is not None:
                         anims = {"idle": [0, 0]}
                         if n > 1:
@@ -1490,20 +1660,27 @@ def unit_art(did, ini, d, ov, by_name, art):
                 H = max(f.height for f in raw)
                 frames = [lay([(f, 0, 0)], W, H) for f in raw]
             else:
-                # the hull, the guns bolted to it that turn on their own, and what rides on it
-                secs, pos = turret_tree(ini)
-                extras = attached_items(ini, by_name)
+                # the hull with its limbs and decals, the guns bolted to it that turn on their own,
+                # and what rides on it, each on its layer
+                below, above = attached_items(ini, by_name)
+                dec = decal_items(ini, d)
+                ground, under, over = limb_items(ini, d, sc)
+                k_tur = turret_scale(ini, d)
+                guns = []
                 if art == "strip":
-                    extras = [(prep(tim, turret_scale(gfx, tim), idle), x, y) for _, tim, (x, y), idle in visible_turrets(ini, d)] + extras
+                    guns = [(prep(tim, k_tur, idle), x, y) for _, tim, (x, y), idle in visible_turrets(ini, d)]
                 elif not ov.get("tower"):
                     root = gun_root(ini, d)
                     for s, tim, (x, y), idle in visible_turrets(ini, d):
                         if root and not on_root(ini, s, root):
-                            extras.append((prep(tim, turret_scale(gfx, tim), idle), x, y))
-                half_w = max(max(f.width for f in raw) / 2, *(abs(x) + im_.width / 2 for im_, x, y in extras)) if extras else max(f.width for f in raw) / 2
-                half_h = max(max(f.height for f in raw) / 2, *(abs(y) + im_.height / 2 for im_, x, y in extras)) if extras else max(f.height for f in raw) / 2
+                            guns.append((prep(tim, k_tur, idle), x, y))
+                pre = below + dec["shadow"] + ground + dec["beforeBody"] + under
+                post = over + dec["afterBody"] + guns + dec["onTop"] + dec["beforeUI"] + above
+                ox, oy = body_offset(gfx)
+                half_w = max([abs(ox) + f.width / 2 for f in raw] + [abs(x) + im_.width / 2 for im_, x, y in pre + post])
+                half_h = max([abs(oy) + f.height / 2 for f in raw] + [abs(y) + im_.height / 2 for im_, x, y in pre + post])
                 W, H = int(math.ceil(half_w * 2)) + 2, int(math.ceil(half_h * 2)) + 2
-                frames = [lay([(f, 0, 0)] + extras, W, H) for f in raw]
+                frames = [lay(pre + [(f, ox, oy)] + post, W, H) for f in raw]
                 if art == "strip":
                     anims = anims_of(gfx, n)
             frames = [clean_alpha(f) for f in frames]
@@ -1557,9 +1734,10 @@ def turret_art(did, ini, d, k_world, bld_fit=None):
     secs, pos = turret_tree(ini)
     rx, ry = pos(root)
     items = []
+    k_tur = turret_scale(ini, d)
     for s, tim, (x, y), idle in visible_turrets(ini, d):
-        if on_root(ini, s, root):
-            items.append((prep(tim, turret_scale(gfx, tim), idle), x - rx, y - ry))
+        if on_root(ini, s, root) and k_tur > 0:
+            items.append((prep(tim, k_tur, idle), x - rx, y - ry))
     if not items:
         return None
     cv = clean_alpha(lay(items))
@@ -1710,12 +1888,10 @@ def build_def(rw, sfx, en, desc_en, ov, ini, d, by_name, prices, twin=None):
             df["upgradeOf"] = f"{MOD_ID}-{ov['upgradeOf']}"
             df["upgradeCost"] = ov.get("upgradeCost", max(50, cost // 2))
             df["upgradeTime"] = ov.get("upgradeTime", 30)
-        # the building's picture, and what stands on it: its arms at rest, its attachments
-        if ov.get("image"):
-            pic = open_art(pkg(ov["image"]))
-            items = [(prep(pic), 0, 0)] if pic is not None else []
-        else:
-            items = body_parts(ini, d, turrets=not ov.get("tower")) + attached_items(ini, by_name)
+        # the building's picture, and what stands on it: its arms at rest, its decals, its
+        # attachments, each on its layer (a stable's yard under it, its fences over)
+        below, above = attached_items(ini, by_name)
+        items = below + body_parts(ini, d, turrets=not ov.get("tower")) + above
         bld_fit = None
         if items:
             cv = clean_alpha(lay(items))
@@ -1751,7 +1927,7 @@ def build_def(rw, sfx, en, desc_en, ov, ini, d, by_name, prices, twin=None):
         if boolish(src_ini.get("attack", {}).get("canAttack"), False):
             weapons = convert_weapons(src_ini, src_d, domain, ov, did, radius_tiles, titan=titan)
         weapons += [hand_weapon(w, did, radius_tiles) for w in ov.get("extra_weapons", [])]
-    for a_ini, a_d, ax, ay, a_name in (attachments(ini, by_name) if "weapons" not in ov else []):
+    for a_ini, a_d, ax, ay, a_name, _ in (attachments(ini, by_name) if "weapons" not in ov else []):
         if not boolish(a_ini.get("attack", {}).get("canAttack"), False):
             continue
         for w in convert_weapons(a_ini, a_d, domain, {}, did, 0.3):
@@ -2142,9 +2318,9 @@ def main():
         "v": 1,
         "id": MOD_ID,
         "name": ["Attack on Titan: The Rumbling", "进击の巨人『地鸣』"],
-        "version": "0.1.0",
+        "version": "0.1.1",
         "minGame": MIN_GAME,
-        "author": "辣条QWQ and 白日梦 (original by Mirka); port by Steel Tide",
+        "author": "辣条QWQ (original by Mirka); port by Steel Tide",
         "description": [desc_en, desc_zh],
         "homepage": f"https://github.com/steel-tide/mods/tree/main/mods/{MOD_ID}",
         "license": "LicenseRef-AoT-Rumbling",
