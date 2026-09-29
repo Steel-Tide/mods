@@ -1,7 +1,7 @@
 {
   "format": "steel-tide-mod-index",
   "v": 1,
-  "generated": "2026-09-28T11:03:42.689Z",
+  "generated": "2026-09-29T04:13:46.817Z",
   "mods": [
     {
       "id": "adolence",
@@ -10,7 +10,7 @@
         "Adolence·罪恶之都",
         "Adolence: City of Sin"
       ],
-      "version": "1.1.0",
+      "version": "1.1.1",
       "author": "自然常数也有人用? and the Adolence team; port by Steel Tide",
       "description": [
         "The city police and the troops that come to their aid, their cruisers, tanks and helicopters, and the dead they are fighting: bred from nests you can place yourself, and rising again from the police they kill.",
@@ -22,8 +22,8 @@
       "minGame": "0.8.7",
       "path": "mods/adolence",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/adolence/",
-      "updated": "2026-09-28T08:53:21+08:00",
-      "downloads": 60,
+      "updated": "2026-09-29T12:12:34+08:00",
+      "downloads": 65,
       "screenshots": [
         {
           "file": "screenshots/cover.png",
@@ -2017,7 +2017,7 @@
           "file": "sprites/tur.adolence-m1a1-clickbait.png",
           "frames": 1,
           "rotated": true,
-          "w": 57,
+          "w": 67,
           "h": 152
         },
         {
@@ -2383,8 +2383,8 @@
         "进击の巨人『地鸣』",
         "Attack on Titan: The Rumbling"
       ],
-      "version": "0.1.0",
-      "author": "辣条QWQ and 白日梦 (original by Mirka); port by Steel Tide",
+      "version": "0.1.1",
+      "author": "辣条QWQ (original by Mirka); port by Steel Tide",
       "description": [
         "The Walls and the Survey Corps on their gear, Marley's army, air fleet and Warriors, the Middle-East Allied Forces, and the Titans: shifters who take their Titan forms, Eldians who become mindless ones, and the Rumbling.",
         "城墙与驾驶立体机动装置的调查兵团，马莱的陆军、空军与战士，中东联合军，以及巨人：能变身的九大巨人继承者、化为无垢巨人的艾尔迪亚人，还有地鸣。",
@@ -2395,8 +2395,8 @@
       "minGame": "0.8.7",
       "path": "mods/aot-rumbling",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/aot-rumbling/",
-      "updated": "2026-09-28T15:17:15+08:00",
-      "downloads": 2,
+      "updated": "2026-09-29T12:12:34+08:00",
+      "downloads": 5,
       "screenshots": [
         {
           "file": "screenshots/cover.jpg",
@@ -4334,7 +4334,7 @@
           "file": "sprites/u.aot-rumbling-odm-camp.png",
           "frames": 1,
           "w": 395,
-          "h": 294
+          "h": 343
         },
         {
           "key": "u.aot-rumbling-academy",
@@ -4390,22 +4390,22 @@
           "file": "sprites/tur.aot-rumbling-wall-cannon.png",
           "frames": 1,
           "rotated": true,
-          "w": 89,
-          "h": 184
+          "w": 48,
+          "h": 69
         },
         {
           "key": "u.aot-rumbling-wall",
           "file": "sprites/u.aot-rumbling-wall.png",
           "frames": 1,
-          "w": 114,
-          "h": 126
+          "w": 345,
+          "h": 387
         },
         {
           "key": "u.aot-rumbling-wall-v",
           "file": "sprites/u.aot-rumbling-wall-v.png",
           "frames": 1,
-          "w": 34,
-          "h": 201
+          "w": 79,
+          "h": 538
         },
         {
           "key": "u.aot-rumbling-gate",
@@ -4657,8 +4657,8 @@
           "file": "sprites/tur.aot-rumbling-aa-mg.png",
           "frames": 1,
           "rotated": true,
-          "w": 37,
-          "h": 61
+          "w": 26,
+          "h": 46
         },
         {
           "key": "u.aot-rumbling-aa-gun",
@@ -4672,8 +4672,8 @@
           "file": "sprites/tur.aot-rumbling-aa-gun.png",
           "frames": 1,
           "rotated": true,
-          "w": 40,
-          "h": 132
+          "w": 32,
+          "h": 114
         },
         {
           "key": "u.aot-rumbling-repair-station",
@@ -4693,8 +4693,8 @@
           "key": "u.aot-rumbling-coastal-gun",
           "file": "sprites/u.aot-rumbling-coastal-gun.png",
           "frames": 1,
-          "w": 49,
-          "h": 51
+          "w": 131,
+          "h": 137
         },
         {
           "key": "u.aot-rumbling-marley-engineer",
@@ -4797,7 +4797,7 @@
           "file": "sprites/u.aot-rumbling-anti-titan-gun.png",
           "frames": 1,
           "rotated": true,
-          "w": 60,
+          "w": 50,
           "h": 88
         },
         {
@@ -4805,16 +4805,16 @@
           "file": "sprites/tur.aot-rumbling-anti-titan-gun.png",
           "frames": 1,
           "rotated": true,
-          "w": 34,
-          "h": 144
+          "w": 21,
+          "h": 117
         },
         {
           "key": "u.aot-rumbling-super-heavy-tank",
           "file": "sprites/u.aot-rumbling-super-heavy-tank.png",
           "frames": 1,
           "rotated": true,
-          "w": 101,
-          "h": 265
+          "w": 73,
+          "h": 204
         },
         {
           "key": "prj.aot-rumbling-super-heavy-tank-w3",
@@ -4829,8 +4829,8 @@
           "file": "sprites/tur.aot-rumbling-super-heavy-tank.png",
           "frames": 1,
           "rotated": true,
-          "w": 39,
-          "h": 66
+          "w": 21,
+          "h": 45
         },
         {
           "key": "u.aot-rumbling-fighter",
@@ -4877,7 +4877,7 @@
           "file": "sprites/u.aot-rumbling-combat-airship.png",
           "frames": 2,
           "rotated": true,
-          "w": 160,
+          "w": 118,
           "h": 180
         },
         {
@@ -4885,15 +4885,15 @@
           "file": "sprites/tur.aot-rumbling-combat-airship.png",
           "frames": 1,
           "rotated": true,
-          "w": 54,
-          "h": 12
+          "w": 30,
+          "h": 5
         },
         {
           "key": "u.aot-rumbling-strategic-airship",
           "file": "sprites/u.aot-rumbling-strategic-airship.png",
           "frames": 2,
           "rotated": true,
-          "w": 160,
+          "w": 122,
           "h": 232
         },
         {
@@ -4901,7 +4901,7 @@
           "file": "sprites/tur.aot-rumbling-strategic-airship.png",
           "frames": 1,
           "rotated": true,
-          "w": 51,
+          "w": 27,
           "h": 12
         },
         {
@@ -4925,15 +4925,15 @@
           "file": "sprites/tur.aot-rumbling-frigate.png",
           "frames": 1,
           "rotated": true,
-          "w": 30,
-          "h": 84
+          "w": 21,
+          "h": 60
         },
         {
           "key": "u.aot-rumbling-ironclad",
           "file": "sprites/u.aot-rumbling-ironclad.png",
           "frames": 1,
           "rotated": true,
-          "w": 63,
+          "w": 59,
           "h": 251
         },
         {
@@ -4941,8 +4941,8 @@
           "file": "sprites/tur.aot-rumbling-ironclad.png",
           "frames": 1,
           "rotated": true,
-          "w": 27,
-          "h": 81
+          "w": 24,
+          "h": 69
         },
         {
           "key": "u.aot-rumbling-battleship",
@@ -4950,7 +4950,7 @@
           "frames": 1,
           "rotated": true,
           "w": 54,
-          "h": 314
+          "h": 305
         },
         {
           "key": "u.aot-rumbling-gabi",
@@ -5093,8 +5093,8 @@
           "key": "u.aot-rumbling-me-mortar-emplacement",
           "file": "sprites/u.aot-rumbling-me-mortar-emplacement.png",
           "frames": 1,
-          "w": 135,
-          "h": 155
+          "w": 68,
+          "h": 85
         },
         {
           "key": "u.aot-rumbling-me-engineer",
@@ -5141,8 +5141,8 @@
           "file": "sprites/tur.aot-rumbling-me-hmg.png",
           "frames": 1,
           "rotated": true,
-          "w": 34,
-          "h": 96
+          "w": 18,
+          "h": 49
         },
         {
           "key": "u.aot-rumbling-me-mortar",
@@ -5197,15 +5197,15 @@
           "file": "sprites/tur.aot-rumbling-me-at-gun.png",
           "frames": 1,
           "rotated": true,
-          "w": 13,
-          "h": 70
+          "w": 9,
+          "h": 41
         },
         {
           "key": "u.aot-rumbling-me-howitzer",
           "file": "sprites/u.aot-rumbling-me-howitzer.png",
           "frames": 1,
           "rotated": true,
-          "w": 37,
+          "w": 47,
           "h": 79
         },
         {
@@ -5213,8 +5213,8 @@
           "file": "sprites/tur.aot-rumbling-me-howitzer.png",
           "frames": 1,
           "rotated": true,
-          "w": 18,
-          "h": 139
+          "w": 11,
+          "h": 84
         },
         {
           "key": "u.aot-rumbling-attack-titan",
@@ -5261,7 +5261,7 @@
           "file": "sprites/u.aot-rumbling-colossal-armin.png",
           "frames": 15,
           "rotated": true,
-          "w": 4110,
+          "w": 4395,
           "h": 209
         },
         {
@@ -5269,7 +5269,7 @@
           "file": "sprites/u.aot-rumbling-colossal.png",
           "frames": 15,
           "rotated": true,
-          "w": 4110,
+          "w": 4500,
           "h": 197
         },
         {
@@ -5277,16 +5277,16 @@
           "file": "sprites/u.aot-rumbling-armored-titan.png",
           "frames": 15,
           "rotated": true,
-          "w": 2385,
-          "h": 206
+          "w": 2430,
+          "h": 209
         },
         {
           "key": "u.aot-rumbling-armored-titan-shed",
           "file": "sprites/u.aot-rumbling-armored-titan-shed.png",
           "frames": 15,
           "rotated": true,
-          "w": 2385,
-          "h": 206
+          "w": 2430,
+          "h": 209
         },
         {
           "key": "u.aot-rumbling-female-titan",
@@ -5397,16 +5397,16 @@
           "file": "sprites/u.aot-rumbling-leaping-abnormal.png",
           "frames": 15,
           "rotated": true,
-          "w": 1935,
-          "h": 173
+          "w": 1800,
+          "h": 162
         },
         {
           "key": "u.aot-rumbling-crawling-abnormal",
           "file": "sprites/u.aot-rumbling-crawling-abnormal.png",
           "frames": 15,
           "rotated": true,
-          "w": 2460,
-          "h": 197
+          "w": 2430,
+          "h": 195
         },
         {
           "key": "u.aot-rumbling-running-abnormal",
@@ -5429,8 +5429,8 @@
           "file": "sprites/u.aot-rumbling-wall-titan.png",
           "frames": 9,
           "rotated": true,
-          "w": 2466,
-          "h": 120
+          "w": 2493,
+          "h": 145
         },
         {
           "key": "fx.aot-rumbling-shift",
@@ -5553,7 +5553,7 @@
         "FG 铁锈联盟",
         "FG Rusted League"
       ],
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": "空中之主 (art by 有人, 基卡 and SS元首); port by Steel Tide",
       "description": [
         "The whole army redrawn in black and acid green — Grizzly and Prism tanks, Kirov airships, Patriot batteries — and the GF plugin's carriers, dreadnoughts, sky fortresses, a Mirage tank that hides as a tree and a hero tank that ranks itself up.",
@@ -5562,11 +5562,11 @@
       ],
       "license": "LicenseRef-FG-Rusted-League",
       "homepage": "https://github.com/steel-tide/mods/tree/main/mods/fg-rusted-league",
-      "minGame": "0.8.7",
+      "minGame": "0.8.8",
       "path": "mods/fg-rusted-league",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/fg-rusted-league/",
-      "updated": "2026-09-28T11:41:14+08:00",
-      "downloads": 3,
+      "updated": "2026-09-29T12:12:34+08:00",
+      "downloads": 7,
       "screenshots": [
         {
           "file": "screenshots/cover.jpg",
@@ -6936,7 +6936,8 @@
             "航空母舰",
             "Aircraft Carrier"
           ],
-          "sprite": "u.fg-rusted-league-aircraft-carrier"
+          "sprite": "u.fg-rusted-league-aircraft-carrier",
+          "turretSprite": "tur.fg-rusted-league-aircraft-carrier"
         },
         {
           "id": "fg-rusted-league-jiaolong",
@@ -7616,8 +7617,8 @@
           "file": "sprites/u.fg-rusted-league-battleship.png",
           "frames": 1,
           "rotated": true,
-          "w": 27,
-          "h": 76
+          "w": 25,
+          "h": 68
         },
         {
           "key": "tur.fg-rusted-league-battleship",
@@ -7768,8 +7769,8 @@
           "file": "sprites/u.fg-rusted-league-general-battleship.png",
           "frames": 1,
           "rotated": true,
-          "w": 58,
-          "h": 116
+          "w": 56,
+          "h": 114
         },
         {
           "key": "tur.fg-rusted-league-general-battleship",
@@ -7816,8 +7817,8 @@
           "file": "sprites/u.fg-rusted-league-v3-launcher.png",
           "frames": 1,
           "rotated": true,
-          "w": 44,
-          "h": 72
+          "w": 25,
+          "h": 67
         },
         {
           "key": "tur.fg-rusted-league-v3-launcher",
@@ -8208,8 +8209,8 @@
           "file": "sprites/u.fg-rusted-league-judgment.png",
           "frames": 1,
           "rotated": true,
-          "w": 37,
-          "h": 167
+          "w": 35,
+          "h": 165
         },
         {
           "key": "tur.fg-rusted-league-judgment",
@@ -8224,8 +8225,8 @@
           "file": "sprites/u.fg-rusted-league-battle-carrier.png",
           "frames": 1,
           "rotated": true,
-          "w": 100,
-          "h": 162
+          "w": 98,
+          "h": 160
         },
         {
           "key": "tur.fg-rusted-league-battle-carrier",
@@ -8242,6 +8243,14 @@
           "rotated": true,
           "w": 288,
           "h": 100
+        },
+        {
+          "key": "tur.fg-rusted-league-aircraft-carrier",
+          "file": "sprites/tur.fg-rusted-league-aircraft-carrier.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 21,
+          "h": 15
         },
         {
           "key": "u.fg-rusted-league-hero-1",
@@ -8472,7 +8481,7 @@
       "path": "mods/hades-arsenal",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/hades-arsenal/",
       "updated": "2026-09-27T14:59:28+08:00",
-      "downloads": 8,
+      "downloads": 10,
       "screenshots": [
         {
           "file": "screenshots/cover.webp",
@@ -8597,7 +8606,7 @@
       "path": "mods/ironworks",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/ironworks/",
       "updated": "2026-09-19T20:24:28+08:00",
-      "downloads": 25,
+      "downloads": 26,
       "screenshots": [
         {
           "file": "screenshots/skimmers.webp",
@@ -8708,7 +8717,7 @@
       "path": "mods/rusted-expansion",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/rusted-expansion/",
       "updated": "2026-09-20T13:14:42+08:00",
-      "downloads": 14,
+      "downloads": 15,
       "screenshots": [
         {
           "file": "screenshots/armour.webp",
