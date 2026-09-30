@@ -39,8 +39,9 @@ Marleyan engineer, the Middle-East engineer — and the builder places the rest.
   and mortar teams, trucks, light and super-heavy tanks, anti-Titan field guns
   and howitzers; walls, a blockhouse, bunkers and a heavy mortar emplacement.
 
-144 defs: 35 buildings and 109 units, of which 14 are a soldier or a hero on the
-gear (the same unit's airborne form), 12 are squads, and 26 are Titans.
+146 defs: 35 buildings and 111 units, of which 14 are a soldier or a hero on the
+gear (the same unit's airborne form), 2 are the horse ridden, 12 are squads, and
+26 are Titans.
 
 ## What they do
 
@@ -123,7 +124,18 @@ head, the banners on Marley's administration, the training fields under the
 camps, the howitzer's crew — and attached units on theirs, so the stable's yard
 lies under it and its fences over it. A decal the original shows only on a
 condition (a fire, a shield, a health bar, a selection) is left out. The Wall is
-the package's current one (`新城墙`), not the older sections it still carries.
+the package's current one (`新城墙`), not the older sections it still carries,
+and its sections, its gate and its north–south run are drawn at one scale, so the
+gate stands as tall as the Wall it is set in.
+
+A unit's main gun turns: the chain of turrets that fires hardest, even when it
+hangs from a ring with no picture of its own (the tanks) or is a unit bolted on
+(the super-heavy tank's main turret, the battleship's main guns). Guns alike each
+turn on a ring of their own (`turretMounts`): the frigate's and the ironclad's
+three turrets, the battleship's two, the airships' broadside guns. A towed gun —
+the field and wheeled cannons, the anti-Titan guns, the howitzer — is laid by
+turning the whole gun, so its barrel never swings off its carriage. A horse
+carries two, and shows them in the saddle as it does.
 
 Pictures in the package that are stills from the anime (the portraits, the
 icon) are not used.

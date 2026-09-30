@@ -75,7 +75,7 @@ fill(0, 82, W, 84, SAND)
 fill(0, 84, W, H, WATER)
 fill(0, 90, W, H, DEEP)
 fill(47, 30, 84, 32, ROAD)           # the road from the east wall across the field
-fill(24, 28, 26, 80, ROAD)           # the town's high street
+fill(23, 28, 25, 80, ROAD)           # the town's high street, out of the gate
 blob(62, 60, 5, 4, MUD)
 blob(66, 14, 5, 4, RUBBLE)
 blob(58, 72, 4, 3, MOUNTAIN)
@@ -143,9 +143,9 @@ for s in spawns:
 
 # ================================================================ Paradis, seat 0
 # the Walls: the north stretch with the gate, the east stretch down to the shore
-for x in (1, 5, 9, 13, 17, 26, 30, 34, 38, 42):
+for x in (2, 6, 10, 14, 18, 26, 30, 34, 38, 42):
     put("wall", 0, x, 26)
-put("gate", 0, 21, 26)
+put("gate", 0, 22, 26)
 for y in range(26, 82, 4):
     put("wall-v", 0, 46, y)
 for x, y in ((43, 36), (43, 50), (43, 64)):
@@ -222,8 +222,8 @@ for k, sfx in enumerate(MINDLESS):
 # the air fleet over the base, the navy in the bay
 for k, sfx in enumerate(["fighter", "fighter", "heavy-bomber", "combat-airship", "strategic-airship", "bird-titan"]):
     put(sfx, 1, 90 + k * 5, 36, 180)
-for k, sfx in enumerate(["landing-craft", "frigate", "ironclad", "battleship"]):
-    put(sfx, 1, 72 + k * 6, 88, 180)
+for sfx, x in (("landing-craft", 50), ("frigate", 68), ("ironclad", 80), ("battleship", 94)):
+    put(sfx, 1, x, 91, 180)
 
 # ================================================================ checks
 tile = lambda x, y: t[y][x]
@@ -252,7 +252,7 @@ beast = [u for u in units if u["id"] == P + "beast-titan"]
 for u in units:
     if u["id"] == P + "eldian":
         assert all(b["owner"] != u["owner"] or math.hypot(u["x"] - b["x"], u["y"] - b["y"]) > 18 for b in beast)
-SELF_FORMS = {d["id"] for d in MOD["defs"] if d["id"].endswith("-odm") or d["id"].endswith("-squad")}
+SELF_FORMS = {d["id"] for d in MOD["defs"] if d["id"].endswith(("-odm", "-squad")) or "-ridden" in d["id"]}
 missing = sorted(set(DEFS) - {u["id"] for u in units} - SELF_FORMS)
 assert not missing, f"not on the map: {missing}"
 assert len(units) <= 400, len(units)

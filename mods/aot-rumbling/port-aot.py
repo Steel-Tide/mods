@@ -45,7 +45,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 RW = os.path.join(REPO, "rusted-warfare-mods", "进击の巨人『地鸣』1.443【公测】")
 MOD_ID = "aot-rumbling"
-MIN_GAME = "0.8.7"  # mod behaviour, and `near` (the flyers' anchors, the Walls waking)
+MIN_GAME = "0.8.8"  # `turretMounts` (a warship's guns alike each turn); 0.8.7 brought behaviour and `near`
 DRY = "--dry" in sys.argv
 NO_MEDIA = "--no-media" in sys.argv
 OUT = os.path.abspath(sys.argv[sys.argv.index("--out") + 1]) if "--out" in sys.argv else HERE
@@ -58,12 +58,15 @@ DISPLAY = 1.5625            # a unit's sheet is drawn at this many world px a sh
 HUMAN_ART = 1.2
 MACHINE_ART = 1.0
 MACHINE_CAP, MACHINE_SLOPE = 40, 0.4    # RW px; beyond this a hull grows at the slope
+SHIP_ART = 1.0
+SHIP_CAP, SHIP_SLOPE = 60, 0.6          # a warship is held back less than a tank: beside its yard it reads as one
 TITAN_ART = 0.85
 TITAN_CAP, TITAN_SLOPE = 70, 0.5
 TITAN_MAX = 330             # world px, the longest a Titan's frame may be
 TITAN_SS = 1.5              # a Titan's sheet px per world px: its art is fine, and moves
 HUMAN_MIN = 24              # world px, the least a person's longest side is drawn at
 BUILDING_TILE = 0.7         # tiles here a Rusted Warfare tile of footprint is
+WALL_RW_PER_TILE = 86       # the Wall's pieces at one scale: a section's 344 RW px of stone to 4 tiles
 
 # numbers: the package's credits and hit points are about ten and three times the stock game's
 UNIT_PRICE, UNIT_KNEE, UNIT_EXP = 0.01, 40000, 0.6
@@ -453,21 +456,27 @@ ROSTER = [
     ("固定炮", "wall-cannon", "Wall Cannon", "A fixed cannon of the kind the Garrison mans on the Walls: long reach, and extra harm to Titans.",
      dict(weapons_from="固定炮可控", kind=B, fw=2, fh=2, power=-2, tower=True, requires=["academy"])),
     ("城墙横", "wall", "Wall Section", "Fifty metres of stone around the island, built of Colossal Titans. When the Founder comes near, it crumbles and they march.",
-     dict(kind=B, zh_name="城墙", fw=4, fh=2, cost=180, hp=6000)),
+     dict(kind=B, zh_name="城墙", fw=4, fh=2, cost=180, hp=6000, rw_per_tile=WALL_RW_PER_TILE)),
     ("城墙竖", "wall-v", "Wall Section (north–south)", "The Wall running north to south. When the Founder comes near, it crumbles and they march.",
-     dict(kind=B, zh_name="城墙（竖）", fw=1, fh=4, cost=180, hp=6000)),
+     dict(kind=B, zh_name="城墙（竖）", fw=1, fh=4, cost=180, hp=6000, rw_per_tile=WALL_RW_PER_TILE)),
+    # the package's gate is a section of the Wall's own size, so it stands in the line as one
     ("城门关", "gate", "Wall Gate", "A gate in the Wall, and the bravest place to hold. The Founder wakes the Titans in it too.",
-     dict(kind=B, zh_name="城门", fw=5, fh=2, cost=400, hp=9000)),
+     dict(kind=B, zh_name="城门", fw=4, fh=2, cost=400, hp=9000, rw_per_tile=WALL_RW_PER_TILE)),
     ("驻扎_landed", "garrison", "Garrison Soldier", "The Garrison Regiment: builds the island's works, and is no match for a Titan.",
      dict(weapons=[blade(110, 50)], kind=U, art="odm", buildRate=25)),
     ("carriage", "carriage", "Supply Carriage", "Carries the wounded and the builders: six aboard.",
      dict(kind=U, transportCap=6, trail="tire", armor="light")),
-    ("马", "horse", "Horse", "A Scout's mount: one rider, and far quicker than a soldier on foot.",
-     dict(kind=U, transportCap=1, trail="none", armor="light", cost=40)),
+    ("马", "horse", "Horse", "A Scout's mount: two riders, and far quicker than a soldier on foot.",
+     dict(kind=U, transportCap=2, trail="none", armor="light", cost=40)),
+    # the horse as it is ridden: its riders drawn in the saddle, which the game's hold would hide
+    ("马", "horse-ridden", "Horse", "A Scout's mount, ridden.",
+     dict(kind=U, transportCap=2, trail="none", armor="light", cost=40, riders=1, form=True, zh_name="马（骑乘）")),
+    ("马", "horse-ridden-2", "Horse", "A Scout's mount, carrying two.",
+     dict(kind=U, transportCap=2, trail="none", armor="light", cost=40, riders=2, form=True, zh_name="马（双人骑乘）")),
     ("火炮", "field-cannon", "Field Cannon", "A Garrison gun: slow to move, long-ranged, and hard on Titans.",
-     dict(kind=U, trail="tire", armor="light", mult={"heavy": 1.3})),
+     dict(kind=U, trail="tire", armor="light", mult={"heavy": 1.3}, towed=True)),
     ("轮式火炮", "wheeled-cannon", "Wheeled Cannon", "Lighter and quicker to fire than the field cannon, with less reach.",
-     dict(kind=U, trail="tire", armor="light", mult={"heavy": 1.3})),
+     dict(kind=U, trail="tire", armor="light", mult={"heavy": 1.3}, towed=True)),
     # the ODM troops: each fights on foot and takes to the air near something to hook onto
     ("调查_landed", "scout", "Survey Corps Soldier", "Fights on foot with blades; with a building or a Titan close by it takes to the air on its gear and cuts at the nape.",
      dict(weapons=[blade(130, 50)], air_weapons=[blade(150, 90, True)], kind=U, art="odm", odm=True, form=True)),
@@ -570,7 +579,7 @@ ROSTER = [
     ("马莱装甲坦克", "marley-tank", "Marleyan Tank", "An anti-Titan gun in armour: with Marley's infantry beside it, the empire's strongest pairing.",
      dict(kind=U, armor="heavy", trail="tread", requires=["institute"])),
     ("重型反巨人炮移动", "anti-titan-gun", "Heavy Anti-Titan Gun", "A towed gun of enormous calibre: slow, precise, and devastating to Titans.",
-     dict(kind=U, armor="light", trail="tire", requires=["institute"], mult={"heavy": 1.4})),
+     dict(kind=U, armor="light", trail="tire", requires=["institute"], mult={"heavy": 1.4}, towed=True)),
     ("马莱超重型坦克", "super-heavy-tank", "Super-Heavy Tank", "Two great guns, a ring of secondary guns and anti-air machine guns: a war machine to fear.",
      dict(kind=U, armor="heavy", trail="tread", tier=3)),
     ("马莱战斗机", "fighter", "Allied Fighter", "Nimble, fights in flocks, and escorts the airships.",
@@ -644,9 +653,9 @@ ROSTER = [
     ("中东坦克", "me-tank", "Middle-East Tank", "The 'meat grinder': a super-heavy tank whose howitzer flattens buildings.",
      dict(kind=U, armor="heavy", trail="tread", tier=3)),
     ("中东反巨人野战炮", "me-at-gun", "Anti-Titan Field Gun", "Holes an armoured tank with ease; long-ranged, precise, and hard on Titans.",
-     dict(kind=U, armor="light", trail="tire", mult={"heavy": 1.4})),
+     dict(kind=U, armor="light", trail="tire", mult={"heavy": 1.4}, towed=True)),
     ("中东反步兵榴弹炮", "me-howitzer", "Anti-Infantry Howitzer", "Shells a wide patch of infantry: short-ranged, inaccurate, and hard on buildings.",
-     dict(kind=U, armor="light", trail="tire", arc=True)),
+     dict(kind=U, armor="light", trail="tire", arc=True, towed=True)),
 
     # ============================================================ the Titans
     # the Nine, each a form of its shifter
@@ -939,6 +948,18 @@ def trim_frames(frames):
     return [f.crop((x0, y0, x1, y1)) for f in frames]
 
 
+def fit_width(im, w):
+    """a picture widened with clear columns, or narrowed, about its middle to `w` px"""
+    w = max(1, int(round(w)))
+    out = Image.new("RGBA", (w, im.height), (0, 0, 0, 0))
+    if w >= im.width:
+        out.alpha_composite(im, ((w - im.width) // 2, 0))
+    else:
+        x0 = (im.width - w) // 2
+        out.alpha_composite(im.crop((x0, 0, x0 + w, im.height)), (0, 0))
+    return out
+
+
 def strip_of(frames):
     W, H = frames[0].size
     out = Image.new("RGBA", (W * len(frames), H), (0, 0, 0, 0))
@@ -1169,24 +1190,102 @@ def turret_tree(ini):
 
 def visible_turrets(ini, d):
     """the turrets the package draws as a unit stands: every one that is always shown, and of the
-    ones a script shows and hides, the first (a head that changes with the Titan's mood)"""
+    ones a script shows and hides, those shown on the first one's condition (a head that changes
+    with the Titan's mood is one of several; a gun's two crewmen come and go together)"""
     gfx = ini.get("graphics", {})
     secs, pos = turret_tree(ini)
-    out, conditional = [], False
+    out, shown_when = [], None
     for s, kv in secs.items():
-        inv = (kv.get("invisible") or "").strip().lower()
-        if inv == "true":
+        inv = (kv.get("invisible") or "").strip()
+        if inv.lower() == "true":
             continue
         img = kv.get("image") or gfx.get("image_turret")
         im = open_art(resolve(img, d)) if img else None
         if im is None:
             continue
-        if inv.startswith("if"):
-            if conditional:
+        if inv.lower().startswith("if"):
+            when = re.sub(r"\s+", "", inv.lower())
+            if shown_when is None:
+                shown_when = when
+            elif when != shown_when:
                 continue
-            conditional = True
         out.append((s, im, pos(s), num(kv.get("idleDir")) or 0))
     return out
+
+
+def turret_top(secs, s):
+    """the turret at the head of `s`'s attachedTo chain, which turns and carries the rest"""
+    seen = set()
+    while s not in seen:
+        seen.add(s)
+        parent = (secs[s].get("attachedTo") or "").strip()
+        if not parent or ("turret_" + parent) not in secs:
+            break
+        s = "turret_" + parent
+    return s
+
+
+def gun_chains(ini, d):
+    """the guns that turn, each the head of a chain with the drawn turrets that ride on it — the
+    head may be a ring with no picture of its own (a tank's `turret_3: null.png` under its turret
+    and barrel) — as {head: [(section, image, place, idle)]}, in the package's order"""
+    secs, _ = turret_tree(ini)
+    chains = {}
+    for t in visible_turrets(ini, d):
+        chains.setdefault(turret_top(secs, t[0]), []).append(t)
+    return chains
+
+
+def chain_damage(ini, top):
+    """the hardest round any turret of the chain under `top` fires: what ranks the guns"""
+    secs, _ = turret_tree(ini)
+    best = 0.0
+    for s, kv in secs.items():
+        if turret_top(secs, s) != top or not boolish(kv.get("canShoot"), True):
+            continue
+        proj = (kv.get("projectile") or "").strip() or s[len("turret_"):]
+        if f"projectile_{proj}" in ini:
+            direct, area, _, pellets, _ = payload(ini, ini[f"projectile_{proj}"])
+            best = max(best, max(direct, area) * pellets)
+    return best
+
+
+def gun_root(ini, d):
+    """the head of the unit's main gun: of the chains drawn, the one that fires hardest, then the
+    one of most parts, then the one nearest the centre"""
+    _, pos = turret_tree(ini)
+    chains = gun_chains(ini, d)
+    if not chains:
+        return None
+    return max(chains, key=lambda t: (chain_damage(ini, t), len(chains[t]), -(abs(pos(t)[0]) + abs(pos(t)[1]))))
+
+
+def chain_picture(ini, d, top, chain, k):
+    """a chain drawn about its head as the head points forward (RW px, y forward): what rides on a
+    turret is placed in its frame and turned with it, so an aft turret's barrels point aft only
+    because the turret does"""
+    secs, pos = turret_tree(ini)
+    tx, ty = pos(top)
+    rest = num(secs[top].get("idleDir")) or 0
+    return [(prep(im, k, idle - rest), x - tx, y - ty) for s, im, (x, y), idle in chain]
+
+
+def chain_rig(ini, d, top, chain):
+    """what a chain is made of, about its head: guns alike have the same"""
+    secs, pos = turret_tree(ini)
+    tx, ty = pos(top)
+    rest = num(secs[top].get("idleDir")) or 0
+    gfx = ini.get("graphics", {})
+    return tuple(sorted((os.path.basename(resolve(secs[s].get("image") or gfx.get("image_turret"), d) or ""),
+                         round(x - tx, 1), round(y - ty, 1), round((idle - rest) % 360)) for s, im, (x, y), idle in chain))
+
+
+def painted_chain(ini, d, top, chain, k):
+    """a chain that does not turn here, painted on the hull as it stands: its picture turned to its
+    head's rest bearing and laid at the head's place"""
+    secs, pos = turret_tree(ini)
+    pic = lay(chain_picture(ini, d, top, chain, k))
+    return (prep(pic, 1.0, num(secs[top].get("idleDir")) or 0), *pos(top))
 
 
 def body_offset(gfx):
@@ -1533,7 +1632,8 @@ def convert_weapons(ini, d, domain, ov, who, radius_tiles, titan=False):
 
 def attachments(ini, by_name):
     """the units the package bolts on (`[attachment_*]`): a ship's guns, a truck's hook, a
-    stable's fences, as (their ini, their folder, x, y, name, the attachment's own keys), RW px, y forward"""
+    stable's fences, as (their ini, their folder, x, y, name, the attachment's own keys, its
+    section), RW px, y forward"""
     out = []
     for s, kv in ini.items():
         if not s.startswith("attachment_"):
@@ -1544,7 +1644,7 @@ def attachments(ini, by_name):
         p = by_name.get(name)
         if not p:
             continue
-        out.append((load_unit(p), os.path.dirname(p), num(kv.get("x")) or 0, num(kv.get("y")) or 0, name, kv))
+        out.append((load_unit(p), os.path.dirname(p), num(kv.get("x")) or 0, num(kv.get("y")) or 0, name, kv, s))
     return out
 
 
@@ -1552,15 +1652,19 @@ def draw_layer(ini):
     return DRAW_LAYERS.get((ini.get("graphics", {}).get("drawLayer") or "").strip())
 
 
-def attached_items(ini, by_name, depth=0):
-    """what the attached units draw as they stand, laid where they ride (RW px, y forward), as
-    (under the unit, over it): one the attachment puts at the bottom (`setDrawLayerOnBottom`), or
-    that names a lower draw layer than the unit's own (a stable's yard, `wreaks` under `ground2`)
-    and is not put on top (`setDrawLayerOnTop`), is drawn before the unit; the rest after it"""
+def attached_items(ini, by_name, depth=0, skip=()):
+    """what the attached units draw as they stand, laid where they ride and turned to their rest
+    bearing (`idleDir`: a battleship's aft gun looks aft), RW px, y forward, as (under the unit,
+    over it): one the attachment puts at the bottom (`setDrawLayerOnBottom`), or that names a lower
+    draw layer than the unit's own (a stable's yard, `wreaks` under `ground2`) and is not put on
+    top (`setDrawLayerOnTop`), is drawn before the unit; the rest after it. `skip`: the sections of
+    attachments drawn apart, as a turret of their own."""
     under, over = [], []
     mine = draw_layer(ini)
     mine = DRAW_LAYERS["ground"] if mine is None else mine
-    for a_ini, a_d, ax, ay, _, a_kv in attachments(ini, by_name):
+    for a_ini, a_d, ax, ay, _, a_kv, s in attachments(ini, by_name):
+        if s in skip:
+            continue
         theirs = draw_layer(a_ini)
         below = boolish(a_kv.get("setDrawLayerOnBottom")) or (
             not boolish(a_kv.get("setDrawLayerOnTop")) and theirs is not None and theirs < mine)
@@ -1568,6 +1672,9 @@ def attached_items(ini, by_name, depth=0):
         if depth < 1:
             u, o = attached_items(a_ini, by_name, depth + 1)
             pics = u + pics + o
+        rest = num(a_kv.get("idleDir")) or 0
+        if pics and abs(rest % 360) > 0.5:
+            pics = [(prep(lay(pics), 1.0, rest), 0, 0)]
         (under if below else over).extend((im, x + ax, y + ay) for im, x, y in pics)
     return under, over
 
@@ -1605,14 +1712,37 @@ def titan_time(core):
     return int(clamp(round(emax / -regen / 60 / 10) * 10, TITAN_TIME_MIN, TITAN_TIME_MAX))
 
 
-def world_scale(art, long_rw):
+def world_scale(art, long_rw, naval=False):
     """world px a RW px is drawn at, for a thing of this kind and size"""
     if art in ("odm", "walker"):
         return HUMAN_ART
     if art in ("titan", "strip"):
         k = TITAN_ART * grow(long_rw, TITAN_CAP, TITAN_SLOPE)
         return min(k, TITAN_MAX / max(1, long_rw))
+    if naval:
+        return SHIP_ART * grow(long_rw, SHIP_CAP, SHIP_SLOPE)
     return MACHINE_ART * grow(long_rw, MACHINE_CAP, MACHINE_SLOPE)
+
+
+RIDER = "调查_landed"        # who a mount's ridden forms carry in the saddle: a Scout
+
+
+def rider_items(ini, d, ov, by_name):
+    """a mount's riders (`riders`: how many). The package draws whoever it carries at its empty
+    attachment slots, which the game cannot; its ridden forms carry a Scout in each saddle."""
+    n = ov.get("riders", 0)
+    if not n:
+        return []
+    slots = [(num(kv.get("x")) or 0, num(kv.get("y")) or 0) for s, kv in ini.items()
+             if s.startswith("attachment_") and not kv.get("onCreateSpawnUnitOf")]
+    p = by_name[RIDER]
+    r_ini, r_d = load_unit(p), os.path.dirname(p)
+    rg = r_ini.get("graphics", {})
+    im = open_art(resolve(rg.get("image"), r_d))
+    frames = int(max(1, round(num(rg.get("total_frames")) or 1)))
+    idle = (anims_of(rg, frames) or {}).get("idle", [0, 0])[0]
+    pic = prep(split_frames(im, frames)[idle] if frames > 1 else im, body_scale(r_ini, r_d))
+    return [(pic, x, y) for x, y in slots[:n]]
 
 
 def unit_art(did, ini, d, ov, by_name, art):
@@ -1622,13 +1752,16 @@ def unit_art(did, ini, d, ov, by_name, art):
     sc = body_scale(ini, d)
     n = int(max(1, round(num(gfx.get("total_frames")) or 1)))
     anims = None
+    sized_by = None
     if art == "titan":
         frames, anims, _ = titan_frames(ini, d)
     else:
         im = open_art(resolve(gfx.get("image"), d))
         if im is None:
-            below, above = attached_items(ini, by_name)
-            parts = below + body_parts(ini, d) + above
+            # a hull of parts alone: the gun that turns stands apart as a turret, the rest is laid on
+            plan = gun_plan(ini, d, ov, False, by_name) if art == "hull" else None
+            below, above = attached_items(ini, by_name, skip=plan["skip"] if plan else ())
+            parts = below + (body_parts(ini, d, turrets=False) + plan["painted"] if plan else body_parts(ini, d)) + above
             frames = [lay(parts)] if parts else []
             if not frames or not frames[0].getbbox():
                 return None
@@ -1662,32 +1795,33 @@ def unit_art(did, ini, d, ov, by_name, art):
             else:
                 # the hull with its limbs and decals, the guns bolted to it that turn on their own,
                 # and what rides on it, each on its layer
-                below, above = attached_items(ini, by_name)
                 dec = decal_items(ini, d)
                 ground, under, over = limb_items(ini, d, sc)
                 k_tur = turret_scale(ini, d)
-                guns = []
                 if art == "strip":
-                    guns = [(prep(tim, k_tur, idle), x, y) for _, tim, (x, y), idle in visible_turrets(ini, d)]
-                elif not ov.get("tower"):
-                    root = gun_root(ini, d)
-                    for s, tim, (x, y), idle in visible_turrets(ini, d):
-                        if root and not on_root(ini, s, root):
-                            guns.append((prep(tim, k_tur, idle), x, y))
+                    below, above = attached_items(ini, by_name)
+                    guns = [painted_chain(ini, d, t, c, k_tur) for t, c in gun_chains(ini, d).items()] if k_tur > 0 else []
+                else:
+                    plan = gun_plan(ini, d, ov, False, by_name)
+                    below, above = attached_items(ini, by_name, skip=plan["skip"])
+                    guns = plan["painted"]
                 pre = below + dec["shadow"] + ground + dec["beforeBody"] + under
-                post = over + dec["afterBody"] + guns + dec["onTop"] + dec["beforeUI"] + above
+                post = over + dec["afterBody"] + guns + dec["onTop"] + dec["beforeUI"] + above + rider_items(ini, d, ov, by_name)
                 ox, oy = body_offset(gfx)
                 half_w = max([abs(ox) + f.width / 2 for f in raw] + [abs(x) + im_.width / 2 for im_, x, y in pre + post])
                 half_h = max([abs(oy) + f.height / 2 for f in raw] + [abs(y) + im_.height / 2 for im_, x, y in pre + post])
                 W, H = int(math.ceil(half_w * 2)) + 2, int(math.ceil(half_h * 2)) + 2
                 frames = [lay(pre + [(f, ox, oy)] + post, W, H) for f in raw]
+                if ov.get("towed"):
+                    # a towed gun is sized by its carriage, as it was while its barrel turned apart
+                    sized_by = lay(pre + [(raw[0], ox, oy)] + [it for it in post if not any(it is g for g in guns)], W, H).getbbox()
                 if art == "strip":
                     anims = anims_of(gfx, n)
             frames = [clean_alpha(f) for f in frames]
     frames = trim_frames(frames)
-    bb = frames[0].getbbox() or (0, 0) + frames[0].size
+    bb = sized_by or frames[0].getbbox() or (0, 0) + frames[0].size
     long_rw = max(bb[2] - bb[0], bb[3] - bb[1])
-    k = world_scale(art, long_rw)
+    k = world_scale(art, long_rw, naval=(ini.get("movement", {}).get("movementType") or "").upper() in ("WATER", "HOVER"))
     if art in ("titan", "strip"):
         # the whole frame, the strike's reach and the stride's with it, held to the Titans' largest
         k = min(k, TITAN_MAX / max(frames[0].size))
@@ -1703,41 +1837,87 @@ def unit_art(did, ini, d, ov, by_name, art):
     return key, fw, fh, k, anims, len(frames)
 
 
-def gun_root(ini, d):
-    """the turret the others on the gun ride on: the imaged one others attach to, else the
-    imaged one nearest the centre"""
+MAX_RINGS = 8               # the game's `MAX_DEF_MOUNTS`
+
+
+def limit_angle(v):
+    """a turret's `limitingAngle` (`+65` is 65) as the half-arc it turns through, degrees"""
+    n = num(str(v).strip().lstrip("+")) if v is not None else None
+    return None if n is None else clamp(abs(n), 0, 180)
+
+
+FIXED_ARC = 10              # a gun that turns less than this either way is laid by the hull (a bow gun)
+
+
+def gun_candidates(ini, d, by_name):
+    """every gun that could turn: the unit's own turret chains, and the units bolted on it that
+    carry guns (a super-heavy tank's main turret, a battleship's main guns), each a dict: `key`
+    (the chain's head, or the attachment's section), `att` (the attached unit, or None), `pos` (its
+    place about the unit, RW px), `rest` and `arc` (degrees), `rig` (guns alike have the same),
+    `dmg` (the hardest round it fires), `parts`, and `items()` (its picture about its pivot as it
+    points forward)"""
     secs, pos = turret_tree(ini)
-    vis = [s for s, *_ in visible_turrets(ini, d)]
-    parents = {(kv.get("attachedTo") or "").strip() for kv in secs.values() if kv.get("attachedTo")}
-    for s in vis:
-        if s[len("turret_"):] in parents and not secs[s].get("attachedTo"):
-            return s
-    cands = [s for s in vis if not secs[s].get("attachedTo")]
-    return min(cands, key=lambda s: abs(pos(s)[0]) + abs(pos(s)[1])) if cands else None
+    k = turret_scale(ini, d)
+    out = []
+    for t, chain in (gun_chains(ini, d).items() if k > 0 else ()):
+        out.append({"key": t, "att": None, "pos": pos(t), "rest": num(secs[t].get("idleDir")) or 0,
+                    "arc": limit_angle(secs[t].get("limitingAngle")), "rig": ("turret",) + chain_rig(ini, d, t, chain),
+                    "dmg": chain_damage(ini, t), "parts": len(chain),
+                    "items": lambda t=t, chain=chain: chain_picture(ini, d, t, chain, k)})
+    for a_ini, a_d, ax, ay, name, kv, s in attachments(ini, by_name):
+        if not boolish(a_ini.get("attack", {}).get("canAttack"), False):
+            continue
+        a_chains = gun_chains(a_ini, a_d)
+        if not a_chains or turret_scale(a_ini, a_d) <= 0:
+            continue
+        a_secs, _ = turret_tree(a_ini)
+        a_root = gun_root(a_ini, a_d)
+        out.append({"key": s, "att": name, "pos": (ax, ay), "rest": num(kv.get("idleDir")) or 0,
+                    "arc": limit_angle(a_secs[a_root].get("limitingAngle")), "rig": ("att", name),
+                    "dmg": chain_damage(a_ini, a_root), "parts": sum(len(c) for c in a_chains.values()),
+                    "items": lambda a_ini=a_ini, a_d=a_d: body_parts(a_ini, a_d)})
+    return out
 
 
-def on_root(ini, s, root, depth=0):
-    if s == root:
-        return True
-    secs, _ = turret_tree(ini)
-    parent = (secs[s].get("attachedTo") or "").strip()
-    return bool(parent and ("turret_" + parent) in secs and depth < 8 and on_root(ini, "turret_" + parent, root, depth + 1))
-
-
-def turret_art(did, ini, d, k_world, bld_fit=None):
-    """the gun that turns: the root turret and what rides on it, one picture about the root's pivot.
-    Returns (key, fw, fh, root position in RW px, the picture's reach forward in RW px) or None"""
+def gun_plan(ini, d, ov, is_b, by_name):
+    """how a unit's guns are drawn here, as a dict: `root` (the gun that turns: the candidate that
+    fires hardest, then of most parts, then nearest the centre; a gun of a fixed bearing never),
+    `rings` (the guns alike it is drawn on, the main one first, for `turretMounts`), `painted` (the
+    unit's own chains that do not turn, as items to lay on the hull as they stand) and `skip` (the
+    attachments that turn, which the hull then does not draw). A towed gun (`towed`), or one whose
+    carriage the package turns with it (`lock_body_rotation_with_main_turret`), does not turn here
+    on its own: the whole gun is painted on and the hull lays it, so the barrel never swings off
+    the carriage."""
     gfx = ini.get("graphics", {})
-    root = gun_root(ini, d)
+    cands = gun_candidates(ini, d, by_name)
+    fixed = not is_b and (ov.get("towed") or boolish(gfx.get("lock_body_rotation_with_main_turret")))
+    turnable = [c for c in cands if not fixed and (c["arc"] is None or c["arc"] >= FIXED_ARC)]
+    root = max(turnable, key=lambda c: (c["dmg"], c["parts"], -(abs(c["pos"][0]) + abs(c["pos"][1])))) if turnable else None
+    rings = []
+    if root and not is_b:
+        rings = [root] + [c for c in turnable if c is not root and c["rig"] == root["rig"]]
+        rings = rings[:MAX_RINGS] if len(rings) > 1 else []
+    turning = rings or ([root] if root else [])
+    k = turret_scale(ini, d)
+    chains = gun_chains(ini, d)
+    painted = [painted_chain(ini, d, c["key"], chains[c["key"]], k) for c in cands if not c["att"] and not any(c is t for t in turning)]
+    return {"root": root, "rings": rings, "painted": painted, "skip": {c["key"] for c in turning if c["att"]}}
+
+
+def reach_of(item):
+    """how far forward of the unit's origin a laid picture paints, RW px"""
+    im, x, y = item
+    bb = im.getbbox()
+    return y + (im.height / 2 - bb[1]) if bb else y
+
+
+def turret_art(did, ini, d, k_world, bld_fit=None, root=None):
+    """the gun that turns: the candidate's picture about its pivot as it points forward. Returns
+    (key, fw, fh, its position in RW px, the picture's reach forward in RW px) or None"""
     if not root:
         return None
-    secs, pos = turret_tree(ini)
-    rx, ry = pos(root)
-    items = []
-    k_tur = turret_scale(ini, d)
-    for s, tim, (x, y), idle in visible_turrets(ini, d):
-        if on_root(ini, s, root) and k_tur > 0:
-            items.append((prep(tim, k_tur, idle), x - rx, y - ry))
+    rx, ry = root["pos"]
+    items = root["items"]()
     if not items:
         return None
     cv = clean_alpha(lay(items))
@@ -1890,8 +2070,10 @@ def build_def(rw, sfx, en, desc_en, ov, ini, d, by_name, prices, twin=None):
             df["upgradeTime"] = ov.get("upgradeTime", 30)
         # the building's picture, and what stands on it: its arms at rest, its decals, its
         # attachments, each on its layer (a stable's yard under it, its fences over)
-        below, above = attached_items(ini, by_name)
-        items = below + body_parts(ini, d, turrets=not ov.get("tower")) + above
+        # a gun tower's own gun turns; its other guns stand painted on it as they rest
+        plan = gun_plan(ini, d, ov, True, by_name) if ov.get("tower") else None
+        below, above = attached_items(ini, by_name, skip=plan["skip"] if plan else ())
+        items = below + body_parts(ini, d, turrets=not plan) + (plan["painted"] if plan else []) + above
         bld_fit = None
         if items:
             cv = clean_alpha(lay(items))
@@ -1899,14 +2081,16 @@ def build_def(rw, sfx, en, desc_en, ov, ini, d, by_name, prices, twin=None):
             if bb:
                 full = cv
                 cv = cv.crop(bb)
+                if ov.get("rw_per_tile") and not ov.get("tower"):
+                    # pieces that stand in one line (the Wall's sections and its gate) are drawn at
+                    # one scale, as the package draws them: each picture widened or narrowed about
+                    # its middle to its footprint's share, so a gate stands as tall as the Wall
+                    cv = fit_width(cv, df["fw"] * ov["rw_per_tile"])
                 bld_fit = df["fw"] * 32 / cv.width
                 mount = None
-                if ov.get("tower"):
-                    root = gun_root(ini, d)
-                    if root:
-                        _, pos = turret_tree(ini)
-                        rx, ry = pos(root)
-                        mount = ((full.width / 2 + rx - bb[0]) / cv.width, (full.height / 2 - ry - bb[1]) / cv.height)
+                if plan and plan["root"]:
+                    rx, ry = plan["root"]["pos"]
+                    mount = ((full.width / 2 + rx - bb[0]) / cv.width, (full.height / 2 - ry - bb[1]) / cv.height)
                 if max(cv.size) > 1024:
                     f = 1024 / max(cv.size)
                     cv = cv.resize((round(cv.width * f), round(cv.height * f)), Image.LANCZOS)
@@ -1927,7 +2111,10 @@ def build_def(rw, sfx, en, desc_en, ov, ini, d, by_name, prices, twin=None):
         if boolish(src_ini.get("attack", {}).get("canAttack"), False):
             weapons = convert_weapons(src_ini, src_d, domain, ov, did, radius_tiles, titan=titan)
         weapons += [hand_weapon(w, did, radius_tiles) for w in ov.get("extra_weapons", [])]
-    for a_ini, a_d, ax, ay, a_name, _ in (attachments(ini, by_name) if "weapons" not in ov else []):
+    # the guns bolted on: fired from the hull, unless the unit's turret is theirs
+    guns_drawn = (not is_b or ov.get("tower")) and art not in ("odm", "walker", "titan", "strip")
+    turning = gun_plan(ini, d, ov, is_b, by_name)["skip"] if guns_drawn else set()
+    for a_ini, a_d, ax, ay, a_name, _, a_sec in (attachments(ini, by_name) if "weapons" not in ov else []):
         if not boolish(a_ini.get("attack", {}).get("canAttack"), False):
             continue
         for w in convert_weapons(a_ini, a_d, domain, {}, did, 0.3):
@@ -1937,7 +2124,7 @@ def build_def(rw, sfx, en, desc_en, ov, ini, d, by_name, prices, twin=None):
                 same["burst"] = min(8, same.get("burst", 1) + 1)
                 same.setdefault("burstDelay", 0.15)
             else:
-                w["_hull"] = True
+                w["_hull"] = a_sec not in turning
                 weapons.append(w)
     if ov.get("mult"):
         for w in weapons:
@@ -1959,16 +2146,34 @@ def build_def(rw, sfx, en, desc_en, ov, ini, d, by_name, prices, twin=None):
     if weapons:
         df["weapons"] = weapons[:8]
 
-    # ---- the gun that turns
-    tur = None
-    if (not is_b or ov.get("tower")) and df.get("weapons") and art not in ("odm", "walker", "titan", "strip"):
-        tur = turret_art(did, ini, d, k_world, k_world if is_b else None)
+    # ---- the gun that turns: on a ring of each of its guns alike, or on its one ring; a gun that
+    # does not turn here (a towed one) is laid by the hull, and fires from its muzzle
+    tur, rings, laid_reach = None, [], None
+    if guns_drawn and df.get("weapons"):
+        plan = gun_plan(ini, d, ov, is_b, by_name)
+        rings = plan["rings"]
+        tur = turret_art(did, ini, d, k_world, k_world if is_b else None, root=plan["root"])
+        main = gun_root(ini, d)
+        if not tur and not is_b and main and turret_scale(ini, d) > 0:
+            laid_reach = reach_of(painted_chain(ini, d, main, gun_chains(ini, d)[main], turret_scale(ini, d)))
     if tur:
         key, tw, th, (rx, ry), reach = tur
         df["turretSprite"] = key
-        if not is_b and (abs(rx) > 0.5 or abs(ry) > 0.5) and "sprite" in df:
+        k_sheet = k_world / DISPLAY
+        if rings:
+            mounts = []
+            for c in rings:
+                tx, ty = c["pos"]
+                ring = {"x": round(tx * k_sheet, 1), "y": round(-ty * k_sheet, 1)}
+                rest = (c["rest"] + 180) % 360 - 180
+                if abs(rest) > 0.5:
+                    ring["rest"] = round(rest)
+                if c["arc"] is not None and c["arc"] < 180:
+                    ring["arc"] = round(c["arc"])
+                mounts.append(ring)
+            df["turretMounts"] = mounts
+        elif not is_b and (abs(rx) > 0.5 or abs(ry) > 0.5) and "sprite" in df:
             sheet = next(s for s in SHEETS if s["key"] == df["sprite"])
-            k_sheet = k_world / DISPLAY
             mount = (0.5 + rx * k_sheet / sheet["fw"], 0.5 - ry * k_sheet / sheet["fh"])
             if 0 <= mount[0] <= 1 and 0 <= mount[1] <= 1:
                 sheet["mount"] = [round(mount[0], 3), round(mount[1], 3)]
@@ -1981,7 +2186,8 @@ def build_def(rw, sfx, en, desc_en, ov, ini, d, by_name, prices, twin=None):
             w["muzzleOffset"] = round(clamp((tur[4] if tur[4] > 0 else (reach or 8)) * k_world, 2, 200), 1)
         else:
             w["turret"] = False
-            w["muzzleOffset"] = round(clamp(hull_len * (0.2 if melee else 0.45), 1, 200), 1)
+            to_muzzle = laid_reach * k_world if laid_reach and not melee and not hull_gun else hull_len * (0.2 if melee else 0.45)
+            w["muzzleOffset"] = round(clamp(to_muzzle, 1, 200), 1)
 
     if twin is not None:
         for f in ("cost", "pop", "tier", "buildTime", "limit"):
@@ -2185,6 +2391,14 @@ def behaviour(defs, by_id):
         rules[u].append({"button": {"name": ["Spinning Strike", "回旋斩"], "desc": ["Levi's spinning strike: two and a half times the harm, twice as fast, for five seconds.", "利威尔的回旋斩：五秒内伤害提升至 2.5 倍，攻速翻倍。"]},
                          "cooldown": 20, "do": [{"sound": FX["levi"]}, {"buff": {"damage": 2.5, "reload": 0.5, "for": 5}}]})
 
+    # a horse shows its riders: it takes its ridden forms as they mount, and gives them up as they leave
+    horse, ridden, ridden2 = I("horse"), I("horse-ridden"), I("horse-ridden-2")
+    if ridden in by_id and ridden2 in by_id:
+        rules[horse].append({"when": {"carrying": 1}, "do": {"morph": ridden}})
+        rules[ridden].append({"when": {"carrying": 2}, "do": {"morph": ridden2}})
+        rules[ridden].append({"when": {"not": {"carrying": 1}}, "do": {"morph": horse}})
+        rules[ridden2].append({"when": {"not": {"carrying": 2}}, "do": {"morph": ridden}})
+
     # the shifters and their Titans
     human_of = {}
     for hsfx, (tsfx, cost, secs, req) in SHIFTS.items():
@@ -2318,7 +2532,7 @@ def main():
         "v": 1,
         "id": MOD_ID,
         "name": ["Attack on Titan: The Rumbling", "进击の巨人『地鸣』"],
-        "version": "0.1.1",
+        "version": "0.1.2",
         "minGame": MIN_GAME,
         "author": "辣条QWQ (original by Mirka); port by Steel Tide",
         "description": [desc_en, desc_zh],
