@@ -1,7 +1,7 @@
 {
   "format": "steel-tide-mod-index",
   "v": 1,
-  "generated": "2026-09-30T10:34:59.752Z",
+  "generated": "2026-09-30T11:05:02.848Z",
   "mods": [
     {
       "id": "adolence",
@@ -2383,7 +2383,7 @@
         "进击の巨人『地鸣』",
         "Attack on Titan: The Rumbling"
       ],
-      "version": "0.1.1",
+      "version": "0.1.2",
       "author": "辣条QWQ (original by Mirka); port by Steel Tide",
       "description": [
         "The Walls and the Survey Corps on their gear, Marley's army, air fleet and Warriors, the Middle-East Allied Forces, and the Titans: shifters who take their Titan forms, Eldians who become mindless ones, and the Rumbling.",
@@ -2392,10 +2392,10 @@
       ],
       "license": "LicenseRef-AoT-Rumbling",
       "homepage": "https://github.com/steel-tide/mods/tree/main/mods/aot-rumbling",
-      "minGame": "0.8.7",
+      "minGame": "0.8.8",
       "path": "mods/aot-rumbling",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/aot-rumbling/",
-      "updated": "2026-09-29T12:12:34+08:00",
+      "updated": "2026-09-30T19:04:34+08:00",
       "downloads": 10,
       "screenshots": [
         {
@@ -2786,7 +2786,8 @@
             "岸防炮",
             "Coastal Gun"
           ],
-          "sprite": "u.aot-rumbling-coastal-gun"
+          "sprite": "u.aot-rumbling-coastal-gun",
+          "turretSprite": "tur.aot-rumbling-coastal-gun"
         },
         {
           "id": "aot-rumbling-me-hq",
@@ -2932,6 +2933,32 @@
             "Horse"
           ],
           "sprite": "u.aot-rumbling-horse"
+        },
+        {
+          "id": "aot-rumbling-horse-ridden",
+          "kind": "unit",
+          "domain": "ground",
+          "tier": 1,
+          "cost": 40,
+          "name": [
+            "Horse",
+            "马（骑乘）",
+            "Horse"
+          ],
+          "sprite": "u.aot-rumbling-horse-ridden"
+        },
+        {
+          "id": "aot-rumbling-horse-ridden-2",
+          "kind": "unit",
+          "domain": "ground",
+          "tier": 1,
+          "cost": 40,
+          "name": [
+            "Horse",
+            "马（双人骑乘）",
+            "Horse"
+          ],
+          "sprite": "u.aot-rumbling-horse-ridden-2"
         },
         {
           "id": "aot-rumbling-field-cannon",
@@ -3412,7 +3439,8 @@
             "马莱装甲车",
             "Armored Car"
           ],
-          "sprite": "u.aot-rumbling-marley-armored-car"
+          "sprite": "u.aot-rumbling-marley-armored-car",
+          "turretSprite": "tur.aot-rumbling-marley-armored-car"
         },
         {
           "id": "aot-rumbling-marley-tank",
@@ -3425,7 +3453,8 @@
             "马莱装甲坦克",
             "Marleyan Tank"
           ],
-          "sprite": "u.aot-rumbling-marley-tank"
+          "sprite": "u.aot-rumbling-marley-tank",
+          "turretSprite": "tur.aot-rumbling-marley-tank"
         },
         {
           "id": "aot-rumbling-anti-titan-gun",
@@ -3438,8 +3467,7 @@
             "重型反巨人炮",
             "Heavy Anti-Titan Gun"
           ],
-          "sprite": "u.aot-rumbling-anti-titan-gun",
-          "turretSprite": "tur.aot-rumbling-anti-titan-gun"
+          "sprite": "u.aot-rumbling-anti-titan-gun"
         },
         {
           "id": "aot-rumbling-super-heavy-tank",
@@ -3520,7 +3548,8 @@
             "马莱登陆艇",
             "Landing Craft"
           ],
-          "sprite": "u.aot-rumbling-landing-craft"
+          "sprite": "u.aot-rumbling-landing-craft",
+          "turretSprite": "tur.aot-rumbling-landing-craft"
         },
         {
           "id": "aot-rumbling-frigate",
@@ -3561,7 +3590,8 @@
             "世界联合铁甲战列舰",
             "Allied Ironclad Battleship"
           ],
-          "sprite": "u.aot-rumbling-battleship"
+          "sprite": "u.aot-rumbling-battleship",
+          "turretSprite": "tur.aot-rumbling-battleship"
         },
         {
           "id": "aot-rumbling-gabi",
@@ -3796,7 +3826,8 @@
             "中东轻型野战坦克",
             "Light Field Tank"
           ],
-          "sprite": "u.aot-rumbling-me-light-tank"
+          "sprite": "u.aot-rumbling-me-light-tank",
+          "turretSprite": "tur.aot-rumbling-me-light-tank"
         },
         {
           "id": "aot-rumbling-me-tank",
@@ -3809,7 +3840,8 @@
             "中东坦克",
             "Middle-East Tank"
           ],
-          "sprite": "u.aot-rumbling-me-tank"
+          "sprite": "u.aot-rumbling-me-tank",
+          "turretSprite": "tur.aot-rumbling-me-tank"
         },
         {
           "id": "aot-rumbling-me-at-gun",
@@ -3822,8 +3854,7 @@
             "中东反巨人野战炮",
             "Anti-Titan Field Gun"
           ],
-          "sprite": "u.aot-rumbling-me-at-gun",
-          "turretSprite": "tur.aot-rumbling-me-at-gun"
+          "sprite": "u.aot-rumbling-me-at-gun"
         },
         {
           "id": "aot-rumbling-me-howitzer",
@@ -3836,8 +3867,7 @@
             "中东反步兵榴弹炮",
             "Anti-Infantry Howitzer"
           ],
-          "sprite": "u.aot-rumbling-me-howitzer",
-          "turretSprite": "tur.aot-rumbling-me-howitzer"
+          "sprite": "u.aot-rumbling-me-howitzer"
         },
         {
           "id": "aot-rumbling-attack-titan",
@@ -4397,21 +4427,21 @@
           "key": "u.aot-rumbling-wall",
           "file": "sprites/u.aot-rumbling-wall.png",
           "frames": 1,
-          "w": 345,
+          "w": 344,
           "h": 387
         },
         {
           "key": "u.aot-rumbling-wall-v",
           "file": "sprites/u.aot-rumbling-wall-v.png",
           "frames": 1,
-          "w": 79,
+          "w": 86,
           "h": 538
         },
         {
           "key": "u.aot-rumbling-gate",
           "file": "sprites/u.aot-rumbling-gate.png",
           "frames": 1,
-          "w": 346,
+          "w": 344,
           "h": 390
         },
         {
@@ -4439,12 +4469,28 @@
           "h": 69
         },
         {
+          "key": "u.aot-rumbling-horse-ridden",
+          "file": "sprites/u.aot-rumbling-horse-ridden.png",
+          "frames": 2,
+          "rotated": true,
+          "w": 84,
+          "h": 69
+        },
+        {
+          "key": "u.aot-rumbling-horse-ridden-2",
+          "file": "sprites/u.aot-rumbling-horse-ridden-2.png",
+          "frames": 2,
+          "rotated": true,
+          "w": 84,
+          "h": 69
+        },
+        {
           "key": "u.aot-rumbling-field-cannon",
           "file": "sprites/u.aot-rumbling-field-cannon.png",
           "frames": 1,
           "rotated": true,
           "w": 26,
-          "h": 52
+          "h": 82
         },
         {
           "key": "prj.aot-rumbling-field-cannon-w1",
@@ -4697,6 +4743,14 @@
           "h": 137
         },
         {
+          "key": "tur.aot-rumbling-coastal-gun",
+          "file": "sprites/tur.aot-rumbling-coastal-gun.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 85,
+          "h": 207
+        },
+        {
           "key": "u.aot-rumbling-marley-engineer",
           "file": "sprites/u.aot-rumbling-marley-engineer.png",
           "frames": 2,
@@ -4785,6 +4839,14 @@
           "h": 86
         },
         {
+          "key": "tur.aot-rumbling-marley-armored-car",
+          "file": "sprites/tur.aot-rumbling-marley-armored-car.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 29,
+          "h": 40
+        },
+        {
           "key": "u.aot-rumbling-marley-tank",
           "file": "sprites/u.aot-rumbling-marley-tank.png",
           "frames": 3,
@@ -4793,20 +4855,20 @@
           "h": 70
         },
         {
+          "key": "tur.aot-rumbling-marley-tank",
+          "file": "sprites/tur.aot-rumbling-marley-tank.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 37,
+          "h": 79
+        },
+        {
           "key": "u.aot-rumbling-anti-titan-gun",
           "file": "sprites/u.aot-rumbling-anti-titan-gun.png",
           "frames": 1,
           "rotated": true,
           "w": 50,
-          "h": 88
-        },
-        {
-          "key": "tur.aot-rumbling-anti-titan-gun",
-          "file": "sprites/tur.aot-rumbling-anti-titan-gun.png",
-          "frames": 1,
-          "rotated": true,
-          "w": 21,
-          "h": 117
+          "h": 118
         },
         {
           "key": "u.aot-rumbling-super-heavy-tank",
@@ -4829,8 +4891,8 @@
           "file": "sprites/tur.aot-rumbling-super-heavy-tank.png",
           "frames": 1,
           "rotated": true,
-          "w": 21,
-          "h": 45
+          "w": 69,
+          "h": 183
         },
         {
           "key": "u.aot-rumbling-fighter",
@@ -4877,7 +4939,7 @@
           "file": "sprites/u.aot-rumbling-combat-airship.png",
           "frames": 2,
           "rotated": true,
-          "w": 118,
+          "w": 98,
           "h": 180
         },
         {
@@ -4885,8 +4947,8 @@
           "file": "sprites/tur.aot-rumbling-combat-airship.png",
           "frames": 1,
           "rotated": true,
-          "w": 30,
-          "h": 5
+          "w": 5,
+          "h": 30
         },
         {
           "key": "u.aot-rumbling-strategic-airship",
@@ -4901,56 +4963,72 @@
           "file": "sprites/tur.aot-rumbling-strategic-airship.png",
           "frames": 1,
           "rotated": true,
-          "w": 27,
-          "h": 12
+          "w": 5,
+          "h": 30
         },
         {
           "key": "u.aot-rumbling-landing-craft",
           "file": "sprites/u.aot-rumbling-landing-craft.png",
           "frames": 1,
           "rotated": true,
-          "w": 40,
-          "h": 120
+          "w": 46,
+          "h": 137
+        },
+        {
+          "key": "tur.aot-rumbling-landing-craft",
+          "file": "sprites/tur.aot-rumbling-landing-craft.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 14,
+          "h": 35
         },
         {
           "key": "u.aot-rumbling-frigate",
           "file": "sprites/u.aot-rumbling-frigate.png",
           "frames": 1,
           "rotated": true,
-          "w": 30,
-          "h": 185
+          "w": 42,
+          "h": 250
         },
         {
           "key": "tur.aot-rumbling-frigate",
           "file": "sprites/tur.aot-rumbling-frigate.png",
           "frames": 1,
           "rotated": true,
-          "w": 21,
-          "h": 60
+          "w": 22,
+          "h": 64
         },
         {
           "key": "u.aot-rumbling-ironclad",
           "file": "sprites/u.aot-rumbling-ironclad.png",
           "frames": 1,
           "rotated": true,
-          "w": 59,
-          "h": 251
+          "w": 84,
+          "h": 358
         },
         {
           "key": "tur.aot-rumbling-ironclad",
           "file": "sprites/tur.aot-rumbling-ironclad.png",
           "frames": 1,
           "rotated": true,
-          "w": 24,
-          "h": 69
+          "w": 26,
+          "h": 76
         },
         {
           "key": "u.aot-rumbling-battleship",
           "file": "sprites/u.aot-rumbling-battleship.png",
           "frames": 1,
           "rotated": true,
-          "w": 54,
-          "h": 305
+          "w": 98,
+          "h": 438
+        },
+        {
+          "key": "tur.aot-rumbling-battleship",
+          "file": "sprites/tur.aot-rumbling-battleship.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 36,
+          "h": 85
         },
         {
           "key": "u.aot-rumbling-gabi",
@@ -5078,7 +5156,7 @@
           "key": "u.aot-rumbling-me-bunker-2",
           "file": "sprites/u.aot-rumbling-me-bunker-2.png",
           "frames": 1,
-          "w": 178,
+          "w": 183,
           "h": 227
         },
         {
@@ -5177,6 +5255,14 @@
           "h": 89
         },
         {
+          "key": "tur.aot-rumbling-me-light-tank",
+          "file": "sprites/tur.aot-rumbling-me-light-tank.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 23,
+          "h": 39
+        },
+        {
           "key": "u.aot-rumbling-me-tank",
           "file": "sprites/u.aot-rumbling-me-tank.png",
           "frames": 1,
@@ -5185,20 +5271,20 @@
           "h": 82
         },
         {
+          "key": "tur.aot-rumbling-me-tank",
+          "file": "sprites/tur.aot-rumbling-me-tank.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 53,
+          "h": 98
+        },
+        {
           "key": "u.aot-rumbling-me-at-gun",
           "file": "sprites/u.aot-rumbling-me-at-gun.png",
           "frames": 1,
           "rotated": true,
           "w": 36,
-          "h": 68
-        },
-        {
-          "key": "tur.aot-rumbling-me-at-gun",
-          "file": "sprites/tur.aot-rumbling-me-at-gun.png",
-          "frames": 1,
-          "rotated": true,
-          "w": 9,
-          "h": 41
+          "h": 71
         },
         {
           "key": "u.aot-rumbling-me-howitzer",
@@ -5206,14 +5292,6 @@
           "frames": 1,
           "rotated": true,
           "w": 47,
-          "h": 79
-        },
-        {
-          "key": "tur.aot-rumbling-me-howitzer",
-          "file": "sprites/tur.aot-rumbling-me-howitzer.png",
-          "frames": 1,
-          "rotated": true,
-          "w": 11,
           "h": 84
         },
         {
@@ -5553,7 +5631,7 @@
         "FG 铁锈联盟",
         "FG Rusted League"
       ],
-      "version": "0.1.1",
+      "version": "0.2.0",
       "author": "空中之主 (art by 有人, 基卡 and SS元首); port by Steel Tide",
       "description": [
         "The whole army redrawn in black and acid green — Grizzly and Prism tanks, Kirov airships, Patriot batteries — and the GF plugin's carriers, dreadnoughts, sky fortresses, a Mirage tank that hides as a tree and a hero tank that ranks itself up.",
@@ -5565,7 +5643,7 @@
       "minGame": "0.8.8",
       "path": "mods/fg-rusted-league",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/fg-rusted-league/",
-      "updated": "2026-09-29T12:12:34+08:00",
+      "updated": "2026-09-30T19:04:34+08:00",
       "downloads": 18,
       "screenshots": [
         {
@@ -5996,7 +6074,7 @@
           "id": "fg-rusted-league-reactor",
           "kind": "building",
           "domain": "none",
-          "tier": 3,
+          "tier": 2,
           "cost": 3790,
           "name": [
             "Overloaded Nuclear Generator",
@@ -6435,6 +6513,20 @@
           "turretSprite": "tur.fg-rusted-league-pacifier"
         },
         {
+          "id": "fg-rusted-league-silencer",
+          "kind": "unit",
+          "domain": "ground",
+          "tier": 3,
+          "cost": 1960,
+          "name": [
+            "Silencer Artillery",
+            "平息者火炮",
+            "Silencer Artillery"
+          ],
+          "sprite": "u.fg-rusted-league-silencer",
+          "turretSprite": "tur.fg-rusted-league-silencer"
+        },
+        {
           "id": "fg-rusted-league-siege-tank",
           "kind": "unit",
           "domain": "ground",
@@ -6449,6 +6541,19 @@
           "turretSprite": "tur.fg-rusted-league-siege-tank"
         },
         {
+          "id": "fg-rusted-league-siege-tank-deployed",
+          "kind": "unit",
+          "domain": "ground",
+          "tier": 3,
+          "cost": 2650,
+          "name": [
+            "Siege Tank (siege form)",
+            "攻城型态",
+            "Siege Tank (siege form)"
+          ],
+          "sprite": "u.fg-rusted-league-siege-tank-deployed"
+        },
+        {
           "id": "fg-rusted-league-rocket-launcher",
           "kind": "unit",
           "domain": "ground",
@@ -6460,6 +6565,20 @@
             "Multiple Rocket Launcher"
           ],
           "sprite": "u.fg-rusted-league-rocket-launcher",
+          "turretSprite": "tur.fg-rusted-league-rocket-launcher"
+        },
+        {
+          "id": "fg-rusted-league-rocket-launcher-fixed",
+          "kind": "unit",
+          "domain": "ground",
+          "tier": 2,
+          "cost": 2120,
+          "name": [
+            "Multiple Rocket Launcher (deployed)",
+            "固定火箭炮",
+            "Multiple Rocket Launcher (deployed)"
+          ],
+          "sprite": "u.fg-rusted-league-rocket-launcher-fixed",
           "turretSprite": "tur.fg-rusted-league-rocket-launcher"
         },
         {
@@ -6779,6 +6898,32 @@
           "sprite": "u.fg-rusted-league-teleporter"
         },
         {
+          "id": "fg-rusted-league-carrier-airship",
+          "kind": "unit",
+          "domain": "air",
+          "tier": 2,
+          "cost": 2530,
+          "name": [
+            "Carrier Airship",
+            "航飞艇",
+            "Carrier Airship"
+          ],
+          "sprite": "u.fg-rusted-league-kirov"
+        },
+        {
+          "id": "fg-rusted-league-airship-drone",
+          "kind": "unit",
+          "domain": "air",
+          "tier": 2,
+          "cost": 20,
+          "name": [
+            "Airship Drone",
+            "小飞机",
+            "Airship Drone"
+          ],
+          "sprite": "u.fg-rusted-league-airship-drone"
+        },
+        {
           "id": "fg-rusted-league-asw-plane",
           "kind": "unit",
           "domain": "air",
@@ -6801,6 +6946,19 @@
             "Wasp",
             "黄蜂",
             "Wasp"
+          ],
+          "sprite": "u.fg-rusted-league-wasp"
+        },
+        {
+          "id": "fg-rusted-league-attack-drone",
+          "kind": "unit",
+          "domain": "air",
+          "tier": 1,
+          "cost": 320,
+          "name": [
+            "Attack Drone",
+            "垂直攻击机",
+            "Attack Drone"
           ],
           "sprite": "u.fg-rusted-league-wasp"
         },
@@ -6912,6 +7070,20 @@
           "turretSprite": "tur.fg-rusted-league-judgment"
         },
         {
+          "id": "fg-rusted-league-land-cruiser",
+          "kind": "unit",
+          "domain": "ground",
+          "tier": 3,
+          "cost": 4080,
+          "name": [
+            "Land Cruiser",
+            "陆地巡洋舰",
+            "Land Cruiser"
+          ],
+          "sprite": "u.fg-rusted-league-land-cruiser",
+          "turretSprite": "tur.fg-rusted-league-land-cruiser"
+        },
+        {
           "id": "fg-rusted-league-battle-carrier",
           "kind": "unit",
           "domain": "ship",
@@ -6951,6 +7123,62 @@
             "Jiaolong"
           ],
           "sprite": "u.fg-rusted-league-skyshaker"
+        },
+        {
+          "id": "fg-rusted-league-aircraft-carrier-2",
+          "kind": "unit",
+          "domain": "air",
+          "tier": 3,
+          "cost": 6260,
+          "name": [
+            "Aircraft Carrier II",
+            "航空母舰 II",
+            "Aircraft Carrier II"
+          ],
+          "sprite": "u.fg-rusted-league-aircraft-carrier",
+          "turretSprite": "tur.fg-rusted-league-aircraft-carrier"
+        },
+        {
+          "id": "fg-rusted-league-aircraft-carrier-3",
+          "kind": "unit",
+          "domain": "air",
+          "tier": 3,
+          "cost": 7460,
+          "name": [
+            "Aircraft Carrier III",
+            "航空母舰 III",
+            "Aircraft Carrier III"
+          ],
+          "sprite": "u.fg-rusted-league-aircraft-carrier",
+          "turretSprite": "tur.fg-rusted-league-aircraft-carrier"
+        },
+        {
+          "id": "fg-rusted-league-aircraft-carrier-4",
+          "kind": "unit",
+          "domain": "air",
+          "tier": 3,
+          "cost": 8660,
+          "name": [
+            "Aircraft Carrier IV",
+            "航空母舰 IV",
+            "Aircraft Carrier IV"
+          ],
+          "sprite": "u.fg-rusted-league-aircraft-carrier",
+          "turretSprite": "tur.fg-rusted-league-aircraft-carrier"
+        },
+        {
+          "id": "fg-rusted-league-aircraft-carrier-5",
+          "kind": "unit",
+          "domain": "air",
+          "tier": 3,
+          "cost": 9860,
+          "name": [
+            "Aircraft Carrier V",
+            "航空母舰 V",
+            "Aircraft Carrier V"
+          ],
+          "sprite": "u.fg-rusted-league-aircraft-carrier",
+          "turretSprite": "tur.fg-rusted-league-aircraft-carrier"
         },
         {
           "id": "fg-rusted-league-hero-1",
@@ -7845,6 +8073,22 @@
           "h": 114
         },
         {
+          "key": "u.fg-rusted-league-silencer",
+          "file": "sprites/u.fg-rusted-league-silencer.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 183,
+          "h": 152
+        },
+        {
+          "key": "tur.fg-rusted-league-silencer",
+          "file": "sprites/tur.fg-rusted-league-silencer.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 87,
+          "h": 152
+        },
+        {
           "key": "u.fg-rusted-league-siege-tank",
           "file": "sprites/u.fg-rusted-league-siege-tank.png",
           "frames": 2,
@@ -7861,6 +8105,14 @@
           "h": 60
         },
         {
+          "key": "u.fg-rusted-league-siege-tank-deployed",
+          "file": "sprites/u.fg-rusted-league-siege-tank-deployed.png",
+          "frames": 14,
+          "rotated": true,
+          "w": 434,
+          "h": 89
+        },
+        {
           "key": "u.fg-rusted-league-rocket-launcher",
           "file": "sprites/u.fg-rusted-league-rocket-launcher.png",
           "frames": 2,
@@ -7875,6 +8127,14 @@
           "rotated": true,
           "w": 27,
           "h": 36
+        },
+        {
+          "key": "u.fg-rusted-league-rocket-launcher-fixed",
+          "file": "sprites/u.fg-rusted-league-rocket-launcher-fixed.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 51,
+          "h": 72
         },
         {
           "key": "u.fg-rusted-league-minelayer",
@@ -8117,6 +8377,14 @@
           "h": 33
         },
         {
+          "key": "u.fg-rusted-league-airship-drone",
+          "file": "sprites/u.fg-rusted-league-airship-drone.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 5,
+          "h": 14
+        },
+        {
           "key": "u.fg-rusted-league-asw-plane",
           "file": "sprites/u.fg-rusted-league-asw-plane.png",
           "frames": 1,
@@ -8219,6 +8487,22 @@
           "rotated": true,
           "w": 14,
           "h": 25
+        },
+        {
+          "key": "u.fg-rusted-league-land-cruiser",
+          "file": "sprites/u.fg-rusted-league-land-cruiser.png",
+          "frames": 3,
+          "rotated": true,
+          "w": 384,
+          "h": 204
+        },
+        {
+          "key": "tur.fg-rusted-league-land-cruiser",
+          "file": "sprites/tur.fg-rusted-league-land-cruiser.png",
+          "frames": 1,
+          "rotated": true,
+          "w": 34,
+          "h": 99
         },
         {
           "key": "u.fg-rusted-league-battle-carrier",
