@@ -1,7 +1,7 @@
 {
   "format": "steel-tide-mod-index",
   "v": 1,
-  "generated": "2026-09-29T10:47:27.804Z",
+  "generated": "2026-09-30T10:34:59.752Z",
   "mods": [
     {
       "id": "adolence",
@@ -23,7 +23,7 @@
       "path": "mods/adolence",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/adolence/",
       "updated": "2026-09-29T12:12:34+08:00",
-      "downloads": 68,
+      "downloads": 83,
       "screenshots": [
         {
           "file": "screenshots/cover.png",
@@ -2396,7 +2396,7 @@
       "path": "mods/aot-rumbling",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/aot-rumbling/",
       "updated": "2026-09-29T12:12:34+08:00",
-      "downloads": 7,
+      "downloads": 10,
       "screenshots": [
         {
           "file": "screenshots/cover.jpg",
@@ -5566,7 +5566,7 @@
       "path": "mods/fg-rusted-league",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/fg-rusted-league/",
       "updated": "2026-09-29T12:12:34+08:00",
-      "downloads": 9,
+      "downloads": 18,
       "screenshots": [
         {
           "file": "screenshots/cover.jpg",
@@ -8481,7 +8481,7 @@
       "path": "mods/hades-arsenal",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/hades-arsenal/",
       "updated": "2026-09-27T14:59:28+08:00",
-      "downloads": 12,
+      "downloads": 23,
       "screenshots": [
         {
           "file": "screenshots/cover.webp",
@@ -8606,7 +8606,7 @@
       "path": "mods/ironworks",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/ironworks/",
       "updated": "2026-09-19T20:24:28+08:00",
-      "downloads": 26,
+      "downloads": 31,
       "screenshots": [
         {
           "file": "screenshots/skimmers.webp",
@@ -8717,7 +8717,7 @@
       "path": "mods/rusted-expansion",
       "base": "https://raw.githubusercontent.com/steel-tide/mods/main/mods/rusted-expansion/",
       "updated": "2026-09-20T13:14:42+08:00",
-      "downloads": 15,
+      "downloads": 19,
       "screenshots": [
         {
           "file": "screenshots/armour.webp",
