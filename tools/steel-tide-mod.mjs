@@ -6187,6 +6187,14 @@ const SHIELD_SPECS = [
   { name: "regen", type: "number", min: 0, max: 1e5, def: "0", doc: ["recharged a second", "每秒恢复量"] },
   { name: "delay", type: "number", min: 0, max: 600, def: "3", doc: ["seconds unhurt before it starts to recharge", "未受伤多少秒后开始恢复"] }
 ];
+const WING_SPECS = [
+  { name: "unit", type: "id", required: true, doc: ['the plane: an aircraft of this mod with `"pop": 0` and `"producedBy": []`, made by its carrier alone', '舰载机：本模组的飞行器，须为 `"pop": 0`、`"producedBy": []`，只由母舰制造'] },
+  { name: "count", type: "int", min: 1, max: 16, def: "1", doc: ["planes it keeps", "搭载的飞机数"] },
+  { name: "rebuild", type: "number", min: 0.5, max: 600, def: "10", doc: ["seconds to make a lost one again, for nothing, one at a time", "损失后多少秒免费补充一架，逐架补充"] },
+  { name: "sortie", type: "number", min: 1, max: 600, def: "15", doc: ["seconds a plane stays out before it comes back to rearm", "飞机出击多少秒后返航"] },
+  { name: "rearm", type: "number", min: 0, max: 120, def: "3", doc: ["seconds a plane back aboard waits before it flies again, mended as it waits", "返航后多少秒才能再次出击，期间会被修复"] },
+  { name: "range", type: "number", min: 1, max: 32, def: "10", doc: ["tiles from the carrier its planes go out to fight", "飞机在离母舰多少格内出击"] }
+];
 const ANIM_SPECS = [
   { name: "moving", type: "range", doc: ["`[first, last]` frames played while it moves, or `[first, last, fps]`", "移动时播放的帧 `[起, 止]`，或 `[起, 止, fps]`"] },
   { name: "idle", type: "range", def: "frame 0", doc: ["the frames while it stands", "静止时播放的帧"] },
@@ -6661,6 +6669,55 @@ function readShield(raw, path, ctx, errors) {
   }
   return { hp: raw.hp, regen: raw.regen ?? 0, delay: raw.delay ?? 3 };
 }
+function readWing(raw, path, ctx, errors) {
+  if (!isObj(raw)) {
+    errors.push({ path, message: "must be { unit, count, rebuild, sortie, rearm, range }" });
+    return null;
+  }
+  if (!checkKeys(raw, WING_SPECS, path, errors)) return null;
+  for (const row of WING_SPECS) {
+    const v = raw[row.name];
+    if (v === void 0) {
+      if (row.required) {
+        errors.push({ path: `${path}.${row.name}`, message: "is required" });
+        return null;
+      }
+      continue;
+    }
+    if (!checkRow(row, v, `${path}.${row.name}`, errors, ctx)) return null;
+  }
+  if (ctx.def.kind !== "unit") {
+    errors.push({ path, message: "only a unit carries a wing" });
+    return null;
+  }
+  const unit = raw.unit;
+  const plane = ctx.find(unit);
+  const at = `${path}.unit`;
+  if (!plane || !ctx.ownDef(unit)) {
+    errors.push({ path: at, message: `"${unit}" is not a unit of this mod` });
+    return null;
+  }
+  if (unit === ctx.def.id) {
+    errors.push({ path: at, message: "a carrier is not its own plane" });
+    return null;
+  }
+  if (plane.kind !== "unit" || plane.domain !== "air" || plane.warhead) {
+    errors.push({ path: at, message: `"${unit}" is not an aircraft` });
+    return null;
+  }
+  if (plane.pop > 0) {
+    errors.push({ path: at, message: `"${unit}" counts population; a plane its carrier makes for nothing counts none (\`"pop": 0\`)` });
+    return null;
+  }
+  return {
+    unit,
+    count: raw.count ?? 1,
+    rebuild: raw.rebuild ?? 10,
+    sortie: raw.sortie ?? 15,
+    rearm: raw.rearm ?? 3,
+    range: raw.range ?? 10
+  };
+}
 function readAnims(raw, frames, path, errors) {
   if (!isObj(raw)) {
     errors.push({ path, message: "must be { moving, idle, firing }" });
@@ -6894,7 +6951,8 @@ const DEF_SPECS = [
   { name: "rules", type: "rules", doc: [`its behaviour: rules that turn it into another form, spawn, heal, pay, buff or blow up, on an event, a condition, a clock or a button (see Behaviour), up to ${MAX_DEF_RULES}; never inherited through \`extends\``, `行为：在事件、条件、定时或按钮触发时让它变形、生成单位、回血、给钱、增益或爆炸的规则（见“行为”），最多 ${MAX_DEF_RULES} 条；不会通过 \`extends\` 继承`] },
   { name: "shield", type: "shield", doc: ["an energy shield, `{ hp, regen, delay }`: it takes harm before the hull does, and recharges `regen` a second once unhurt for `delay` seconds", "能量护盾 `{ hp, regen, delay }`：先于船体承受伤害，未受伤 `delay` 秒后每秒恢复 `regen`"] },
   { name: "regen", type: "number", min: 0, max: 1e4, doc: ["hit points a second it mends itself by", "每秒自我修复的生命值"] },
-  { name: "untargetable", type: "bool", doc: ["nothing on the other side may pick it as a target or be ordered to attack it; a blast still reaches it (a disguise, a decoy)", "敌方无法将其选为目标或下令攻击它；爆炸仍能伤到它（伪装、诱饵）"] }
+  { name: "untargetable", type: "bool", doc: ["nothing on the other side may pick it as a target or be ordered to attack it; a blast still reaches it (a disguise, a decoy)", "敌方无法将其选为目标或下令攻击它；爆炸仍能伤到它（伪装、诱饵）"] },
+  { name: "wing", type: "wing", only: "unit", doc: ["a carrier: planes of this mod it keeps aboard, `{ unit, count, rebuild, sortie, rearm, range }`, sent out at what it fights, taken back to rearm and made again when lost; never the player's to order (see Behaviour); never inherited through `extends`", "母舰：搭载本模组的飞机 `{ unit, count, rebuild, sortie, rearm, range }`，出击它所攻击的目标，返航补给，损失后重新制造；玩家不能直接指挥（见“行为”）；不会通过 `extends` 继承"] }
 ];
 const WEAPON_SPECS = [
   { name: "id", type: "string", max: 32, def: "w1, w2…", doc: ["a name for the weapon", "武器名"] },
@@ -6979,7 +7037,7 @@ const FIELD_SPECS = {
   mount: MOUNT_SPECS,
   sprite: SPRITE_SPECS,
   sound: SOUND_SPECS,
-  // a mod's behaviour, a weapon's look, a shield and a sheet's states (`game/ruleSpec.ts`)
+  // a mod's behaviour, a weapon's look, a shield, a sheet's states and a carrier's wing (`game/ruleSpec.ts`)
   rule: RULE_SPECS,
   cond: COND_SPECS,
   near: NEAR_SPECS,
@@ -6988,7 +7046,8 @@ const FIELD_SPECS = {
   button: BUTTON_SPECS,
   look: LOOK_SPECS,
   shield: SHIELD_SPECS,
-  anims: ANIM_SPECS
+  anims: ANIM_SPECS,
+  wing: WING_SPECS
 };
 function cloneTable(table) {
   return structuredClone(table);
@@ -7183,6 +7242,7 @@ function checkField(spec, value, path, issues) {
     case "shield":
     case "look":
     case "anims":
+    case "wing":
       return isPlainObject(value) || bad("must be an object");
     // a rule's own words never stand in a table this checks: `game/ruleSpec.ts` reads them
     default:
@@ -7511,6 +7571,14 @@ function resolveMod(mod, table = VANILLA) {
       }
       for (const [k, v] of Object.entries(read.strings)) strings[k] = modText(v, "");
     }
+    delete def.wing;
+    if (own.wing !== void 0) {
+      const wing = readWing(own.wing, `${path}.wing`, ruleContext(def, table, built, sheetKeys, soundKeys), errors);
+      if (wing) {
+        def.wing = wing;
+        forms.add(wing.unit);
+      }
+    }
     const nodes = (def.requires ?? []).filter((r) => isTechId(r));
     def.requires = [...ids((def.requires ?? []).filter((r) => !isTechId(r)), "requires", "building"), ...nodes];
     if (def.requires.length === 0) delete def.requires;
@@ -7559,6 +7627,14 @@ function resolveMod(mod, table = VANILLA) {
         warnings.push({ path: `${path}.producedBy`, message: "nothing produces it" });
       }
     }
+  });
+  mod.defs.forEach((raw, i) => {
+    const wing = isPlainObject(raw) && typeof raw.id === "string" ? built.get(raw.id)?.wing : void 0;
+    if (!wing) return;
+    const at = `defs[${i}].wing.unit`;
+    const lines = patches.filter((p) => p.kind === "produces" && p.id === wing.unit).map((p) => p.target).concat(defs.filter((d) => d.produces?.includes(wing.unit)).map((d) => d.id));
+    if (lines.length) errors.push({ path: at, message: `"${wing.unit}" is also built by ${lines.join(", ")}; a carrier's plane is made by its carrier alone (\`"producedBy": []\`)` });
+    if (built.get(wing.unit)?.wing) errors.push({ path: at, message: `"${wing.unit}" carries a wing of its own; a carrier's plane carries none` });
   });
   const quiet = warnings.filter((w2) => {
     const m = /^defs\[(\d+)\]\.producedBy$/.exec(w2.path);
@@ -7683,7 +7759,7 @@ function buildDef(own, kind, base, modId, soundKeys, path, errors, warnings) {
   return def;
 }
 function stripModOnly(own) {
-  const { name: _n, desc: _d, extends: _e, weapons: _w, producedBy: _p, builtBy: _b, upgradeOf: _u, sprite: _s, turretSprite: _t, turretMounts: _tm, decals: _dc, rules: _r, ...rest } = own;
+  const { name: _n, desc: _d, extends: _e, weapons: _w, producedBy: _p, builtBy: _b, upgradeOf: _u, sprite: _s, turretSprite: _t, turretMounts: _tm, decals: _dc, rules: _r, wing: _wg, ...rest } = own;
   return rest;
 }
 let active = [];
@@ -7957,6 +8033,8 @@ function typeLabel(spec) {
       return "rule[]";
     case "shield":
       return "{ hp, regen, delay }";
+    case "wing":
+      return "{ unit, count, rebuild, sortie, rearm, range }";
     case "look":
       return "look";
     case "anims":
@@ -8107,7 +8185,7 @@ function agentPrompt() {
   p("# Making a Steel Tide mod: a brief for a coding agent");
   p();
   p("You are helping make a mod for Steel Tide (https://steelti.de), a browser real-time strategy game.");
-  p("A mod adds units, buildings and upgrade levels, and gives them behaviour of their own — forms they turn into, units they spawn, buttons on their cards, weapons that look like nothing in the game (see Behaviour). It cannot change the game's rules, its interface, or an existing unit or building: it only adds, and everything it adds is switched off with it.");
+  p("A mod adds units, buildings and upgrade levels, and gives them behaviour of their own — forms they turn into, units they spawn, buttons on their cards, planes they carry, weapons that look like nothing in the game (see Behaviour). It cannot change the game's rules, its interface, or an existing unit or building: it only adds, and everything it adds is switched off with it.");
   p("Read this whole brief once, then work from the tables. When in doubt, prefer the smallest mod that plays.");
   p();
   p("## What a mod is");
@@ -8307,11 +8385,46 @@ function behaviourSection(p) {
   p();
   p("The shield takes harm before the hull, its bar drawn over the health bar, and shimmers round the hull when struck. `regen` on the def (not the shield) is the hull mending itself.");
   p();
+  p("### A carrier's wing (`wing`)");
+  p();
+  p("A unit may carry planes of the mod's own — a carrier's drones, a destroyer's one anti-submarine plane, an airship's swarm — that fly out at what it fights and come back to it:");
+  p();
+  p("```json");
+  p(JSON.stringify(exampleCarrier(), null, 2));
+  p("```");
+  p();
+  p(markdownTable(fieldRows("wing")));
+  p();
+  p('The carrier comes with its planes aboard. While it has work — what its player sent it at, what its own guns are on, or else the nearest enemy its side can see within `range` that the planes can hit — a ready plane leaves the deck every third of a second. A plane comes back when the work is done, when it has been out `sortie` seconds, or when it is badly hurt, and waits `rearm` seconds aboard, mended as it waits, before it flies again; a lost one is made again every `rebuild` seconds, for nothing. A carrier with no guns of its own, sent at a target, closes to its wing\'s range and waits there. The planes are units of their side, with guns and kills of their own, but never the player\'s: they cannot be selected or ordered. A carrier lost takes the planes aboard with it; the ones out find another deck of their kind with room, or come down. The plane is an aircraft of the mod\'s own with `"pop": 0` and `"producedBy": []`: its carrier makes it, and nothing else does. A wing is never inherited through `extends`.');
+  p();
   p("### Animation states (`sprites[].anims`)");
   p();
   p(markdownTable(fieldRows("anims")));
   p();
   p("On a unit's body sheet, the frames played by what it is doing instead of one loop: the `firing` range within a reload of its last shot, else the `moving` range while it moves, else `idle`. A sheet without `anims` rolls its frames while the unit moves and rests on the first, as treads do.");
+}
+function exampleCarrier() {
+  return [
+    {
+      id: "mymod-drone",
+      name: ["Strike Drone", "攻击无人机"],
+      kind: "unit",
+      domain: "air",
+      cost: 60,
+      hp: 80,
+      pop: 0,
+      speed: 200,
+      producedBy: [],
+      weapons: [{ id: "gun", cls: "mg", dmg: 8, reload: 0.5, range: 2.5, targets: ["ground", "ship"] }]
+    },
+    {
+      id: "mymod-carrier",
+      name: ["Light Carrier", "轻型航母"],
+      extends: "destroyer",
+      weapons: [],
+      wing: { unit: "mymod-drone", count: 8, rebuild: 6, sortie: 12, rearm: 2, range: 12 }
+    }
+  ];
 }
 function exampleMirage() {
   return [

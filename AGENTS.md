@@ -1,7 +1,7 @@
 # Making a Steel Tide mod: a brief for a coding agent
 
 You are helping make a mod for Steel Tide (https://steelti.de), a browser real-time strategy game.
-A mod adds units, buildings and upgrade levels, and gives them behaviour of their own — forms they turn into, units they spawn, buttons on their cards, weapons that look like nothing in the game (see Behaviour). It cannot change the game's rules, its interface, or an existing unit or building: it only adds, and everything it adds is switched off with it.
+A mod adds units, buildings and upgrade levels, and gives them behaviour of their own — forms they turn into, units they spawn, buttons on their cards, planes they carry, weapons that look like nothing in the game (see Behaviour). It cannot change the game's rules, its interface, or an existing unit or building: it only adds, and everything it adds is switched off with it.
 Read this whole brief once, then work from the tables. When in doubt, prefer the smallest mod that plays.
 
 ## What a mod is
@@ -323,6 +323,7 @@ Anything not in these tables is ignored with a warning. Numbers outside the stat
 | `shield` | { hp, regen, delay } |  |  | an energy shield, `{ hp, regen, delay }`: it takes harm before the hull does, and recharges `regen` a second once unhurt for `delay` seconds |
 | `regen` | number 0–10000 |  |  | hit points a second it mends itself by |
 | `untargetable` | boolean |  |  | nothing on the other side may pick it as a target or be ordered to attack it; a blast still reaches it (a disguise, a decoy) |
+| `wing` | { unit, count, rebuild, sortie, rearm, range } | units only |  | a carrier: planes of this mod it keeps aboard, `{ unit, count, rebuild, sortie, rearm, range }`, sent out at what it fights, taken back to rearm and made again when lost; never the player's to order (see Behaviour); never inherited through `extends` |
 
 Defaults when `extends` is absent: a unit is `domain: "ground"`, `tier: 1`, `pop: 1`, `speed: 60`, `turnRate: 3.5`, `vision: 8`, `radius: 9`, no `body` (units part on the circle of `radius`), armour by domain (ground and amphibious `medium`, ship `ship`, air `air`), a tread trail on land (`trail: "none"` for a unit on foot, which is then not heard rolling either) and a wake at sea; a building is `fw: 2, fh: 2`, `armor: "structure"`, `power: 0`, `pop: 0`. `buildTime` defaults to cost ÷ 14 seconds.
 Where a unit is built when `producedBy` is absent: its domain's line from its tier up (ground: T1 → factory+factory2+factory3, T2 → factory2+factory3, T3 → factory3; ship: T1 → navyard+navyard2+navyard3, T2 → navyard2+navyard3, T3 → navyard3; air: T1 → airbase+airbase2+airbase3, T2 → airbase2+airbase3, T3 → airbase3; amphibious: T1 → factory+navyard+factory2+navyard2+factory3+navyard3, T2 → factory2+navyard2+factory3+navyard3, T3 → factory3+navyard3).
@@ -681,6 +682,70 @@ A look is only what is seen: the round hits as the weapon's numbers say. A beam 
 | `delay` | number 0–600 |  | 3 | seconds unhurt before it starts to recharge |
 
 The shield takes harm before the hull, its bar drawn over the health bar, and shimmers round the hull when struck. `regen` on the def (not the shield) is the hull mending itself.
+
+### A carrier's wing (`wing`)
+
+A unit may carry planes of the mod's own — a carrier's drones, a destroyer's one anti-submarine plane, an airship's swarm — that fly out at what it fights and come back to it:
+
+```json
+[
+  {
+    "id": "mymod-drone",
+    "name": [
+      "Strike Drone",
+      "攻击无人机"
+    ],
+    "kind": "unit",
+    "domain": "air",
+    "cost": 60,
+    "hp": 80,
+    "pop": 0,
+    "speed": 200,
+    "producedBy": [],
+    "weapons": [
+      {
+        "id": "gun",
+        "cls": "mg",
+        "dmg": 8,
+        "reload": 0.5,
+        "range": 2.5,
+        "targets": [
+          "ground",
+          "ship"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mymod-carrier",
+    "name": [
+      "Light Carrier",
+      "轻型航母"
+    ],
+    "extends": "destroyer",
+    "weapons": [],
+    "wing": {
+      "unit": "mymod-drone",
+      "count": 8,
+      "rebuild": 6,
+      "sortie": 12,
+      "rearm": 2,
+      "range": 12
+    }
+  }
+]
+```
+
+| field | type | required | default | meaning |
+| --- | --- | --- | --- | --- |
+| `unit` | id | yes |  | the plane: an aircraft of this mod with `"pop": 0` and `"producedBy": []`, made by its carrier alone |
+| `count` | integer 1–16 |  | 1 | planes it keeps |
+| `rebuild` | number 0.5–600 |  | 10 | seconds to make a lost one again, for nothing, one at a time |
+| `sortie` | number 1–600 |  | 15 | seconds a plane stays out before it comes back to rearm |
+| `rearm` | number 0–120 |  | 3 | seconds a plane back aboard waits before it flies again, mended as it waits |
+| `range` | number 1–32 |  | 10 | tiles from the carrier its planes go out to fight |
+
+The carrier comes with its planes aboard. While it has work — what its player sent it at, what its own guns are on, or else the nearest enemy its side can see within `range` that the planes can hit — a ready plane leaves the deck every third of a second. A plane comes back when the work is done, when it has been out `sortie` seconds, or when it is badly hurt, and waits `rearm` seconds aboard, mended as it waits, before it flies again; a lost one is made again every `rebuild` seconds, for nothing. A carrier with no guns of its own, sent at a target, closes to its wing's range and waits there. The planes are units of their side, with guns and kills of their own, but never the player's: they cannot be selected or ordered. A carrier lost takes the planes aboard with it; the ones out find another deck of their kind with room, or come down. The plane is an aircraft of the mod's own with `"pop": 0` and `"producedBy": []`: its carrier makes it, and nothing else does. A wing is never inherited through `extends`.
 
 ### Animation states (`sprites[].anims`)
 
