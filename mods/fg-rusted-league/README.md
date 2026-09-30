@@ -10,11 +10,11 @@ dreadnoughts, sky fortresses, a nuclear submarine, a superweapon or two and a
 hero tank that ranks up.
 
 What comes across is the roster, the art, and the behaviour the game's mod
-rules can carry: units that change shape, a hero that ranks itself up, a tank
-that hides as a tree, shields, beams and bases that go up like bombs. What
-stays behind is the rest of the original's scripting: the money buttons, the
-bug faction the command centre could be switched to (its art is Rusted
-Warfare's own), and the carriers' planes launching of their own accord.
+rules can carry: units that change shape or dig in, a hero that ranks itself
+up, a tank that hides as a tree, carriers that fly their own planes, shields,
+beams and bases that go up like bombs. What stays behind is the rest of the
+original's scripting: the money buttons, and the bug faction the command
+centre could be switched to (its art is Rusted Warfare's own).
 
 ## What is in it
 
@@ -24,9 +24,10 @@ League's **Builder**, and the builder places everything else; the Construction
 Ship and the Supply Ship place the naval base and defences from the water.
 
 Some of its units build others, as they do in the original: the Lord of the Sky
-and the Battle Carrier launch helicopters, jets and gunships, the Light Carrier
-its Wasps, the Judgment-class battleship support ships and amphibious tanks,
-the Littoral Combat Ship submarines and ASW planes, the Battlecruiser its hover
+and the Battle Carrier launch helicopters, jets and gunships (and the Lord of
+the Sky the Carrier Airship), the Judgment-class battleship support ships and
+amphibious tanks, the Land Cruiser builders, Grizzlies and heavy amphibious
+tanks, the Littoral Combat Ship submarines, the Battlecruiser its hover
 escorts, the Laser UFO the teleporter, and the rocket truck artillery, tank
 destroyers and submarines. Select one and its production is on the card beside
 its orders; each unit it builds is launched beside it, wherever it has got to.
@@ -46,17 +47,18 @@ its orders; each unit it builds is launched beside it, wherever it has got to.
 | Repair Depot | mends what is parked nearby |
 | Battle Lab | unlocks the top tier: the T3 factory, the black-tech factory, the silo, the superweapons |
 | T3 Factory | the Apocalypse, the Mirage tank, the V3, the Kirov, the Lord of the Sky |
-| Black-Tech Factory | the Experimental Tank, the Star Warship, the Battlecruiser, the B-52, the Laser UFO |
+| Black-Tech Factory | the Experimental Tank, the Star Warship, the Battlecruiser, the B-52, the Laser UFO, the Land Cruiser |
 | Tactical Airfield | the gunship platforms |
 | Nuclear Missile Silo | builds and launches warheads |
 | Colossus Gun, Proton Collider Cannon | long guns; the proton cannon reaches across the map |
 | Floating Array | an alien platform that hovers over the base |
-| Overloaded Nuclear Generator | money, fast |
+| Overloaded Nuclear Generator | the League's nuclear power station: +150 power, and money, fast |
 | Hero Barracks, Hero Tower | the barracks trains the hero tank; the tower lets a Lv3 hero reach its MAX |
 
-90 units: 26 on the ground, 25 in the air, 17 at sea and the 22 ranks of the
-hero tank. Two of them are forms rather than units a line builds: the Mirage's
-disguise and the Amphibious Jet under water.
+101 units: 30 on the ground, 32 in the air, 17 at sea and the 22 ranks of the
+hero tank. Twelve of them are forms or planes rather than units a line builds:
+the Mirage's disguise, the Amphibious Jet under water, the three deployed
+forms, the Aircraft Carrier's four levels, and the three carriers' planes.
 
 The hero tank ranks up as it does in the original. The barracks trains the
 Lv1 tank. Its card offers three Lv2 lines, each of those three Lv3s, and each
@@ -69,8 +71,23 @@ MAX needs a Hero Tower. The computer ranks its heroes up too.
 The shape-changers change shape from their cards: the Tengu between jet and
 mech, the Striker between gunship and walker, the Skyshaker and the Jiaolong
 between air and sea, and the Amphibious Jet between flying and diving under
-the sea. The change takes a few seconds, is free, and waits for ground the
-new form can stand on.
+the sea. The Siege Tank, the Multiple Rocket Launcher and the Pacifier *Deploy*
+where they stand, into forms that reach further and hit harder but cannot move
+until they *Pack Up* (the Pacifier only on land). The change takes a few
+seconds, is free, and waits for ground the new form can stand on.
+
+The Aircraft Carrier builds interceptors from its card, one at a time, as a
+building takes its upgrades: four on its deck to begin with, eight at the
+most, and the last level recharges them far faster.
+
+Three carriers fly planes of their own: the Light Carrier eight attack
+drones, the Carrier Airship ten small drones (it has no guns besides), and the
+Littoral Combat Ship one ASW plane, which hunts what the ship's sonar hears.
+The planes take off at what their carrier fights — what it is sent at, or else
+the nearest enemy in reach — come back to reload when the fight is over or
+their sortie is up, and are made again for nothing when they are lost. They are
+not the player's to select or order; a carrier sent at a target with no guns
+of its own closes to its planes' reach and waits there.
 
 The Mirage tank turns into a tree once it has stood still for a second. It
 turns back into a tank the moment it moves or fires. As a tree it is seen only
@@ -115,7 +132,9 @@ the Battlecruiser costs 75 000 in the original, and is capped at 6000 metal
 here — and every unit's damage a second is kept within sight of its price.
 Buildings are priced ×0.6 and armoured ×1.25, the way the game's own are.
 Income follows the original's extractor: its 8 credits a second is this game's
-1.4 metal.
+1.4 metal. Two stand above their price at the author's word, as they do in the
+original: the B-52 drops three times the damage its price would give it, and
+the Proton Collider Cannon reaches 60 tiles with a blast three tiles wide.
 
 The numbers of the units Rusted Warfare hard-codes — the builder, the tank,
 the factories and the turrets — live in its bytecode, not in an ini file.
@@ -132,9 +151,9 @@ the League, so they are not here; nor are the bugs.
 
 Helicopters carry their rotor spinning in their frames in the original; the
 converter keeps the pixels most frames agree on, which is the hull, and the
-game lays its own rotor over it. The Light Carrier and the Aircraft Carrier
-also launch planes of their own accord in the original, which here are their
-guns. Weapons fire with the game's own sounds for their kind.
+game lays its own rotor over it. The Aircraft Carrier's interceptors, which the
+original launches as planes that live for two seconds, are its guns here. The
+Carrier Airship's hull is Rusted Warfare's own, so it wears the League's Kirov. Weapons fire with the game's own sounds for their kind.
 
 The art of the Strategic Bomber comes, the original says, from *未来战争*
 ("Future War").

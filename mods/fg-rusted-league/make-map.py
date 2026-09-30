@@ -189,23 +189,29 @@ sky("naval-base-2", 16, 58)
 ARMY = ["grizzly", "hover-tank", "artillery", "hover-transport", "tank-destroyer", "heavy-tank", "heavy-hover-tank",
         "prism-tank", "tesla-tank", "rocket-truck", "apocalypse", "mirage-tank", "v3-launcher", "pacifier",
         "siege-tank", "rocket-launcher", "minelayer", "tank-killer", "flame-tank", "missile-tank", "striker-vx",
-        "tengu-mech", "builder"]
+        "tengu-mech", "builder", "silencer", "siege-tank-deployed", "rocket-launcher-fixed"]
 for k, suffix in enumerate(ARMY):
     sky(suffix, 22 + (k // 6) * 4, 24 + (k % 6) * 3)
-sky("experimental-tank", 39, 27)
+sky("experimental-tank", 43, 20)
 sky("star-warship", 39, 33)
+sky("land-cruiser", 39, 40)
 for y in (24, 26, 28, 30, 32, 34, 36, 38):
     sky("grizzly", 42, y)
 # the heroes by rank: the tank, its three Lv2 lines, the nine Lv3s, the nine MAX forms
 heroes = [d["id"][len(P):] for d in MOD["defs"] if d["id"].startswith(P + "hero-") and d["kind"] == "unit"]
 for k, suffix in enumerate(heroes):
     sky(suffix, 4 + (k % 5) * 3, 27 + (k // 5) * 3)
+# what is on the map as another unit: the Mirage's tree, the carrier's levels, and the planes a
+# carrier makes itself (`wing`), which fly from their decks and not from the map
+WING_PLANES = {d["wing"]["unit"] for d in MOD["defs"] if d.get("wing")}
+CARRIER_LEVELS = {P + f"aircraft-carrier-{n}" for n in range(2, 6)}
+SELF_FORMS = {P + "mirage-disguised"} | WING_PLANES | CARRIER_LEVELS
 # the air wing over the north-east of the base
-air = [d["id"][len(P):] for d in MOD["defs"] if d.get("domain") == "air" and d["id"] != P + "aircraft-carrier"]
+air = [d["id"][len(P):] for d in MOD["defs"] if d.get("domain") == "air" and d["id"] != P + "aircraft-carrier" and d["id"] not in SELF_FORMS]
 for k, suffix in enumerate(air):
     sky(suffix, 47 + (k % 5) * 3, 3 + (k // 5) * 3)
 # the fleet in the bay
-fleet = [d["id"][len(P):] for d in MOD["defs"] if d.get("domain") == "ship"] + ["aircraft-carrier"]
+fleet = [d["id"][len(P):] for d in MOD["defs"] if d.get("domain") == "ship" and d["id"] not in SELF_FORMS] + ["aircraft-carrier"]
 for k, suffix in enumerate(fleet):
     sky(suffix, 24 + (k % 9) * 4, 60 + (k // 9) * 5)
 
@@ -246,8 +252,6 @@ for d in MOD["defs"]:
         for u in units:
             if u["id"] == d["id"]:
                 assert any(u["x"] <= p["x"] < u["x"] + d["fw"] and u["y"] <= p["y"] < u["y"] + d["fh"] for p in deposits), f"{d['id']} is off its deposit"
-# a form a unit takes by itself (the Mirage's tree, when it has stood still) is on the map as that unit
-SELF_FORMS = {"fg-rusted-league-mirage-disguised"}
 missing = sorted(set(DEFS) - {u["id"] for u in units} - SELF_FORMS)
 assert not missing, f"not on the map: {missing}"
 assert len(units) <= 400, len(units)

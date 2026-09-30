@@ -52,7 +52,7 @@ RES = os.path.join(SKY, "res", "drawable")
 STOCK = os.path.join(REPO, "rusted-warfare")
 TRANS = os.path.join(SKY, "assets", "translations", "Strings_zh_cn.properties")
 MOD_ID = "fg-rusted-league"
-MIN_GAME = "0.8.8"  # the first game that reads a mod's `turretMounts` (0.8.7 brought mod behaviour, looks, shields)
+MIN_GAME = "0.8.8"  # the first game that reads `turretMounts` and flies a carrier's `wing` (0.8.7 brought mod behaviour)
 DRY = "--dry" in sys.argv
 NO_MEDIA = "--no-media" in sys.argv
 OUT = os.path.abspath(sys.argv[sys.argv.index("--out") + 1]) if "--out" in sys.argv else HERE
@@ -466,6 +466,17 @@ def overlay_core(ini, ctype):
 #   turrets (a hard-coded unit's pictures and gun positions), fw/fh, power, metalRate,
 #   needsDeposit, upgradeOf, requires, zh_name, zh, turret_from, no_turret, tower, arc
 B, U = "building", "unit"
+def carrier_guns(n, quick=False):
+    """the aircraft carrier's weapons with `n` interceptors on its deck: the interceptors are turrets
+    that turn (`turret_rings`); the missiles are its own air defence, fired from the hull whatever the
+    turrets are on. The last level recharges five times as fast, as the original's does"""
+    k = 0.6 if quick else 1.0
+    return [dict(id="interceptors", cls="aa", dmg=60, reload=round(2.4 * k, 2), range=9, burst=n, burstDelay=0.2, targets=["air"],
+                 projectile="missile", speed=520, homing=True),
+            dict(id="strike", cls="he", dmg=90, reload=round(3 * k, 2), range=8, burst=n - 1, burstDelay=0.2, targets=["ground", "ship"],
+                 projectile="rocket", speed=420)]
+
+
 ROSTER = [
     # ================================================================ buildings
     ("core:commandCenter", "command", "League Command",
@@ -536,12 +547,15 @@ ROSTER = [
      dict(kind=B, tier=3, power=-20, requires=["battle-lab"])),
     ("mjjp", "colossus-gun", "Colossus Gun", "A huge gun with a long reach and a longer reload.",
      dict(kind=B, tier=3, power=-10, tower=True, arc=True, requires=["battle-lab"])),
+    # the author: too weak. Its reach is the whole map in the original, and a shot's blast a screen wide
     ("zzjp", "proton-cannon", "Proton Collider Cannon", "A superweapon: five shots that reach across the map. Its shells can be shot down.",
-     dict(kind=B, tier=3, power=-30, tower=True, arc=True, requires=["battle-lab"])),
+     dict(kind=B, tier=3, power=-30, tower=True, arc=True, requires=["battle-lab"], tune=dict(range=60, dmg=500, splash=180))),
     ("prop", "floating-array", "Floating Array", "An alien defence platform that hovers over the base, firing at aircraft.",
      dict(kind=B, tier=2, power=-6, tower=True)),
-    ("money", "reactor", "Overloaded Nuclear Generator", "Makes money quickly, and shrugs off small hits.",
-     dict(kind=B, tier=3, power=-10, requires=["battle-lab"])),
+    # the author's nuclear power station (核电站): the League's builder has no other plant, so it powers
+    # the base as well as paying, and stands without the battle lab, as the original's does
+    ("money", "reactor", "Overloaded Nuclear Generator", "The League's nuclear power station: powers the base and makes money quickly, and shrugs off small hits.",
+     dict(kind=B, tier=2, power=150, zh="联盟的核电站：为基地供电，造钱速度很快；自身可以免疫10血的伤害。")),
     ("战术机场", "airfield", "Tactical Airfield", "A landing strip with its own air defences.",
      dict(kind=B, tier=2, power=-6, zh_name="战术机场")),
     ("小英雄塔", "hero-barracks", "Hero Barracks", "Trains the hero tank and its first two ranks.",
@@ -611,12 +625,18 @@ ROSTER = [
      dict(kind=U, tier=3, armor="medium", trail="tread", form=True, untargetable=True, extra={"stealth": 3})),
     ("vshj", "v3-launcher", "V3 Launcher", "Long-range rockets that wreck stubborn targets, and ships.",
      dict(kind=U, tier=3, armor="light", trail="tire", arc=True)),
-    ("tank2", "pacifier", "Pacifier Artillery", "An amphibious gun: fast guns at air and ground.",
+    ("tank2", "pacifier", "Pacifier Artillery", "An amphibious gun: fast guns at air and ground; deploys ashore into heavy artillery.",
      dict(kind=U, tier=3, armor="medium", domain="amphibious", trail="none")),
-    ("gctank", "siege-tank", "Siege Tank", "The army's most advanced tank; shells the ground.",
+    ("test_tank", "silencer", "Silencer Artillery", "The Pacifier deployed: heavy guns that hold a pass alone; it cannot move.",
+     dict(kind=U, tier=3, armor="medium", trail="tread", form=True, price_of="tank2", zh="平定者的重炮模式：可以一夫当关，万夫莫开；无法移动。")),
+    ("gctank", "siege-tank", "Siege Tank", "The army's most advanced tank; shells the ground, and deploys to strike far off with lightning.",
      dict(kind=U, tier=3, armor="heavy", trail="tread")),
-    ("MRLS", "rocket-launcher", "Multiple Rocket Launcher", "Long reach and heavy salvos on a thin hull.",
+    ("attack", "siege-tank-deployed", "Siege Tank (siege form)", "Deployed: long-range electric strikes at the ground, and it mends; it cannot move.",
+     dict(kind=U, tier=3, armor="heavy", domain="ground", trail="tread", form=True, price_of="gctank")),
+    ("MRLS", "rocket-launcher", "Multiple Rocket Launcher", "Long reach and heavy salvos on a thin hull; deploys to fire further and faster.",
      dict(kind=U, tier=2, armor="light", trail="tire", arc=True)),
+    ("固定火箭炮", "rocket-launcher-fixed", "Multiple Rocket Launcher (deployed)", "Dug in: a longer reach and a quicker salvo, and it cannot move.",
+     dict(kind=U, tier=2, armor="light", trail="tire", arc=True, form=True, price_of="MRLS", turret_of="rocket-launcher", zh_name="固定火箭炮", zh="转化固定模式，射程更远、攻速更快，无法移动。")),
     ("edd", "minelayer", "Minelayer", "Lays mines that crawl after the enemy; ground only.",
      dict(kind=U, tier=1, armor="medium", trail="tread")),
     ("hea", "tank-killer", "Tank Killer", "A mobile gun with a long reach and a long reload.",
@@ -655,8 +675,9 @@ ROSTER = [
      dict(kind=U, tier=3)),
     ("kongmu", "lord-of-the-sky", "Lord of the Sky", "The largest thing in the sky.",
      dict(kind=U, tier=3)),
+    # the author: too weak. Its bombs are 350 apiece in the original, four to a pass
     ("boss", "b52", "B-52 Stratofortress", "Heavy bombs for the ground, guns for the air.",
-     dict(kind=U, tier=3)),
+     dict(kind=U, tier=3, dps_mult=3.0)),
     ("ycyf", "laser-ufo", "Laser UFO", "Alien technology: laser at air and ground.",
      dict(kind=U, tier=3)),
     ("Battlecruiser", "battlecruiser", "Battlecruiser", "The ultimate warship: thick hide, heavy guns.",
@@ -667,21 +688,31 @@ ROSTER = [
      dict(kind=U, tier=3, zh_name="轰天")),
     ("tyui", "teleporter", "Lightspeed Teleporter", "Carries twelve at the speed of light. Unarmed and unstable.",
      dict(kind=U, tier=3, hp=1500, extra={"transportCap": 12})),
-    ("mhky", "asw-plane", "ASW Plane", "A submarine killer; weak against the rest.",
-     dict(kind=U, tier=2, cost=300, hp=380)),
+    # the airship the Lord of the Sky builds: its drones are its only guns. Its hull is stock
+    # Rusted Warfare art, which does not ship, so it wears the League's own airship's
+    ("missileAirship", "carrier-airship", "Carrier Airship", "Unarmed itself: ten drones fly from it at what it fights, and come back to reload. Mends itself.",
+     dict(kind=U, tier=2, armed=False, borrow="kirov", zh="不能攻击，放出小飞机对空对地；小飞机需要回舰装填；自我修复。",
+          wing=dict(unit="airship-drone", count=10, rebuild=5, sortie=30, rearm=1, range=10))),
+    # the carriers' planes: made by their carriers alone, and counting no population
+    ("小飞机", "airship-drone", "Airship Drone", "One of the carrier airship's swarm: quick guns at air and ground.",
+     dict(kind=U, tier=2, pop=0, wing_plane=True, no_turret=True, zh="航飞艇的小飞机：对空对地的速射机枪。")),
+    ("mhky", "asw-plane", "ASW Plane", "The littoral ship's own plane: a submarine killer, weak against the rest.",
+     dict(kind=U, tier=2, cost=300, hp=380, pop=0, wing_plane=True, extra={"sonar": 5}, zh="濒海战斗舰自带的反潜机：潜艇杀手，对空对地较弱。")),
     # the carriers' drone: in the original a light carrier launches eight at no cost
     ("mhkh2", "wasp", "Wasp", "A small strike drone, all guns.",
      dict(kind=U, tier=1, cost=120, hp=90, pop=1)),
+    ("sb", "attack-drone", "Attack Drone", "The light carrier's drone: a strafing run at the ground, then home to reload.",
+     dict(kind=U, tier=1, pop=0, wing_plane=True, borrow="wasp", share=True, zh_name="垂直攻击机", zh="只能对地攻击；大量的它们会对敌人造成毁灭性的打击。")),
 
     # ================================================================ the plugin: sea
-    ("mhqz", "littoral-ship", "Littoral Combat Ship", "Built for the open sea; attacks the ground only. Trains submarines and ASW planes.",
-     dict(kind=U, tier=1, trains=["asw-plane"])),
+    ("mhqz", "littoral-ship", "Littoral Combat Ship", "Built for the open sea; attacks the ground only. Carries its own ASW plane, and trains submarines.",
+     dict(kind=U, tier=1, zh="擅长远洋作战，只能对地攻击；自带一架反潜机，可建造潜艇。", extra={"sonar": 8},
+          wing=dict(unit="asw-plane", count=1, rebuild=15, sortie=30, rearm=3, range=10))),
     ("mhsd", "aegis-cruiser", "Aegis Cruiser", "Air defence only: however many planes come, it downs them.",
      dict(kind=U, tier=1)),
-    # a carrier's aircraft are units the original launches; here they are its guns
-    ("mhhm", "light-carrier", "Light Carrier", "The core of an early fleet: its Wasps strafe air and sea, and it builds more.",
-     dict(kind=U, tier=1, trains=["wasp"], weapons=[dict(id="wasps", cls="autocannon", dmg=30, reload=1.6, range=8, burst=6, burstDelay=0.12,
-                                        targets=["ground", "ship", "air"], projectile="bullet", speed=900, turret=False, muzzleOffset=20)])),
+    ("mhhm", "light-carrier", "Light Carrier", "The core of an early fleet: eight attack drones fly from it at what it fights, and are made again as they are lost.",
+     dict(kind=U, tier=1, armed=False,
+          wing=dict(unit="attack-drone", count=8, rebuild=5, sortie=15, rearm=1.5, range=12))),
     ("lili", "supply-ship", "Supply Ship", "Unarmed; builds defences at sea and on the shore.",
      dict(kind=U, tier=2, armed=False)),
     ("fghj", "nuclear-sub", "Strategic Nuclear Submarine", "Fires sub-nuclear missiles at the ground, hidden while it lies still.",
@@ -692,17 +723,23 @@ ROSTER = [
      dict(kind=U, tier=2)),
     ("bigs", "judgment", "Judgment-Class Battleship", "Built to sink warships.",
      dict(kind=U, tier=3)),
+    ("bigs2", "land-cruiser", "Land Cruiser", "A battleship on tracks: a giant gun, lasers and rail guns at air, ground and sub, and a base it builds as it goes.",
+     dict(kind=U, tier=3, armor="heavy", trail="tread", zh="陆地上的战列舰：巨炮、激光和电磁炮对空对地对潜，还能边走边建造。")),
     ("hangmu", "battle-carrier", "Battle Carrier", "The largest surface ship: air and ground, and it mends itself.",
      dict(kind=U, tier=3)),
-    ("航空母舰", "aircraft-carrier", "Aircraft Carrier", "A flying carrier: its interceptors swarm what comes near.",
-     dict(kind=U, tier=3, zh_name="航空母舰", weapons=[
-         # the four interceptors on its deck are turrets that turn (`turret_rings`); the missiles
-         # are its own air defence, fired from the hull whatever the turrets are on
-         dict(id="interceptors", cls="aa", dmg=60, reload=2.4, range=9, burst=4, burstDelay=0.2, targets=["air"], projectile="missile", speed=520, homing=True),
-         dict(id="strike", cls="he", dmg=90, reload=3, range=8, burst=3, burstDelay=0.2, targets=["ground", "ship"], projectile="rocket", speed=420)])),
+    ("航空母舰", "aircraft-carrier", "Aircraft Carrier", "A flying carrier: its interceptors swarm what comes near. Builds more interceptors from its card, up to eight.",
+     dict(kind=U, tier=3, zh_name="航空母舰", weapons=carrier_guns(4))),
     ("蛟龙", "jiaolong", "Jiaolong", "A sea dragon of a warship.",
      dict(kind=U, tier=3, zh_name="蛟龙")),
 ]
+
+# the aircraft carrier's levels (`航空母舰1`…`4`): a form each, reached from its card
+CARRIER_LEVELS = {n: f"aircraft-carrier-{n + 1}" for n in range(1, 5)}
+for n, suffix in CARRIER_LEVELS.items():
+    roman = ["II", "III", "IV", "V"][n - 1]
+    ROSTER.append((f"航空母舰{n}", suffix, f"Aircraft Carrier {roman}", f"The aircraft carrier with {4 + n} interceptors on its deck.",
+                   dict(kind=U, tier=3, zh_name=f"航空母舰 {roman}", zh=f"甲板上有 {4 + n} 架拦截机的航空母舰。", form=True,
+                        weapons=carrier_guns(4 + n, quick=n == 4))))
 
 # the hero line: a tank that ranks up. Here each rank is its own unit, trained at the
 # barracks (ranks 1-3) or the tower (the final form), priced as the rank costs to reach
@@ -742,7 +779,7 @@ PRODUCTION = {
                   "flame-tank", "missile-tank", "rocket-launcher", "striker-vx", "tengu-mech", "tank-destroyer",
                   "heavy-tank", "heavy-hover-tank", "prism-tank", "tesla-tank"],
     "air-base": ["apache", "fighter", "wasp", "strike-jet", "amphibious-jet", "wolfhound", "twinblade", "tengu-jet",
-                 "striker-gunship", "bone-eagle", "strategic-bomber", "century-bomber", "asw-plane"],
+                 "striker-gunship", "bone-eagle", "strategic-bomber", "century-bomber", "carrier-airship"],
     "naval-base": ["destroyer", "construction-ship", "littoral-ship", "aegis-cruiser", "light-carrier", "cruiser",
                    "submarine", "battleship", "supply-ship", "nuclear-sub", "ghost-sub", "dreadnought",
                    "general-battleship", "judgment", "battle-carrier", "jiaolong", "aircraft-carrier"],
@@ -750,7 +787,7 @@ PRODUCTION = {
     "t3-factory": ["apocalypse", "mirage-tank", "v3-launcher", "pacifier", "siege-tank", "vanguard-gunship",
                    "shield-tank", "kirov", "lord-of-the-sky"],
     "black-tech-factory": ["experimental-tank", "star-warship", "battlecruiser", "hover-escort", "b52", "laser-ufo",
-                           "teleporter"],
+                           "teleporter", "land-cruiser"],
     "airfield": ["vanguard-gunship", "heavy-gunship", "shield-tank", "skyshaker"],
     # the hero tank ranks itself up from its card (`morph` buttons), as the original's does
     "hero-barracks": ["hero-1"],
@@ -809,14 +846,16 @@ def open_art(path, who):
     return Image.open(path).convert("RGBA")
 
 
-def add_sheet(key, im, frames, rotated, fw=None, fh=None, pivot_y=None, mount=None, pivot_x=None, anims=None):
+def add_sheet(key, im, frames, rotated, fw=None, fh=None, pivot_y=None, mount=None, pivot_x=None, anims=None, fps=None):
     """dedupe identical art: a second def naming the same image shares the sheet"""
-    h = hashlib.md5(im.tobytes()).hexdigest() + f":{frames}:{fw}:{fh}:{pivot_x}:{pivot_y}:{mount}:{anims}"
+    h = hashlib.md5(im.tobytes()).hexdigest() + f":{frames}:{fw}:{fh}:{pivot_x}:{pivot_y}:{mount}:{anims}:{fps}"
     if h in SHEET_BY_HASH:
         return SHEET_BY_HASH[h]
     entry = {"key": key, "file": f"sprites/{key}.png", "frames": frames}
     if anims:
         entry["anims"] = anims
+    if fps:
+        entry["fps"] = fps
     if rotated:
         entry.update(rotated=True, fw=fw, fh=fh)
         if pivot_x is not None and abs(pivot_x - 0.5) > 0.01:
@@ -1399,6 +1438,9 @@ def convert():
         hp_rw = num(core.get("maxHp")) or 100
         shield = num(core.get("maxShield")) or 0
         price = num(core.get("price")) or 0
+        if ov.get("price_of"):
+            # a form is worth what the unit it is a form of is
+            price = num(load_unit(by_name[ov["price_of"]]).get("core", {}).get("price")) or price
         if ov.get("hero"):
             price = hero_cost.get(src, price)
         cost = ov.get("cost", cost_of(price, is_building))
@@ -1443,7 +1485,9 @@ def convert():
         if not is_building:
             df["radius"] = int(clamp(round(radius or 10), 4, 30))
             sp = num(mov.get("moveSpeed"))
-            if sp is not None and sp > 0:
+            if boolish(core.get("isBuilding")):
+                df["speed"] = 0  # a form the original deploys into: it stands where it is
+            elif sp is not None and sp > 0:
                 df["speed"] = int(clamp(round(sp * SPEED), 16, 300))
             tr_ = num(mov.get("maxTurnSpeed"))
             if tr_ is not None and tr_ > 0:
@@ -1453,7 +1497,7 @@ def convert():
             if ov.get("hovers"):
                 df["hovers"] = True
             cap = num(core.get("maxTransportingUnits"))
-            if cap and domain != "air":
+            if cap and domain != "air" and not ov.get("wing"):
                 df["transportCap"] = int(clamp(cap, 1, 50))
             if domain != "air":
                 df["fireOnMove"] = True
@@ -1507,6 +1551,8 @@ def convert():
                     if w["cls"] in ("mg", "autocannon", "cannon") and not w.get("homing") and not w.get("arc"):
                         w["cls"] = "mg" if w["dmg"] < 12 else "autocannon" if w["dmg"] < 36 else "cannon"
                         w["projectile"] = "shell" if w["cls"] == "cannon" else "bullet"
+        for w in weapons:
+            w.update(ov.get("tune", {}))
         if weapons:
             df["weapons"] = weapons[:8]
         else:
@@ -1549,6 +1595,8 @@ def convert():
         hull_px = None
         bld_fit = None  # a building's px per image px: its frame is stretched to the footprint
         im = open_art(image, did)
+        if ov.get("share"):
+            im = None  # the same picture as another def's: its sheet is shared (`borrow`)
         if im is not None:
             if ov.get("frames_fix"):
                 frames = ov["frames_fix"]
@@ -1583,7 +1631,9 @@ def convert():
                 mount = None
                 if ov.get("tower") and parts and not ov.get("no_turret"):
                     mount = (0.5 + root_pos[0] / (im.width // frames), 0.5 - root_pos[1] / im.height)
-                df["sprite"] = add_sheet(f"u.{did}", im, frames, False, mount=mount)
+                sp = num(gfx.get("animation_idle_speed")) or num(gfx.get("animation_moving_speed"))
+                fps = round(clamp(60 / sp, 0.3, 30), 2) if frames > 1 and sp and sp > 0 else None
+                df["sprite"] = add_sheet(f"u.{did}", im, frames, False, mount=mount, fps=fps)
                 bld_fit = df.get("fw", 2) * 32 / (im.width // frames)
             else:
                 if frames > 1:
@@ -1612,6 +1662,14 @@ def convert():
                                          anims=anims_of(gfx, frames) if frames > 1 else None)
                 df["body"] = {"r": round(fw * DISPLAY / 2, 1), "len": round(max(0, (fh - fw) * DISPLAY), 1)}
                 df["_art"] = f"{os.path.relpath(image, SKY)[-40:]} {pw}x{im.height} f{frames} s{scale:.2f} -> {fw}x{fh}"
+        elif ov.get("borrow"):
+            other = next((x for x in defs if x["id"] == f"{MOD_ID}-{ov['borrow']}"), None)
+            if other and other.get("sprite"):
+                df["sprite"] = other["sprite"]
+                if "body" in other:
+                    df["body"] = dict(other["body"])
+                if not ov.get("share"):
+                    note(did, f"its own hull is stock art; drawn as {other['id']}")
         else:
             note(did, "no body image of the mod's own; placeholder")
 
@@ -1636,7 +1694,9 @@ def convert():
                         k = f / (ART * tur_scale)
                     cut, pvx, pvy = crop_about(cv)
                     tw, th = max(4, round(cut.width * f)), max(4, round(cut.height * f))
-                    df["turretSprite"] = add_sheet(f"tur.{did}", cut, 1, True, tw, th, pivot_y=pvy, mount=None, pivot_x=pvx)
+                    # a form that turns the same gun as the unit it is a form of shares its sheet
+                    df["turretSprite"] = (f"tur.{MOD_ID}-{ov['turret_of']}" if ov.get("turret_of")
+                                          else add_sheet(f"tur.{did}", cut, 1, True, tw, th, pivot_y=pvy, mount=None, pivot_x=pvx))
                     df["_tur"] = f"{'+'.join(names)} {cv.width}x{cv.height} ts{tur_scale:.2f} -> {tw}x{th}"
                     for w in df.get("weapons", []):
                         if w.get("turret", True) and "muzzleOffset" not in w:
@@ -1655,10 +1715,12 @@ def convert():
             df["aiWeight"] = ov.get("aiWeight", 1.0)
         if ov.get("hero"):
             df["_hero"] = ov["hero"]
-        if ov.get("form"):
-            # a form the unit takes, not one a line builds (`morph`)
+        if ov.get("form") or ov.get("wing_plane"):
+            # a form the unit takes, or a plane its carrier makes (`wing`): not one a line builds
             df["_form"] = True
             df["aiWeight"] = 0
+        if ov.get("wing"):
+            df["wing"] = dict(ov["wing"], unit=f"{MOD_ID}-{ov['wing']['unit']}")
         for k, v in ov.get("extra", {}).items():
             df[k] = v
         if ov.get("look"):
@@ -1707,6 +1769,14 @@ def convert():
             for t in trains:
                 produced.setdefault(t, []).append(uid)
     behaviour(defs, by_id, alias)
+    prev = f"{MOD_ID}-aircraft-carrier"
+    for suffix in CARRIER_LEVELS.values():
+        lv = by_id.get(f"{MOD_ID}-{suffix}")
+        if lv and prev in by_id:
+            step = next((r["button"]["cost"] for r in by_id[prev].get("rules", []) if r.get("do", {}).get("morph") == lv["id"]), 0)
+            lv["cost"] = by_id[prev]["cost"] + step
+            lv["pop"] = by_id[prev]["pop"]  # the same ship, with more on its deck
+            prev = lv["id"]
     for d in defs:
         if d["kind"] == "unit":
             if d.pop("_form", False) and d["id"] not in produced:
@@ -1729,6 +1799,9 @@ def convert():
     order = {"building": 0, "unit": 1}
     defs.sort(key=lambda d: order[d["kind"]])
     return defs
+
+
+CARRIER_IDS = {f"{MOD_ID}-{suffix}" for suffix in CARRIER_LEVELS.values()}
 
 
 def behaviour(defs, by_id, alias):
@@ -1776,6 +1849,22 @@ def behaviour(defs, by_id, alias):
         d.pop("_hero", None)
         if rules:
             d["rules"] = rules
+    for d in defs:
+        for r in d.get("rules", []):
+            b, to = r.get("button"), r.get("do", {}).get("morph") if isinstance(r.get("do"), dict) else None
+            if not b or not to:
+                continue
+            other = by_id[to]
+            # a change the other form can undo is the player's to make: a computer side flipping a
+            # launcher to and fro every few seconds is no use to anyone
+            if any(x.get("button") and isinstance(x.get("do"), dict) and x["do"].get("morph") == d["id"] for x in other.get("rules", [])):
+                b["ai"] = False
+            if other.get("speed") == 0 and d.get("speed", 1) != 0:
+                b["name"], b["desc"] = ["Deploy", "部署"], ["Digs in where it stands: it fires further, and cannot move until packed up.", "原地展开：射程更远，收起前无法移动。"]
+            elif d.get("speed") == 0 and other.get("speed", 1) != 0:
+                b["name"], b["desc"] = ["Pack Up", "收起"], ["Back on its wheels and tracks.", "收起，恢复移动。"]
+            elif to in CARRIER_IDS:
+                b["name"], b["desc"] = ["Build an Interceptor", "建造拦截机"], ["One more interceptor on the deck.", "建造一架新的拦截机。"]
     # the Mirage: standing still it is a tree, moving or firing a tank (the original keeps
     # it hidden until it fires; here, as in Red Alert, it shows itself when it moves too)
     tank, tree = f"{MOD_ID}-mirage-tank", f"{MOD_ID}-mirage-disguised"
@@ -1820,7 +1909,7 @@ def main():
         "v": 1,
         "id": MOD_ID,
         "name": ["FG Rusted League", "FG 铁锈联盟"],
-        "version": "0.1.1",
+        "version": "0.2.0",
         "minGame": MIN_GAME,
         "author": "空中之主 (art by 有人, 基卡 and SS元首); port by Steel Tide",
         "description": [desc_en, desc_zh],
