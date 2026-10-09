@@ -6,11 +6,11 @@
     "Hades Arsenal",
     "冥府军械"
   ],
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "11的沧斯拉",
   "description": [
-    "Starships from the underworld's armoury: the Hades Star tier-5 battleship, the Ceasefire-class siege battleship, the Hades Hound storm fighter, and a strategic strike missile tower that fires thirty-two rockets a salvo.",
-    "来自冥府军械库的星舰：Hades Star 5级战斗舰、止战级攻坚战列舰、冥犬风暴舰，以及一次齐射三十二枚火箭的战略打击导弹塔。"
+    "Underworld starships and a strategic missile battery, now joined by the Hades Fleet: a mothership, research institute, and five warships with lasers, homing missiles, and lightning blasts.",
+    "冥府星舰与战略导弹阵列，新增冥犬舰队：母舰、研究所及五种战舰，配备激光、追踪导弹和闪电爆炸。"
   ],
   "homepage": "https://github.com/steel-tide/mods/tree/main/mods/hades-arsenal",
   "license": "CC-BY-4.0",
@@ -18,10 +18,80 @@
     { "key": "u.hades-arsenal-battleship", "file": "sprites/u.hades-arsenal-battleship.png", "frames": 1, "rotated": true, "fw": 46, "fh": 102 },
     { "key": "u.hades-arsenal-ceasefire", "file": "sprites/u.hades-arsenal-ceasefire.png", "frames": 1, "rotated": true, "fw": 41, "fh": 134 },
     { "key": "u.hades-arsenal-hound", "file": "sprites/u.hades-arsenal-hound.png", "frames": 1, "rotated": true, "fw": 28, "fh": 30 },
-    { "key": "u.hades-arsenal-missile-tower", "file": "sprites/u.hades-arsenal-missile-tower.png", "frames": 1 }
+    { "key": "u.hades-arsenal-missile-tower", "file": "sprites/u.hades-arsenal-missile-tower.png", "frames": 1 },
+    {
+      "key": "u.hades-arsenal-sentry",
+      "file": "sprites/u.hades-arsenal-sentry.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 22,
+      "fh": 22
+    },
+    {
+      "key": "u.hades-arsenal-frigate",
+      "file": "sprites/u.hades-arsenal-frigate.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 26,
+      "fh": 26
+    },
+    {
+      "key": "u.hades-arsenal-dreadnought",
+      "file": "sprites/u.hades-arsenal-dreadnought.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 38,
+      "fh": 109
+    },
+    {
+      "key": "u.hades-arsenal-institute",
+      "file": "sprites/u.hades-arsenal-institute.png",
+      "frames": 1
+    },
+    {
+      "key": "u.hades-arsenal-bomber",
+      "file": "sprites/u.hades-arsenal-bomber.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 45,
+      "fh": 128
+    },
+    {
+      "key": "u.hades-arsenal-mothership",
+      "file": "sprites/u.hades-arsenal-mothership.png",
+      "frames": 1
+    },
+    {
+      "key": "prj.hades-arsenal-rocket",
+      "file": "sprites/prj.hades-arsenal-rocket.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 8,
+      "fh": 30
+    },
+    {
+      "key": "prj.hades-arsenal-rocket-2",
+      "file": "sprites/prj.hades-arsenal-rocket-2.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 6,
+      "fh": 32
+    },
+    {
+      "key": "u.hades-arsenal-shadow-destroyer",
+      "file": "sprites/u.hades-arsenal-shadow-destroyer.png",
+      "frames": 1,
+      "rotated": true,
+      "fw": 29,
+      "fh": 29
+    }
   ],
   "sounds": [
-    { "key": "hades-arsenal-fire", "file": "sfx/hades-arsenal-fire.mp3" }
+    { "key": "hades-arsenal-fire", "file": "sfx/hades-arsenal-fire.mp3" },
+    {
+      "key": "hades-arsenal-laser",
+      "file": "sfx/hades-arsenal-laser.mp3"
+    }
   ],
   "screenshots": [
     "screenshots/cover.webp",
@@ -34,8 +104,8 @@
       "domain": "ship",
       "name": [ "Hades Star Battleship", "Hades Star 5级战斗舰" ],
       "desc": [
-        "A tier-5 leviathan through the quantum star. Triple spike cannon on every bearing and the thickest hull afloat, but slow, short-ranged and blind to the sky.",
-        "由 Hades Star 5级战斗舰穿越量子星而来的巨舰。三联尖刺炮可朝任意方向开火，舰体为海上最厚，但航速慢、射程短，且无法对空。"
+        "A tier-5 leviathan through the quantum star. Triple spike cannon on every bearing and a heavily armoured hull, but slow, short-ranged and blind to the sky.",
+        "由 Hades Star 5级战斗舰穿越量子星而来的巨舰。三联尖刺炮可朝任意方向开火，舰体装甲厚重，但航速慢、射程短，且无法对空。"
       ],
       "tier": 3,
       "cost": 2600,
@@ -210,6 +280,587 @@
           "sound": "hades-arsenal-fire"
         }
       ]
+    },
+    {
+      "kind": "building",
+      "id": "hades-arsenal-mothership",
+      "name": [
+        "HadesMothership",
+        "冥犬母舰"
+      ],
+      "desc": [
+        "An immobile mothership built along the shore. Produces frigates and dreadnoughts, with powerful anti-air guns but no defence against ground or naval attackers.",
+        "沿岸建造的固定母舰，生产护卫舰与巨型舰。具备强力防空炮，但无法还击地面与海上敌人。"
+      ],
+      "tier": 3,
+      "cost": 1,
+      "buildTime": 20,
+      "hp": 14000,
+      "armor": "structure",
+      "vision": 26,
+      "fw": 3,
+      "fh": 3,
+      "sprite": "u.hades-arsenal-mothership",
+      "produces": [
+        "hades-arsenal-frigate",
+        "hades-arsenal-dreadnought"
+      ],
+      "weapons": [
+        {
+          "id": "aa",
+          "cls": "autocannon",
+          "projectile": "bullet",
+          "speed": 1300,
+          "targets": [
+            "air"
+          ],
+          "dmg": 1000,
+          "reload": 0.4,
+          "range": 22,
+          "burst": 3,
+          "burstDelay": 0.08,
+          "spread": 8,
+          "turret": true
+        }
+      ],
+      "builtBy": [
+        "engineer",
+        "engboat"
+      ]
+    },
+    {
+      "kind": "unit",
+      "id": "hades-arsenal-sentry",
+      "name": [
+        "HadesSentryShip",
+        "冥犬哨兵舰"
+      ],
+      "desc": [
+        "Hades patrol gunship. Twin rapid guns for anti-ship and shore suppression, weak against air.",
+        "冥犬哨兵舰：双联速射炮，主打反舰与岸轰压制，对空薄弱。"
+      ],
+      "tier": 2,
+      "cost": 20,
+      "hp": 300,
+      "armor": "ship",
+      "domain": "ship",
+      "speed": 55,
+      "turnRate": 45,
+      "vision": 22,
+      "aiWeight": 2,
+      "sprite": "u.hades-arsenal-sentry",
+      "body": {
+        "r": 10,
+        "len": 10
+      },
+      "producedBy": [
+        "hades-arsenal-institute"
+      ],
+      "weapons": [
+        {
+          "id": "main-gun",
+          "cls": "cannon",
+          "projectile": "shell",
+          "speed": 900,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "dmg": 40,
+          "reload": 1.2,
+          "range": 4,
+          "splash": 6,
+          "turret": true,
+          "muzzleOffset": 18
+        },
+        {
+          "id": "aa",
+          "cls": "autocannon",
+          "projectile": "bullet",
+          "speed": 1300,
+          "targets": [
+            "air"
+          ],
+          "dmg": 10,
+          "reload": 0.5,
+          "range": 16,
+          "burst": 3,
+          "burstDelay": 0.1,
+          "spread": 10,
+          "turret": true
+        }
+      ],
+      "radius": 10
+    },
+    {
+      "kind": "unit",
+      "id": "hades-arsenal-frigate",
+      "name": [
+        "HadesFrigate",
+        "冥犬护卫舰"
+      ],
+      "desc": [
+        "Hades frigate. Balanced patrol ship with moderate firepower. Can build Hades Institute.",
+        "冥犬护卫舰：均衡的巡逻战舰，具备中等火力与机动性，可建造冥犬研究所。"
+      ],
+      "tier": 2,
+      "cost": 250,
+      "hp": 600,
+      "armor": "ship",
+      "domain": "ship",
+      "speed": 33,
+      "turnRate": 35,
+      "vision": 24,
+      "aiWeight": 3,
+      "sprite": "u.hades-arsenal-frigate",
+      "body": {
+        "r": 12,
+        "len": 14
+      },
+      "producedBy": [
+        "hades-arsenal-mothership"
+      ],
+      "builds": [
+        "hades-arsenal-institute"
+      ],
+      "buildRate": 30,
+      "weapons": [
+        {
+          "id": "main-gun",
+          "cls": "cannon",
+          "projectile": "shell",
+          "speed": 900,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "dmg": 10,
+          "reload": 1,
+          "range": 3.3,
+          "splash": 2,
+          "turret": true
+        }
+      ],
+      "radius": 12
+    },
+    {
+      "kind": "building",
+      "id": "hades-arsenal-institute",
+      "name": [
+        "HadesInstitute",
+        "冥犬研究所"
+      ],
+      "desc": [
+        "Hades research institute. Produces sentry ships, bombers, and shadow destroyers.",
+        "冥犬研究所：由护卫舰建造，专门生产哨兵舰、轰炸舰与暗歼灭舰。"
+      ],
+      "tier": 2,
+      "cost": 500,
+      "buildTime": 30,
+      "hp": 2000,
+      "armor": "structure",
+      "vision": 24,
+      "fw": 2,
+      "fh": 2,
+      "sprite": "u.hades-arsenal-institute",
+      "produces": [
+        "hades-arsenal-sentry",
+        "hades-arsenal-bomber",
+        "hades-arsenal-shadow-destroyer"
+      ],
+      "builtBy": [
+        "hades-arsenal-frigate"
+      ]
+    },
+    {
+      "kind": "unit",
+      "id": "hades-arsenal-dreadnought",
+      "name": [
+        "HadesDreadnought",
+        "冥犬巨型舰"
+      ],
+      "desc": [
+        "Hades massive dreadnought. Eight directional laser emitters in a broad arc, high HP and slow, produced by the mothership.",
+        "冥犬巨型舰：重型战舰，装备八联装定向激光发射器，扇形广角覆盖，高血量低移速，由母舰生产。"
+      ],
+      "tier": 3,
+      "cost": 2500,
+      "hp": 10000,
+      "armor": "ship",
+      "domain": "ship",
+      "speed": 20,
+      "turnRate": 15,
+      "vision": 26,
+      "aiWeight": 5,
+      "sprite": "u.hades-arsenal-dreadnought",
+      "body": {
+        "r": 30,
+        "len": 40
+      },
+      "producedBy": [
+        "hades-arsenal-mothership"
+      ],
+      "weapons": [
+        {
+          "id": "flame-thrower-1",
+          "cls": "cannon",
+          "projectile": "shell",
+          "speed": 2400,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "dmg": 30,
+          "reload": 1.6,
+          "range": 13,
+          "turret": true,
+          "sound": "hades-arsenal-laser",
+          "look": {
+            "beam": {
+              "color": "#ff8a3d",
+              "width": 3,
+              "style": "laser",
+              "life": 0.2
+            },
+            "impact": "none"
+          }
+        },
+        {
+          "id": "flame-thrower-2",
+          "cls": "cannon",
+          "projectile": "shell",
+          "speed": 2400,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "dmg": 30,
+          "reload": 1.6,
+          "range": 13,
+          "turret": true,
+          "sound": "hades-arsenal-laser",
+          "look": {
+            "beam": {
+              "color": "#ff8a3d",
+              "width": 3,
+              "style": "laser",
+              "life": 0.2
+            },
+            "impact": "none"
+          }
+        },
+        {
+          "id": "flame-thrower-3",
+          "cls": "cannon",
+          "projectile": "shell",
+          "speed": 2400,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "dmg": 30,
+          "reload": 1.6,
+          "range": 13,
+          "turret": true,
+          "sound": "hades-arsenal-laser",
+          "look": {
+            "beam": {
+              "color": "#ff8a3d",
+              "width": 3,
+              "style": "laser",
+              "life": 0.2
+            },
+            "impact": "none"
+          }
+        },
+        {
+          "id": "flame-thrower-4",
+          "cls": "cannon",
+          "projectile": "shell",
+          "speed": 2400,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "dmg": 30,
+          "reload": 1.6,
+          "range": 13,
+          "turret": true,
+          "sound": "hades-arsenal-laser",
+          "look": {
+            "beam": {
+              "color": "#ff8a3d",
+              "width": 3,
+              "style": "laser",
+              "life": 0.2
+            },
+            "impact": "none"
+          }
+        },
+        {
+          "id": "flame-thrower-5",
+          "cls": "cannon",
+          "projectile": "shell",
+          "speed": 2400,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "dmg": 30,
+          "reload": 1.6,
+          "range": 13,
+          "turret": true,
+          "sound": "hades-arsenal-laser",
+          "look": {
+            "beam": {
+              "color": "#ff8a3d",
+              "width": 3,
+              "style": "laser",
+              "life": 0.2
+            },
+            "impact": "none"
+          }
+        },
+        {
+          "id": "flame-thrower-6",
+          "cls": "cannon",
+          "projectile": "shell",
+          "speed": 2400,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "dmg": 30,
+          "reload": 1.6,
+          "range": 13,
+          "turret": true,
+          "sound": "hades-arsenal-laser",
+          "look": {
+            "beam": {
+              "color": "#ff8a3d",
+              "width": 3,
+              "style": "laser",
+              "life": 0.2
+            },
+            "impact": "none"
+          }
+        },
+        {
+          "id": "flame-thrower-7",
+          "cls": "cannon",
+          "projectile": "shell",
+          "speed": 2400,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "dmg": 30,
+          "reload": 1.6,
+          "range": 13,
+          "turret": true,
+          "sound": "hades-arsenal-laser",
+          "look": {
+            "beam": {
+              "color": "#ff8a3d",
+              "width": 3,
+              "style": "laser",
+              "life": 0.2
+            },
+            "impact": "none"
+          }
+        },
+        {
+          "id": "flame-thrower-8",
+          "cls": "cannon",
+          "projectile": "shell",
+          "speed": 2400,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "dmg": 5,
+          "reload": 0.05,
+          "range": 13,
+          "turret": true,
+          "sound": "hades-arsenal-laser",
+          "look": {
+            "beam": {
+              "color": "#ff8a3d",
+              "width": 3,
+              "style": "laser",
+              "life": 0.2
+            },
+            "impact": "none"
+          }
+        }
+      ],
+      "radius": 30
+    },
+    {
+      "kind": "unit",
+      "id": "hades-arsenal-bomber",
+      "name": [
+        "HadesBomber",
+        "冥犬轰炸舰"
+      ],
+      "desc": [
+        "Hades heavy bomber. Long-range homing rocket strikes from beyond counter-battery range. Slow, tough, and devastating.",
+        "冥犬轰炸舰：远程追踪火箭打击平台，在反制火力射程外发起攻击。缓慢、坚韧、毁灭性。"
+      ],
+      "tier": 3,
+      "cost": 3000,
+      "hp": 20000,
+      "armor": "ship",
+      "domain": "ship",
+      "speed": 15,
+      "turnRate": 12,
+      "vision": 28,
+      "aiWeight": 6,
+      "sprite": "u.hades-arsenal-bomber",
+      "body": {
+        "r": 28,
+        "len": 38
+      },
+      "producedBy": [
+        "hades-arsenal-institute"
+      ],
+      "weapons": [
+        {
+          "id": "hades-rocket",
+          "cls": "rocket",
+          "projectile": "missile",
+          "speed": 80,
+          "homing": true,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "dmg": 480,
+          "reload": 3,
+          "range": 21,
+          "minRange": 5,
+          "splash": 50,
+          "turret": true,
+          "look": {
+            "sprite": "prj.hades-arsenal-rocket",
+            "scale": 1
+          }
+        },
+        {
+          "id": "hades-rocket-2",
+          "cls": "rocket",
+          "projectile": "missile",
+          "speed": 100,
+          "homing": true,
+          "targets": [
+            "ground",
+            "ship",
+            "air"
+          ],
+          "dmg": 500,
+          "reload": 5,
+          "range": 21,
+          "minRange": 5,
+          "splash": 50,
+          "turret": true,
+          "look": {
+            "sprite": "prj.hades-arsenal-rocket-2",
+            "scale": 1
+          }
+        }
+      ],
+      "radius": 28
+    },
+    {
+      "kind": "unit",
+      "id": "hades-arsenal-shadow-destroyer",
+      "name": [
+        "HadesShadowDestroyer",
+        "暗歼灭舰"
+      ],
+      "desc": [
+        "A lightning destroyer with a seven-tile blast every seven seconds while enemies are nearby. Self-destructs below 10% health when an enemy is within ten tiles.",
+        "闪电驱逐舰，附近有敌人时每7秒释放一次7格范围爆炸。生命值低于10%且10格内有敌人时自爆。"
+      ],
+      "tier": 2,
+      "cost": 500,
+      "hp": 800,
+      "armor": "ship",
+      "domain": "ship",
+      "speed": 40,
+      "turnRate": 50,
+      "vision": 20,
+      "aiWeight": 4,
+      "sprite": "u.hades-arsenal-shadow-destroyer",
+      "body": {
+        "r": 14,
+        "len": 18
+      },
+      "producedBy": [
+        "hades-arsenal-institute"
+      ],
+      "weapons": [
+        {
+          "id": "flame-thrower-10",
+          "cls": "cannon",
+          "projectile": "shell",
+          "speed": 2400,
+          "targets": [
+            "ground",
+            "ship"
+          ],
+          "dmg": 15,
+          "reload": 1,
+          "range": 5,
+          "turret": true,
+          "sound": "hades-arsenal-laser",
+          "look": {
+            "beam": {
+              "color": "#ff8a3d",
+              "width": 4,
+              "style": "lightning",
+              "life": 0.2
+            },
+            "impact": "none"
+          }
+        }
+      ],
+      "rules": [
+        {
+          "every": 7,
+          "if": {
+            "enemyWithin": 7
+          },
+          "do": {
+            "explode": {
+              "dmg": 150,
+              "radius": 224,
+              "cls": "he",
+              "friendlyFire": false
+            }
+          }
+        },
+        {
+          "when": {
+            "hpBelow": 0.1,
+            "enemyWithin": 10
+          },
+          "do": [
+            {
+              "explode": {
+                "dmg": 500,
+                "radius": 320,
+                "cls": "he",
+                "friendlyFire": false
+              }
+            },
+            {
+              "die": true
+            }
+          ]
+        }
+      ],
+      "radius": 14
     }
   ]
 }
